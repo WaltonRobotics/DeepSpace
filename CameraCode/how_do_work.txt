@@ -22,6 +22,8 @@ To calculate the camera scale:
 
     4. Your camera scale should be (translated_screen_point / unscaled_point)
 
+    ***Keep in mind that positive x is left, positive y is up, positive z is forward***
+
 
 
 3D Projection math found on https://en.wikipedia.org/wiki/3D_projection
