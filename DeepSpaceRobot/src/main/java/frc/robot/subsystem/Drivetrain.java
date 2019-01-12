@@ -8,6 +8,7 @@
 package frc.robot.subsystem;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.command.teleop.Transform;
 
 /**
  * Add your docs here.
@@ -15,6 +16,21 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Drivetrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
+
+  private static final Drivetrain instance = new Drivetrain();
+  private Transform driverTransform = (input) -> input;
+
+  public static Drivetrain getInstance() {
+    return instance;
+  }
+
+  public Transform getDriverTransform() {
+    return driverTransform;
+  }
+
+  public void setDriverTransform(Transform driverTransform) {
+    this.driverTransform = driverTransform;
+  }
 
   @Override
   public void initDefaultCommand() {
