@@ -44,18 +44,18 @@ public class Logger {
             String outputString = new String();
 
             if (newline) {
-                if (desiredLevel == LOG_LEVEL_FATAL) outputString.concat("Fatal [");
-                if (desiredLevel == LOG_LEVEL_ERROR) outputString.concat("Error [");
-                if (desiredLevel == LOG_LEVEL_WARNING) outputString.concat("Warning [");
-                if (desiredLevel == LOG_LEVEL_INFO) outputString.concat("Info [");
+                if (desiredLevel == LOG_LEVEL_FATAL) outputString = "Fatal [";
+                else if (desiredLevel == LOG_LEVEL_ERROR) outputString = "Error [";
+                else if (desiredLevel == LOG_LEVEL_WARNING) outputString = "Warning [";
+                else if (desiredLevel == LOG_LEVEL_INFO) outputString = "Info [";
                 else return;
 
-                outputString.concat(LOG_DATE_FORMAT.format(System.currentTimeMillis()));
+                outputString += LOG_DATE_FORMAT.format(System.currentTimeMillis());
 
-                outputString.concat("]: ");
+                outputString += "]: ";
             }
 
-            outputString.concat(message);
+            outputString += message;
 
             for (OutputStream os : writeables) {
                 try {
