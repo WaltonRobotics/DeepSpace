@@ -41,3 +41,11 @@ DeepSpaceRobot/.idea/**/libraries
 DeepSpaceRobot/.idea/modules.xml
 DeepSpaceRobot/.idea/*.iml
 DeepSpaceRobot/.idea/modules
+
+# PyCharm #
+# User-specific stuff
+CameraCode/.idea/**/workspace.xml
+CameraCode/.idea/**/tasks.xml
+CameraCode/.idea/**/usage.statistics.xml
+CameraCode/.idea/**/dictionaries
+CameraCode/.idea/**/shelf
