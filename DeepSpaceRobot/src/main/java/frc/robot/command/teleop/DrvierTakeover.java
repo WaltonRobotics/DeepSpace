@@ -1,0 +1,24 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
+package frc.robot.command.teleop;
+
+import frc.robot.command.teleop.EventLogger;
+
+// completely wrong
+public class DrvierTakeover extends EventLogger{
+    
+    double[] noActivity = {0, 0};
+    
+    public boolean takeOver(boolean isTakingOver) {
+        if (eventActivity() != noActivity){
+            
+        }
+        return isTakingOver = true;
+    }
+
+}
