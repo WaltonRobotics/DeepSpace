@@ -8,6 +8,7 @@
 package frc.robot.subsystem;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.command.teleop.Drive;
 
 /**
  * Add your docs here.
@@ -16,9 +17,19 @@ public class Drivetrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
+  private static final Drivetrain instance = new Drivetrain();
+
+  private Drivetrain() {
+
+  }
+
+  public static Drivetrain getInstance() {
+    return instance;
+  }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new Drive());
   }
 }
