@@ -5,7 +5,7 @@ To calculate the camera scale:
     2. Locate a point on the image that you know the location of in the real world (x, y, z) in desired units, and
         translate it such that the center of the camera's vision is (0, 0) and the top right corner is
         (resolution_x / 2, resolution_y / 2)
-    3. Calculate where that point should appear when normalised between (-1, -1) and (1, 1), using the math below:
+    3. Calculate where that point should appear when scaled to fit K = cot(FOV / 2), using the math below:
 
          ┌                          ┐   ┌                     ┐   ┌     ┐
          │ cos(yaw)   0   -sin(yaw) │   │ actual_x - camera_x │   │ d_x │

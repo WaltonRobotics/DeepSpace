@@ -31,17 +31,17 @@ class PerspectiveMath:
         :return: the RobotPosition (x, z, yaw) of the robot wrt the target in the units of real_point1 and degrees
         """
 
-        normalised_point1 = self.__normalise_point(screen_point1)
-        normalised_point2 = self.__normalise_point(screen_point2)
+        normalised_point1 = self.__scale_point(screen_point1)
+        normalised_point2 = self.__scale_point(screen_point2)
 
         yaw = self.__calculate_yaw(normalised_point1, normalised_point2)
         location = self.__calculate_camera_location(yaw, camera_height, screen_point1, real_point1)
 
         return RobotPosition(location, yaw)
 
-    def __normalise_point(self, point):
+    def __scale_point(self, point):
         """
-        Normalises a point between (-1, -1) and (1, 1) based on self.pixel_scale.
+        Scales a point to fit K = cot(FOV / 2) based on self.pixel_scale.
         This point should be translated such that the center of the camera's vision is (0, 0), and the top right corner
         is (resolution_x / 2, resolution_y / 2)
 
