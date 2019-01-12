@@ -1,0 +1,28 @@
+
+To calculate the camera scale:
+
+    1. Set the camera some distance x away from the vision targets, pointed head on towards the target (yaw = 0)
+    2. Locate a point on the image that you know the location of in the real world (x, y, z) in desired units, and
+        translate it such that the center of the camera's vision is (0, 0) and the top right corner is
+        (resolution_x / 2, resolution_y / 2)
+    3. Calculate where that point should appear when normalised between (-1, -1) and (1, 1), using the math below:
+
+         ┌                          ┐   ┌                     ┐   ┌     ┐
+         │ cos(yaw)   0   -sin(yaw) │   │ actual_x - camera_x │   │ d_x │
+         │    0       1       0     │ * │ actual_y - camera_y │ = │ d_y │
+         │ sin(yaw)   0    cos(yaw) │   │ actual_z - camera_z │   │ d_z │
+         └                          ┘   └                     ┘   └     ┘
+
+         ┌            ┐               ┌     ┐
+         │ unscaled_x │ = (K / d_z) * │ d_x │
+         │ unscaled_y │               │ d_y │
+         └            ┘               └     ┘
+
+         Where K = cot(FOV / 2)
+
+    4. Your camera scale should be (translated_screen_point / unscaled_point)
+
+
+
+3D Projection math found on https://en.wikipedia.org/wiki/3D_projection
+The rest of the math I had to derive myself. I might put out the derivation at some point ¯\_(ツ)_/¯
