@@ -56,6 +56,7 @@ public class Logger {
             }
 
             outputString += message;
+            outputString += "\n";
 
             for (OutputStream os : writeables) {
                 try {
