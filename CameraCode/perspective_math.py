@@ -1,5 +1,3 @@
-from point import Point
-from robot_position import RobotPosition
 from math import *
 
 class PerspectiveMath:
@@ -18,37 +16,42 @@ class PerspectiveMath:
     #TODO Needs to be calculated. See how_do_work.txt
     pixel_scale = 100
 
-    def calculate_robot_position(self, screen_point1, screen_point2, real_point1, camera_height):
+    #TODO This should be how high the camera is in the desired end units
+    camera_height = 32
+
+    #These values get subtracted from a point's x and y coordinates to make the center of the screen (0, 0)
+    #TODO If (0, 0) is the bottom left corner of the screen, these will be half the resolution size
+    point_shift_x = 640 / 2
+    point_shift_y = 480 / 2
+
+    #TODO This point is the real-world location of screen_point1 (see calculate_robot_position), relative to (0, 0, 0). Z = 0
+    real_point = (4, 31)
+
+    def calculate_robot_position(self, screen_point1, screen_point2):
         """
         Calculates the position and yaw of the robot wrt a vision target. Takes in two points at the same height from
-        the target and the real location of a point. These points should be translated such that the center of the
-        camera's vision is (0, 0), and the top right corner is (resolution_x / 2, resolution_y / 2). Consider's the
-        surface the vision target is on as the plane z = 0.
-        :param screen_point1: the first point's translated screen position
-        :param screen_point2: the second point's translated screen position
-        :param real_point1: the real world location of screen_point1 as (x, y) in desired units. Z is defaulted to 0.
-        :param camera_height: the height of the camera in the same units as real_point1
-        :return: the RobotPosition (x, z, yaw) of the robot wrt the target in the units of real_point1 and degrees
+        the target and the real location of a point. Consider's the surface the vision target is on as the plane z = 0.
+        :param screen_point1: the first point's (x, y)
+        :param screen_point2: the second point's (x, y)
+        :return: the RobotPosition ((x, z), yaw) of the robot wrt the target in the units of real_point1 and degrees
         """
 
-        normalised_point1 = self.__scale_point(screen_point1)
-        normalised_point2 = self.__scale_point(screen_point2)
+        normalised_point1 = self.__scale_point((screen_point1[0] - self.point_shift_x, screen_point1[1] - self.point_shift_y))
+        normalised_point2 = self.__scale_point((screen_point2[0] - self.point_shift_x, screen_point2[1] - self.point_shift_y))
 
         yaw = self.__calculate_yaw(normalised_point1, normalised_point2)
-        location = self.__calculate_camera_location(yaw, camera_height, screen_point1, real_point1)
+        location = self.__calculate_camera_location(yaw, screen_point1)
 
-        return RobotPosition(location, yaw)
+        return location, yaw
 
     def __scale_point(self, point):
         """
         Scales a point to fit K = cot(FOV / 2) based on self.pixel_scale.
-        This point should be translated such that the center of the camera's vision is (0, 0), and the top right corner
-        is (resolution_x / 2, resolution_y / 2)
 
         :param point: the point to normalise
         :return: the normalised point
         """
-        return Point(point.x / self.pixel_scale, point.y / self.pixel_scale)
+        return point[0] / self.pixel_scale, point[1] / self.pixel_scale
 
     def __calculate_yaw(self, screen_point1, screen_point2):
         """
@@ -60,18 +63,16 @@ class PerspectiveMath:
         :return: the yaw of the camera
         """
 
-        d_y = -self.K * (screen_point1.y - screen_point2.y)
-        d_x = screen_point1.x * screen_point2.y - screen_point2.x * screen_point1.y
+        d_y = -self.K * (screen_point1[1] - screen_point2[1])
+        d_x = screen_point1[0] * screen_point2[1] - screen_point2[0] * screen_point1[1]
 
         return atan2(d_y, d_x)
 
-    def __calculate_camera_location(self, yaw, camera_height, screen_point, real_point):
+    def __calculate_camera_location(self, yaw, screen_point):
         """
         Calculates the camera's location (x, z) wrt the vision target
         :param yaw: the calculated yaw of the camera
-        :param camera_height: the height of the camera in the desired units
         :param screen_point: a normalised point on the screen
-        :param real_point: the real world location (x, y) of screen_point in the same units as camera_height. Z = 0.
         :return: the robot's location (x, z) wrt the vision target in the units of camera_height
         """
 
@@ -81,9 +82,9 @@ class PerspectiveMath:
         │ c_z │   │ a_z │                          │ K * cos(yaw) - sp_x * sin(yaw) │
         └     ┘   └     ┘                          └                                ┘
         '''
-        x = real_point.x - (real_point.y - camera_height) / screen_point.y * (
-                self.K * sin(radians(yaw)) + screen_point.x * cos(radians(yaw)))
-        z = real_point.y - (real_point.y - camera_height) / screen_point.y * (
-                    self.K * sin(radians(yaw)) + screen_point.x * cos(radians(yaw)))
+        x = self.real_point[0] - (self.real_point[1] - self.camera_height) / screen_point[1] * (
+                self.K * sin(radians(yaw)) + screen_point[0] * cos(radians(yaw)))
+        z = self.real_point[1] - (self.real_point[1] - self.camera_height) / screen_point[1] * (
+                    self.K * sin(radians(yaw)) + screen_point[0] * cos(radians(yaw)))
 
-        return Point(x, z)
+        return x, z

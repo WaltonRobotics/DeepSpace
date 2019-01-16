@@ -2,6 +2,7 @@ import cv2
 import pipeline
 import numpy as np
 import itertools as it
+from perspective_math import PerspectiveMath as pM
 
 colors = [
     (0, 0, 255),
@@ -56,6 +57,7 @@ class Target:
 
         cv2.drawContours(frame, [box_l], 0, colors[0], 2)
         cv2.drawContours(frame, [box_r], 0, colors[1], 2)
+
 
 
 class ContourTracker:
@@ -113,7 +115,7 @@ class ContourTracker:
         for left, right in pairwise(contour_rects):
             remainder.append(Target(left, right))
 
-        return first + remainder + last
+        return remainder
 
 
 if __name__ == "__main__":
@@ -129,7 +131,8 @@ if __name__ == "__main__":
         frame = video.grab()
         grip.process(frame)
 
-        my_processor.sort_contours(grip.filter_contours_output)
+        target = my_processor.sort_contours(grip.filter_contours_output)[0]
+        robot_position = pM.calculate_robot_position(target.center_point_left, target.center_point_right)
 
         cv2.imshow('frame', frame)
         cv2.waitKey()
