@@ -7,10 +7,15 @@
 
 package frc.robot.command.teleop;
 
+import edu.wpi.first.wpilibj.command.Command;
+
 /**
  * Add your docs here.
  */
-public class Log extends DriverTakeOver {
-    double leftJoystickActivity;
-    double rightJoystickActivity;
+public class Drivecommand extends Command{
+
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

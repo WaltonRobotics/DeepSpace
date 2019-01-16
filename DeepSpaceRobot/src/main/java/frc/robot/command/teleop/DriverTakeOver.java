@@ -7,26 +7,35 @@
 package frc.robot.command.teleop;
 
 import static frc.robot.OI.*;
-
-
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * Add your docs here.
  */
-public class EventLogger {
-    
+public class DriverTakeOver extends Command { 
+    double[] activity = new double[2];
     Log eventLog = new Log();
-
-    public double[] eventActivity() {
-
-        //need a while loop
-        eventLog.leftJoystickActivity = leftJoystick.getY();
-        eventLog.rightJoystickActivity = rightJoystick.getY();
-        double[] activity = {eventLog.leftJoystickActivity, eventLog.rightJoystickActivity};
-        return activity;
-    
+    public DriverTakeOver() {
+        while (isFinished() == false) {
+            eventLog.leftJoystickActivity = leftJoystick.getY();
+            eventLog.rightJoystickActivity = rightJoystick.getY();
+            double[] controllerAct = {eventLog.leftJoystickActivity, eventLog.rightJoystickActivity};
+            activity = controllerAct;
+        }   
     }
-}   
 
+    @Override
+	protected boolean isFinished() {
+		return false;
+    }
+    
+    boolean takeOver;
 
-
+    public void isTakingOver() {
+        if(isFinished() == true) {
+            takeOver = false;
+        }
+            takeOver = true;
+    }
+}    
+    
