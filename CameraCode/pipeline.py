@@ -168,7 +168,7 @@ class FilterLines:
         lowest_value, highest_value = cv2.minMaxLoc(src if (channels == 1)
                             else cv2.cvtColor(src, cv2.COLOR_BGR2GRAY))
         mat_size = (rows, cols)
-        return mat_size
+        return mat_size, empty, channels, cols, rows, highest_value
 
 
 

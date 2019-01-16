@@ -118,7 +118,7 @@ class ContourTracker:
             remainder.append(Target(left, right))
 
 
-        remainder = min(remainder, key=lambda target: math.fabs(target.average_x - pM.point_shift_x))
+        remainder = min(remainder, key=lambda target: math.fabs(target.average_x - frame_size[1] / 2))
 
         return remainder
 
