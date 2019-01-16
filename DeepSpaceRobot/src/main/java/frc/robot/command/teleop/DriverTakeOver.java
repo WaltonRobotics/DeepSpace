@@ -12,9 +12,14 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * Add your docs here.
  */
-public class DriverTakeOver extends Command { 
+public class DriverTakeOver extends Command {
+     
+    double[] noActivity = {0, 0}
     double[] activity = new double[2];
     Log eventLog = new Log();
+    boolean takeOver;
+    
+    //needs to be called somewhere
     public DriverTakeOver() {
         while (isFinished() == false) {
             eventLog.leftJoystickActivity = leftJoystick.getY();
@@ -23,19 +28,17 @@ public class DriverTakeOver extends Command {
             activity = controllerAct;
         }   
     }
-
-    @Override
-	protected boolean isFinished() {
-		return false;
-    }
     
-    boolean takeOver;
-
     public void isTakingOver() {
-        if(isFinished() == true) {
+        if(controllerAct == noActivity) {
             takeOver = false;
         }
-            takeOver = true;
+        takeOver = true;
+    }
+    
+    @Override
+    protected boolean isFinished() {
+        return false;
     }
 }    
     
