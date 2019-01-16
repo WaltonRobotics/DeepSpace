@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriverTakeOver extends Command {
 
-    double[] noActivity = {0, 0}
+    double[] noActivity = {0, 0};
     double[] activity = new double[2];
     Log eventLog = new Log();
     boolean takeOver;
@@ -35,7 +35,12 @@ public class DriverTakeOver extends Command {
         }
         takeOver = true;
     }
+
+	@Override
+	protected boolean isFinished() {
+		return false;
+	}
     
     }
-}    
+   
     
