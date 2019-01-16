@@ -1,5 +1,5 @@
 package frc.robot.command.teleop;
-// sqrt
+
 public class Sqrt implements Transform{
 
     @Override
@@ -8,6 +8,3 @@ public class Sqrt implements Transform{
     }
 
 }
-// sigmoid 
-// divide by 2
-// norm
