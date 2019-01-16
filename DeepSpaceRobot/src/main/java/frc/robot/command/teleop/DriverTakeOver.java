@@ -36,9 +36,6 @@ public class DriverTakeOver extends Command {
         takeOver = true;
     }
     
-    @Override
-    protected boolean isFinished() {
-        return false;
     }
 }    
     
