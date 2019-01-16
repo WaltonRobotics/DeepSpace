@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * Add your docs here.
  */
 public class DriverTakeOver extends Command {
-     
+
     double[] noActivity = {0, 0}
     double[] activity = new double[2];
     Log eventLog = new Log();
@@ -30,7 +30,7 @@ public class DriverTakeOver extends Command {
     }
     
     public void isTakingOver() {
-        if(controllerAct == noActivity) {
+        if(activity == noActivity) {
             takeOver = false;
         }
         takeOver = true;
