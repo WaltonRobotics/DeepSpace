@@ -8,39 +8,36 @@ class PerspectiveMath:
     Actually gives the camera pinhole's position and yaw, but it's easy to offset :)
     """
 
+    #TODO Verify this angle
     FOV = 90
-
-    #The distance from the pinhole to the viewing plane, allows for the normalization of calculated points
-    K = 1 / tan(FOV / 2)
-
     #TODO Needs to be calculated. See how_do_work.txt
     pixel_scale = 100
-
     #TODO This should be how high the camera is in the desired end units
     camera_height = 32
-
-    #These values get subtracted from a point's x and y coordinates to make the center of the screen (0, 0)
-    #TODO If (0, 0) is the bottom left corner of the screen, these will be half the resolution size
-    point_shift_x = 640 / 2
-    point_shift_y = 480 / 2
-
     #TODO This point is the real-world location of screen_point1 (see calculate_robot_position), relative to (0, 0, 0). Z = 0
     real_point = (4, 31)
+    #TODO This represents the vector between the camera and the center of the robot
+    camera_shift = (0, 0)
 
-    def calculate_robot_position(self, screen_point1, screen_point2):
+    #The distance from the pinhole to the viewing plane, allows for the normalization of calculated points
+    K = 1 / tan(radians(FOV / 2))
+
+    def calculate_robot_position(self, screen_point1, screen_point2, frame_size):
         """
         Calculates the position and yaw of the robot wrt a vision target. Takes in two points at the same height from
         the target and the real location of a point. Consider's the surface the vision target is on as the plane z = 0.
         :param screen_point1: the first point's (x, y)
         :param screen_point2: the second point's (x, y)
+        :param frame_size: the resolution of the frame (vertical, horizontal)
         :return: the RobotPosition ((x, z), yaw) of the robot wrt the target in the units of real_point1 and degrees
         """
 
-        normalised_point1 = self.__scale_point((screen_point1[0] - self.point_shift_x, screen_point1[1] - self.point_shift_y))
-        normalised_point2 = self.__scale_point((screen_point2[0] - self.point_shift_x, screen_point2[1] - self.point_shift_y))
+        normalised_point1 = self.__scale_point((screen_point1[0] - frame_size[1] / 2, screen_point1[1] - frame_size[0] / 2))
+        normalised_point2 = self.__scale_point((screen_point2[0] - frame_size[1] / 2, screen_point2[1] - frame_size[0] / 2))
 
         yaw = self.__calculate_yaw(normalised_point1, normalised_point2)
         location = self.__calculate_camera_location(yaw, screen_point1)
+        location = self.__shift_location(location, yaw)
 
         return location, yaw
 
@@ -88,3 +85,8 @@ class PerspectiveMath:
                     self.K * sin(radians(yaw)) + screen_point[0] * cos(radians(yaw)))
 
         return x, z
+
+    def __shift_location(self, location, yaw):
+        offset_x = self.camera_shift[0] * cos(yaw) - self.camera_shift[1] * sin(yaw)
+        offset_y = self.camera_shift[1] * cos(yaw) + self.camera_shift[0] * sin(yaw)
+        return location[0] + offset_x, location[1] + offset_y
