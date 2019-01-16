@@ -117,29 +117,29 @@ class ContourTracker:
         for left, right in pairwise(contour_rects):
             remainder.append(Target(left, right))
 
-        remainder = sorted(remainder, key=lambda target: math.fabs(target.average_x - pM.point_shift_x))
+        remainder = min(remainder, key=lambda target: math.fabs(target.average_x - pM.point_shift_x))
 
-        return remainder[0]
+        return remainder
 
 
 if __name__ == "__main__":
 
-    source = ""
+    source = "./vision examples/CargoStraightDark48in.jpg"
+    img = cv2.imread(source)
 
-    convert = cv2.imread(source)
 
     grip = pipeline.FilterLines()
-    video = cv2.VideoCapture(convert)
+   # video = cv2.VideoCapture(convert)
 
     my_processor = ContourTracker()
 
     while True:
-        frame = video.grab()
-        grip.process(frame)
+    #    frame = video.grab()
+        grip.process(img)
 
         my_processor.sort_contours(grip.filter_contours_output)
 
-        cv2.imshow('frame', frame)
+        cv2.imshow('frame', img)
         cv2.waitKey()
 
         cv2.destroyAllWindows()
