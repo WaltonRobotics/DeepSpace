@@ -16,6 +16,8 @@ class PerspectiveMath:
     camera_height = 32
     #TODO This point is the real-world location of screen_point1 (see calculate_robot_position), relative to (0, 0, 0). Z = 0
     real_point = (4, 31)
+    #TODO This represents the vector between the camera and the center of the robot
+    camera_shift = (0, 0)
 
     #The distance from the pinhole to the viewing plane, allows for the normalization of calculated points
     K = 1 / tan(radians(FOV / 2))
@@ -35,6 +37,7 @@ class PerspectiveMath:
 
         yaw = self.__calculate_yaw(normalised_point1, normalised_point2)
         location = self.__calculate_camera_location(yaw, screen_point1)
+        location = self.__shift_location(location, yaw)
 
         return location, yaw
 
@@ -82,3 +85,8 @@ class PerspectiveMath:
                     self.K * sin(radians(yaw)) + screen_point[0] * cos(radians(yaw)))
 
         return x, z
+
+    def __shift_location(self, location, yaw):
+        offset_x = self.camera_shift[0] * cos(yaw) - self.camera_shift[1] * sin(yaw)
+        offset_y = self.camera_shift[1] * cos(yaw) + self.camera_shift[0] * sin(yaw)
+        return location[0] + offset_x, location[1] + offset_y
