@@ -138,8 +138,12 @@ if __name__ == "__main__":
         grip.process(frame)
 
         frame_size = pipeline.FilterLines().get_mat_info_size
-        center_target = my_processor.sort_contours(grip.filter_contours_output, frame_size)
-        robot_pose = pM.calculate_robot_position(center_target.center_point_left, center_target.center_point_left)
+        try:
+            center_target = my_processor.sort_contours(grip.filter_contours_output, frame_size)
+            robot_pose = pM.calculate_robot_position(center_target.center_point_left, center_target.center_point_left)
+            print("(%s, %s), %s degrees"%(robot_pose[0][0], robot_pose[0][1], robot_pose[1]))
+        except:
+            print("No target found on the screen")
 
         cv2.imshow('frame', frame)
         cv2.waitKey()
