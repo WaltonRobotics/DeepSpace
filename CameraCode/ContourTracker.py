@@ -1,7 +1,11 @@
+import math
+
 import cv2
 import pipeline
 import numpy as np
 import itertools as it
+
+from perspective_math import PerspectiveMath as pM
 
 colors = [
     (0, 0, 255),
@@ -113,15 +117,19 @@ class ContourTracker:
         for left, right in pairwise(contour_rects):
             remainder.append(Target(left, right))
 
-        return first + remainder + last
+        remainder = sorted(remainder, key=lambda target: math.fabs(target.average_x - pM.point_shift_x))
+
+        return remainder[0]
 
 
 if __name__ == "__main__":
 
-    source = "/dev/video0"
+    source = ""
+
+    convert = cv2.imread(source)
 
     grip = pipeline.FilterLines()
-    video = cv2.VideoCapture(source)
+    video = cv2.VideoCapture(convert)
 
     my_processor = ContourTracker()
 
