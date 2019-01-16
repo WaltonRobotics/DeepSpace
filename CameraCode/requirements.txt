@@ -18,4 +18,4 @@ urllib3==1.24.1
 win-inet-pton==1.0.1
 wincertstore==0.2
 yarg==0.1.9
-opencv==3.4.2
+opencv==3.4.4
