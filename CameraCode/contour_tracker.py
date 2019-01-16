@@ -70,7 +70,7 @@ class ContourTracker:
     def distinguish_contours(self):
         pass
 
-    def sort_contours(self, contours):
+    def sort_contours(self, contours, frame_size):
 
         contour_rects = []
 
@@ -117,7 +117,7 @@ class ContourTracker:
         for left, right in pairwise(contour_rects):
             remainder.append(Target(left, right))
 
-        remainder = sorted(remainder, key=lambda target: math.fabs(target.average_x - pM.point_shift_x))
+        remainder = sorted(remainder, key=lambda target: math.fabs(target.average_x - frame_size[1] / 2))
 
         return remainder[0]
 
@@ -137,7 +137,9 @@ if __name__ == "__main__":
         frame = video.grab()
         grip.process(frame)
 
-        my_processor.sort_contours(grip.filter_contours_output)
+        frame_size = pipeline.FilterLines().get_mat_info_size
+        center_target = my_processor.sort_contours(grip.filter_contours_output, frame_size)
+        robot_pose = pM.calculate_robot_position(center_target.center_point_left, center_target.center_point_left)
 
         cv2.imshow('frame', frame)
         cv2.waitKey()
