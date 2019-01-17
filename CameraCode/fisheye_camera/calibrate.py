@@ -33,6 +33,13 @@ for fname in images:
         objpoints.append(objp)
         cv2.cornerSubPix(gray, corners, (3, 3), (-1, -1), subpix_criteria)
         imgpoints.append(corners)
+
+        # If found, adddisplay the corners
+        cv2.drawChessboardCorners(img, CHECKERBOARD, corners, ret)
+        cv2.imshow('img', img)
+        cv2.waitKey(500)
+
+cv2.destroyAllWindows()
 N_OK = len(objpoints)
 K = np.zeros((3, 3))
 D = np.zeros((4, 1))
