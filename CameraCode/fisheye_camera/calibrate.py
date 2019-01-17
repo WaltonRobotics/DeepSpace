@@ -92,15 +92,22 @@ if __name__ == '__main__':
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
+    namedWindow = cv2.namedWindow("undistorted")
+
+    max_balance = 100
+    cv2.createTrackbar('balance', 'undistorted', 0, max_balance, lambda x: None)
+
     while True:
         # Capture frame-by-frame
         ret, frame = cap.read()
+        cv2.imshow('frame', frame)
 
         # Our operations on the frame come here
-        frame = undistort(frame, balance=1)
+        balance = cv2.getTrackbarPos("balance", "undistorted") / max_balance
+        frame = undistort(frame, balance=balance)
 
         # Display the resulting frame
-        cv2.imshow('frame', frame)
+        cv2.imshow('undistorted', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
