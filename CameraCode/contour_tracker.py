@@ -70,13 +70,18 @@ class ContourTracker:
     def distinguish_contours(self):
         pass
 
-    def sort_contours(self, contours, frame_size):
-
+    def __get_min_area_rects(self, contours):
         contour_rects = []
 
         for contour in contours:
             rect = cv2.minAreaRect(contour)
             contour_rects.append(rect)
+
+        return contour_rects
+
+    def find_closest_contour(self, contours, frame_size):
+
+        contour_rects = self.__get_min_area_rects(contours)
 
         def get_x(rect):
             return rect[0][0]
