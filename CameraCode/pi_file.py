@@ -4,6 +4,126 @@ import cv2
 import numpy as np
 from math import *
 from networktables import NetworkTables
+import json
+import time
+import sys
+from cscore import CameraServer, VideoSource
+
+configFile = "/boot/frc.json"
+
+class CameraConfig: pass
+
+team = None
+server = False
+cameraConfigs = []
+
+"""Report parse error."""
+def parseError(str):
+    print("config error in '" + configFile + "': " + str, file=sys.stderr)
+
+"""Read single camera configuration."""
+def readCameraConfig(config):
+    cam = CameraConfig()
+
+    # name
+    try:
+        cam.name = config["name"]
+    except KeyError:
+        parseError("could not read camera name")
+        return False
+
+    # path
+    try:
+        cam.path = config["path"]
+    except KeyError:
+        parseError("camera '{}': could not read path".format(cam.name))
+        return False
+
+    cam.config = config
+
+    cameraConfigs.append(cam)
+    return True
+
+"""Read configuration file."""
+def readConfig():
+    global team
+    global server
+
+    # parse file
+    try:
+        with open(configFile, "rt") as f:
+            j = json.load(f)
+    except OSError as err:
+        print("could not open '{}': {}".format(configFile, err), file=sys.stderr)
+        return False
+
+    # top level must be an object
+    if not isinstance(j, dict):
+        parseError("must be JSON object")
+        return False
+
+    # team number
+    try:
+        team = j["team"]
+    except KeyError:
+        parseError("could not read team number")
+        return False
+
+    # ntmode (optional)
+    if "ntmode" in j:
+        str = j["ntmode"]
+        if str.lower() == "client":
+            server = False
+        elif str.lower() == "server":
+            server = True
+        else:
+            parseError("could not understand ntmode value '{}'".format(str))
+
+    # cameras
+    try:
+        cameras = j["cameras"]
+    except KeyError:
+        parseError("could not read cameras")
+        return False
+    for camera in cameras:
+        if not readCameraConfig(camera):
+            return False
+
+    return True
+
+"""Start running the camera."""
+def startCamera(config):
+    print("Starting camera '{}' on {}".format(config.name, config.path))
+    camera = CameraServer.getInstance() \
+        .startAutomaticCapture(name=config.name, path=config.path)
+
+    camera.setConfigJson(json.dumps(config.config))
+
+    return camera
+
+if __name__ == "__main__":
+    if len(sys.argv) >= 2:
+        configFile = sys.argv[1]
+
+    # read configuration
+    if not readConfig():
+        sys.exit(1)
+
+
+    # start NetworkTables
+    ntinst = NetworkTablesInstance.getDefault()
+    if server:
+        print("Setting up NetworkTables server")
+        ntinst.startServer()
+    else:
+        print("Setting up NetworkTables client for team {}".format(team))
+        ntinst.startClientTeam(team)
+
+    # start cameras
+    cameras = []
+    for cameraConfig in cameraConfigs:
+        cameras.append(startCamera(cameraConfig))
+
 
 colors = [
     (0, 0, 255),
@@ -18,7 +138,7 @@ def pairwise(iterable):
 
 class Target:
 
-    def __init__(self, left_rect, right_rect):
+    def __init__(self, left_rect, right_rect): 
         self.left_rect = left_rect
         self.right_rect = right_rect
 
