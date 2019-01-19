@@ -148,6 +148,8 @@ if __name__ == "__main__":
             print("No target found on the screen")
 
         cv2.imshow('frame', img)
-        cv2.waitKey()
 
-        cv2.destroyAllWindows()
+        if cv2.waitKey(500) & 0xFF == ord('q'):
+            break
+
+    cv2.destroyAllWindows()
