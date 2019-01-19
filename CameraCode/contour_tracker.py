@@ -164,5 +164,5 @@ if __name__ == "__main__":
         else:
             print("There are no contours found")
 
-        cv2.imshow('frame', source)
+       # cv2.imshow('frame', source)
 
