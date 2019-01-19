@@ -1,10 +1,10 @@
+import itertools as it
 import math
 
 import cv2
-import pipeline
 import numpy as np
-import itertools as it
 
+import pipeline
 from perspective_math import PerspectiveMath
 
 colors = [
@@ -26,15 +26,15 @@ class Target:
 
     @property
     def average_center(self):
-        return (self.left_rect[0] + self.right_rect[0])/2
+        return (self.left_rect[0] + self.right_rect[0]) / 2
 
     @property
     def average_x(self):
-        return (self.right_rect[0][0] + self.left_rect[0][0])/2
+        return (self.right_rect[0][0] + self.left_rect[0][0]) / 2
 
     @property
     def average_y(self):
-        return (self.left_rect[0][1] + self.right_rect[0][1])/2
+        return (self.left_rect[0][1] + self.right_rect[0][1]) / 2
 
     @property
     def center_point_left(self):
