@@ -7,6 +7,9 @@
 
 package frc.robot.subsystem;
 
+import static frc.robot.RobotMap.leftWheel;
+import static frc.robot.RobotMap.rightWheel;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.command.teleop.Drive;
 
@@ -17,15 +20,11 @@ public class Drivetrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private static final Drivetrain instance = new Drivetrain();
 
-  private Drivetrain() {
+  public Drivetrain() {
 
   }
 
-  public static Drivetrain getInstance() {
-    return instance;
-  }
 
   @Override
   public void initDefaultCommand() {
