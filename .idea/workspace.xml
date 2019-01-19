@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3905f0ef-8b80-4bcd-8d4c-3ee8c9810522" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/DriverTakeOver.java" beforeDir="false" afterPath="$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/DriverTakeOver.java" afterDir="false" />
-    </list>
+    <list default="true" id="3905f0ef-8b80-4bcd-8d4c-3ee8c9810522" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/DeepSpaceRobot/.gradle/" />
     <ignored path="$PROJECT_DIR$/DeepSpaceRobot/build/" />
     <ignored path="$PROJECT_DIR$/DeepSpaceRobot/out/" />
@@ -176,8 +174,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/Log.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+            <state relative-caret-position="17">
+              <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
             </state>
           </provider>
         </entry>
@@ -800,7 +798,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547922678544" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547923427656" />
     <property name="external.system.task.project.file.to.start" value="$PROJECT_DIR$" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/DeepSpaceRobot/build.gradle" />
     <property name="project.structure.last.edited" value="Project" />
@@ -961,7 +959,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20042644" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20042644" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -969,7 +967,7 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Messages" sideWeight="0.49946696" weight="0.329718" />
-      <window_info anchor="bottom" id="Build" order="0" sideWeight="0.4989339" visible="true" weight="0.329718" />
+      <window_info active="true" anchor="bottom" id="Build" order="0" sideWeight="0.4989339" visible="true" weight="0.329718" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" />
       <window_info anchor="bottom" id="Run" order="3" sideWeight="0.4989339" weight="0.329718" />
@@ -1235,8 +1233,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/Log.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        <state relative-caret-position="17">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
         </state>
       </provider>
     </entry>
