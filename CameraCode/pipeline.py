@@ -71,7 +71,7 @@ class FilterLines:
 
         # Step Get_Mat_Info0:
         self.__get_mat_info_input = source0
-        (self.get_mat_info_size,self.get_mat_info_empty,self.get_mat_info_channels,self.get_mat_info_cols,self.get_mat_info_rows,self.get_mat_info_high_value) = self.__get_mat_info(self.__get_mat_info_input)
+        (self.get_mat_info_size,self.get_mat_info_empty,self.get_mat_info_channels,self.get_mat_info_cols,self.get_mat_info_rows) = self.__get_mat_info(self.__get_mat_info_input)
 
 
     @staticmethod
@@ -165,10 +165,9 @@ class FilterLines:
         """
         cols, rows, channels = src.shape
         empty = (src.size==0)
-        lowest_value, highest_value = cv2.minMaxLoc(src if (channels == 1)
-                            else cv2.cvtColor(src, cv2.COLOR_BGR2GRAY))
+
         mat_size = (rows, cols)
-        return mat_size, empty, channels, cols, rows, highest_value
+        return mat_size, empty, channels, cols, rows
 
 
 
