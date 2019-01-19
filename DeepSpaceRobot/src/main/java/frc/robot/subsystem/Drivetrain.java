@@ -31,4 +31,9 @@ public class Drivetrain extends Subsystem {
     // Set the default command for a subsystem here.
     setDefaultCommand(new Drive());
   }
+
+  public void setSpeed(double leftYJoystick, double rightYJoystick) {
+    leftWheel.set(leftYJoystick);
+    rightWheel.set(rightYJoystick);
+  }
 }
