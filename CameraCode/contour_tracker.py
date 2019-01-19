@@ -1,9 +1,8 @@
 import itertools as it
 import math
-
 import cv2
 import numpy as np
-
+from networktables import NetworkTables
 import pipeline
 from perspective_math import PerspectiveMath
 
@@ -143,9 +142,10 @@ if __name__ == "__main__":
     perspective_math = PerspectiveMath()
 
     while True:
-        # frame = video.grab()
-        grip.process(frame)
+        NetworkTables.initialize(server='roborio-2974-frc.local')
+        sd = NetworkTables.getTable('SmartDashboard')
 
+        grip.process(frame)
         frame_size = grip.get_mat_info_size
 
         center_target = my_processor.find_closest_contour(grip.filter_contours_output, frame_size)
@@ -155,6 +155,9 @@ if __name__ == "__main__":
                                                                    center_target.center_point_left,
                                                                    frame_size)
             print("(%s, %s), %s degrees" % (robot_pose[0][0], robot_pose[0][1], robot_pose[1]))
+            sd.putNumber('x_value', robot_pose[0][0])
+            sd.putNumber('y_value', robot_pose[0][1])
+            sd.putNumber('angle', robot_pose[1])
         else:
             print("There are no contours found")
 
