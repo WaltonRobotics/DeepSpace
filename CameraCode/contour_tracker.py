@@ -132,29 +132,33 @@ class ContourTracker:
 
 if __name__ == "__main__":
 
-    source = "./vision examples/CargoStraightDark48in.jpg"
-    img = cv2.imread(source)
-
+    # source = "./vision examples/CargoAngledLine48in.jpg"
+    source = "./vision examples/CargoAngledDark48in.jpg"
+    frame = cv2.imread(source)
 
     grip = pipeline.FilterLines()
-   # video = cv2.VideoCapture(convert)
+    # video = cv2.VideoCapture(convert)
 
     my_processor = ContourTracker()
-    pM = PerspectiveMath()
+    perspective_math = PerspectiveMath()
 
     while True:
-    #    frame = video.grab()
-        grip.process(img)
+        # frame = video.grab()
+        grip.process(frame)
 
         frame_size = grip.get_mat_info_size
-        try:
-            center_target = my_processor.sort_contours(grip.filter_contours_output, frame_size)
-            robot_pose = pM.calculate_robot_position(center_target.center_point_left, center_target.center_point_left, frame_size)
-            print("(%s, %s), %s degrees"%(robot_pose[0][0], robot_pose[0][1], robot_pose[1]))
-        except:
-            print("No target found on the screen")
 
-        cv2.imshow('frame', img)
+        center_target = my_processor.find_closest_contour(grip.filter_contours_output, frame_size)
+
+        if center_target is not None:
+            robot_pose = perspective_math.calculate_robot_position(center_target.center_point_left,
+                                                                   center_target.center_point_left,
+                                                                   frame_size)
+            print("(%s, %s), %s degrees" % (robot_pose[0][0], robot_pose[0][1], robot_pose[1]))
+        else:
+            print("There are no contours found")
+
+        cv2.imshow('frame', frame)
 
         if cv2.waitKey(500) & 0xFF == ord('q'):
             break
