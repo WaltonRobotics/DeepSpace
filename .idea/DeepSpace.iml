@@ -10,11 +10,12 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../2974Splines.jar!/" />
+          <root url="jar://$MODULE_DIR$/DeepSpaceRobot/2974Splines.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="gradle-wrapper" level="project" />
   </component>
 </module>

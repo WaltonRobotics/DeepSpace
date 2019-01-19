@@ -2,8 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3905f0ef-8b80-4bcd-8d4c-3ee8c9810522" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/DeepSpace.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DeepSpace.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DeepSpaceRobot/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/DeepSpaceRobot/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DeepSpaceRobot/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/DeepSpaceRobot/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DeepSpaceRobot/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/DeepSpaceRobot/settings.gradle" afterDir="false" />
     </list>
+    <ignored path="$PROJECT_DIR$/DeepSpaceRobot/.gradle/" />
+    <ignored path="$PROJECT_DIR$/DeepSpaceRobot/build/" />
+    <ignored path="$PROJECT_DIR$/DeepSpaceRobot/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,13 +23,28 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/DeepSpace$C__Users_Lukek_Documents_GitHub_DeepSpace_DeepSpaceRobot_build_gradle__2_.ic" NAME="$PROJECT_DIR$/DeepSpaceRobot/build.gradle (2) Coverage Results" MODIFIED="1547307164194" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/DeepSpaceRobot">
+      <ProjectState />
+    </projectState>
+  </component>
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
         <task path="$PROJECT_DIR$/DeepSpaceRobot/build.gradle">
           <activation />
         </task>
-        <projects_view />
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="DeepSpaceRobot" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
       </state>
     </system>
   </component>
@@ -27,12 +52,14 @@
     <session id="915630492">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="7" />
           <entry key="project.open.time.0" value="1" />
-          <entry key="project.open.time.1" value="1" />
+          <entry key="project.open.time.1" value="3" />
           <entry key="project.open.time.10" value="1" />
+          <entry key="project.open.time.28" value="1" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.open.time.8" value="1" />
+          <entry key="project.opened" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -44,9 +71,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Groovy" value="4" />
-          <entry key="JAVA" value="21" />
-          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="Eclipse" value="1" />
+          <entry key="Groovy" value="7" />
+          <entry key="JAVA" value="48" />
+          <entry key="PLAIN_TEXT" value="4" />
+          <entry key="Properties" value="1" />
+          <entry key="Scratch" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -56,7 +86,10 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="104" />
+          <entry key="Groovy" value="189" />
+          <entry key="JAVA" value="107" />
+          <entry key="PLAIN_TEXT" value="10" />
+          <entry key="Properties" value="20" />
         </counts>
       </usages-collector>
     </session>
@@ -64,85 +97,13 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/build.gradle">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="9" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/Drive.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="11" column="31" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
-              <folding>
-                <element signature="e#1057#1058#0" expanded="true" />
-                <element signature="e#1079#1080#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/.idea/workspace.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="23" column="9" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/DriverTakeOver.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="34" column="9" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="9" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1401#1402#0" expanded="true" />
-                <element signature="e#1420#1421#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/RobotMap.java">
+        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/subsystem/Drivetrain.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="170">
               <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/Robot.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
               <folding>
-                <element signature="e#0#3011#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/Elevate.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="19" selection-start-line="19" selection-end-line="19" />
             </state>
           </provider>
         </entry>
@@ -157,6 +118,24 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="16" column="19" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/subsystem/Elevator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/OI.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
@@ -165,17 +144,544 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/Robot.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/RobotMap.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/subsystem/HatchIntaker.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/subsystem/CargoIntaker.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/subsystem/Climber.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>wrapper</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
+    <option name="myGradleHomes">
+      <map>
+        <entry key="$PROJECT_DIR$/DeepSpaceRobot" value="C:\Users\Lukek\.gradle\permwrapper\dists\gradle-5.0-bin\pu5208521seraqlersebvqk\gradle-5.0" />
+      </map>
+    </option>
+    <option name="myGradleVersions">
+      <map>
+        <entry key="$PROJECT_DIR$/DeepSpaceRobot" value="5.0" />
+      </map>
+    </option>
+    <option name="availableProjects">
+      <map>
+        <entry>
+          <key>
+            <ExternalProjectPojo>
+              <option name="name" value="DeepSpaceRobot" />
+              <option name="path" value="$PROJECT_DIR$/DeepSpaceRobot" />
+            </ExternalProjectPojo>
+          </key>
+          <value>
+            <list>
+              <ExternalProjectPojo>
+                <option name="name" value="DeepSpaceRobot" />
+                <option name="path" value="$PROJECT_DIR$/DeepSpaceRobot" />
+              </ExternalProjectPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="availableTasks">
+      <map>
+        <entry key="$PROJECT_DIR$/DeepSpaceRobot">
+          <value>
+            <list>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the sub-projects of root project 'DeepSpaceRobot'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="projects" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="writeDebugInfo" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Generates Gradle wrapper files." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="wrapper" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Simulate External Task for Java/Kotlin/JVM. Exports a JSON file for use by editors / tools" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="simulateExternalJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Deploy all artifacts on all targets" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="deploy" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles a jar archive containing the main classes." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="jar" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the configuration model of root project 'DeepSpaceRobot'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="model" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="deployFrcJavaRoborio" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Processes main resources." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="processResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the tasks runnable from root project 'DeepSpaceRobot'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="tasks" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Install the tool SmartDashboard" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="SmartDashboardInstall" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Run a console displaying output from the RoboRIO (roborio)" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="riologRoborio" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Install the tool RobotBuilder" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="RobotBuilderInstall" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Initializes a new Gradle build." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="init" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Determine the address(es) of target Roborio" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="discoverRoborio" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Runs the unit tests." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="test" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Run a console displaying output from the default RoboRIO (roborio)" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="riolog" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Compiles main Java source." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="compileJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Runs all checks." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="check" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Run the tool RobotBuilder" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="RobotBuilder" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays all dependencies declared in root project 'DeepSpaceRobot'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="dependencies" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Processes test resources." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="processTestResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Run the tool PathWeaver" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="PathWeaver" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Print all versions of the wpi block" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="wpi" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles and tests this project and all projects it depends on." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="buildNeeded" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Download all dependencies that may be used by this project" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="downloadAll" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Install the tool OutlineViewer" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="OutlineViewerInstall" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="deployJreRoborio" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="deployFrcStaticFileDeployRoborio" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the components produced by root project 'DeepSpaceRobot'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="components" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles and tests this project and all projects that depend on it." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="buildDependents" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Clean Clion IDE Files" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="cleanClion" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles main classes." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="classes" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the dependent components of components in root project 'DeepSpaceRobot'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="dependentComponents" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Run the tool OutlineViewer" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="OutlineViewer" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays all buildscript dependencies declared in root project 'DeepSpaceRobot'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="buildEnvironment" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="deployNativeLibsRoborio" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="deployNativeZipRoborio" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="deployRoborioCommandsRoborio" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles test classes." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="testClasses" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Generates Javadoc API documentation for the main source code." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="javadoc" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Run the tool ShuffleBoard" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="ShuffleBoard" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Generate Editor Configuration for Build and Debugging" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="editorConfig" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Generate Clion CMakeLists.txt files." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="clion" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Explain all Maven Repos present on this project" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="explainRepositories" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Install the tool ShuffleBoard" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="ShuffleBoardInstall" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Launch simulation for Java/Kotlin/JVM" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="simulateJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Install the tool PathWeaver" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="PathWeaverInstall" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the insight into a specific dependency in root project 'DeepSpaceRobot'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="dependencyInsight" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles the outputs of this project." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="assemble" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Deletes the build directory." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="clean" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Compiles test Java source." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="compileTestJava" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays a help message." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="help" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Install All Tools" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="InstallAllTools" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles and tests this project." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="build" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Run the tool SmartDashboard" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="SmartDashboard" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Extract Test JNI Native Libraries (nativeDesktopLib, nativeDesktopZip)" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="extractTestJNI" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the properties of root project 'DeepSpaceRobot'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                <option name="name" value="properties" />
+              </ExternalTaskPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="modificationStamps">
+      <map>
+        <entry key="$PROJECT_DIR$/DeepSpaceRobot" value="6190309653575" />
+        <entry key="$PROJECT_DIR$/DeepSpaceRobot/.gradle" value="0" />
+        <entry key="$PROJECT_DIR$/DeepSpaceRobot/build.gradle" value="269095359" />
+        <entry key="$PROJECT_DIR$/DeepSpaceRobot/gradle/wrapper/gradle-wrapper.properties" value="2686650559" />
+        <entry key="$PROJECT_DIR$/DeepSpaceRobot/settings.gradle" value="2000871635" />
+        <entry key="$PROJECT_DIR$/Gradle" value="0" />
+      </map>
+    </option>
+    <option name="projectBuildClasspath">
+      <map>
+        <entry key="$PROJECT_DIR$/DeepSpaceRobot">
+          <value>
+            <ExternalProjectBuildClasspathPojo>
+              <option name="modulesBuildClasspath">
+                <map>
+                  <entry key="$PROJECT_DIR$/DeepSpaceRobot">
+                    <value>
+                      <ExternalModuleBuildClasspathPojo>
+                        <option name="entries">
+                          <list>
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first/GradleRIO/2019.1.1/12153aa7cec4c6e97f9dc667e6f39cfce7352a76/GradleRIO-2019.1.1-sources.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a6dc5db8a12928e583bd3f23e72d3ab611ecd58f/gson-2.2.4-sources.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first/gradle-cpp-vscode/0.7.1/1ed4cbbef8930aa4c7c14ae38eac4b3424a50df0/gradle-cpp-vscode-0.7.1-sources.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first/ToolchainPlugin/2019.1.1/5b04cb36bf5d53419e15915212e40a1eba1d694f/ToolchainPlugin-2019.1.1-sources.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/jaci.gradle/EmbeddedTools/2018.12.18/208b6868937296611ec03543a81225e30cdc069d/EmbeddedTools-2018.12.18-sources.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.undercouch/gradle-download-task/3.1.2/a770cf45a3df7a09f2ae9f9d4d781338ca316189/gradle-download-task-3.1.2-sources.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jcraft/jsch/0.1.53/791359d94d6edcace686a56d0727ee093a2f7c33/jsch-0.1.53-sources.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.2/b9f9e3e5255b6ddc3bf21be05428c7a60d00e042/httpclient-4.5.2-sources.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.4/c5c19e3e6af6b452def290cde12a3ee4c35c893c/httpcore-4.4.4-sources.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/ecf26c7507d67782a3bbd148d170b31dfad001aa/commons-logging-1.2-sources.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.9/3f15fff45d57656685abfee9e8302bf14580044c/commons-codec-1.9-sources.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first/GradleRIO/2019.1.1/5088b1fc264412d0cec71d7aecbe9abd26adfbc/GradleRIO-2019.1.1.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first/gradle-cpp-vscode/0.7.1/b2c37e23be5a22f143261084b702eb0dfdefe04c/gradle-cpp-vscode-0.7.1.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first/ToolchainPlugin/2019.1.1/ff3ed945fca9806081c275ecc6a7d501f600535a/ToolchainPlugin-2019.1.1.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/jaci.gradle/EmbeddedTools/2018.12.18/83f6f4314ed8af649229e3893655551c5bbec206/EmbeddedTools-2018.12.18.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.undercouch/gradle-download-task/3.1.2/dbb5911739f1a18228847ad955c700a368db1ba4/gradle-download-task-3.1.2.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jcraft/jsch/0.1.53/658b682d5c817b27ae795637dfec047c63d29935/jsch-0.1.53.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.2/733db77aa8d9b2d68015189df76ab06304406e50/httpclient-4.5.2.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.4/b31526a230871fbe285fbcbe2813f9c0839ae9b0/httpcore-4.4.4.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar" />
+                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.9/9ce04e34240f674bc72680f8b843b1457383161a/commons-codec-1.9.jar" />
+                          </list>
+                        </option>
+                        <option name="path" value="$PROJECT_DIR$/DeepSpaceRobot" />
+                      </ExternalModuleBuildClasspathPojo>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="name" value="DeepSpaceRobot" />
+              <option name="projectBuildClasspath">
+                <list>
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/ant-1.9.13.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/ant-launcher-1.9.13.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-api-metadata-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-base-services-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-base-services-groovy-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-build-cache-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-build-option-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-cli-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-core-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-core-api-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-docs-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-files-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-installation-beacon-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-jvm-services-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-kotlin-dsl-1.0.4.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-kotlin-dsl-provider-plugins-1.0.4.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-kotlin-dsl-tooling-builders-1.0.4.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-kotlin-dsl-tooling-models-1.0.4.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-launcher-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-logging-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-messaging-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-model-core-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-model-groovy-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-native-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-persistent-cache-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-process-services-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-resources-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-runtime-api-info-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-snapshots-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-tooling-api-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/gradle-wrapper-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-announce-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-antlr-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-build-cache-http-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-build-comparison-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-build-init-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-code-quality-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-composite-builds-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-dependency-management-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-diagnostics-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-ear-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-ide-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-ide-native-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-ide-play-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-ivy-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-jacoco-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-javascript-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-language-groovy-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-language-java-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-language-jvm-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-language-native-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-language-scala-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-maven-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-osgi-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-platform-base-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-platform-jvm-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-platform-native-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-platform-play-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-plugin-development-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-plugin-use-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-plugins-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-publish-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-reporting-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-resources-gcs-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-resources-http-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-resources-s3-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-resources-sftp-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-scala-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-signing-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-test-kit-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-testing-base-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-testing-junit-platform-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-testing-jvm-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-testing-native-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-tooling-api-builders-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-tooling-native-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-version-control-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/gradle-workers-5.0.jar" />
+                  <option value="$USER_HOME$/.gradle/permwrapper/dists/gradle-5.0-bin/pu5208521seraqlersebvqk/gradle-5.0/lib/plugins/ivy-2.3.0.jar" />
+                </list>
+              </option>
+            </ExternalProjectBuildClasspathPojo>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="projectSyncType">
       <map>
+        <entry key="$PROJECT_DIR$/DeepSpaceRobot" value="RE_IMPORT" />
+        <entry key="$PROJECT_DIR$/Gradle" value="RE_IMPORT" />
         <entry key="$PROJECT_DIR$/../../Robotics VS/Test" value="PREVIEW" />
         <entry key="$PROJECT_DIR$/../../Team 254 Public Code/FRC-2018-Public-master" value="PREVIEW" />
       </map>
+    </option>
+  </component>
+  <component name="GroovyConsoleState">
+    <option name="list">
+      <list>
+        <Entry>
+          <option name="url" value="file://$APPLICATION_CONFIG_DIR$/consoles/groovy/groovy_console.groovy" />
+          <option name="moduleName" value="DeepSpace" />
+          <option name="title" value="DeepSpace (Bundled Groovy 2.4.15)" />
+        </Entry>
+      </list>
     </option>
   </component>
   <component name="IdeDocumentHistory">
@@ -186,21 +692,26 @@
         <option value="$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/DrvierTakeover.java" />
         <option value="$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/Drive.java" />
         <option value="$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/DriverTakeOver.java" />
+        <option value="$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/subsystem/Drivetrain.java" />
+        <option value="$PROJECT_DIR$/DeepSpaceRobot/settings.gradle" />
+        <option value="$PROJECT_DIR$/DeepSpaceRobot/gradle/wrapper/gradle-wrapper.properties" />
+        <option value="$PROJECT_DIR$/DeepSpaceRobot/build.gradle" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="953" />
+    <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -211,73 +722,44 @@
             <path>
               <item name="DeepSpace" type="b2602c69:ProjectViewProjectNode" />
               <item name="DeepSpace" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
+              <item name="DeepSpaceRobot" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
               <item name="DeepSpace" type="b2602c69:ProjectViewProjectNode" />
               <item name="DeepSpace" type="462c0819:PsiDirectoryNode" />
-              <item name=".wpilib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DeepSpace" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpace" type="462c0819:PsiDirectoryNode" />
-              <item name="DeepSpaceRobot" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DeepSpace" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpace" type="462c0819:PsiDirectoryNode" />
-              <item name="DeepSpaceRobot" type="462c0819:PsiDirectoryNode" />
-              <item name=".gradle" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DeepSpace" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpace" type="462c0819:PsiDirectoryNode" />
-              <item name="DeepSpaceRobot" type="462c0819:PsiDirectoryNode" />
-              <item name=".gradle" type="462c0819:PsiDirectoryNode" />
-              <item name="buildOutputCleanup" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DeepSpace" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpace" type="462c0819:PsiDirectoryNode" />
-              <item name="DeepSpaceRobot" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DeepSpace" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DeepSpace" type="462c0819:PsiDirectoryNode" />
-              <item name="DeepSpaceRobot" type="462c0819:PsiDirectoryNode" />
+              <item name="DeepSpaceRobot" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="DeepSpace" type="b2602c69:ProjectViewProjectNode" />
               <item name="DeepSpace" type="462c0819:PsiDirectoryNode" />
-              <item name="DeepSpaceRobot" type="462c0819:PsiDirectoryNode" />
+              <item name="DeepSpaceRobot" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
               <item name="DeepSpace" type="b2602c69:ProjectViewProjectNode" />
               <item name="DeepSpace" type="462c0819:PsiDirectoryNode" />
-              <item name="DeepSpaceRobot" type="462c0819:PsiDirectoryNode" />
+              <item name="DeepSpaceRobot" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="DeepSpace" type="b2602c69:ProjectViewProjectNode" />
               <item name="DeepSpace" type="462c0819:PsiDirectoryNode" />
-              <item name="DeepSpaceRobot" type="462c0819:PsiDirectoryNode" />
+              <item name="DeepSpaceRobot" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="robot" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="DeepSpace" type="b2602c69:ProjectViewProjectNode" />
               <item name="DeepSpace" type="462c0819:PsiDirectoryNode" />
-              <item name="DeepSpaceRobot" type="462c0819:PsiDirectoryNode" />
+              <item name="DeepSpaceRobot" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="robot" type="462c0819:PsiDirectoryNode" />
               <item name="command" type="462c0819:PsiDirectoryNode" />
@@ -285,13 +767,23 @@
             <path>
               <item name="DeepSpace" type="b2602c69:ProjectViewProjectNode" />
               <item name="DeepSpace" type="462c0819:PsiDirectoryNode" />
-              <item name="DeepSpaceRobot" type="462c0819:PsiDirectoryNode" />
+              <item name="DeepSpaceRobot" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="robot" type="462c0819:PsiDirectoryNode" />
               <item name="command" type="462c0819:PsiDirectoryNode" />
               <item name="teleop" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DeepSpace" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DeepSpace" type="462c0819:PsiDirectoryNode" />
+              <item name="DeepSpaceRobot" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="robot" type="462c0819:PsiDirectoryNode" />
+              <item name="subsystem" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="DeepSpace" type="b2602c69:ProjectViewProjectNode" />
@@ -304,9 +796,10 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547596450761" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../2974Splines.jar!/" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547922269861" />
+    <property name="external.system.task.project.file.to.start" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/DeepSpaceRobot/build.gradle" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
@@ -323,7 +816,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (5)">
+  <component name="RunManager" selected="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (6)">
     <configuration name="C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (1)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -372,7 +865,7 @@
       </ExternalSystemSettings>
       <method v="2" />
     </configuration>
-    <configuration name="C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (4)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (5)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot/build.gradle" />
@@ -388,7 +881,7 @@
       </ExternalSystemSettings>
       <method v="2" />
     </configuration>
-    <configuration name="C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (5)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (6)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/DeepSpaceRobot/build.gradle" />
@@ -423,17 +916,17 @@
     <list>
       <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle" />
       <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (1)" />
+      <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (5)" />
       <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (2)" />
       <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (3)" />
-      <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (4)" />
-      <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (5)" />
+      <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (6)" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (5)" />
-        <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (4)" />
+        <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (6)" />
         <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (3)" />
         <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (2)" />
+        <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (5)" />
         <item itemvalue="Gradle.C:/Users/Lukek/Documents/GitHub/DeepSpace/DeepSpaceRobot/build.gradle (1)" />
       </list>
     </recent_temporary>
@@ -451,107 +944,156 @@
     </task>
     <servers />
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18710022" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20042644" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.329718" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info anchor="right" id="Maven Projects" order="7" />
-      <window_info anchor="right" id="Coverage" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" sideWeight="0.49946696" weight="0.329718" />
+      <window_info anchor="bottom" id="Build" order="0" sideWeight="0.4989339" visible="true" weight="0.329718" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.4989339" weight="0.329718" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" weight="0.32968238" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3264642" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5010661" side_tool="true" visible="true" weight="0.329718" />
+      <window_info anchor="bottom" id="Version Control" order="10" show_stripe_button="false" />
+      <window_info anchor="right" id="Gradle" order="0" visible="true" weight="0.32995737" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" id="Theme Preview" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Maven Projects" order="8" />
+      <window_info anchor="right" id="Coverage" order="9" side_tool="true" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/subsystem/Drivetrain.java">
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/Abstract/Transform.java" />
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/Drivecommand.java" />
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/auton/AutonChooser.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/DrvierTakeover.java" />
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/EventLogger.java" />
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="3" lean-forward="true" selection-start-line="13" selection-start-column="3" selection-end-line="13" selection-end-column="3" />
+        <state relative-caret-position="391">
+          <caret line="23" column="9" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/subsystem/Climber.java">
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/.project">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/Abstract/Transform.java" />
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/Drivecommand.java" />
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/settings.gradle">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/groovy/groovy_console.groovy">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/auton/AutonChooser.java">
+    <entry file="file://$PROJECT_DIR$/Gradle/build.gradle" />
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/gradle/wrapper/gradle-wrapper.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#582#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="85">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/gradlew.bat">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="24" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="18" selection-start-line="25" selection-start-column="18" selection-end-line="25" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/gradlew">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/settings.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="24" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="9" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/Sigmoid.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="7" column="21" lean-forward="true" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/DrvierTakeover.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="12" column="27" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
+        <state relative-caret-position="391">
+          <caret line="23" column="29" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/Drive.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
-          <caret line="11" column="31" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
-          <folding>
-            <element signature="e#1057#1058#0" expanded="true" />
-            <element signature="e#1079#1080#0" expanded="true" />
-          </folding>
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/EventLogger.java">
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/Climb.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <element signature="e#0#985#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="102">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/CargoOutake.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/CargoIntake.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/Drivecommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/DriverTakeOver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -562,6 +1104,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/HalfSpeed.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/HatchIntake.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/HatchOutake.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/Log.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/NormalSpeed.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -569,53 +1139,62 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/.idea/workspace.xml">
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/Sigmoid.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="9" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
+        <state relative-caret-position="51">
+          <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/DriverTakeOver.java">
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/Sqrt.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="34" column="9" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1401#1402#0" expanded="true" />
-            <element signature="e#1420#1421#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/RobotMap.java">
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/Transform.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/subsystem/CargoIntaker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/subsystem/Climber.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/subsystem/Drivetrain.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/command/teleop/Log.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/Robot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
           <folding>
-            <element signature="e#0#3011#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/OI.java">
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/subsystem/Elevator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        <state relative-caret-position="153">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/subsystem/HatchIntaker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -628,14 +1207,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        <state relative-caret-position="187">
+          <caret line="16" column="19" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/OI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/Robot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DeepSpaceRobot/src/main/java/frc/robot/RobotMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
         </state>
       </provider>
     </entry>
   </component>
   <component name="gradleExecuteTaskHistory">
-    <option value="" />
+    <option value="$PROJECT_DIR$" />
+    <option value="getHomeDir" />
   </component>
   <component name="masterDetails">
     <states>
@@ -700,6 +1301,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
+          <last-edited>gradle-wrapper</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
