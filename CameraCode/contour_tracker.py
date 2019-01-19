@@ -122,8 +122,10 @@ class ContourTracker:
         for left, right in pairwise(contour_rects):
             remainder.append(Target(left, right))
 
-
-        remainder = min(remainder, key=lambda target: math.fabs(target.average_x - frame_size[1] / 2))
+        if len(remainder) > 0:
+            remainder = min(remainder, key=lambda target: math.fabs(target.average_x - frame_size[1] / 2))
+        else:
+            remainder = None
 
         return remainder
 
