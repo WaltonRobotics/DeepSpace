@@ -139,7 +139,7 @@ if __name__ == "__main__":
     #    frame = video.grab()
         grip.process(img)
 
-        frame_size = pipeline.FilterLines().get_mat_info_size
+        frame_size = grip.get_mat_info_size
         try:
             center_target = my_processor.sort_contours(grip.filter_contours_output, frame_size)
             robot_pose = pM.calculate_robot_position(center_target.center_point_left, center_target.center_point_left, frame_size)
