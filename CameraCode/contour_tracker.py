@@ -1,8 +1,16 @@
 import itertools as it
 import math
+
 import cv2
 import numpy as np
-from networktables import NetworkTables
+
+has_networktable = True
+
+try:
+    from networktables import NetworkTables
+except:
+    has_networktable = False
+
 import pipeline
 from perspective_math import PerspectiveMath
 
@@ -142,12 +150,13 @@ if __name__ == "__main__":
     my_processor = ContourTracker()
     perspective_math = PerspectiveMath()
 
-    NetworkTables.initialize(server='roborio-2974-frc.local')
-    sd = NetworkTables.getTable('SmartDashboard')
+    if has_networktable:
+        NetworkTables.initialize(server='roborio-2974-frc.local')
+        sd = NetworkTables.getTable('SmartDashboard')
 
     while True:
 
-        ret, source = camera.read()
+        # ret, source = camera.read()
         grip.process(source)
         frame_size = grip.get_mat_info_size
 
@@ -158,11 +167,12 @@ if __name__ == "__main__":
                                                                    center_target.center_point_left,
                                                                    frame_size)
             print("(%s, %s), %s degrees" % (robot_pose[0][0], robot_pose[0][1], robot_pose[1]))
-            sd.putNumber('x_value', robot_pose[0][0])
-            sd.putNumber('y_value', robot_pose[0][1])
-            sd.putNumber('angle', robot_pose[1])
+
+            if has_networktable:
+                sd.putNumber('x_value', robot_pose[0][0])
+                sd.putNumber('y_value', robot_pose[0][1])
+                sd.putNumber('angle', robot_pose[1])
         else:
             print("There are no contours found")
 
-       # cv2.imshow('frame', source)
-
+    # cv2.imshow('frame', source)
