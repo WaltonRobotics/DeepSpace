@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import static frc.robot.Config.Inputs.GAMEPAD_PORT;
 import static frc.robot.Config.Inputs.LEFT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
 
@@ -20,6 +21,7 @@ public class OI {
 
   public static final Joystick leftJoystick = new Joystick(LEFT_JOYSTICK_PORT);
   public static final Joystick rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
+  public static final Gamepad gamepad = new Gamepad(GAMEPAD_PORT);
 
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
