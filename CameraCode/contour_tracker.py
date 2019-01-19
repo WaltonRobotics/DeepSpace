@@ -147,7 +147,7 @@ if __name__ == "__main__":
 
     while True:
 
-        retval, source = camera.read()
+        ret, source = camera.read()
         grip.process(source)
         frame_size = grip.get_mat_info_size
 
