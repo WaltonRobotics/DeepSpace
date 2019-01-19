@@ -65,9 +65,19 @@ class Target:
         box_l = np.int0(box_l)
         box_r = np.int0(box_r)
 
-        cv2.drawContours(frame, [box_l], 0, colors[0], 2)
-        cv2.drawContours(frame, [box_r], 0, colors[1], 2)
+        cv2.drawContours(frame, [box_l], 0, colors[0])
+        cv2.drawContours(frame, [box_r], 0, colors[1])
 
+    def draw_bounding_rect(self, frame):
+        box_l = cv2.boxPoints(self.left_rect)
+        box_r = cv2.boxPoints(self.right_rect)
+        box_l = np.int0(box_l)
+        box_r = np.int0(box_r)
+
+        points = np.concatenate((box_l, box_r))
+        x,y,w, h= cv2.boundingRect(points)
+
+        retval = cv2.rectangle(frame, (x,y), (x + w, y + h), (0, 255,0 ), 1)
 
 class ContourTracker:
 
@@ -86,7 +96,7 @@ class ContourTracker:
 
         return contour_rects
 
-    def find_closest_contour(self, contours, frame_size):
+    def find_closest_contour(self, contours, frame_size, draw_targets=False):
 
         contour_rects = self.__get_min_area_rects(contours)
 
@@ -129,8 +139,15 @@ class ContourTracker:
         for left, right in pairwise(contour_rects):
             remainder.append(Target(left, right))
 
+        if draw_targets is not None:
+            for target in remainder:
+                target.draw_target(draw_targets)
+
         if len(remainder) > 0:
             remainder = min(remainder, key=lambda target: math.fabs(target.average_x - frame_size[1] / 2))
+
+            if draw_targets is not None:
+                remainder.draw_bounding_rect(draw_targets)
         else:
             remainder = None
 
@@ -142,7 +159,8 @@ if __name__ == "__main__":
 
     # img = "./vision examples/CargoAngledLine48in.jpg"
     # img = "./vision examples/CargoAngledDark48in.jpg"
-    # source = cv2.imread(img)
+    img = "./vision examples/CargoStraightDark48in.jpg"
+    source = cv2.imread(img)
 
     grip = pipeline.FilterLines()
     # video = cv2.VideoCapture(convert)
@@ -160,8 +178,10 @@ if __name__ == "__main__":
         grip.process(source)
         frame_size = grip.get_mat_info_size
 
-        center_target = my_processor.find_closest_contour(grip.filter_contours_output, frame_size)
+        center_target = my_processor.find_closest_contour(grip.filter_contours_output, frame_size, source)
 
+        cv2.imshow("", source)
+        cv2.waitKey(500)
         if center_target is not None:
             robot_pose = perspective_math.calculate_robot_position(center_target.center_point_left,
                                                                    center_target.center_point_left,
