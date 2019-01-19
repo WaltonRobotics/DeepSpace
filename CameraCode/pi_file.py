@@ -13,8 +13,8 @@ configFile = "/boot/frc.json"
 
 class CameraConfig: pass
 
-team = None
-server = False
+team = 2974
+server = 'roborio-2974-frc.local'
 cameraConfigs = []
 
 """Report parse error."""
