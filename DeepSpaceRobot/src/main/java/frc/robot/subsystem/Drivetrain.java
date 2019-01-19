@@ -11,6 +11,7 @@ import static frc.robot.RobotMap.leftWheel;
 import static frc.robot.RobotMap.rightWheel;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
 import frc.robot.command.teleop.Drive;
 
 /**
@@ -36,4 +37,17 @@ public class Drivetrain extends Subsystem {
     leftWheel.set(leftYJoystick);
     rightWheel.set(rightYJoystick);
   }
+
+  public void shiftUp() {
+    if (RobotMap.shifter.get()) {
+      RobotMap.shifter.set(false);
+    }
+  }
+
+  public void shiftDown() {
+    if (!RobotMap.shifter.get()) {
+      RobotMap.shifter.set(true);
+    }
+  }
+
 }

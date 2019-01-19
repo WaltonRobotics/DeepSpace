@@ -9,7 +9,9 @@ package frc.robot;
 
 import static frc.robot.Config.Hardware.LEFT_WHEEL_CHANNEL;
 import static frc.robot.Config.Hardware.RIGHT_WHEEL_CHANNEL;
+import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 
 /**
@@ -31,4 +33,5 @@ public class RobotMap {
 
   public static final Talon rightWheel = new Talon(RIGHT_WHEEL_CHANNEL);
   public static final Talon leftWheel = new Talon(LEFT_WHEEL_CHANNEL);
+  public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
 }
