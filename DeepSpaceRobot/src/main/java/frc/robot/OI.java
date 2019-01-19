@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import static frc.robot.Config.Inputs.LEFT_JOYSTICK_PORT;
+import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -16,8 +18,8 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class OI {
 
-  public static final Joystick leftJoystick = new Joystick(0);
-  public static final Joystick rightJoystick = new Joystick(1);
+  public static final Joystick leftJoystick = new Joystick(LEFT_JOYSTICK_PORT);
+  public static final Joystick rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
 
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a

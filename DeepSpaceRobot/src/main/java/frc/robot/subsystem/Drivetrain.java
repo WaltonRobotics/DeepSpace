@@ -19,8 +19,6 @@ public class Drivetrain extends Subsystem {
 
   private static final Drivetrain instance = new Drivetrain();
 
-
-
   private Drivetrain() {
 
   }
@@ -28,8 +26,6 @@ public class Drivetrain extends Subsystem {
   public static Drivetrain getInstance() {
     return instance;
   }
-
-    
 
   @Override
   public void initDefaultCommand() {
