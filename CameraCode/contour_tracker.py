@@ -130,10 +130,11 @@ class ContourTracker:
 
 
 if __name__ == "__main__":
+    camera = cv2.VideoCapture(0)
 
-    # source = "./vision examples/CargoAngledLine48in.jpg"
-    source = "./vision examples/CargoAngledDark48in.jpg"
-    frame = cv2.imread(source)
+    # img = "./vision examples/CargoAngledLine48in.jpg"
+    # img = "./vision examples/CargoAngledDark48in.jpg"
+    # source = cv2.imread(img)
 
     grip = pipeline.FilterLines()
     # video = cv2.VideoCapture(convert)
@@ -141,11 +142,13 @@ if __name__ == "__main__":
     my_processor = ContourTracker()
     perspective_math = PerspectiveMath()
 
-    while True:
-        NetworkTables.initialize(server='roborio-2974-frc.local')
-        sd = NetworkTables.getTable('SmartDashboard')
+    NetworkTables.initialize(server='roborio-2974-frc.local')
+    sd = NetworkTables.getTable('SmartDashboard')
 
-        grip.process(frame)
+    while True:
+
+        retval, source = camera.read()
+        grip.process(source)
         frame_size = grip.get_mat_info_size
 
         center_target = my_processor.find_closest_contour(grip.filter_contours_output, frame_size)
@@ -161,9 +164,5 @@ if __name__ == "__main__":
         else:
             print("There are no contours found")
 
-        cv2.imshow('frame', frame)
+        cv2.imshow('frame', source)
 
-        if cv2.waitKey(500) & 0xFF == ord('q'):
-            break
-
-    cv2.destroyAllWindows()
