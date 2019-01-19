@@ -5,7 +5,7 @@ import pipeline
 import numpy as np
 import itertools as it
 
-from perspective_math import PerspectiveMath as pM
+from perspective_math import PerspectiveMath
 
 colors = [
     (0, 0, 255),
@@ -133,6 +133,7 @@ if __name__ == "__main__":
    # video = cv2.VideoCapture(convert)
 
     my_processor = ContourTracker()
+    pM = PerspectiveMath()
 
     while True:
     #    frame = video.grab()
@@ -141,7 +142,7 @@ if __name__ == "__main__":
         frame_size = pipeline.FilterLines().get_mat_info_size
         try:
             center_target = my_processor.sort_contours(grip.filter_contours_output, frame_size)
-            robot_pose = pM.calculate_robot_position(center_target.center_point_left, center_target.center_point_left)
+            robot_pose = pM.calculate_robot_position(center_target.center_point_left, center_target.center_point_left, frame_size)
             print("(%s, %s), %s degrees"%(robot_pose[0][0], robot_pose[0][1], robot_pose[1]))
         except:
             print("No target found on the screen")
