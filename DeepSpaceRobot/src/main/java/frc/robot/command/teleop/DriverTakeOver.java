@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriverTakeOver extends Command {
 
     double[] noActivity = {0, 0};
+    double[] controllerAct = new double[2];
     double[] activity = new double[2];
     Log eventLog = new Log();
     boolean takeOver;
@@ -24,7 +25,7 @@ public class DriverTakeOver extends Command {
         while (isFinished() == false) {
             eventLog.leftJoystickActivity = leftJoystick.getY();
             eventLog.rightJoystickActivity = rightJoystick.getY();
-            double[] controllerAct = {eventLog.leftJoystickActivity, eventLog.rightJoystickActivity};
+            controllerAct = new double[]{eventLog.leftJoystickActivity, eventLog.rightJoystickActivity};
             activity = controllerAct;
         }   
     }
