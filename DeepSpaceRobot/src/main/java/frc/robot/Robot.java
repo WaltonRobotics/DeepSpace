@@ -7,6 +7,11 @@
 
 package frc.robot;
 
+import static org.opencv.core.Core.BORDER_CONSTANT;
+import static org.opencv.imgproc.Imgproc.INTER_LINEAR;
+import static org.opencv.imgproc.Imgproc.initUndistortRectifyMap;
+import static org.opencv.imgproc.Imgproc.remap;
+
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
@@ -20,10 +25,8 @@ import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.subsystem.Drivetrain;
-import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 
 /**
@@ -34,6 +37,7 @@ import org.opencv.core.Size;
 public class Robot extends TimedRobot {
 
   public static final Drivetrain drivetrain = new Drivetrain();
+
 
   public static void fillMat(Mat mat, double[][] data) {
     for (int i = 0; i < data.length; i++) {
@@ -56,13 +60,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Transform Select", sendableChooser);
 
     new Thread(() -> {
+      Size DIM = new Size(1920, 1080);
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+      camera.setResolution((int)DIM.width, (int)DIM.height);
       CvSink cvSink = CameraServer.getInstance().getVideo();
-
 //
-      int width = 640;
-      int height = 480;
-      CvSource outputStream = CameraServer.getInstance().putVideo("rect", width, height);
+      CvSource outputStream = CameraServer.getInstance().putVideo("rect", (int)DIM.width, (int)DIM.height);
 //
       Mat source = new Mat();
       Mat output = new Mat();
@@ -78,36 +81,45 @@ public class Robot extends TimedRobot {
       Mat D = new Mat(3, 1, CvType.CV_64F);
       fillMat(D, d);
       System.out.println(D.dump());
-      Size DIM = new Size(1920, 1080);
+
+      Mat scaledK = new Mat(3, 3, CvType.CV_64F);
+      double[][] scaled = {{264.74866142, 0., 628.46350396},
+          {0., 264.68764195, 375.72956697},
+          {0., 0., 1.}};
+      fillMat(scaledK, scaled);
+
+      double[][] newKK = {{360.41131608, 0., 653.3142692},
+          {0., 360.3282482, 402.41197413},
+          {0., 0., 1.}};
+      Mat newK = new Mat(3, 3, CvType.CV_64F);
+      fillMat(newK, newKK);
+
+      Mat R = Mat.eye(3, 3, CvType.CV_64F);
+
+      Mat map1 = new Mat();
+      Mat map2 = new Mat();
 
       while (!Thread.interrupted()) {
         cvSink.grabFrame(source);
 
-        Size dim1 = source.size();
-        assert (dim1.height / dim1.width == DIM.height / DIM.width);
+        System.out.println("--------------------");
+        System.out.println(source.size());
+        System.out.println(scaledK.dump());
+        System.out.println(D.dump());
+        System.out.println(R.dump());
+        System.out.println(newK.dump());
+        System.out.println("--------------------");
 
-        Size dim2 = dim1;
-        Size dim3 = dim1;
-
-        K.put(2,2 , 1);
 
 
-        Mat scaledK = new Mat();
+        initUndistortRectifyMap(scaledK, D, R, newK, source.size(), CvType.CV_16SC2, map1, map2);
+        remap(source, source, map1, map2, INTER_LINEAR, BORDER_CONSTANT);
 
-        double division = dim1.width / DIM.width;
-
-        Core.multiply(K, new Scalar(division), scaledK);
-        scaledK.put(2,2, 1.0);
-
-//
-//            new_K = cv2.fisheye
-//            .estimateNewCameraMatrixForUndistortRectify(scaled_K, D, dim2, np.eye(3), balance = balance)
-//        map1, map2 = cv2.fisheye.initUndistortRectifyMap(scaled_K, D, np.eye(3), new_K, dim3, cv2.CV_16SC2)
-//        undistorted_img = cv2.remap(img, map1, map2, interpolation = cv2.INTER_LINEAR, borderMode = cv2.BORDER_CONSTANT)
-//
+        System.out.println(source.dump());
         outputStream.putFrame(output);
       }
     }).start();
+
   }
 
   /**
