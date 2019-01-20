@@ -55,7 +55,7 @@ public class Drive extends Command {
     leftYJoystick = transform.transform(leftYJoystick);
     rightYJoystick = transform.transform(rightYJoystick);
 
-    Robot.drivetrain.setSpeed(leftYJoystick, rightYJoystick);
+    Robot.drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
 
     if (OI.shiftUp.get()) {
       Robot.drivetrain.shiftUp();
