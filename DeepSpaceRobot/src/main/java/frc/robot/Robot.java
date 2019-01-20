@@ -7,6 +7,10 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -16,6 +20,11 @@ import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.subsystem.Drivetrain;
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -25,6 +34,12 @@ import frc.robot.subsystem.Drivetrain;
 public class Robot extends TimedRobot {
 
   public static final Drivetrain drivetrain = new Drivetrain();
+
+  public static void fillMat(Mat mat, double[][] data) {
+    for (int i = 0; i < data.length; i++) {
+      mat.put(i, 0, data[i]);
+    }
+  }
 
   /**
    * This function is run when the robot is first started up and should be used for any initialization code.
@@ -39,6 +54,60 @@ public class Robot extends TimedRobot {
     sendableChooser.addOption("Sqrt", new Sqrt());
 
     SmartDashboard.putData("Transform Select", sendableChooser);
+
+    new Thread(() -> {
+      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+      CvSink cvSink = CameraServer.getInstance().getVideo();
+
+//
+      int width = 640;
+      int height = 480;
+      CvSource outputStream = CameraServer.getInstance().putVideo("rect", width, height);
+//
+      Mat source = new Mat();
+      Mat output = new Mat();
+
+      double[][] k = {{540.6169741181128, 0.0, 979.9714037950379},
+          {0.0, 540.4923723031342, 603.6179611901534}, {0.0, 0.0, 1.0}};
+      Mat K = new Mat(3, 3, CvType.CV_64F);
+      fillMat(K, k);
+      System.out.println(K.dump());
+
+      double[][] d = {{-0.04581054920752462},
+          {0.00580921941468853}, {-0.0037112166109776372}, {-0.00015164559682399615}};
+      Mat D = new Mat(3, 1, CvType.CV_64F);
+      fillMat(D, d);
+      System.out.println(D.dump());
+      Size DIM = new Size(1920, 1080);
+
+      while (!Thread.interrupted()) {
+        cvSink.grabFrame(source);
+
+        Size dim1 = source.size();
+        assert (dim1.height / dim1.width == DIM.height / DIM.width);
+
+        Size dim2 = dim1;
+        Size dim3 = dim1;
+
+        K.put(2,2 , 1);
+
+
+        Mat scaledK = new Mat();
+
+        double division = dim1.width / DIM.width;
+
+        Core.multiply(K, new Scalar(division), scaledK);
+        scaledK.put(2,2, 1.0);
+
+//
+//            new_K = cv2.fisheye
+//            .estimateNewCameraMatrixForUndistortRectify(scaled_K, D, dim2, np.eye(3), balance = balance)
+//        map1, map2 = cv2.fisheye.initUndistortRectifyMap(scaled_K, D, np.eye(3), new_K, dim3, cv2.CV_16SC2)
+//        undistorted_img = cv2.remap(img, map1, map2, interpolation = cv2.INTER_LINEAR, borderMode = cv2.BORDER_CONSTANT)
+//
+        outputStream.putFrame(output);
+      }
+    }).start();
   }
 
   /**
