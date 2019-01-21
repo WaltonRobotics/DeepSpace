@@ -19,7 +19,7 @@ public class MatLoader {
   public final Document doc;
 
   public MatLoader(String fileName) throws IOException, SAXException, ParserConfigurationException {
-    File fXmlFile = new File("fisheye_undistorted.xml");
+    File fXmlFile = new File(fileName);
 
     DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
