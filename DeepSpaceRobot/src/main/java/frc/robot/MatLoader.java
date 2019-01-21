@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 
 public class MatLoader {
 
-  public final Document doc;
+  private final Document doc;
 
   public MatLoader(String fileName) throws IOException, SAXException, ParserConfigurationException {
     File fXmlFile = new File(fileName);
