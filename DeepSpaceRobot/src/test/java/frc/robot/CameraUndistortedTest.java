@@ -98,6 +98,8 @@ public class CameraUndistortedTest {
 
   private Mat getPreloadedMap2Mat() {
     return matLoader.getMat("map2");
+  private Mat getPreloadedKMat() {
+    return matLoader.getMat("K");
   }
 
   @Test
@@ -114,6 +116,14 @@ public class CameraUndistortedTest {
     double[][] data = getArray(mat);
 
     Assert.assertArrayEquals(data, CameraUndistortedTest.r);
+  }
+
+  @Test
+  public void preloadedKMatTest() {
+    Mat mat = getPreloadedKMat();
+    double[][] data = getArray(mat);
+
+    Assert.assertArrayEquals(data, CameraUndistortedTest.k);
   }
 
   @Test
