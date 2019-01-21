@@ -5,15 +5,18 @@ import static org.opencv.imgproc.Imgproc.initUndistortRectifyMap;
 import edu.wpi.first.wpiutil.RuntimeDetector;
 import edu.wpi.first.wpiutil.RuntimeLoader;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
+import javax.xml.parsers.ParserConfigurationException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
+import org.xml.sax.SAXException;
 
 public class CameraUndistortedTest {
 
@@ -27,8 +30,10 @@ public class CameraUndistortedTest {
   private static double[][] newKK = {{360.41131608, 0., 653.3142692},
       {0., 360.3282482, 402.41197413},
       {0., 0., 1.}};
+  private static MatLoader matLoader;
+  private static double[][] r = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
 
-  private static void loadNativeLibraries() {
+  public static void loadNativeLibraries() {
     Path path = Paths.get(RuntimeLoader.getDefaultExtractionRoot(), RuntimeDetector.getPlatformPath());
 
     File file = path.toFile();
@@ -47,8 +52,10 @@ public class CameraUndistortedTest {
   }
 
   @Before
-  public void initTests() {
+  public void initTests() throws ParserConfigurationException, SAXException, IOException {
     loadNativeLibraries();
+
+    matLoader = new MatLoader("fisheye_undistorted.xml");
   }
 
   private double[][] getArray(Mat matrix) {
@@ -69,6 +76,63 @@ public class CameraUndistortedTest {
     return mat;
   }
 
+  private Mat getPreloadedScaledKMat() {
+    return matLoader.getMat("scaledK");
+  }
+
+  private Mat getPreloadedDMat() {
+    return matLoader.getMat("D");
+  }
+
+  private Mat getPreloadedRMat() {
+    return matLoader.getMat("R");
+  }
+
+  private Mat getPreloadedNewKMat() {
+    return matLoader.getMat("newK");
+  }
+
+  private Mat getPreloadedMap1Mat() {
+    return matLoader.getMat("map1");
+  }
+
+  private Mat getPreloadedMap2Mat() {
+    return matLoader.getMat("map2");
+  }
+
+  @Test
+  public void preloadedScaledKMatTest() {
+    Mat mat = getPreloadedScaledKMat();
+    double[][] data = getArray(mat);
+
+    Assert.assertArrayEquals(data, CameraUndistortedTest.scaled);
+  }
+
+  @Test
+  public void preloadedRMatTest() {
+    Mat mat = getPreloadedRMat();
+    double[][] data = getArray(mat);
+
+    Assert.assertArrayEquals(data, CameraUndistortedTest.r);
+  }
+
+  @Test
+  public void preloadedNewKMatTest() {
+    Mat mat = getPreloadedNewKMat();
+    double[][] data = getArray(mat);
+
+    Assert.assertArrayEquals(data, CameraUndistortedTest.newKK);
+  }
+
+  @Test
+  public void preloadedDMatTest() {
+    Mat mat = getPreloadedDMat();
+    double[][] data = getArray(mat);
+
+    Assert.assertArrayEquals(data, CameraUndistortedTest.d);
+  }
+
+
   @Test
   public void kMatTest() {
 
@@ -80,8 +144,7 @@ public class CameraUndistortedTest {
     Assert.assertArrayEquals(kData, CameraUndistortedTest.k);
   }
 
-
-  public Mat getDMat() {
+  private Mat getDMat() {
     Mat mat = new Mat();
     fillMat(mat, CameraUndistortedTest.d);
     return mat;
@@ -98,7 +161,7 @@ public class CameraUndistortedTest {
     Assert.assertArrayEquals(kData, CameraUndistortedTest.d);
   }
 
-  public Mat getScaledKMat() {
+  private Mat getScaledKMat() {
     Mat mat = new Mat();
     fillMat(mat, CameraUndistortedTest.scaled);
     return mat;
@@ -115,7 +178,7 @@ public class CameraUndistortedTest {
     Assert.assertArrayEquals(kData, CameraUndistortedTest.scaled);
   }
 
-  public Mat getNewKMat() {
+  private Mat getNewKMat() {
     Mat mat = new Mat();
     fillMat(mat, CameraUndistortedTest.newKK);
     return mat;
@@ -131,7 +194,7 @@ public class CameraUndistortedTest {
     Assert.assertArrayEquals(kData, newKK);
   }
 
-  Mat getRMat() {
+  private Mat getRMat() {
     return Mat.eye(3, 3, CvType.CV_64F);
   }
 
@@ -141,10 +204,8 @@ public class CameraUndistortedTest {
 
     double[][] kData = getArray(mat);
 
-    double[][] answer = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
-
     System.out.println(mat.dump());
-    Assert.assertArrayEquals(kData, answer);
+    Assert.assertArrayEquals(kData, r);
   }
 
   @Test
@@ -159,7 +220,8 @@ public class CameraUndistortedTest {
     Mat map2 = new Mat();
     initUndistortRectifyMap(scaledK, D, R, newK, size, CvType.CV_16SC2, map1, map2);
 
-    Assert.assertTrue(true);
+    Assert.assertArrayEquals(getArray(getPreloadedMap1Mat()), getArray(map1));
+    Assert.assertArrayEquals(getArray(getPreloadedMap2Mat()), getArray(map2));
   }
 
 }
