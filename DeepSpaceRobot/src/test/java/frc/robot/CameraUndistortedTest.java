@@ -1,5 +1,7 @@
 package frc.robot;
 
+import static org.opencv.imgproc.Imgproc.initUndistortRectifyMap;
+
 import edu.wpi.first.wpiutil.RuntimeDetector;
 import edu.wpi.first.wpiutil.RuntimeLoader;
 import java.io.File;
@@ -145,5 +147,19 @@ public class CameraUndistortedTest {
     Assert.assertArrayEquals(kData, answer);
   }
 
+  @Test
+  public void initUndistortRectifyMapTest() {
+    Mat scaledK = getScaledKMat();
+    Mat D = getDMat();
+    Mat R = getRMat();
+    Mat newK = getNewKMat();
+    Size size = new Size(1920, 1080);
+
+    Mat map1 = new Mat();
+    Mat map2 = new Mat();
+    initUndistortRectifyMap(scaledK, D, R, newK, size, CvType.CV_16SC2, map1, map2);
+
+    Assert.assertTrue(true);
+  }
 
 }
