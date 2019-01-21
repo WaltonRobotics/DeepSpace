@@ -62,10 +62,10 @@ public class Robot extends TimedRobot {
     new Thread(() -> {
       Size DIM = new Size(1920, 1080);
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-      camera.setResolution((int)DIM.width, (int)DIM.height);
+      camera.setResolution((int) DIM.width, (int) DIM.height);
       CvSink cvSink = CameraServer.getInstance().getVideo();
 //
-      CvSource outputStream = CameraServer.getInstance().putVideo("rect", (int)DIM.width, (int)DIM.height);
+      CvSource outputStream = CameraServer.getInstance().putVideo("rect", (int) DIM.width, (int) DIM.height);
 //
       Mat source = new Mat();
       Mat output = new Mat();
@@ -103,14 +103,31 @@ public class Robot extends TimedRobot {
         cvSink.grabFrame(source);
 
         System.out.println("--------------------");
-        System.out.println(source.size());
+        System.out.println(DIM);
         System.out.println(scaledK.dump());
         System.out.println(D.dump());
         System.out.println(R.dump());
         System.out.println(newK.dump());
+        System.out.println(source.size());
         System.out.println("--------------------");
 
-
+/*
+(1920, 1080)
+[[360.41131608   0.         653.3142692 ]
+ [  0.         360.3282482  402.41197413]
+ [  0.           0.           1.        ]]
+[[-0.04581055]
+ [ 0.00580922]
+ [-0.00371122]
+ [-0.00015165]]
+[[1. 0. 0.]
+ [0. 1. 0.]
+ [0. 0. 1.]]
+[[264.74866142   0.         628.46350396]
+ [  0.         264.68764195 375.72956697]
+ [  0.           0.           1.        ]]
+(1280, 720)
+ */
 
         initUndistortRectifyMap(scaledK, D, R, newK, source.size(), CvType.CV_16SC2, map1, map2);
         remap(source, source, map1, map2, INTER_LINEAR, BORDER_CONSTANT);
