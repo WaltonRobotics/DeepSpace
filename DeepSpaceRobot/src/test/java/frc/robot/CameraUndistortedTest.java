@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -24,10 +25,6 @@ public class CameraUndistortedTest {
       {0., 360.3282482, 402.41197413},
       {0., 0., 1.}};
 
-  static {
-    loadNativeLibraries();
-  }
-
   public static void loadNativeLibraries() {
     Path path = Paths.get(RuntimeLoader.getDefaultExtractionRoot(), RuntimeDetector.getPlatformPath());
 
@@ -44,6 +41,11 @@ public class CameraUndistortedTest {
     for (int i = 0; i < data.length; i++) {
       mat.put(i, 0, data[i]);
     }
+  }
+
+  @Before
+  public void initTests() {
+    loadNativeLibraries();
   }
 
   public double[][] getArray(Mat matrix) {
