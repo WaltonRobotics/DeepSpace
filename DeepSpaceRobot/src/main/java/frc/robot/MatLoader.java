@@ -31,21 +31,29 @@ public class MatLoader {
 
   }
 
-  public static Mat createMat(int rows, int cols, double[] data) {
-    Mat mat = new Mat(rows, cols, CvType.CV_64F);
+  public static Mat createMat(int rows, int cols, double[] data, int type) {
+    Mat mat = new Mat(rows, cols, type);
 
     int i = 0;
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
-        mat.put(r, c, data[i++]);
+
+        if (mat.channels() > 1) {
+          double[] buffer = new double[mat.channels()];
+          for (int y = 0; y < mat.channels(); y++) {
+            buffer[y] = data[i++];
+          }
+          mat.put(r, c, buffer);
+        } else {
+          mat.put(r, c, data[i++]);
+        }
       }
     }
     return mat;
   }
 
 
-
-  public Mat getMat(String matName) {
+  public Mat getMat(String matName, int type) {
     NodeList nList = doc.getElementsByTagName(matName);
 
     Node nNode = nList.item(0);
@@ -58,10 +66,13 @@ public class MatLoader {
       int cols = Integer.parseInt(eElement.getElementsByTagName("cols").item(0).getTextContent());
       String dataString = eElement.getElementsByTagName("data").item(0).getTextContent();
       double[] data = Arrays.stream(dataString.trim().split("\\s+")).mapToDouble(Double::parseDouble).toArray();
-
-      mat = createMat(rows, cols, data);
+      mat = createMat(rows, cols, data, type);
     }
 
     return mat;
+  }
+
+  public Mat getMat(String matName) {
+    return getMat(matName, CvType.CV_64F);
   }
 }
