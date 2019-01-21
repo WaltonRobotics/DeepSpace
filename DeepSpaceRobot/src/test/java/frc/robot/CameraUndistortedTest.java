@@ -93,11 +93,13 @@ public class CameraUndistortedTest {
   }
 
   private Mat getPreloadedMap1Mat() {
-    return matLoader.getMat("map1");
+    return matLoader.getMat("map1", CvType.CV_16SC2);
   }
 
   private Mat getPreloadedMap2Mat() {
-    return matLoader.getMat("map2");
+    return matLoader.getMat("map2", CvType.CV_16SC2);
+  }
+
   private Mat getPreloadedKMat() {
     return matLoader.getMat("K");
   }
