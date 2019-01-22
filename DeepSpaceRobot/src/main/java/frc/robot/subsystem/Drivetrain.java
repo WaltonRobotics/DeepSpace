@@ -7,29 +7,120 @@
 
 package frc.robot.subsystem;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import static frc.robot.RobotMap.leftWheel;
+import static frc.robot.RobotMap.rightWheel;
+
+import frc.robot.RobotMap;
 import frc.robot.command.teleop.Drive;
+import org.waltonrobotics.AbstractDrivetrain;
+import org.waltonrobotics.controller.RobotPair;
 
 /**
  * Add your docs here.
  */
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends AbstractDrivetrain {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private static final Drivetrain instance = new Drivetrain();
 
-  private Drivetrain() {
+  public Drivetrain() {
 
   }
 
-  public static Drivetrain getInstance() {
-    return instance;
+  @Override
+  public RobotPair getWheelPositions() {
+    return null;
   }
+
+  @Override
+  public double getRobotWidth() {
+    return 0;
+  }
+
+  @Override
+  public void reset() {
+
+  }
+
+  @Override
+  public void setSpeeds(double leftYJoystick, double rightYJoystick) {
+    leftWheel.set(leftYJoystick);
+    rightWheel.set(rightYJoystick);
+  }
+
+  @Override
+  public void setEncoderDistancePerPulse() {
+
+  }
+
+  @Override
+  public double getKV() {
+    return 0;
+  }
+
+  @Override
+  public double getKAcc() {
+    return 0;
+  }
+
+  @Override
+  public double getKK() {
+    return 0;
+  }
+
+  @Override
+  public double getKS() {
+    return 0;
+  }
+
+  @Override
+  public double getKAng() {
+    return 0;
+  }
+
+  @Override
+  public double getKL() {
+    return 0;
+  }
+
+  @Override
+  public double getILag() {
+    return 0;
+  }
+
+  @Override
+  public double getIAng() {
+    return 0;
+  }
+
+  @Override
+  public double getMaxVelocity() {
+    return 0;
+  }
+
+  @Override
+  public double getMaxAcceleration() {
+    return 0;
+  }
+
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     setDefaultCommand(new Drive());
   }
+
+
+  public void shiftUp() {
+    if (RobotMap.shifter.get()) {
+      RobotMap.shifter.set(false);
+    }
+  }
+
+  public void shiftDown() {
+    if (!RobotMap.shifter.get()) {
+      RobotMap.shifter.set(true);
+    }
+  }
+
 }
