@@ -1,7 +1,14 @@
 package frc.robot;
 
 import static org.opencv.core.Core.BORDER_CONSTANT;
+import static org.opencv.core.Core.divide;
+import static org.opencv.core.Core.mean;
+import static org.opencv.core.CvType.CV_32F;
+import static org.opencv.highgui.HighGui.destroyAllWindows;
+import static org.opencv.highgui.HighGui.imshow;
+import static org.opencv.highgui.HighGui.waitKey;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
+import static org.opencv.imgproc.Imgproc.GaussianBlur;
 import static org.opencv.imgproc.Imgproc.INTER_LINEAR;
 import static org.opencv.imgproc.Imgproc.initUndistortRectifyMap;
 import static org.opencv.imgproc.Imgproc.remap;
@@ -18,9 +25,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
 import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 import org.xml.sax.SAXException;
 
 public class CameraUndistortedTest {
@@ -278,4 +288,74 @@ public class CameraUndistortedTest {
     return data;
   }
 
+  @Test
+  public void testMSSIM() {
+    Mat mat = imread("src/test/java/frc/robot/testImages/distorted.jpeg");
+    Imgproc.cvtColor(mat, mat, Imgproc.COLOR_RGB2GRAY);
+    Assert.assertEquals(1, getMSSIM(mat, mat), 0.0);
+  }
+
+  private double getMSSIM(Mat i1, Mat i2) {
+    final double C1 = 6.5025;
+    final double C2 = 58.5225;
+    /***************************** INITS **********************************/
+    int d = CV_32F;
+
+    Mat I1 = new Mat();
+    Mat I2 = new Mat();
+    i1.convertTo(I1, d);           // cannot calculate on one byte large values
+    i2.convertTo(I2, d);
+
+    Mat I2_2 = I2.mul(I2);        // I2^2
+    Mat I1_2 = I1.mul(I1);        // I1^2
+    Mat I1_I2 = I1.mul(I2);        // I1 * I2
+
+    /*************************** END INITS **********************************/
+
+    Mat mu1 = new Mat(), mu2 = new Mat();   // PRELIMINARY COMPUTING
+    GaussianBlur(I1, mu1, new Size(11, 11), 1.5);
+    GaussianBlur(I2, mu2, new Size(11, 11), 1.5);
+
+    Mat mu1_2 = mu1.mul(mu1);
+    Mat mu2_2 = mu2.mul(mu2);
+    Mat mu1_mu2 = mu1.mul(mu2);
+
+    Mat sigma1_2 = new Mat(), sigma2_2 = new Mat(), sigma12 = new Mat();
+
+    GaussianBlur(I1_2, sigma1_2, new Size(11, 11), 1.5);
+    Core.subtract(sigma1_2, mu1_2, sigma1_2);
+
+    GaussianBlur(I2_2, sigma2_2, new Size(11, 11), 1.5);
+    Core.subtract(sigma2_2, mu2_2, sigma2_2);
+
+    GaussianBlur(I1_I2, sigma12, new Size(11, 11), 1.5);
+    Core.subtract(sigma12, mu1_mu2, sigma12);
+
+    ///////////////////////////////// FORMULA ////////////////////////////////
+    Mat t1 = new Mat(), t2 = new Mat(), t3 = new Mat();
+
+    Core.multiply(mu1_mu2, new Scalar(2), t1);
+    Core.add(t1, new Scalar(C1), t1);
+//    t1 = 2 * mu1_mu2 + C1;
+
+    Core.multiply(sigma12, new Scalar(2), t2);
+    Core.add(t2, new Scalar(C2), t2);
+//    t2 = 2 * sigma12 + C2;
+
+    t3 = t1.mul(t2);              // t3 = ((2*mu1_mu2 + C1).*(2*sigma12 + C2))
+
+    Core.add(mu1_2, mu2_2, t1);
+    Core.add(t1, new Scalar(C1), t1);
+//    t1 = mu1_2 + mu2_2 + C1;
+
+    Core.add(sigma1_2, sigma2_2, t2);
+    Core.add(t2, new Scalar(C2), t2);
+//    t2 = sigma1_2 + sigma2_2 + C2;
+    t1 = t1.mul(t2);               // t1 =((mu1_2 + mu2_2 + C1).*(sigma1_2 + sigma2_2 + C2))
+
+    Mat ssim_map = new Mat();
+    divide(t3, t1, ssim_map);      // ssim_map =  t3./t1;
+
+    return mean(ssim_map).val[0];
+  }
 }
