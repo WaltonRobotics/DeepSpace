@@ -259,7 +259,7 @@ public class CameraUndistortedTest {
     Mat map2Preloaded = getPreloadedMap2Mat();
 
     Mat dest = new Mat();
-    remap(undistorted, dest, map1Preloaded, map2Preloaded, INTER_LINEAR, BORDER_CONSTANT);
+    remap(distorted, dest, map1Preloaded, map2Preloaded, INTER_LINEAR, BORDER_CONSTANT);
 
     Assert.assertArrayEquals(getDeepArray(distorted), getDeepArray(dest));
   }
