@@ -5,11 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.command.auton;
+package frc.robot;
+
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 /**
  * Add your docs here.
  */
-public class AutonChooser {
+public class TestTest {
+
+    @Test
+    public void testTestingTest() {
+        assertTrue(true);
+    }
 
 }
