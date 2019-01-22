@@ -9,7 +9,6 @@ package frc.robot;
 
 import static org.opencv.core.Core.BORDER_CONSTANT;
 import static org.opencv.imgproc.Imgproc.INTER_LINEAR;
-import static org.opencv.imgproc.Imgproc.initUndistortRectifyMap;
 import static org.opencv.imgproc.Imgproc.remap;
 
 import edu.wpi.cscore.CvSink;
@@ -25,9 +24,12 @@ import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.subsystem.Drivetrain;
+import java.io.IOException;
+import javax.xml.parsers.ParserConfigurationException;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
+import org.xml.sax.SAXException;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -66,74 +68,22 @@ public class Robot extends TimedRobot {
       CvSink cvSink = CameraServer.getInstance().getVideo();
 //
       CvSource outputStream = CameraServer.getInstance().putVideo("rect", (int) DIM.width, (int) DIM.height);
-//
-      Mat source = new Mat();
-      Mat output = new Mat();
 
-      double[][] k = {{540.6169741181128, 0.0, 979.9714037950379},
-          {0.0, 540.4923723031342, 603.6179611901534}, {0.0, 0.0, 1.0}};
-      Mat K = new Mat(3, 3, CvType.CV_64F);
-      fillMat(K, k);
-      System.out.println(K.dump());
+      try {
+        MatLoader matLoader = new MatLoader("fisheye_undistorted.xml");
 
-      double[][] d = {{-0.04581054920752462},
-          {0.00580921941468853}, {-0.0037112166109776372}, {-0.00015164559682399615}};
-      Mat D = new Mat(3, 1, CvType.CV_64F);
-      fillMat(D, d);
-      System.out.println(D.dump());
+        Mat map1 = matLoader.getMat("map1", CvType.CV_16SC2);
+        Mat map2 = matLoader.getMat("map2", CvType.CV_16UC1);
+        Mat source = new Mat();
+        Mat output = new Mat();
 
-      Mat scaledK = new Mat(3, 3, CvType.CV_64F);
-      double[][] scaled = {{264.74866142, 0., 628.46350396},
-          {0., 264.68764195, 375.72956697},
-          {0., 0., 1.}};
-      fillMat(scaledK, scaled);
-
-      double[][] newKK = {{360.41131608, 0., 653.3142692},
-          {0., 360.3282482, 402.41197413},
-          {0., 0., 1.}};
-      Mat newK = new Mat(3, 3, CvType.CV_64F);
-      fillMat(newK, newKK);
-
-      Mat R = Mat.eye(3, 3, CvType.CV_64F);
-
-      Mat map1 = new Mat();
-      Mat map2 = new Mat();
-
-      while (!Thread.interrupted()) {
-        cvSink.grabFrame(source);
-
-        System.out.println("--------------------");
-        System.out.println(DIM);
-        System.out.println(scaledK.dump());
-        System.out.println(D.dump());
-        System.out.println(R.dump());
-        System.out.println(newK.dump());
-        System.out.println(source.size());
-        System.out.println("--------------------");
-
-/*
-(1920, 1080)
-[[360.41131608   0.         653.3142692 ]
- [  0.         360.3282482  402.41197413]
- [  0.           0.           1.        ]]
-[[-0.04581055]
- [ 0.00580922]
- [-0.00371122]
- [-0.00015165]]
-[[1. 0. 0.]
- [0. 1. 0.]
- [0. 0. 1.]]
-[[264.74866142   0.         628.46350396]
- [  0.         264.68764195 375.72956697]
- [  0.           0.           1.        ]]
-(1280, 720)
- */
-
-        initUndistortRectifyMap(scaledK, D, R, newK, source.size(), CvType.CV_16SC2, map1, map2);
-        remap(source, source, map1, map2, INTER_LINEAR, BORDER_CONSTANT);
-
-        System.out.println(source.dump());
-        outputStream.putFrame(output);
+        while (!Thread.interrupted()) {
+          cvSink.grabFrame(source);
+          remap(source, source, map1, map2, INTER_LINEAR, BORDER_CONSTANT);
+          outputStream.putFrame(output);
+        }
+      } catch (IOException | ParserConfigurationException | SAXException e) {
+        e.printStackTrace();
       }
     }).start();
 

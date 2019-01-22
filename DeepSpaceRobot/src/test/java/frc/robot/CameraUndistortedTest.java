@@ -232,7 +232,7 @@ public class CameraUndistortedTest {
   }
 
   @Test
-  public void initUndistortRectifyMapTest() {
+  public void initUndistortedRectifyMapTest() {
     Mat scaledK = getScaledKMat();
 
     Mat D = getDMat();
