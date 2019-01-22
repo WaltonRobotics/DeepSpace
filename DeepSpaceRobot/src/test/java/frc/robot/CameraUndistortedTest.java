@@ -102,7 +102,7 @@ public class CameraUndistortedTest {
   }
 
   private Mat getPreloadedMap2Mat() {
-    return matLoader.getMat("map2", CvType.CV_16SC2);
+    return matLoader.getMat("map2", CvType.CV_16UC1);
   }
 
   private Mat getPreloadedKMat() {
