@@ -180,13 +180,12 @@ if __name__ == "__main__":
 
         center_target = my_processor.find_closest_contour(grip.filter_contours_output, frame_size, source)
 
-        cv2.imshow("", source)
-        cv2.waitKey(500)
         if center_target is not None:
             robot_pose = perspective_math.calculate_robot_position(center_target.center_point_left,
                                                                    center_target.center_point_left,
                                                                    frame_size)
             print("(%s, %s), %s degrees" % (robot_pose[0][0], robot_pose[0][1], robot_pose[1]))
+            cv2.putText(source, "(%s, %s), %s degrees" % (robot_pose[0][0], robot_pose[0][1], robot_pose[1]), center_target.average_center, cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 127, 255))
 
             if has_networktable:
                 sd.putNumber('x_value', robot_pose[0][0])
@@ -194,5 +193,8 @@ if __name__ == "__main__":
                 sd.putNumber('angle', robot_pose[1])
         else:
             print("There are no contours found")
+
+        cv2.imshow("", source)
+        cv2.waitKey(500)
 
     # cv2.imshow('frame', source)
