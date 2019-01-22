@@ -1,6 +1,10 @@
 package frc.robot;
 
+import static org.opencv.core.Core.BORDER_CONSTANT;
+import static org.opencv.imgcodecs.Imgcodecs.imread;
+import static org.opencv.imgproc.Imgproc.INTER_LINEAR;
 import static org.opencv.imgproc.Imgproc.initUndistortRectifyMap;
+import static org.opencv.imgproc.Imgproc.remap;
 
 import edu.wpi.first.wpiutil.RuntimeDetector;
 import edu.wpi.first.wpiutil.RuntimeLoader;
@@ -8,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Objects;
 import javax.xml.parsers.ParserConfigurationException;
 import org.junit.Assert;
@@ -232,8 +237,15 @@ public class CameraUndistortedTest {
     Mat map2 = new Mat();
     initUndistortRectifyMap(scaledK, D, R, newK, size, CvType.CV_16SC2, map1, map2);
 
-    Assert.assertArrayEquals(getArray(getPreloadedMap1Mat()), getArray(map1));
-    Assert.assertArrayEquals(getArray(getPreloadedMap2Mat()), getArray(map2));
+    Mat map1Preloaded = getPreloadedMap1Mat();
+    Mat map2Preloaded = getPreloadedMap2Mat();
+
+    System.out.println(Arrays.deepToString(getDeepArray(map1Preloaded)));
+    System.out.println(Arrays.deepToString(getDeepArray(map2Preloaded)));
+
+    Assert.assertArrayEquals(getDeepArray(map1Preloaded), getDeepArray(map1));
+    Assert.assertArrayEquals(getDeepArray(map2Preloaded), getDeepArray(map2));
+  }
 
   @Test
   public void remapTest() {
