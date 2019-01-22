@@ -234,6 +234,36 @@ public class CameraUndistortedTest {
 
     Assert.assertArrayEquals(getArray(getPreloadedMap1Mat()), getArray(map1));
     Assert.assertArrayEquals(getArray(getPreloadedMap2Mat()), getArray(map2));
+
+  @Test
+  public void remapTest() {
+    File file = new File("src/test/java/frc/robot/testImages/undistorted.jpeg");
+    System.out.println(file.exists());
+
+    Mat undistorted = imread("src/test/java/frc/robot/testImages/undistorted.jpeg");
+    Mat distorted = imread("src/test/java/frc/robot/testImages/distorted.jpeg");
+
+    Mat map1Preloaded = getPreloadedMap1Mat();
+    Mat map2Preloaded = getPreloadedMap2Mat();
+
+    Mat dest = new Mat();
+    remap(undistorted, dest, map1Preloaded, map2Preloaded, INTER_LINEAR, BORDER_CONSTANT);
+
+    Assert.assertArrayEquals(getDeepArray(distorted), getDeepArray(dest));
+  }
+
+  private double[][][] getDeepArray(Mat matrix) {
+    double[][][] data = new double[matrix.rows()][matrix.cols()][matrix.channels()];
+
+    for (int r = 0; r < matrix.rows(); r++) {
+      for (int c = 0; c < matrix.cols(); c++) {
+        for (int channel = 0; channel < matrix.channels(); channel++) {
+          data[r][c] = matrix.get(r, c);
+        }
+      }
+    }
+
+    return data;
   }
 
 }
