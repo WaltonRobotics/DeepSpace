@@ -158,9 +158,14 @@ if __name__ == "__main__":
     camera = cv2.VideoCapture(0)
 
     # img = "./vision examples/CargoAngledLine48in.jpg"
-    # img = "./vision examples/CargoAngledDark48in.jpg"
-    img = "./vision examples/CargoStraightDark48in.jpg"
+    img = "./vision examples/CargoAngledDark48in.jpg"
+    # img = "./vision examples/learn2.PNG"
+    # img = "vision examples/CargoStraightDark48in.jpg"
+    # img = "vision examples/CargoSideStraightDark60in.jpg"
+
     source = cv2.imread(img)
+    cv2.imshow('frame', source)
+    cv2.waitKey()
 
     grip = pipeline.FilterLines()
     # video = cv2.VideoCapture(convert)
@@ -180,8 +185,9 @@ if __name__ == "__main__":
 
         center_target = my_processor.find_closest_contour(grip.filter_contours_output, frame_size, source)
 
-        cv2.imshow("", source)
+        cv2.imshow("target", source)
         cv2.waitKey(500)
+
         if center_target is not None:
             robot_pose = perspective_math.calculate_robot_position(center_target.center_point_left,
                                                                    center_target.center_point_left,
@@ -195,4 +201,6 @@ if __name__ == "__main__":
         else:
             print("There are no contours found")
 
-    # cv2.imshow('frame', source)
+        if cv2.waitKey(500) & 0xFF == ord('q'):
+            break
+    cv2.destroyAllWindows()
