@@ -1,7 +1,13 @@
 <grip:Pipeline>
   <sources>
     <grip:ImageFile>
-      <property name="path" value="C:\Users\Russell\Documents\DeepSpace\CameraCode\vision examples\learn.PNG"/>
+      <property name="path" value="/Users/queen/Documents/GitHub/DeepSpace/CameraCode/vision examples/learn.PNG"/>
+    </grip:ImageFile>
+    <grip:ImageFile>
+      <property name="path" value="/Users/queen/Documents/GitHub/DeepSpace/CameraCode/vision examples/CargoSideStraightDark72in.jpg"/>
+    </grip:ImageFile>
+    <grip:ImageFile>
+      <property name="path" value="/Users/queen/Documents/GitHub/DeepSpace/CameraCode/vision examples/CargoSideStraightDark72in.jpg"/>
     </grip:ImageFile>
   </sources>
   <steps>
@@ -9,13 +15,13 @@
       <grip:Input step="0" socket="0"/>
       <grip:Input step="0" socket="1">
         <value>
-          <double>84.46043165467626</double>
-          <double>103.20819112627987</double>
+          <double>74.46043165467626</double>
+          <double>104.46043165467626</double>
         </value>
       </grip:Input>
       <grip:Input step="0" socket="2">
         <value>
-          <double>31.537769784172653</double>
+          <double>44.1681654676259</double>
           <double>255.0</double>
         </value>
       </grip:Input>
@@ -37,42 +43,42 @@
     <grip:Step name="Filter Contours">
       <grip:Input step="2" socket="0"/>
       <grip:Input step="2" socket="1">
-        <value>9.0</value>
+        <value>5.0</value>
       </grip:Input>
       <grip:Input step="2" socket="2">
         <value>5.0</value>
       </grip:Input>
       <grip:Input step="2" socket="3">
-        <value>14.0</value>
+        <value>7.0</value>
       </grip:Input>
       <grip:Input step="2" socket="4">
-        <value>1000</value>
+        <value>1000.0</value>
       </grip:Input>
       <grip:Input step="2" socket="5">
-        <value>3.0</value>
+        <value>1.0</value>
       </grip:Input>
       <grip:Input step="2" socket="6">
-        <value>1000</value>
+        <value>1000.0</value>
       </grip:Input>
       <grip:Input step="2" socket="7">
         <value>
-          <int>0</int>
-          <int>100</int>
+          <double>0.0</double>
+          <double>100.0</double>
         </value>
       </grip:Input>
       <grip:Input step="2" socket="8">
-        <value>1000000</value>
+        <value>1000000.0</value>
       </grip:Input>
       <grip:Input step="2" socket="9">
-        <value>0</value>
+        <value>0.0</value>
       </grip:Input>
       <grip:Input step="2" socket="10">
-        <value>0</value>
+        <value>0.0</value>
       </grip:Input>
       <grip:Input step="2" socket="11">
-        <value>1000</value>
+        <value>1000.0</value>
       </grip:Input>
-      <grip:Output step="2" socket="0" previewed="false"/>
+      <grip:Output step="2" socket="0" previewed="true"/>
     </grip:Step>
     <grip:Step name="Get Mat Info">
       <grip:Input step="3" socket="0"/>
@@ -90,16 +96,16 @@
       <grip:Input step="2" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output source="0" socket="0" previewed="true"/>
+      <grip:Output source="2" socket="0" previewed="true"/>
       <grip:Input step="3" socket="0"/>
-    </grip:Connection>
-    <grip:Connection>
-      <grip:Output source="0" socket="0" previewed="true"/>
-      <grip:Input step="0" socket="0"/>
     </grip:Connection>
     <grip:Connection>
       <grip:Output step="0" socket="0" previewed="true"/>
       <grip:Input step="1" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output source="2" socket="0" previewed="true"/>
+      <grip:Input step="0" socket="0"/>
     </grip:Connection>
   </connections>
   <settings>
@@ -115,7 +121,7 @@
     <language>Python</language>
     <className>FilterLines</className>
     <implementWpilibPipeline>false</implementWpilibPipeline>
-    <saveDir>C:\Users\Russell\GRIP</saveDir>
+    <saveDir>/Users/queen/Documents/GitHub/DeepSpace/CameraCode</saveDir>
     <packageName></packageName>
     <moduleName>pipeline</moduleName>
   </codeGenerationSettings>
