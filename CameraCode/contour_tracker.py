@@ -158,9 +158,9 @@ if __name__ == "__main__":
     camera = cv2.VideoCapture(0)
 
     # img = "./vision examples/CargoAngledLine48in.jpg"
-    img = "./vision examples/CargoAngledDark48in.jpg"
+    # img = "./vision examples/CargoAngledDark48in.jpg"
     # img = "./vision examples/learn2.PNG"
-    # img = "vision examples/CargoStraightDark48in.jpg"
+    img = "vision examples/CargoStraightDark48in.jpg"
     # img = "vision examples/CargoSideStraightDark60in.jpg"
 
     source = cv2.imread(img)
