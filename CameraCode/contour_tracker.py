@@ -198,5 +198,7 @@ if __name__ == "__main__":
 
         cv2.imshow("", source)
 
-        if cv2.waitKey() & 0xFF == ord('q'):
-            cv2.destroyAllWindows()
+        if cv2.waitKey(500) & 0xFF == ord('q'):
+            break
+
+cv2.destroyAllWindows()
