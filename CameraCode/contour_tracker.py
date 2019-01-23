@@ -33,7 +33,7 @@ class Target:
 
     @property
     def average_center(self):
-        return (self.left_rect[0] + self.right_rect[0]) / 2
+        return Target.average_x, Target.average_y
 
     @property
     def average_x(self):
@@ -164,8 +164,6 @@ if __name__ == "__main__":
     # img = "vision examples/CargoSideStraightDark60in.jpg"
 
     source = cv2.imread(img)
-    cv2.imshow('frame', source)
-    cv2.waitKey()
 
     grip = pipeline.FilterLines()
     # video = cv2.VideoCapture(convert)
@@ -190,7 +188,6 @@ if __name__ == "__main__":
                                                                    center_target.center_point_left,
                                                                    frame_size)
             print("(%s, %s), %s degrees" % (robot_pose[0][0], robot_pose[0][1], robot_pose[1]))
-            cv2.putText(source, "(%s, %s), %s degrees" % (robot_pose[0][0], robot_pose[0][1], robot_pose[1]), center_target.average_center, cv2.FONT_HERSHEY_TRIPLEX, 1, (0, 127, 255))
 
             if has_networktable:
                 sd.putNumber('x_value', robot_pose[0][0])
