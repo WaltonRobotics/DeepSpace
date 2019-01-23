@@ -5,13 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystem;
+package frc.robot.Subsystem;
 
 import static frc.robot.RobotMap.leftWheel;
 import static frc.robot.RobotMap.rightWheel;
 
 import frc.robot.RobotMap;
-import frc.robot.command.teleop.Drive;
+import frc.robot.Command.teleop.Drive;
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.controller.RobotPair;
 
