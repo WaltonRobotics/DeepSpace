@@ -197,6 +197,6 @@ if __name__ == "__main__":
             print("There are no contours found")
 
         cv2.imshow("", source)
-        cv2.waitKey(500)
 
-    # cv2.imshow('frame', source)
+        if cv2.waitKey() & 0xFF == ord('q'):
+            cv2.destroyAllWindows()
