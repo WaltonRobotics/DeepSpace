@@ -12,9 +12,9 @@ class FilterLines:
         """initializes all values to presets or None if need to be set
         """
 
-        self.__hsl_threshold_hue = [73.8713952437371, 95.9592529711375]
-        self.__hsl_threshold_saturation = [13.758992805755396, 255.0]
-        self.__hsl_threshold_luminance = [94.01978417266187, 159.7538200339559]
+        self.__hsl_threshold_hue = [84.46043165467626, 103.20819112627987]
+        self.__hsl_threshold_saturation = [31.537769784172653, 255.0]
+        self.__hsl_threshold_luminance = [91.91546762589928, 195.0]
 
         self.hsl_threshold_output = None
 
@@ -27,14 +27,14 @@ class FilterLines:
         self.__filter_contours_min_area = 9.0
         self.__filter_contours_min_perimeter = 5.0
         self.__filter_contours_min_width = 14.0
-        self.__filter_contours_max_width = 1000.0
+        self.__filter_contours_max_width = 1000
         self.__filter_contours_min_height = 3.0
-        self.__filter_contours_max_height = 1000.0
+        self.__filter_contours_max_height = 1000
         self.__filter_contours_solidity = [0, 100]
-        self.__filter_contours_max_vertices = 1000000.0
-        self.__filter_contours_min_vertices = 4.0
-        self.__filter_contours_min_ratio = 0.0
-        self.__filter_contours_max_ratio = 1000.0
+        self.__filter_contours_max_vertices = 1000000
+        self.__filter_contours_min_vertices = 0
+        self.__filter_contours_min_ratio = 0
+        self.__filter_contours_max_ratio = 1000
 
         self.filter_contours_output = None
 

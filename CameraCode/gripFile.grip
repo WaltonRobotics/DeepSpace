@@ -1,0 +1,122 @@
+<grip:Pipeline>
+  <sources>
+    <grip:ImageFile>
+      <property name="path" value="C:\Users\Russell\Documents\DeepSpace\CameraCode\vision examples\learn.PNG"/>
+    </grip:ImageFile>
+  </sources>
+  <steps>
+    <grip:Step name="HSL Threshold">
+      <grip:Input step="0" socket="0"/>
+      <grip:Input step="0" socket="1">
+        <value>
+          <double>84.46043165467626</double>
+          <double>103.20819112627987</double>
+        </value>
+      </grip:Input>
+      <grip:Input step="0" socket="2">
+        <value>
+          <double>31.537769784172653</double>
+          <double>255.0</double>
+        </value>
+      </grip:Input>
+      <grip:Input step="0" socket="3">
+        <value>
+          <double>91.91546762589928</double>
+          <double>195.0</double>
+        </value>
+      </grip:Input>
+      <grip:Output step="0" socket="0" previewed="true"/>
+    </grip:Step>
+    <grip:Step name="Find Contours">
+      <grip:Input step="1" socket="0"/>
+      <grip:Input step="1" socket="1">
+        <value>false</value>
+      </grip:Input>
+      <grip:Output step="1" socket="0" previewed="true"/>
+    </grip:Step>
+    <grip:Step name="Filter Contours">
+      <grip:Input step="2" socket="0"/>
+      <grip:Input step="2" socket="1">
+        <value>9.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="2">
+        <value>5.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="3">
+        <value>14.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="4">
+        <value>1000</value>
+      </grip:Input>
+      <grip:Input step="2" socket="5">
+        <value>3.0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="6">
+        <value>1000</value>
+      </grip:Input>
+      <grip:Input step="2" socket="7">
+        <value>
+          <int>0</int>
+          <int>100</int>
+        </value>
+      </grip:Input>
+      <grip:Input step="2" socket="8">
+        <value>1000000</value>
+      </grip:Input>
+      <grip:Input step="2" socket="9">
+        <value>0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="10">
+        <value>0</value>
+      </grip:Input>
+      <grip:Input step="2" socket="11">
+        <value>1000</value>
+      </grip:Input>
+      <grip:Output step="2" socket="0" previewed="false"/>
+    </grip:Step>
+    <grip:Step name="Get Mat Info">
+      <grip:Input step="3" socket="0"/>
+      <grip:Output step="3" socket="0" previewed="false"/>
+      <grip:Output step="3" socket="1" previewed="false"/>
+      <grip:Output step="3" socket="2" previewed="false"/>
+      <grip:Output step="3" socket="3" previewed="false"/>
+      <grip:Output step="3" socket="4" previewed="false"/>
+      <grip:Output step="3" socket="5" previewed="false"/>
+    </grip:Step>
+  </steps>
+  <connections>
+    <grip:Connection>
+      <grip:Output step="1" socket="0" previewed="true"/>
+      <grip:Input step="2" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output source="0" socket="0" previewed="true"/>
+      <grip:Input step="3" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output source="0" socket="0" previewed="true"/>
+      <grip:Input step="0" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="0" socket="0" previewed="true"/>
+      <grip:Input step="1" socket="0"/>
+    </grip:Connection>
+  </connections>
+  <settings>
+    <teamNumber>0</teamNumber>
+    <publishAddress>roboRIO-0-FRC.local</publishAddress>
+    <deployAddress>roboRIO-0-FRC.local</deployAddress>
+    <deployDir>/home/lvuser</deployDir>
+    <deployUser>lvuser</deployUser>
+    <deployJavaHome>/usr/local/frc/JRE/</deployJavaHome>
+    <deployJvmOptions>-Xmx50m -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:MaxNewSize=16m</deployJvmOptions>
+  </settings>
+  <codeGenerationSettings>
+    <language>Python</language>
+    <className>FilterLines</className>
+    <implementWpilibPipeline>false</implementWpilibPipeline>
+    <saveDir>C:\Users\Russell\GRIP</saveDir>
+    <packageName></packageName>
+    <moduleName>pipeline</moduleName>
+  </codeGenerationSettings>
+</grip:Pipeline>
