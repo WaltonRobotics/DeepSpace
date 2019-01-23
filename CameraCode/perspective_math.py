@@ -15,7 +15,7 @@ class PerspectiveMath:
     #TODO This should be how high the camera is in the desired end units
     camera_height = 32
     #TODO This point is the real-world location of screen_point1 (see calculate_robot_position), relative to (0, 0, 0). Z = 0
-    real_point = (4, 31)
+    real_point = (4.6875 + cos(asin(0.25)), 31.5 - 2.75 * cos(asin(0.25)))
     #TODO This represents the vector between the camera and the center of the robot
     camera_shift = (0, 0)
 
