@@ -1,6 +1,7 @@
 # https://medium.com/@kennethjiang/calibrate-fisheye-lens-using-opencv-333b05afa0b0
 
 import cv2
+from cv2 import FileStorage
 
 assert cv2.__version__[0] == '3', 'The fisheye module requires opencv version >= 3.0.0'
 import numpy as np
@@ -82,6 +83,26 @@ def undistort(img, balance=0.0, dim2=None, dim3=None):
     # This is how scaled_K, dim2 and balance are used to determine the final K used to un-distort image. OpenCV document failed to make this clear!
     new_K = cv2.fisheye.estimateNewCameraMatrixForUndistortRectify(scaled_K, D, dim2, np.eye(3), balance=balance)
     map1, map2 = cv2.fisheye.initUndistortRectifyMap(scaled_K, D, np.eye(3), new_K, dim3, cv2.CV_16SC2)
+
+
+    # filestaorgae= FileStorage("fisheye_undistorted.xml", cv2.FILE_STORAGE_WRITE_BASE64)
+    # filestaorgae.write("K", K)
+    # filestaorgae.write("scaledK", scaled_K)
+    # filestaorgae.write("D", D)
+    # filestaorgae.write("newK", new_K)
+    # filestaorgae.write("dim3", dim3)
+    # filestaorgae.write("map1", map1)
+    # filestaorgae.write("map2", map2)
+    #
+    # filestaorgae.release()
+    # print(K)
+    # print(scaled_K)
+    # print(D)
+    # print(new_K)
+    # print(dim3)
+    print(map1)
+    # print(map2)
+
     undistorted_img = cv2.remap(img, map1, map2, interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
     return undistorted_img
 
@@ -106,6 +127,7 @@ if __name__ == '__main__':
         balance = cv2.getTrackbarPos("balance", "undistorted") / max_balance
         frame = undistort(frame, balance=balance)
 
+        # break
         # Display the resulting frame
         cv2.imshow('undistorted', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
