@@ -19,14 +19,6 @@ public class Config {
 
   }
 
-  public static final class Hardware {
-
-    public static final int LEFT_WHEEL_CHANNEL = 1;
-    public static final int RIGHT_WHEEL_CHANNEL = 0;
-    public static final int SHIFTER_CHANNEL = 0;
-
-  }
-
   public class Motor {
 
     public static final int LEFT_MOTOR_PORT = 0;

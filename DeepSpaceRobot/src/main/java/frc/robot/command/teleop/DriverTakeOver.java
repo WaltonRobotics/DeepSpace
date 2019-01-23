@@ -21,21 +21,23 @@ public class DriverTakeOver extends Command {
     boolean takeOver;
 
     //needs to be called somewhere
-    public DriverTakeOver() {
+    public double[] DriverTakeOver() {
         while (isFinished() == false) {
             eventLog.leftJoystickActivity = leftJoystick.getY();
             eventLog.rightJoystickActivity = rightJoystick.getY();
             controllerAct = new double[]{eventLog.leftJoystickActivity, eventLog.rightJoystickActivity};
-            activity = controllerAct;
+            return activity = controllerAct;
         }
+        return new double[0];
     }
 
     public void isTakingOver() {
-        if(activity == noActivity) {
-            takeOver = false;
-        }
-            takeOver = true;
-        }
+        takeOver = (activity == noActivity ? false: true);
+    }
+
+    public boolean getIsTakingOver() {
+        return takeOver;
+    }
 
 	    @Override
 	    protected boolean isFinished() {
