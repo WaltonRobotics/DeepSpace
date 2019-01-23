@@ -12,8 +12,8 @@ class FilterLines:
         """initializes all values to presets or None if need to be set
         """
 
-        self.__hsl_threshold_hue = [84.46043165467626, 103.20819112627987]
-        self.__hsl_threshold_saturation = [31.537769784172653, 255.0]
+        self.__hsl_threshold_hue = [74.46043165467626, 104.46043165467626]
+        self.__hsl_threshold_saturation = [44.1681654676259, 255.0]
         self.__hsl_threshold_luminance = [91.91546762589928, 195.0]
 
         self.hsl_threshold_output = None
@@ -24,17 +24,17 @@ class FilterLines:
         self.find_contours_output = None
 
         self.__filter_contours_contours = self.find_contours_output
-        self.__filter_contours_min_area = 9.0
+        self.__filter_contours_min_area = 5.0
         self.__filter_contours_min_perimeter = 5.0
-        self.__filter_contours_min_width = 14.0
-        self.__filter_contours_max_width = 1000
-        self.__filter_contours_min_height = 3.0
-        self.__filter_contours_max_height = 1000
-        self.__filter_contours_solidity = [0, 100]
-        self.__filter_contours_max_vertices = 1000000
-        self.__filter_contours_min_vertices = 0
-        self.__filter_contours_min_ratio = 0
-        self.__filter_contours_max_ratio = 1000
+        self.__filter_contours_min_width = 7.0
+        self.__filter_contours_max_width = 1000.0
+        self.__filter_contours_min_height = 1.0
+        self.__filter_contours_max_height = 1000.0
+        self.__filter_contours_solidity = [0.0, 100.0]
+        self.__filter_contours_max_vertices = 1000000.0
+        self.__filter_contours_min_vertices = 0.0
+        self.__filter_contours_min_ratio = 0.0
+        self.__filter_contours_max_ratio = 1000.0
 
         self.filter_contours_output = None
 
@@ -165,7 +165,7 @@ class FilterLines:
         """
         cols, rows, channels = src.shape
         empty = (src.size==0)
-        lowest_value, highest_value = 0, 0
+        lowest_value, highest_value = (0, 0)
         mat_size = (rows, cols)
         return mat_size, empty, channels, cols, rows, highest_value
 
