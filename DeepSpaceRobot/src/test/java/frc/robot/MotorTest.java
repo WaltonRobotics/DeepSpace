@@ -1,19 +1,19 @@
 package frc.robot;
 
+import edu.wpi.cscore.CameraServerJNI;
 import edu.wpi.first.wpiutil.RuntimeDetector;
 import edu.wpi.first.wpiutil.RuntimeLoader;
-import frc.robot.Command.teleop.Drive;
-import frc.robot.Subsystem.Drivetrain;
-import org.junit.Assert;
+import frc.team2974.robot.subsystems.Drivetrain;
 import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
+import org.xml.sax.SAXException;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
-
-import static frc.robot.Robot.drivetrain;
 
 public class MotorTest
 {
@@ -28,15 +28,14 @@ public class MotorTest
         }
     }
     @Before
-    public void init(){
+    public void init() throws ParserConfigurationException, SAXException, IOException {
         loadNativeLibraries();
+        CameraServerJNI.enumerateSinks();
     }
     @Test
-    public void move()
-    {
-        int speeds = 5;
-        Drivetrain drivetrain = new Drivetrain();
-        drivetrain.setSpeeds(speeds, speeds);
-        Assert.assertEquals(speeds, drivetrain.getMaxVelocity(), 0);
+    void pluggedInEncoders(){
+        frc.team2974.robot.subsystems.Drivetrain drivetrain = new Drivetrain();
+        drivetrain.setEncoderDistancePerPulse();
+        Assertions.fail();
     }
 }
