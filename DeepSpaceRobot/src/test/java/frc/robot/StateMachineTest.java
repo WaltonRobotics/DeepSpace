@@ -33,4 +33,9 @@ public class StateMachineTest {
         assertEquals(stateBuilder.getCurrentState(), secondState);
     }
 
+    @Test
+    public void testGenericTransition() {
+        
+    }
+
 }
