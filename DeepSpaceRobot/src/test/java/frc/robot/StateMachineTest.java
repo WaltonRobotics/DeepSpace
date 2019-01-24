@@ -34,8 +34,10 @@ public class StateMachineTest {
     }
 
     @Test
-    public void testGenericTransition() {
-        
+    public void testMultipleStateTransitions() {
+        class TestState {
+
+        }
     }
 
 }
