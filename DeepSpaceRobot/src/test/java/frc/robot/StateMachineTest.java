@@ -35,7 +35,12 @@ public class StateMachineTest {
 
     @Test
     public void testMultipleStateTransitions() {
-        class TestState {
+        class TestInitialize implements State {
+
+            @Override
+            public State run() {
+                System.out.println("Initialization successful!");
+            }
 
         }
     }
