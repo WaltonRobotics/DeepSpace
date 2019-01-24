@@ -185,7 +185,7 @@ if __name__ == "__main__":
 
         if center_target is not None:
             robot_pose = perspective_math.calculate_robot_position(center_target.center_point_left,
-                                                                   center_target.center_point_left,
+                                                                   center_target.center_point_right,
                                                                    frame_size)
             print("(%s, %s), %s degrees" % (robot_pose[0][0], robot_pose[0][1], robot_pose[1]))
 
