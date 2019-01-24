@@ -9,7 +9,7 @@ class PerspectiveMath:
     """
 
     #TODO Verify this angle
-    FOV = 90
+    FOV = 62.2
     #TODO Needs to be calculated. See how_do_work.txt
     pixel_scale = 100
     #TODO This should be how high the camera is in the desired end units
