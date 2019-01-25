@@ -1,5 +1,7 @@
 package test.java.frc.robot;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 import frc.states.PeriodicTransition;
@@ -88,6 +90,12 @@ public class StateMachineTest {
         State firstState = new TestInitialize();
 
         StateBuilder builder = new StateBuilder(firstState);
+
+        assertTrue(builder.getCurrentState() == firstState);
+
+        builder.step();
+
+        assertTrue(builder.getCurrentState().getClass() == TestPeriodic.class);
     }
 
 }
