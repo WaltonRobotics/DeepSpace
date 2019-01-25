@@ -13,6 +13,7 @@ import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
+import frc.robot.Config.Motor;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides

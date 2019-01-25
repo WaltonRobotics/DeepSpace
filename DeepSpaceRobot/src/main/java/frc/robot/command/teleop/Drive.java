@@ -41,6 +41,7 @@ public class Drive extends Command {
     return OI.rightJoystick.getY();
   }
 
+
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
@@ -56,6 +57,41 @@ public class Drive extends Command {
     rightYJoystick = transform.transform(rightYJoystick);
 
     Robot.drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
+
+    Transform t = new NormalSpeed();
+
+    if () {
+      t = new HalfSpeed();
+    }
+
+    Robot.drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
+
+    //transform speed
+    HalfSpeed h = new HalfSpeed();
+    double leftJoystickHalfSpeed = h.transform(leftYJoystick);
+    double rightJoystickHalfSpeed = h.transform(rightYJoystick);
+
+    if (OI.halfSpeedButton.get()) {
+      Robot.drivetrain.setSpeeds(leftJoystickHalfSpeed, rightJoystickHalfSpeed);
+    }
+
+    Sqrt sqrt = new Sqrt();
+    double leftJoystickSqrt = sqrt.transform(leftYJoystick);
+    double rightJoystickSqrt = sqrt.transform(rightYJoystick);
+    
+    if (OI.sqrtButton.get()) {
+      Robot.drivetrain.setSpeeds(leftJoystickSqrt, rightJoystickSqrt);
+    }
+    
+    BarryAllen theFlash = new BarryAllen();
+    double superSaiyanLeftSpeed = theFlash.transform(leftYJoystick);
+    double superSaiyanRightSpeed = theFlash.transform(rightYJoystick);
+
+    if (OI.superSaiyanButton.get()) {
+      Robot.drivetrain.setSpeeds(superSaiyanLeftSpeed, superSaiyanRightSpeed);
+    }
+
+
 
     if (OI.shiftUp.get()) {
       Robot.drivetrain.shiftUp();

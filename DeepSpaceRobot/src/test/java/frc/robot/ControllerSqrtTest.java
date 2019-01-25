@@ -8,6 +8,6 @@ public class ControllerSqrtTest {
     @Test
     public void SqrtTest() {
         Transform sqrt = new Sqrt();
-        System.out.println(sqrt.transform(4));;
+
     }
 }
