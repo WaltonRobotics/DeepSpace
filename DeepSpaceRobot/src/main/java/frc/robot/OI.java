@@ -7,11 +7,28 @@
 
 package frc.robot;
 
+import static frc.robot.Config.Inputs.GAMEPAD_PORT;
+import static frc.robot.Config.Inputs.LEFT_JOYSTICK_PORT;
+import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
+import static frc.robot.Config.Inputs.SHIFT_DOWN_PORT;
+import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
 /**
- * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
+ * This class is the glue that binds the controls on the physical operator interface to the commands and command groups
+ * that allow control of the robot.
  */
 public class OI {
+
+  public static final Joystick leftJoystick = new Joystick(LEFT_JOYSTICK_PORT);
+  public static final Joystick rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
+  public static final Gamepad gamepad = new Gamepad(GAMEPAD_PORT);
+
+  public static final JoystickButton shiftUp = new JoystickButton(leftJoystick, SHIFT_UP_PORT);
+  public static final JoystickButton shiftDown = new JoystickButton(leftJoystick, SHIFT_DOWN_PORT);
+
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.

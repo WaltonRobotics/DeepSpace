@@ -9,6 +9,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Command.teleop.util.NormalSpeed;
+import frc.robot.Command.teleop.util.Sigmoid;
+import frc.robot.Command.teleop.util.Sqrt;
+import frc.robot.command.teleop.util.Transform;
+import frc.robot.Subsystem.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -17,14 +24,21 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  */
 public class Robot extends TimedRobot {
 
-  public static OI oi;
+  public static final Drivetrain drivetrain = new Drivetrain();
 
   /**
    * This function is run when the robot is first started up and should be used for any initialization code.
    */
   @Override
   public void robotInit() {
-    oi = new OI();
+    System.out.println("Init");
+
+    SendableChooser<Transform> sendableChooser = new SendableChooser<>();
+    sendableChooser.setDefaultOption("Normal", new NormalSpeed());
+    sendableChooser.addOption("Sigmoid", new Sigmoid());
+    sendableChooser.addOption("Sqrt", new Sqrt());
+
+    SmartDashboard.putData("Transform Select", sendableChooser);
   }
 
   /**
@@ -36,6 +50,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    // System.out.println("robot Periodic");
   }
 
   /**
@@ -44,6 +59,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    System.out.println("disable init");
   }
 
   @Override
@@ -63,6 +79,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    System.out.println("auton init");
   }
 
   /**
@@ -71,10 +88,12 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    System.out.println("auton Periodic ");
   }
 
   @Override
   public void teleopInit() {
+    System.out.println("Tele ini");
   }
 
   /**
@@ -82,6 +101,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    System.out.println("Tele periodci");
     Scheduler.getInstance().run();
   }
 
