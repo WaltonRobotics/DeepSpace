@@ -48,9 +48,7 @@ public class StateMachineTest {
 
             @Override
             public State run() {
-                String dateTime = new SimpleDataFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault().format(new Date()));
-
-                System.out.println("Finish test successful at: " + dateTime);
+                StateMachineTest.testLogger.logInfoLine("Finish test successful!");
                 
                 return null;
             }
@@ -61,9 +59,7 @@ public class StateMachineTest {
 
             @Override
             public State run() {
-                String dateTime = new SimpleDataFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault().format(new Date()));
-
-                System.out.println("Periodic test successful at: " + dateTime);
+                StateMachineTest.testLogger.logInfoLine("Periodic test successful!");
 
                 StateMachine.periodicCounter++;
 
@@ -79,9 +75,7 @@ public class StateMachineTest {
 
             @Override
             public State run() {
-                String dateTime = new SimpleDataFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault().format(new Date()));
-
-                System.out.println("Initialization test successful at: " + dateTime);
+                StateMachineTest.testLogger.logInfoLine("Initialization test successful!");
                 
                 return new TestPeriodic();
             }
