@@ -45,9 +45,13 @@ public class StateMachineTest {
 
             @Override
             public State run() {
+                String dateTime = new SimpleDataFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault().format(new Date()));
 
+                System.out.println("Finish test successful at: " + dateTime);
+                
+                return null;
             }
-            
+
         }
 
         class TestPeriodic implements State {
