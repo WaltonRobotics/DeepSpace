@@ -31,7 +31,20 @@ public class PIDController {
         // If enabled then proceed into controller calculations
         if (m_enabled)
         {
-           
+            // Calculate the error signal
+            m_error = m_setpoint - m_input;
+
+            // If continuous is set to true allow wrap around
+            if (m_continuous)
+            {
+                if (Math.abs(m_error) > (m_maximumInput - m_minimumInput) / 2)
+                {
+                    if (m_error > 0)
+                        m_error = m_error - m_maximumInput + m_minimumInput;
+                    else
+                        m_error = m_error + m_maximumInput - m_minimumInput;
+                }
+            }  
         }
     }
 
