@@ -7,6 +7,9 @@ import frc.states.StateBuilder;
 
 public class StateMachineTest {
 
+    public static int periodicCounter = 0;
+    public static int periodicNumberOfTimes = 5;
+
     @Test
     public void testGenericTransition() {
         GenericTransition t = () -> null;
@@ -35,11 +38,32 @@ public class StateMachineTest {
 
     @Test
     public void testMultipleStateTransitions() {
+
+        StateMachine.periodicCounter = 0;
+
+        class TestPeriodic implements State {
+
+            @Override
+            public State run() {
+                String dateTime = new SimpleDataFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault().format(new Date()));
+
+                System.out.println("Periodic test successful at: " + dateTime);
+
+                StateMachine.periodicCounter++;
+
+                if (StateMachine.periodicCounter >= StateMachine.periodicNumberOfTimes) {
+
+                }
+
+                return new TestPeriodic();
+            }
+        }
+
         class TestInitialize implements State {
 
             @Override
             public State run() {
-                System.out.println("Initialization successful!");
+                return new TestPeriodic();
             }
 
         }
