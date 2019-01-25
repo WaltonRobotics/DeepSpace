@@ -63,6 +63,10 @@ public class StateMachineTest {
 
             @Override
             public State run() {
+                String dateTime = new SimpleDataFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault().format(new Date()));
+
+                System.out.println("Initialization test successful at: " + dateTime);
+                
                 return new TestPeriodic();
             }
 
