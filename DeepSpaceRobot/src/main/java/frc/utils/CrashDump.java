@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class CrashDump {
 
-    public static final String CRASH_DUMP_DEFAULT_FILE_PATH = "/home/lvuser/CrashDump.txt";
+    public static String CRASH_DUMP_DEFAULT_FILE_PATH = "/home/lvuser/CrashDump.txt";
 
     private static final UUID RUN_INSTANCE_UUID = UUID.randomUUID();
 
@@ -42,6 +42,14 @@ public class CrashDump {
 
     private static void logMarker(String mark) {
         logMarker(mark, null);
+    }
+
+    public static String getCrashDumpDefaultFilePath() {
+        return CRASH_DUMP_DEFAULT_FILE_PATH;
+    }
+
+    public static void setCrashDumpDefaultFilePath(String filePath) {
+        CRASH_DUMP_DEFAULT_FILE_PATH = filePath;
     }
 
     private static void logMarker(String mark, Throwable nullableException) {
