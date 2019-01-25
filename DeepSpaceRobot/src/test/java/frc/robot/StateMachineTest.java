@@ -84,6 +84,10 @@ public class StateMachineTest {
             }
 
         }
+
+        State firstState = new TestInitialize();
+
+        StateBuilder builder = new StateBuilder(firstState);
     }
 
 }
