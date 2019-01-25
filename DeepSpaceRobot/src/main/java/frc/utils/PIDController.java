@@ -25,4 +25,14 @@ public class PIDController {
         m_D = Kd;
     }
 
+    private void calculate() {
+        int     sign = 1;
+
+        // If enabled then proceed into controller calculations
+        if (m_enabled)
+        {
+           
+        }
+    }
+
 }
