@@ -40,6 +40,15 @@ public class StateMachineTest {
     public void testMultipleStateTransitions() {
 
         StateMachine.periodicCounter = 0;
+        
+        class TestFinish implements State {
+
+            @Override
+            public State run() {
+
+            }
+            
+        }
 
         class TestPeriodic implements State {
 
