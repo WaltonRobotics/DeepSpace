@@ -11,6 +11,7 @@ public class StateMachineTest {
 
     public static int periodicCounter = 0;
     public static int periodicNumberOfTimes = 5;
+    public static Logger testLogger = new Logger();
 
     @Test
     public void testGenericTransition() {
