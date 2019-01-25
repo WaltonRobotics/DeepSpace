@@ -1,10 +1,12 @@
 package frc.robot.command.auton;
 
-import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI;
+import java.nio.file.Path;
+
 import org.waltonrobotics.command.SimpleMotion;
 import org.waltonrobotics.controller.Pose;
-import org.waltonrobotics.motion.Path;
+
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 
 public class AutoAssist extends Command {
 

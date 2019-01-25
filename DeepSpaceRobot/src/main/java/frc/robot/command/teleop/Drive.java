@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.command.teleop.util.Transform;
+import frc.robot.command.teleop.Transform;
+import frc.robot.subsystem.Drivetrain;
 
 public class Drive extends Command {
 
@@ -23,7 +24,10 @@ public class Drive extends Command {
     requires(Robot.drivetrain);
   }
 
-  public Transform getTransform() {
+  private void requires(Drivetrain drivetrain) {
+}
+
+public Transform getTransform() {
     return ((SendableChooser<Transform>) SmartDashboard.getData("Transform Select")).getSelected();
   }
 
