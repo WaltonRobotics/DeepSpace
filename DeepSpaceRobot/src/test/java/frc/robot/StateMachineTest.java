@@ -93,9 +93,13 @@ public class StateMachineTest {
 
         assertTrue(builder.getCurrentState() == firstState);
 
-        builder.step();
+        for (int i = 0; i < StateMachineTest.periodicNumberOfTimes; i++) {
+            builder.step();
 
-        assertTrue(builder.getCurrentState().getClass() == TestPeriodic.class);
+            assertTrue(builder.getCurrentState().getClass() == TestPeriodic.class);
+        }
+
+        assertTrue(builder.getCurrentState.getClass() == TestFinish.class);
     }
 
 }
