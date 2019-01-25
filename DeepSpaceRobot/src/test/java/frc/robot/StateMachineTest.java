@@ -65,7 +65,7 @@ public class StateMachineTest {
                 StateMachine.periodicCounter++;
 
                 if (StateMachine.periodicCounter >= StateMachine.periodicNumberOfTimes) {
-
+                    return new TestFinish();
                 }
 
                 return new TestPeriodic();
