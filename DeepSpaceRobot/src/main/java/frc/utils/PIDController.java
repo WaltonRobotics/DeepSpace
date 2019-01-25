@@ -18,5 +18,11 @@ public class PIDController {
     private double m_setpoint = 0.0;
     private double m_error = 0.0;
     private double m_result = 0.0;
-    
+
+    public PIDController(double Kp, double Ki, double Kd) {
+        m_P = Kp;
+        m_I = Ki;
+        m_D = Kd;
+    }
+
 }
