@@ -58,40 +58,23 @@ public class Drive extends Command {
 
     Robot.drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
 
+    // speed transform
     Transform t = new NormalSpeed();
 
-    if () {
-      t = new HalfSpeed();
-    }
-
-    Robot.drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
-
-    //transform speed
-    HalfSpeed h = new HalfSpeed();
-    double leftJoystickHalfSpeed = h.transform(leftYJoystick);
-    double rightJoystickHalfSpeed = h.transform(rightYJoystick);
-
     if (OI.halfSpeedButton.get()) {
-      Robot.drivetrain.setSpeeds(leftJoystickHalfSpeed, rightJoystickHalfSpeed);
+      t = new HalfSpeed();
+    } else if (OI.sqrtButton.get()) {
+      t = new Sqrt();
+    } else if (OI.superSaiyanButton.get()) {
+      t = new BarryAllen();
+    } else if (OI.normalSpeedButton.get()) {
+      t = new NormalSpeed();
+    } else if (OI.sigmoidButton.get()) {
+      t = new Sigmoid();
     }
 
-    Sqrt sqrt = new Sqrt();
-    double leftJoystickSqrt = sqrt.transform(leftYJoystick);
-    double rightJoystickSqrt = sqrt.transform(rightYJoystick);
-    
-    if (OI.sqrtButton.get()) {
-      Robot.drivetrain.setSpeeds(leftJoystickSqrt, rightJoystickSqrt);
-    }
-    
-    BarryAllen theFlash = new BarryAllen();
-    double superSaiyanLeftSpeed = theFlash.transform(leftYJoystick);
-    double superSaiyanRightSpeed = theFlash.transform(rightYJoystick);
-
-    if (OI.superSaiyanButton.get()) {
-      Robot.drivetrain.setSpeeds(superSaiyanLeftSpeed, superSaiyanRightSpeed);
-    }
-
-
+    Robot.drivetrain.setSpeeds(t.transform(leftYJoystick), t.transform(rightYJoystick));
+    // speed transform end
 
     if (OI.shiftUp.get()) {
       Robot.drivetrain.shiftUp();

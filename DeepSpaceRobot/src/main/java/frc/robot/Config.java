@@ -14,6 +14,8 @@ public class Config {
     public static final int HALF_SPEED_PORT = 5;
     public static final int SQRT_SPEED_PORT = 5;
     public static final int EXPONENTIAL_SPEED_PORT = 4;
+    public static final int NORMAL_SPEED_PORT = 3;
+    public static final int SIGMOID_SPEED_PORT = 3;
   }
 
   public static final class Hardware {

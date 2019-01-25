@@ -15,6 +15,8 @@ import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
 import static frc.robot.Config.Inputs.HALF_SPEED_PORT;
 import static frc.robot.Config.Inputs.SQRT_SPEED_PORT;
 import static frc.robot.Config.Inputs.EXPONENTIAL_SPEED_PORT;
+import static frc.robot.Config.Inputs.NORMAL_SPEED_PORT;
+import static frc.robot.Config.Inputs.SIGMOID_SPEED_PORT;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -37,6 +39,10 @@ public class OI {
   public static final JoystickButton sqrtButton = new JoystickButton(rightJoystick, SQRT_SPEED_PORT);
 
   public static final JoystickButton superSaiyanButton = new JoystickButton(leftJoystick, EXPONENTIAL_SPEED_PORT);
+
+  public static final JoystickButton normalSpeedButton = new JoystickButton(rightJoystick, NORMAL_SPEED_PORT);
+
+  public static final JoystickButton sigmoidButton = new JoystickButton(leftJoystick, SIGMOID_SPEED_PORT);
 
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
