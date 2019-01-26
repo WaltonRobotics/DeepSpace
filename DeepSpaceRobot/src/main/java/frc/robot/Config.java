@@ -26,9 +26,6 @@ public class Config {
 
   }
 
-<<<<<<< HEAD
-}
-=======
   public class Motor {
 
     public static final int LEFT_MOTOR_PORT = 0;
@@ -36,4 +33,3 @@ public class Config {
 
   }
 }
->>>>>>> origin/Transform

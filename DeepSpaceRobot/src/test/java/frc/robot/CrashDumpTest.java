@@ -1,6 +1,11 @@
 package frc.robot;
 
 import frc.utils.CrashDump;
+import org.junit.Test;
+
+import java.io.File;
+
+import static org.junit.Assert.assertTrue;
 
 public class CrashDumpTest {
 
