@@ -70,7 +70,6 @@ class FirstPython:
     # ###################################################################################################
     ## Detect objects within our HSV range
     def detect(self, imgbgr, outimg = None):
-        maxn = 5 # max number of objects we will consider
         res_h, res_w, chans = imgbgr.shape
 
         # Convert input image to HSV:
@@ -302,7 +301,11 @@ class FirstPython:
 
         # Map to 6D (inverse perspective):
         rvecs, tvecs = self.estimatePose(center_target.right_rect)
-        jevois.LINFO("({}, {}, {}) ({}, {}, {})".format(rvecs[0], rvecs[1], rvecs[2], tvecs[0], tvecs[1], tvecs[2]))
+
+        rstring = "Rotation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(math.degrees(rvecs[0]), math.degrees(rvecs[1]), math.degrees(rvecs[2]))
+        jevois.writeText(outimg, rstring, 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
+        tstring = "Translation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(float(tvecs[0]), float(tvecs[1]), float(tvecs[2]))
+        jevois.writeText(outimg, tstring, 3, 15, jevois.YUYV.White, jevois.Font.Font6x10)
 
         # Send all serial messages:
         # self.sendAllSerial(w, h, hlist, rvecs, tvecs)
@@ -467,9 +470,9 @@ class ContourTracker:
         for left, right in pairwise(contour_rects):
             remainder.append(Target(left, right))
 
-        if draw_targets is not None:
-            for target in remainder:
-                target.draw_target(draw_targets)
+        # if draw_targets is not None:
+        #     for target in remainder:
+        #         target.draw_target(draw_targets)
 
         if len(remainder) > 0:
             remainder = min(remainder, key=lambda target: math.fabs(target.average_x - frame_size[1] / 2))
