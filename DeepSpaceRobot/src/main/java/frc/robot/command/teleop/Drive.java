@@ -41,6 +41,7 @@ public class Drive extends Command {
     return OI.rightJoystick.getY();
   }
 
+
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
@@ -56,6 +57,24 @@ public class Drive extends Command {
     rightYJoystick = transform.transform(rightYJoystick);
 
     Robot.drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
+
+    // speed transform
+    Transform t = new NormalSpeed();
+
+    if (OI.halfSpeedButton.get()) {
+      t = new HalfSpeed();
+    } else if (OI.sqrtButton.get()) {
+      t = new Sqrt();
+    } else if (OI.superSaiyanButton.get()) {
+      t = new BarryAllen();
+    } else if (OI.normalSpeedButton.get()) {
+      t = new NormalSpeed();
+    } else if (OI.sigmoidButton.get()) {
+      t = new Sigmoid();
+    }
+
+    Robot.drivetrain.setSpeeds(t.transform(leftYJoystick), t.transform(rightYJoystick));
+    // speed transform end
 
     if (OI.shiftUp.get()) {
       Robot.drivetrain.shiftUp();

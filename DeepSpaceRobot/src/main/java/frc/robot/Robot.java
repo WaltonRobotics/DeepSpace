@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -39,6 +41,8 @@ public class Robot extends TimedRobot {
     sendableChooser.addOption("Sqrt", new Sqrt());
 
     SmartDashboard.putData("Transform Select", sendableChooser);
+
+    UsbCamera fishEyeCamera = CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**

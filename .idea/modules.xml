@@ -3,6 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/DeepSpace.iml" filepath="$PROJECT_DIR$/.idea/DeepSpace.iml" />
+<<<<<<< HEAD
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DeepSpaceRobot.iml" filepath="$PROJECT_DIR$/.idea/modules/DeepSpaceRobot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DeepSpaceRobot_main.iml" filepath="$PROJECT_DIR$/.idea/modules/DeepSpaceRobot_main.iml" group="DeepSpaceRobot" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DeepSpaceRobot_test.iml" filepath="$PROJECT_DIR$/.idea/modules/DeepSpaceRobot_test.iml" group="DeepSpaceRobot" />
+>>>>>>> origin/Transform
     </modules>
   </component>
 </project>
