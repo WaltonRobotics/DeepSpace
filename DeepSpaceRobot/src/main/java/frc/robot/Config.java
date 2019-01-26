@@ -18,4 +18,5 @@ public class Config {
     public static final int SHIFTER_CHANNEL = 0;
 
   }
+
 }
