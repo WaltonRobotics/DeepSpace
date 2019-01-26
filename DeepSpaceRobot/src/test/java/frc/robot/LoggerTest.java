@@ -44,7 +44,19 @@ public class LoggerTest {
 
     @Test
     public void loggingErrorTest() {
-        
+        ByteArrayOutputStream os;
+
+        List writeables = new ArrayList<OutputStream>();
+
+        writeables.add(os);
+
+        Logger logger = new Logger(writeables);
+
+        String testLogString = "Logging error test.";
+
+        logger.logError(testLogString);
+
+        assertEquals(os.toString(), testLogString);
     }
 
 }
