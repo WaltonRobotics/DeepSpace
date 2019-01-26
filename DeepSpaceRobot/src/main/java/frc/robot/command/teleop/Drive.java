@@ -24,9 +24,6 @@ public class Drive extends Command {
     requires(Robot.drivetrain);
   }
 
-  private void requires(Drivetrain drivetrain) {
-}
-
 public Transform getTransform() {
     return ((SendableChooser<Transform>) SmartDashboard.getData("Transform Select")).getSelected();
   }
@@ -56,11 +53,13 @@ public Transform getTransform() {
     SmartDashboard.putNumber("leftJoystick", leftYJoystick);
     SmartDashboard.putNumber("rightJoystick", rightYJoystick);
 
+    /*
     Transform transform = getTransform();
     leftYJoystick = transform.transform(leftYJoystick);
     rightYJoystick = transform.transform(rightYJoystick);
 
     Robot.drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
+    */
 
     // speed transform
     Transform t = new NormalSpeed();

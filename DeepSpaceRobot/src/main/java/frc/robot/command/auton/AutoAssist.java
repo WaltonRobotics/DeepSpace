@@ -14,7 +14,7 @@ public class AutoAssist extends Command {
     double x = robotPosition.getX();
     double y = robotPosition.getY();
 
-    double r = Path.getRobotWidth();
+    double r = 0.0;
 
     double result;
     if (x <= r) {
