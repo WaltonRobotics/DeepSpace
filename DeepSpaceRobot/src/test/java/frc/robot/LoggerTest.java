@@ -25,4 +25,9 @@ public class LoggerTest {
         assertEquals(os.toString(), testLogString);
     }
 
+    @Test
+    public void loggingWarningTest() {
+
+    }
+
 }
