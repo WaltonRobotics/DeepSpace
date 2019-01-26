@@ -13,6 +13,7 @@ import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
+import frc.robot.Config.Motor;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides
@@ -20,6 +21,9 @@ import edu.wpi.first.wpilibj.Talon;
  * floating around.
  */
 public class RobotMap {
+  public static Talon leftMotor = new Talon (Motor.LEFT_MOTOR_PORT);
+  public static Talon rightMotor = new Talon (Motor.RIGHT_MOTOR_PORT);
+
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.
   // public static int leftMotor = 1;
