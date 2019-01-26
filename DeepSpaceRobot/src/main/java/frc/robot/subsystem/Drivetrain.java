@@ -10,6 +10,7 @@ package frc.robot.Subsystem;
 import static frc.robot.RobotMap.leftWheel;
 import static frc.robot.RobotMap.rightWheel;
 
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotMap;
 import frc.robot.Command.teleop.Drive;
 import org.waltonrobotics.AbstractDrivetrain;
@@ -29,7 +30,7 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public RobotPair getWheelPositions() {
-    return null;
+    return new RobotPair(0,0, Timer.getFPGATimestamp());
   }
 
   @Override
