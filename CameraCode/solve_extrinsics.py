@@ -8,7 +8,6 @@ class SolveExtrinsics:
         self.frame_size = frame_size
 
         #Define 3D points of the right target with relation to and clockwise from the top left
-        reference_y = 16.25
         object_points = [[4, 31, 0.0], [5.936, 31.5, 0.0],
                            [7.316, 26.175, 0.0],
                            [5.375, 25.675, 0.0]]
@@ -26,6 +25,8 @@ class SolveExtrinsics:
         # print(image_points)
         ret, intrinsics, distortion, rotation, translation = cv2.calibrateCamera([self.object_points], [image_points],
                                                                                  self.frame_size, None, None)
+        print(distortion)
+        ret, rotation, translation = cv2.solvePnP(self.object_points, image_points, intrinsics, None)
         return rotation, translation
 
     @staticmethod
