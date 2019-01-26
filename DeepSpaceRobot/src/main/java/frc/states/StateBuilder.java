@@ -10,6 +10,10 @@ public class StateBuilder {
     }
 
     public void step() {
+        if (current == null) {
+            return;
+        }
+
         State state = current.periodic();
 
         if (!current.equals(state)) {
@@ -17,7 +21,9 @@ public class StateBuilder {
                 current.finish();
             }
 
-            state.initialize();
+            if (state != null) {
+                state.initialize();
+            }
             current = state;
         }
     }

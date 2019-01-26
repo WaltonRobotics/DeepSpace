@@ -17,15 +17,35 @@ public class State {
     }
 
     public void initialize() {
-        initialize.run();
+        if (initialize != null) {
+            initialize.run();
+        }
     }
 
     public State periodic() {
-        return periodic.run();
+        if (periodic != null) {
+            return periodic.run();
+        }
+
+        return null;
     }
 
     public void finish() {
-        finish.run();
+        if (finish != null) {
+            finish.run();
+        }
+    }
+
+    public GenericTransition getInitialize() {
+        return initialize;
+    }
+
+    public PeriodicTransition getPeriodic() {
+        return periodic;
+    }
+
+    public GenericTransition getFinish() {
+        return finish;
     }
 
 }

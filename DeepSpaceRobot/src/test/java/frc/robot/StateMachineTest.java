@@ -1,14 +1,14 @@
-package test.java.frc.robot;
+package frc.robot;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
+import frc.states.State;
 import org.junit.Test;
 
 import frc.states.GenericTransition;
 import frc.states.PeriodicTransition;
 import frc.states.StateBuilder;
 import frc.utils.Logger;
+
+import static org.junit.Assert.*;
 
 public class StateMachineTest {
 
@@ -44,60 +44,61 @@ public class StateMachineTest {
 
     @Test
     public void testMultipleStateTransitions() {
+        StateMachineTest.periodicCounter = 0;
 
-        StateMachine.periodicCounter = 0;
-        
-        class TestFinish implements State {
+        class TestFinish implements GenericTransition {
 
             @Override
             public State run() {
                 StateMachineTest.testLogger.logInfoLine("Finish test successful!");
-                
+
                 return null;
             }
 
         }
 
-        class TestPeriodic implements State {
+        class TestPeriodic implements PeriodicTransition {
 
             @Override
             public State run() {
                 StateMachineTest.testLogger.logInfoLine("Periodic test successful!");
 
-                StateMachine.periodicCounter++;
+                StateMachineTest.periodicCounter++;
 
-                if (StateMachine.periodicCounter >= StateMachine.periodicNumberOfTimes) {
-                    return new TestFinish();
+                if (StateMachineTest.periodicCounter >= StateMachineTest.periodicNumberOfTimes) {
+                    return new State(new TestFinish(), () -> null, () -> null);
                 }
 
-                return new TestPeriodic();
+                return new State(new TestPeriodic());
             }
         }
 
-        class TestInitialize implements State {
+        class TestInitialize implements GenericTransition {
 
             @Override
             public State run() {
                 StateMachineTest.testLogger.logInfoLine("Initialization test successful!");
-                
-                return new TestPeriodic();
+
+                return new State(new TestPeriodic());
             }
 
         }
 
-        State firstState = new TestInitialize();
+        State firstState = new State(new TestInitialize(), new TestPeriodic(), null);
 
         StateBuilder builder = new StateBuilder(firstState);
 
         assertTrue(builder.getCurrentState() == firstState);
 
-        for (int i = 0; i < StateMachineTest.periodicNumberOfTimes; i++) {
+        for (int i = 0; i < StateMachineTest.periodicNumberOfTimes - 1; i++) {
             builder.step();
 
-            assertTrue(builder.getCurrentState().getClass() == TestPeriodic.class);
+            assertSame(builder.getCurrentState().getPeriodic().getClass(), TestPeriodic.class);
         }
 
-        assertTrue(builder.getCurrentState.getClass() == TestFinish.class);
+        builder.step();
+
+        assertTrue(builder.getCurrentState().getInitialize().getClass() == TestFinish.class);
     }
 
 }
