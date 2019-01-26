@@ -13,6 +13,7 @@ except:
 
 import pipeline
 from perspective_math import PerspectiveMath
+from solve_extrinsics import SolveExtrinsics
 
 colors = [
     (0, 0, 255),
@@ -160,16 +161,16 @@ if __name__ == "__main__":
     # img = "./vision examples/CargoAngledLine48in.jpg"
     # img = "./vision examples/CargoAngledDark48in.jpg"
     # img = "./vision examples/learn2.PNG"
-    img = "vision examples/CargoStraightDark48in.jpg"
+    #img = "vision examples/CargoStraightDark48in.jpg"
     # img = "vision examples/CargoSideStraightDark60in.jpg"
+    img = "./vision examples/42.25_8.25___16.25.jpg"
 
     source = cv2.imread(img)
-
+    source = cv2.resize(source, (3280 // 2, 2464 // 2))
     grip = pipeline.FilterLines()
     # video = cv2.VideoCapture(convert)
 
     my_processor = ContourTracker()
-    perspective_math = PerspectiveMath()
 
     if has_networktable:
         NetworkTables.initialize(server='roborio-2974-frc.local')
@@ -180,25 +181,43 @@ if __name__ == "__main__":
         # ret, source = camera.read()
         grip.process(source)
         frame_size = grip.get_mat_info_size
+        perspective_math = PerspectiveMath(frame_size)
+        solve_camera = SolveExtrinsics(frame_size)
 
         center_target = my_processor.find_closest_contour(grip.filter_contours_output, frame_size, source)
 
         if center_target is not None:
-            robot_pose = perspective_math.calculate_robot_position(center_target.center_point_left,
-                                                                   center_target.center_point_right,
-                                                                   frame_size)
-            print("(%s, %s), %s degrees" % (robot_pose[0][0], robot_pose[0][1], robot_pose[1]))
+            '''
+            robot_pose = perspective_math.calculate_robot_position(center_target.center_point_right,
+                                                                   center_target.center_point_left)
+            # print("%s,  %s" % (center_target.center_point_right[0] - frame_size[0] / 2, frame_size[1] / 2 - center_target.center_point_right[1]))
+            # print("%s, %s" % (frame_size[0], frame_size[1]))
+            # print("(%s, %s), %s degrees" % (robot_pose[0][0], robot_pose[0][1], robot_pose[1]))
 
             if has_networktable:
                 sd.putNumber('x_value', robot_pose[0][0])
-                sd.putNumber('y_value', robot_pose[0][1])
+                sd.putNumber('z_value', robot_pose[0][1])
                 sd.putNumber('angle', robot_pose[1])
+            '''
+
+            camera_extrinsics = solve_camera.calculate_extrinsics(center_target.right_rect)
+
+            # print("(%s, %s, %s) degrees, (%s, %s, %s) inches" % (camera_extrinsics[0][0], camera_extrinsics[0][1],
+            #                                                      camera_extrinsics[0][2], camera_extrinsics[1][0],
+            #                                                      camera_extrinsics[1][1], camera_extrinsics[1][2]))
+            print(camera_extrinsics[0])
+            print(camera_extrinsics[1])
         else:
             print("There are no contours found")
 
+        cv2.circle(source, (round(center_target.center_point_right[0]), round(center_target.center_point_right[1])), 2, (255, 50, 255), 2)
+        # cv2.circle(source, (100, 100), 10, (255, 50, 255), 10)
         cv2.imshow("", source)
 
         if cv2.waitKey(500) & 0xFF == ord('q'):
             break
+
+        # cv2.circle(source, (round(center_target.center_point_right[0]), round(center_target.center_point_right[1])), 10, (255, 50, 255))
+        cv2.waitKey()
 
 cv2.destroyAllWindows()

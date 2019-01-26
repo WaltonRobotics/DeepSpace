@@ -8,35 +8,41 @@ class PerspectiveMath:
     Actually gives the camera pinhole's position and yaw, but it's easy to offset :)
     """
 
-    #TODO Verify this angle
-    FOV = 62.2
-    #TODO Needs to be calculated. See how_do_work.txt
-    pixel_scale = 100
-    #TODO This should be how high the camera is in the desired end units
-    camera_height = 32
-    #TODO This point is the real-world location of screen_point1 (see calculate_robot_position), relative to (0, 0, 0). Z = 0
-    real_point = (4.6875 + cos(asin(0.25)), 31.5 - 2.75 * cos(asin(0.25)))
-    #TODO This represents the vector between the camera and the center of the robot
-    camera_shift = (0, 0)
+    def __init__(self, frame_size):
+        self.frame_size = frame_size
+        self.pixel_scale = frame_size[1] / 2
+        #TODO Vertical FOV
+        self.FOV = 48.8
+        #TODO This should be how high the camera is in the desired end units
+        self.camera_height = 8.25
+        #TODO This point is the real-world location of screen_point1 (see calculate_robot_position), relative to (0, 0, 0). Z = 0
+        self.real_point = (4.6875 + cos(asin(0.25)), 16.25 - 2.75 * cos(asin(0.25)))
+        #TODO This represents the vector between the camera and the center of the robot
+        self.camera_shift = (0, 0)
 
-    #The distance from the pinhole to the viewing plane, allows for the normalization of calculated points
-    K = 1 / tan(radians(FOV / 2))
+        #The distance from the pinhole to the viewing plane, allows for the normalization of calculated points
+        self.K = 1 / tan(radians(self.FOV / 2))
 
-    def calculate_robot_position(self, screen_point1, screen_point2, frame_size):
+    def calculate_robot_position(self, screen_point1, screen_point2):
         """
         Calculates the position and yaw of the robot wrt a vision target. Takes in two points at the same height from
         the target and the real location of a point. Consider's the surface the vision target is on as the plane z = 0.
         :param screen_point1: the first point's (x, y)
         :param screen_point2: the second point's (x, y)
-        :param frame_size: the resolution of the frame (vertical, horizontal)
         :return: the RobotPosition ((x, z), yaw) of the robot wrt the target in the units of real_point1 and degrees
         """
 
-        normalised_point1 = self.__scale_point((screen_point1[0] - frame_size[1] / 2, screen_point1[1] - frame_size[0] / 2))
-        normalised_point2 = self.__scale_point((screen_point2[0] - frame_size[1] / 2, screen_point2[1] - frame_size[0] / 2))
+        # self.pixel_scale = frame_size[1] / 2
 
-        yaw = self.__calculate_yaw(normalised_point1, normalised_point2)
-        location = self.__calculate_camera_location(yaw, screen_point1)
+        translated_point1 = screen_point1[0] - self.frame_size[0] / 2, self.frame_size[1] / 2 - screen_point1[1]
+        translated_point2 = screen_point2[0] - self.frame_size[0] / 2, self.frame_size[1] / 2 - screen_point2[1]
+
+        normalised_point1 = self.__scale_point(translated_point1)
+        normalised_point2 = self.__scale_point(translated_point2)
+
+        # yaw = self.__calculate_yaw(normalised_point1, normalised_point2)
+        yaw = self.__calculate_yaw(translated_point1, translated_point2)
+        location = self.__calculate_camera_location(yaw, normalised_point1)
         location = self.__shift_location(location, yaw)
 
         return location, yaw
@@ -80,9 +86,9 @@ class PerspectiveMath:
         └     ┘   └     ┘                          └                                ┘
         '''
         x = self.real_point[0] - (self.real_point[1] - self.camera_height) / screen_point[1] * (
-                self.K * sin(radians(yaw)) + screen_point[0] * cos(radians(yaw)))
-        z = self.real_point[1] - (self.real_point[1] - self.camera_height) / screen_point[1] * (
-                    self.K * sin(radians(yaw)) + screen_point[0] * cos(radians(yaw)))
+                self.K * sin(yaw) + screen_point[0] * cos(yaw))
+        z = 0 - (self.real_point[1] - self.camera_height) / screen_point[1] * (
+                    self.K * cos(yaw) - screen_point[0] * sin(yaw))
 
         return x, z
 

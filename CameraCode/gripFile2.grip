@@ -1,0 +1,107 @@
+<grip:Pipeline>
+  <sources>
+    <grip:ImageFile>
+      <property name="path" value="C:\Users\Russell\Downloads\42.25_8.25___16.25.jpg"/>
+    </grip:ImageFile>
+  </sources>
+  <steps>
+    <grip:Step name="HSL Threshold">
+      <grip:Input step="0" socket="0"/>
+      <grip:Input step="0" socket="1">
+        <value>
+          <double>82.74046638363849</double>
+          <double>118.9629968916553</double>
+        </value>
+      </grip:Input>
+      <grip:Input step="0" socket="2">
+        <value>
+          <double>133.00359712230215</double>
+          <double>255.0</double>
+        </value>
+      </grip:Input>
+      <grip:Input step="0" socket="3">
+        <value>
+          <double>91.72661870503596</double>
+          <double>255.0</double>
+        </value>
+      </grip:Input>
+      <grip:Output step="0" socket="0" previewed="true"/>
+    </grip:Step>
+    <grip:Step name="Filter Contours">
+      <grip:Input step="1" socket="0"/>
+      <grip:Input step="1" socket="1">
+        <value>0</value>
+      </grip:Input>
+      <grip:Input step="1" socket="2">
+        <value>0</value>
+      </grip:Input>
+      <grip:Input step="1" socket="3">
+        <value>0</value>
+      </grip:Input>
+      <grip:Input step="1" socket="4">
+        <value>1000</value>
+      </grip:Input>
+      <grip:Input step="1" socket="5">
+        <value>0</value>
+      </grip:Input>
+      <grip:Input step="1" socket="6">
+        <value>1000</value>
+      </grip:Input>
+      <grip:Input step="1" socket="7">
+        <value>
+          <int>0</int>
+          <int>100</int>
+        </value>
+      </grip:Input>
+      <grip:Input step="1" socket="8">
+        <value>1000000</value>
+      </grip:Input>
+      <grip:Input step="1" socket="9">
+        <value>0</value>
+      </grip:Input>
+      <grip:Input step="1" socket="10">
+        <value>0</value>
+      </grip:Input>
+      <grip:Input step="1" socket="11">
+        <value>1000</value>
+      </grip:Input>
+      <grip:Output step="1" socket="0" previewed="false"/>
+    </grip:Step>
+    <grip:Step name="Get Mat Info">
+      <grip:Input step="2" socket="0"/>
+      <grip:Output step="2" socket="0" previewed="true"/>
+      <grip:Output step="2" socket="1" previewed="false"/>
+      <grip:Output step="2" socket="2" previewed="false"/>
+      <grip:Output step="2" socket="3" previewed="false"/>
+      <grip:Output step="2" socket="4" previewed="false"/>
+      <grip:Output step="2" socket="5" previewed="false"/>
+    </grip:Step>
+  </steps>
+  <connections>
+    <grip:Connection>
+      <grip:Output source="0" socket="0" previewed="true"/>
+      <grip:Input step="2" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output source="0" socket="0" previewed="true"/>
+      <grip:Input step="0" socket="0"/>
+    </grip:Connection>
+  </connections>
+  <settings>
+    <teamNumber>0</teamNumber>
+    <publishAddress>roboRIO-0-FRC.local</publishAddress>
+    <deployAddress>roboRIO-0-FRC.local</deployAddress>
+    <deployDir>/home/lvuser</deployDir>
+    <deployUser>lvuser</deployUser>
+    <deployJavaHome>/usr/local/frc/JRE/</deployJavaHome>
+    <deployJvmOptions>-Xmx50m -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:MaxNewSize=16m</deployJvmOptions>
+  </settings>
+  <codeGenerationSettings>
+    <language>Python</language>
+    <className>FilterLines</className>
+    <implementWpilibPipeline>false</implementWpilibPipeline>
+    <saveDir>C:\Users\Russell\Documents\DeepSpace\CameraCode</saveDir>
+    <packageName></packageName>
+    <moduleName>pipeline</moduleName>
+  </codeGenerationSettings>
+</grip:Pipeline>

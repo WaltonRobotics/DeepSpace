@@ -12,9 +12,9 @@ class FilterLines:
         """initializes all values to presets or None if need to be set
         """
 
-        self.__hsl_threshold_hue = [74.46043165467626, 104.46043165467626]
-        self.__hsl_threshold_saturation = [44.1681654676259, 255.0]
-        self.__hsl_threshold_luminance = [91.91546762589928, 195.0]
+        self.__hsl_threshold_hue = [82.74046638363849, 118.9629968916553]
+        self.__hsl_threshold_saturation = [133.00359712230215, 255.0]
+        self.__hsl_threshold_luminance = [91.72661870503596, 255.0]
 
         self.hsl_threshold_output = None
 
@@ -24,13 +24,13 @@ class FilterLines:
         self.find_contours_output = None
 
         self.__filter_contours_contours = self.find_contours_output
-        self.__filter_contours_min_area = 5.0
-        self.__filter_contours_min_perimeter = 5.0
-        self.__filter_contours_min_width = 7.0
+        self.__filter_contours_min_area = 0.0
+        self.__filter_contours_min_perimeter = 0.0
+        self.__filter_contours_min_width = 0.0
         self.__filter_contours_max_width = 1000.0
-        self.__filter_contours_min_height = 1.0
+        self.__filter_contours_min_height = 0.0
         self.__filter_contours_max_height = 1000.0
-        self.__filter_contours_solidity = [0.0, 100.0]
+        self.__filter_contours_solidity = [0, 100]
         self.__filter_contours_max_vertices = 1000000.0
         self.__filter_contours_min_vertices = 0.0
         self.__filter_contours_min_ratio = 0.0
@@ -165,7 +165,8 @@ class FilterLines:
         """
         cols, rows, channels = src.shape
         empty = (src.size==0)
-        lowest_value, highest_value = (0, 0)
+        highest_value = cv2.minMaxLoc(src if (channels == 1)
+                            else cv2.cvtColor(src, cv2.COLOR_BGR2GRAY))
         mat_size = (rows, cols)
         return mat_size, empty, channels, cols, rows, highest_value
 
