@@ -27,7 +27,19 @@ public class LoggerTest {
 
     @Test
     public void loggingWarningTest() {
+        ByteArrayOutputStream os;
 
+        List writeables = new ArrayList<OutputStream>();
+
+        writeables.add(os);
+
+        Logger logger = new Logger(writeables);
+
+        String testLogString = "Logging warning test.";
+
+        logger.logWarning(testLogString);
+
+        assertEquals(os.toString(), testLogString);
     }
 
 }
