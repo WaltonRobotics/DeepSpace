@@ -1,11 +1,14 @@
 package test.java.frc.robot;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import frc.states.GenericTransition;
 import frc.states.PeriodicTransition;
 import frc.states.StateBuilder;
+import frc.utils.Logger;
 
 public class StateMachineTest {
 
