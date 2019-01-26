@@ -1,7 +1,8 @@
-package frc.robot.Command.teleop.util;
+package frc.robot.command.teleop.util;
 
+import frc.robot.command.teleop.Transform;
 
-public class Sigmoid implements frc.robot.command.teleop.util.Transform {
+public class Sigmoid implements Transform {
 
   @Override
   public double transform(double input) {

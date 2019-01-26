@@ -2,17 +2,22 @@ package frc.robot;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import frc.utils.Logger;
 
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class LoggerTest {
 
     @Test
     public void loggingInfoTest() {
-        ByteArrayOutputStream os;
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        List writeables = new ArrayList<OutputStream>();
+        ArrayList writeables = new ArrayList<OutputStream>();
 
         writeables.add(os);
 
@@ -27,9 +32,9 @@ public class LoggerTest {
 
     @Test
     public void loggingWarningTest() {
-        ByteArrayOutputStream os;
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        List writeables = new ArrayList<OutputStream>();
+        ArrayList writeables = new ArrayList<OutputStream>();
 
         writeables.add(os);
 
@@ -44,9 +49,9 @@ public class LoggerTest {
 
     @Test
     public void loggingErrorTest() {
-        ByteArrayOutputStream os;
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        List writeables = new ArrayList<OutputStream>();
+        ArrayList writeables = new ArrayList<OutputStream>();
 
         writeables.add(os);
 
