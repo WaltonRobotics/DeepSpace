@@ -48,7 +48,20 @@ public class Config {
     more easily by measuring from the outside of a wheel to the inside of the other
      */
     public static final double robotWidth = 0.7500;
+  }
 
+  public static final class SmartDashboardKeys {
 
+    public static final String CONSTANTS_KANGLE = "SmartDashboard/Constants/KAngle";
+    public static final String CONSTANTS_MAX_VELOCITY = "SmartDashboard/Constants/Max Velocity";
+    public static final String CONSTANTS_MAX_ACCELERATION = "SmartDashboard/Constants/Max Acceleration";
+    public static final String CONSTANTS_KL = "SmartDashboard/Constants/KL";
+    public static final String CONSTANTS_KV = "SmartDashboard/Constants/KV";
+    public static final String CONSTANTS_KACC = "SmartDashboard/Constants/KAcc";
+    public static final String CONSTANTS_KK = "SmartDashboard/Constants/KK";
+    public static final String CONSTANTS_KS = "SmartDashboard/Constants/KS";
+
+    public static final String MAX_VELOCITY = "SmartDashboard/Constants/Max Velocity";
+    public static final String MAX_ACCELERATION = "SmartDashboard/Constants/Max Acceleration";
   }
 }

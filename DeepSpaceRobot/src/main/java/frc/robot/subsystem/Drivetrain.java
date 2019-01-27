@@ -19,6 +19,16 @@ import static frc.robot.Config.Constants.maxAcceleration;
 import static frc.robot.Config.Constants.maxVelocity;
 import static frc.robot.Config.Constants.robotWidth;
 import static frc.robot.Config.Hardware.DISTANCE_PER_PULSE;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KACC;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KANGLE;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KK;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KL;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KS;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KV;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_ACCELERATION;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_VELOCITY;
+import static frc.robot.Config.SmartDashboardKeys.MAX_ACCELERATION;
+import static frc.robot.Config.SmartDashboardKeys.MAX_VELOCITY;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.leftWheel;
@@ -36,15 +46,18 @@ import org.waltonrobotics.controller.RobotPair;
  */
 public class Drivetrain extends AbstractDrivetrain {
 
+
   public Drivetrain() {
-    SmartDashboard.putNumber("KV", kV);
-    SmartDashboard.putNumber("KAcc", kAcc);
-    SmartDashboard.putNumber("KK", kK);
-    SmartDashboard.putNumber("KS", kS);
-    SmartDashboard.putNumber("KAngle", kAng);
-    SmartDashboard.putNumber("Max Velocity", maxVelocity);
-    SmartDashboard.putNumber("Max Acceleration", maxAcceleration);
-    SmartDashboard.putNumber("KL", kL);
+    SmartDashboard.putNumber(CONSTANTS_KV, kV);
+    SmartDashboard.putNumber(CONSTANTS_KACC, kAcc);
+    SmartDashboard.putNumber(CONSTANTS_KK, kK);
+    SmartDashboard.putNumber(CONSTANTS_KS, kS);
+    SmartDashboard.putNumber(CONSTANTS_KANGLE, kAng);
+    SmartDashboard.putNumber(CONSTANTS_MAX_VELOCITY, maxVelocity);
+    SmartDashboard.putNumber(CONSTANTS_MAX_ACCELERATION, maxAcceleration);
+    SmartDashboard.putNumber(CONSTANTS_KL, kL);
+    SmartDashboard.putNumber(MAX_VELOCITY, kL);
+    SmartDashboard.putNumber(MAX_ACCELERATION, kL);
   }
 
   @Override
@@ -80,32 +93,32 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public double getKV() {
-    return SmartDashboard.getNumber("KV", kV);
+    return SmartDashboard.getNumber(CONSTANTS_KV, kV);
   }
 
   @Override
   public double getKAcc() {
-    return SmartDashboard.getNumber("KAcc", kAcc);
+    return SmartDashboard.getNumber(CONSTANTS_KACC, kAcc);
   }
 
   @Override
   public double getKK() {
-    return SmartDashboard.getNumber("KK", kK);
+    return SmartDashboard.getNumber(CONSTANTS_KK, kK);
   }
 
   @Override
   public double getKS() {
-    return SmartDashboard.getNumber("KS", kS);
+    return SmartDashboard.getNumber(CONSTANTS_KS, kS);
   }
 
   @Override
   public double getKAng() {
-    return SmartDashboard.getNumber("KAngle", kAng);
+    return SmartDashboard.getNumber(CONSTANTS_KANGLE, kAng);
   }
 
   @Override
   public double getKL() {
-    return SmartDashboard.getNumber("KL", kL);
+    return SmartDashboard.getNumber(CONSTANTS_KL, kL);
   }
 
   @Override
@@ -120,12 +133,12 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public double getMaxVelocity() {
-    return SmartDashboard.getNumber("Max Velocity", maxVelocity);
+    return SmartDashboard.getNumber(MAX_VELOCITY, maxVelocity);
   }
 
   @Override
   public double getMaxAcceleration() {
-    return SmartDashboard.getNumber("Max Acceleration", maxAcceleration);
+    return SmartDashboard.getNumber(MAX_ACCELERATION, maxAcceleration);
   }
 
 
