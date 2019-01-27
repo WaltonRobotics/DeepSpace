@@ -7,10 +7,25 @@
 
 package frc.robot.subsystem;
 
+import static frc.robot.Config.Constants.iAng;
+import static frc.robot.Config.Constants.iL;
+import static frc.robot.Config.Constants.kAcc;
+import static frc.robot.Config.Constants.kAng;
+import static frc.robot.Config.Constants.kK;
+import static frc.robot.Config.Constants.kL;
+import static frc.robot.Config.Constants.kS;
+import static frc.robot.Config.Constants.kV;
+import static frc.robot.Config.Constants.maxAcceleration;
+import static frc.robot.Config.Constants.maxVelocity;
+import static frc.robot.Config.Constants.robotWidth;
+import static frc.robot.Config.Hardware.DISTANCE_PER_PULSE;
+import static frc.robot.RobotMap.encoderLeft;
+import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.leftWheel;
 import static frc.robot.RobotMap.rightWheel;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.command.teleop.Drive;
 import org.waltonrobotics.AbstractDrivetrain;
@@ -20,12 +35,16 @@ import org.waltonrobotics.controller.RobotPair;
  * Add your docs here.
  */
 public class Drivetrain extends AbstractDrivetrain {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
 
   public Drivetrain() {
-
+    SmartDashboard.putNumber("KV", kV);
+    SmartDashboard.putNumber("KAcc", kAcc);
+    SmartDashboard.putNumber("KK", kK);
+    SmartDashboard.putNumber("KS", kS);
+    SmartDashboard.putNumber("KAngle", kAng);
+    SmartDashboard.putNumber("Max Velocity", maxVelocity);
+    SmartDashboard.putNumber("Max Acceleration", maxAcceleration);
+    SmartDashboard.putNumber("KL", kL);
   }
 
   @Override
@@ -35,7 +54,7 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public double getRobotWidth() {
-    return 0;
+    return robotWidth;
   }
 
   @Override
@@ -61,52 +80,52 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public double getKV() {
-    return 0;
+    return SmartDashboard.getNumber("KV", kV);
   }
 
   @Override
   public double getKAcc() {
-    return 0;
+    return SmartDashboard.getNumber("KAcc", kAcc);
   }
 
   @Override
   public double getKK() {
-    return 0;
+    return SmartDashboard.getNumber("KK", kK);
   }
 
   @Override
   public double getKS() {
-    return 0;
+    return SmartDashboard.getNumber("KS", kS);
   }
 
   @Override
   public double getKAng() {
-    return 0;
+    return SmartDashboard.getNumber("KAngle", kAng);
   }
 
   @Override
   public double getKL() {
-    return 0;
+    return SmartDashboard.getNumber("KL", kL);
   }
 
   @Override
   public double getILag() {
-    return 0;
+    return iL;
   }
 
   @Override
   public double getIAng() {
-    return 0;
+    return iAng;
   }
 
   @Override
   public double getMaxVelocity() {
-    return 0;
+    return SmartDashboard.getNumber("Max Velocity", maxVelocity);
   }
 
   @Override
   public double getMaxAcceleration() {
-    return 0;
+    return SmartDashboard.getNumber("Max Acceleration", maxAcceleration);
   }
 
 
