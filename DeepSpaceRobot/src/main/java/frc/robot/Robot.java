@@ -33,6 +33,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    drivetrain.cancelControllerMotion();
+    drivetrain.reset();
 
     SendableChooser<Transform> sendableChooser = new SendableChooser<>();
     sendableChooser.setDefaultOption("Normal", new NormalSpeed());
@@ -62,6 +64,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    drivetrain.cancelControllerMotion();
+    drivetrain.getMotionLogger().writeMotionDataCSV();
   }
 
   @Override
@@ -81,6 +85,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    drivetrain.cancelControllerMotion();
+    drivetrain.startControllerMotion();
+    drivetrain.reset();
+    drivetrain.shiftUp();
   }
 
   /**
@@ -93,6 +101,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    drivetrain.cancelControllerMotion();
   }
 
   /**
