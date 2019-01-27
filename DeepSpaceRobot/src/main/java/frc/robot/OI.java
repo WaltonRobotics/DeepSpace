@@ -12,9 +12,13 @@ import static frc.robot.Config.Inputs.LEFT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.SHIFT_DOWN_PORT;
 import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
+import static frc.robot.Robot.drivetrain;
+import static frc.robot.RobotMap.encoderLeft;
+import static frc.robot.RobotMap.encoderRight;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
  * This class is the glue that binds the controls on the physical operator interface to the commands and command groups
@@ -56,4 +60,14 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
+
+  static {
+    JoystickButton resetEncoders = new JoystickButton(rightJoystick, 2);
+    resetEncoders.whenPressed(new InstantCommand() {
+      @Override
+      protected void initialize() {
+        drivetrain.reset();
+      }
+    });
+  }
 }
