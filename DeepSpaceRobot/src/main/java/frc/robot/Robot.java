@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import static frc.robot.RobotMap.encoderLeft;
+import static frc.robot.RobotMap.encoderRight;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -55,6 +58,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Encoder Left", encoderLeft.getDistance());
+    SmartDashboard.putNumber("Encoder Right", encoderRight.getDistance());
     // System.out.println("robot Periodic");
   }
 
