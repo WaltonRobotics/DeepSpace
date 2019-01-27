@@ -21,6 +21,7 @@ import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.subsystem.Drivetrain;
+import org.waltonrobotics.command.SimpleLine;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -94,6 +95,9 @@ public class Robot extends TimedRobot {
     drivetrain.startControllerMotion();
     drivetrain.reset();
     drivetrain.shiftUp();
+
+    SimpleLine simpleLine = SimpleLine.lineWithDistance(5);
+    simpleLine.start();
   }
 
   /**
