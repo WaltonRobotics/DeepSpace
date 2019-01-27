@@ -30,7 +30,7 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public RobotPair getWheelPositions() {
-    return new RobotPair(0,0, Timer.getFPGATimestamp());
+    return new RobotPair(encoderLeft.getDistance(), encoderRight.getDistance(), Timer.getFPGATimestamp());
   }
 
   @Override
@@ -40,7 +40,8 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public void reset() {
-
+    encoderLeft.reset();
+    encoderRight.reset();
   }
 
   @Override
@@ -51,6 +52,10 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public void setEncoderDistancePerPulse() {
+    leftWheel.setInverted(true);
+    encoderLeft.setDistancePerPulse(DISTANCE_PER_PULSE);
+    encoderLeft.setReverseDirection(true);
+    encoderRight.setDistancePerPulse(DISTANCE_PER_PULSE);
 
   }
 

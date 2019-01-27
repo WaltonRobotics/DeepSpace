@@ -17,5 +17,10 @@ public class Config {
     public static final int RIGHT_WHEEL_CHANNEL = 1;
     public static final int SHIFTER_CHANNEL = 0;
 
+    public static final int LEFT_ENCODER_CHANNEL1 = 2;
+    public static final int LEFT_ENCODER_CHANNEL2 = 3; // for second digital input
+
+    public static final int RIGHT_ENCODER_CHANNEL1 = 0; // digital
+    public static final int RIGHT_ENCODER_CHANNEL2 = 1; // digital
   }
 }
