@@ -13,7 +13,7 @@ def pairwise(iterable):
     a = iter(iterable)
     return it.zip_longest(a, a, fillvalue=None)
 
-class FirstPython:
+class DeepSpacePoseFinder:
     # ###################################################################################################
     ## Constructor
     def __init__(self):
@@ -57,12 +57,12 @@ class FirstPython:
         
     # ###################################################################################################
     ## Load camera calibration from JeVois share directory
-    def loadCameraCalibration(self, w, h):
+    def load_camera_calibration(self, w, h):
         cpf = "/jevois/share/camera/calibration{}x{}.yaml".format(w, h)
         fs = cv2.FileStorage(cpf, cv2.FILE_STORAGE_READ)
-        if (fs.isOpened()):
-            self.camMatrix = fs.getNode("camera_matrix").mat()
-            self.distCoeffs = fs.getNode("distortion_coefficients").mat()
+        if fs.isOpened():
+            self.cam_matrix = fs.getNode("camera_matrix").mat()
+            self.dist_coeffs = fs.getNode("distortion_coefficients").mat()
             jevois.LINFO("Loaded camera calibration from {}".format(cpf))
         else:
             jevois.LFATAL("Failed to read camera parameters from file [{}]".format(cpf))
@@ -82,12 +82,12 @@ class FirstPython:
 
         # Create structuring elements for morpho maths:
         if not hasattr(self, 'erodeElement'):
-            self.erodeElement = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
-            self.dilateElement = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
+            self.erode_element = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
+            self.dilate_element = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
         
         # Apply morphological operations to cleanup the image noise:
-        imgth = cv2.erode(imgth, self.erodeElement)
-        imgth = cv2.dilate(imgth, self.dilateElement)
+        imgth = cv2.erode(imgth, self.erode_element)
+        imgth = cv2.dilate(imgth, self.dilate_element)
 
         # Detect objects by finding contours:
         contours, hierarchy = cv2.findContours(imgth, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
@@ -139,19 +139,25 @@ class FirstPython:
 
     # ###################################################################################################
     ## Estimate 6D pose of each of the quadrilateral objects in hlist:
-    def estimatePose(self, contour):
-        object_points = np.array([[4, 31, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0], [5.375, 25.675, 0.0]])
+    def estimate_pose(self, target):
+        object_points = np.array([[-5.936, 31.5, 0.0], [-4.0, 31, 0.0], [-5.375, 25.675, 0.0], [-7.316, 26.175, 0.0], #Left points
+                                  [4.0, 31, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0], [5.375, 25.675, 0.0]])    #Right points
         object_points = object_points.astype('float32')
 
-        image_points = np.array(self.order_corners_clockwise(contour))
-        image_points = image_points.astype('float32')
+        image_points_left = np.array(self.order_corners_clockwise(target.left_rect))
+        image_points_left = image_points_left.astype('float32')
 
-        ret, rotation, translation = cv2.solvePnP(object_points, image_points, self.camMatrix, self.distCoeffs)
+        image_points_right = np.array(self.order_corners_clockwise(target.right_rect))
+        image_points_right = image_points_right.astype('float32')
+
+        image_points = np.concatenate((image_points_left, image_points_right))
+
+        ret, rotation, translation = cv2.solvePnP(object_points, image_points, self.cam_matrix, self.dist_coeffs)
         return rotation, translation
         
     # ###################################################################################################
     ## Send serial messages, one per object
-    def sendAllSerial(self, w, h, hlist, rvecs, tvecs):
+    def send_all_serial(self, w, h, hlist, rvecs, tvecs):
         idx = 0
         for c in hlist:
             # Compute quaternion: FIXME need to check!
@@ -191,7 +197,7 @@ class FirstPython:
 
             # Project axis points:
             axisPoints = np.array([ (0.0, 0.0, 0.0), (hw, 0.0, 0.0), (0.0, hh, 0.0), (0.0, 0.0, dd) ])
-            imagePoints, jac = cv2.projectPoints(axisPoints, rvecs[i], tvecs[i], self.camMatrix, self.distCoeffs)
+            imagePoints, jac = cv2.projectPoints(axisPoints, rvecs[i], tvecs[i], self.cam_matrix, self.dist_coeffs)
 
             # Draw axis lines:
             jevois.drawLine(outimg, int(imagePoints[0][0,0] + 0.5), int(imagePoints[0][0,1] + 0.5),
@@ -207,7 +213,7 @@ class FirstPython:
             # Also draw a parallelepiped:
             cubePoints = np.array([ (-hw, -hh, 0.0), (hw, -hh, 0.0), (hw, hh, 0.0), (-hw, hh, 0.0),
                                     (-hw, -hh, dd), (hw, -hh, dd), (hw, hh, dd), (-hw, hh, dd) ])
-            cu, jac2 = cv2.projectPoints(cubePoints, rvecs[i], tvecs[i], self.camMatrix, self.distCoeffs)
+            cu, jac2 = cv2.projectPoints(cubePoints, rvecs[i], tvecs[i], self.cam_matrix, self.dist_coeffs)
 
             # Round all the coordinates and cast to int for drawing:
             cu = np.rint(cu)
@@ -239,30 +245,60 @@ class FirstPython:
                             1, jevois.YUYV.LightGreen)
 
             i += 1
-            
+
+    def draw_lines(self, outimg, target, rvecs = None, tvecs = None):
+        #Draw rotated axis lines
+        axis_points = np.array([[0.0, 28.875, 0.0],
+                                [0.0, 28.875, 4.0]])
+        projected_axis_points, jac = cv2.projectPoints(axis_points, rvecs, tvecs, self.cam_matrix, self.dist_coeffs)
+        point0 = projected_axis_points[0]
+        point1 = projected_axis_points[1]
+        jevois.LINFO("{} {}".format(point0[0, 0], point0[0, 1]))
+        jevois.drawLine(outimg, int(point0[0, 0]), int(point0[0, 1]),
+                        int(point1[0, 0]), int(point1[0, 1]), 1, jevois.YUYV.MedGreen)
+
+        box = target.bounding_quadrilateral
+        point0 = box[-1]
+        for point1 in box:
+            jevois.drawLine(outimg, int(point0[0]), int(point0[1]), int(point1[0]), int(point1[1]), 1,
+                            jevois.YUYV.LightGreen)
+            point0 = point1
+
     # ###################################################################################################
     ## Process function with no USB output
     def processNoUSB(self, inframe):
-        # Get the next camera image (may block until it is captured) as OpenCV BGR:
-        imgbgr = inframe.getCvBGR()
-        h, w, chans = imgbgr.shape
-        
+        # Get the next camera image (may block until it is captured). To avoid wasting much time assembling a composite
+        # output image with multiple panels by concatenating numpy arrays, in this module we use raw YUYV images and
+        # fast paste and draw operations provided by JeVois on those images:
+        inimg = inframe.get()
+
         # Start measuring image processing time:
         self.timer.start()
 
+        # Convert input image to BGR24:
+        imgbgr = jevois.convertToCvBGR(inimg)
+        res_h, res_w, chans = imgbgr.shape
+
+        # Let camera know we are done using the input image:
+        inframe.done()
+
         # Get a list of quadrilateral convex hulls for all good objects:
-        hlist = self.detect(imgbgr)
+        contours = self.detect(imgbgr)
 
         # Load camera calibration if needed:
-        if not hasattr(self, 'camMatrix'): self.loadCameraCalibration(w, h)
+        if not hasattr(self, 'camMatrix'): self.load_camera_calibration(res_w, res_h)
 
-        # Map to 6D (inverse perspective):
-        (rvecs, tvecs) = self.estimatePose(hlist)
+        contour_tracker = ContourTracker()
+        center_target = contour_tracker.find_closest_contour(contours, (res_w, res_h))
 
-        # Send all serial messages:
-        self.sendAllSerial(w, h, hlist, rvecs, tvecs)
+        if center_target.right_rect is not None:
 
-        # Log frames/s info (will go to serlog serial port, default is None):
+            # Map to 6D (inverse perspective):
+            rvecs, tvecs = self.estimate_pose(center_target.right_rect)
+
+            # Send all serial messages:
+            # self.sendAllSerial(res_w, res_h, center_target, rvecs, tvecs)
+
         self.timer.stop()
 
     # ###################################################################################################
@@ -284,7 +320,6 @@ class FirstPython:
         outimg = outframe.get()
         outimg.require("output", res_w * 2, res_h + 12, jevois.V4L2_PIX_FMT_YUYV)
         jevois.paste(inimg, outimg, 0, 0)
-        # jevois.drawFilledRect(outimg, 0, 0, w * 2, h + 12, jevois.YUYV.Black)
         jevois.drawFilledRect(outimg, 0, res_h, outimg.width, outimg.height-res_h, jevois.YUYV.Black)
 
         # Let camera know we are done using the input image:
@@ -294,31 +329,37 @@ class FirstPython:
         contours = self.detect(imgbgr, outimg)
 
         # Load camera calibration if needed:
-        if not hasattr(self, 'camMatrix'): self.loadCameraCalibration(res_w, res_h)
+        if not hasattr(self, 'camMatrix'): self.load_camera_calibration(res_w, res_h)
 
         contour_tracker = ContourTracker()
+
+
         center_target = contour_tracker.find_closest_contour(contours, (res_w, res_h))
 
-        # Map to 6D (inverse perspective):
-        rvecs, tvecs = self.estimatePose(center_target.right_rect)
+        if center_target is not None:
 
-        rstring = "Rotation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(math.degrees(rvecs[0]), math.degrees(rvecs[1]), math.degrees(rvecs[2]))
-        jevois.writeText(outimg, rstring, 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
-        tstring = "Translation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(float(tvecs[0]), float(tvecs[1]), float(tvecs[2]))
-        jevois.writeText(outimg, tstring, 3, 15, jevois.YUYV.White, jevois.Font.Font6x10)
+            # Map to 6D (inverse perspective):
+            rvecs, tvecs = self.estimate_pose(center_target)
 
-        # Send all serial messages:
-        # self.sendAllSerial(w, h, hlist, rvecs, tvecs)
+            rstring = "Rotation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(math.degrees(rvecs[0]), math.degrees(rvecs[1]), math.degrees(rvecs[2]))
+            jevois.writeText(outimg, rstring, 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
+            tstring = "Translation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(float(tvecs[0]), float(tvecs[1]), float(tvecs[2]))
+            jevois.writeText(outimg, tstring, 3, 15, jevois.YUYV.White, jevois.Font.Font6x10)
 
-        # Draw all detections in 3D:
-        # self.drawDetections(outimg, hlist, rvecs, tvecs)
+            # Send all serial messages:
+            # self.sendAllSerial(res_w, res_h, center_target, rvecs, tvecs)
 
-        # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
-        fps = self.timer.stop()
-        jevois.writeText(outimg, fps, 3, res_h-10, jevois.YUYV.White, jevois.Font.Font6x10)
-    
-        # We are done with the output, ready to send it to host over USB:
-        outframe.send()
+            # Draw all detections in 3D:
+            self.draw_lines(outimg, center_target, rvecs, tvecs)
+
+            # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
+            fps = self.timer.stop()
+            jevois.writeText(outimg, fps, 3, res_h-10, jevois.YUYV.White, jevois.Font.Font6x10)
+
+            # We are done with the output, ready to send it to host over USB:
+            outframe.send()
+        else:
+            jevois.writeText(outimg, 'no contour detected', 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
 
     def order_corners_clockwise(self, contour):
         """
@@ -389,25 +430,24 @@ class Target:
     def angle_right(self):
         return self.right_rect[2]
 
-    def draw_target(self, frame):
-        box_l = cv2.boxPoints(self.left_rect)
-        box_r = cv2.boxPoints(self.right_rect)
-        box_l = np.int0(box_l)
-        box_r = np.int0(box_r)
+    @property
+    def bounding_quadrilateral(self):
+        bl = np.array([math.inf, -math.inf])
+        tl = np.array([math.inf, math.inf])
+        for point in cv2.boxPoints(self.left_rect):
+            bl[0] = min(float(bl[0]), float(point[0]))
+            bl[1] = max(float(bl[1]), float(point[1]))
+            tl[0] = min(float(tl[0]), float(point[0]))
+            tl[1] = min(float(tl[1]), float(point[1]))
 
-        cv2.drawContours(frame, [box_l], 0, colors[0])
-        cv2.drawContours(frame, [box_r], 0, colors[1])
-
-    def draw_bounding_rect(self, frame):
-        box_l = cv2.boxPoints(self.left_rect)
-        box_r = cv2.boxPoints(self.right_rect)
-        box_l = np.int0(box_l)
-        box_r = np.int0(box_r)
-
-        points = np.concatenate((box_l, box_r))
-        x,y,w, h= cv2.boundingRect(points)
-
-        retval = cv2.rectangle(frame, (x,y), (x + w, y + h), (0, 255,0 ), 1)
+        br = np.array([-math.inf, -math.inf])
+        tr = np.array([-math.inf, math.inf])
+        for point in cv2.boxPoints(self.right_rect):
+            br[0] = max(float(br[0]), float(point[0]))
+            br[1] = max(float(br[1]), float(point[1]))
+            tr[0] = max(float(tr[0]), float(point[0]))
+            tr[1] = min(float(tr[1]), float(point[1]))
+        return (tl[0], tl[1]), (tr[0], tr[1]), (br[0], br[1]), (bl[0], bl[1])
 
 
 class ContourTracker:
@@ -470,15 +510,8 @@ class ContourTracker:
         for left, right in pairwise(contour_rects):
             remainder.append(Target(left, right))
 
-        # if draw_targets is not None:
-        #     for target in remainder:
-        #         target.draw_target(draw_targets)
-
         if len(remainder) > 0:
             remainder = min(remainder, key=lambda target: math.fabs(target.average_x - frame_size[1] / 2))
-
-            if draw_targets is not None:
-                remainder.draw_bounding_rect(draw_targets)
         else:
             remainder = None
 
