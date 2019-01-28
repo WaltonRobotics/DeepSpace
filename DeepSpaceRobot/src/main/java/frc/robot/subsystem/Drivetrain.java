@@ -7,14 +7,15 @@
 
 package frc.robot.subsystem;
 
-import static frc.robot.RobotMap.leftWheel;
-import static frc.robot.RobotMap.rightWheel;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotMap;
 import frc.robot.command.teleop.Drive;
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.controller.RobotPair;
+
+import static frc.robot.Config.Hardware.DISTANCE_PER_PULSE;
+import static frc.robot.RobotMap.*;
 
 /**
  * Add your docs here.
