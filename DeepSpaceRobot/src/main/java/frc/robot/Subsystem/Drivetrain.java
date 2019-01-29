@@ -10,8 +10,8 @@ package frc.robot.Subsystem;
 import static frc.robot.RobotMap.leftWheel;
 import static frc.robot.RobotMap.rightWheel;
 
-import frc.robot.RobotMap;
 import frc.robot.command.teleop.Drive;
+import frc.robot.RobotMap;
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.controller.RobotPair;
 

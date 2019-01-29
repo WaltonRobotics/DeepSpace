@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.Command.teleop;
+package frc.robot.command.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -27,7 +27,7 @@ public class Drive extends Command {
     return ((SendableChooser<Transform>) SmartDashboard.getData("Transform Select")).getSelected();
   }
 
-  // Called just before this Command runs the first time
+  // Called just before this command runs the first time
   @Override
   protected void initialize() {
   }
@@ -41,7 +41,7 @@ public class Drive extends Command {
     return OI.rightJoystick.getY();
   }
 
-  // Called repeatedly when this Command is scheduled to run
+  // Called repeatedly when this command is scheduled to run
   @Override
   protected void execute() {
     System.out.println("Hello");
@@ -64,7 +64,7 @@ public class Drive extends Command {
     }
   }
 
-  // Make this return true when this Command no longer needs to run execute()
+  // Make this return true when this command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return false;

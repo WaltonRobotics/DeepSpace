@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.Command.teleop;
+package frc.robot.command.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -16,17 +16,17 @@ public class CargoOutake extends Command {
     // eg. requires(chassis);
   }
 
-  // Called just before this Command runs the first time
+  // Called just before this command runs the first time
   @Override
   protected void initialize() {
   }
 
-  // Called repeatedly when this Command is scheduled to run
+  // Called repeatedly when this command is scheduled to run
   @Override
   protected void execute() {
   }
 
-  // Make this return true when this Command no longer needs to run execute()
+  // Make this return true when this command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return false;
