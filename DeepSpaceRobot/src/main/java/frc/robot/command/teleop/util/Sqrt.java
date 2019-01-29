@@ -1,6 +1,6 @@
-package frc.robot.Command.teleop.util;
+package frc.robot.command.teleop.util;
 
-public class Sqrt implements frc.robot.command.teleop.util.Transform {
+public class Sqrt implements Transform {
 
   @Override
   public double transform(double input) {

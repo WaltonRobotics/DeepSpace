@@ -5,12 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.Subsystem;
+package frc.robot.subsystem;
 
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotMap;
-import frc.robot.Command.teleop.Drive;
+import frc.robot.command.teleop.Drive;
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.controller.RobotPair;
 

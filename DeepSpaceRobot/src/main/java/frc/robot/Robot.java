@@ -16,11 +16,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Command.teleop.util.NormalSpeed;
-import frc.robot.Command.teleop.util.Sigmoid;
-import frc.robot.Command.teleop.util.Sqrt;
+import frc.robot.command.teleop.util.NormalSpeed;
+import frc.robot.command.teleop.util.Sigmoid;
+import frc.robot.command.teleop.util.Sqrt;
 import frc.robot.command.teleop.util.Transform;
-import frc.robot.Subsystem.Drivetrain;
+import frc.robot.subsystem.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
