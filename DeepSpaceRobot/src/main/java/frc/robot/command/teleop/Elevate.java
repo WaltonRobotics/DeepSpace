@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class Elevate extends Command {
 
   public Elevate() {
-    // Use requires() here to declare subsystem dependencies
+    // Use requires() here to declare Subsystem dependencies
     // eg. requires(chassis);
   }
 

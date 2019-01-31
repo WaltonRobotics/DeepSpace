@@ -4,9 +4,6 @@ import edu.wpi.first.wpilibj.Encoder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
-
-import org.junit.jupiter.api.Test;
-
 import static frc.team2974.robot.RobotMap.encoderLeft;
 import static frc.team2974.robot.RobotMap.encoderRight;
 

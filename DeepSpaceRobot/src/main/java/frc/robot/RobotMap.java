@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class RobotMap {
   // For example to map the left and right motors, you could define the
-  // following variables to use with your drivetrain subsystem.
+  // following variables to use with your drivetrain Subsystem.
   // public static int leftMotor = 1;
   // public static int rightMotor = 2;
 

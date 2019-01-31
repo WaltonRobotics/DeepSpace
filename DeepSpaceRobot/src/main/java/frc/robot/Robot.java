@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
   }
 
   /**
-   * This function is called once each time the robot enters Disabled mode. You can use it to reset any subsystem
+   * This function is called once each time the robot enters Disabled mode. You can use it to reset any Subsystem
    * information you want to clear when the robot is disabled.
    */
   @Override

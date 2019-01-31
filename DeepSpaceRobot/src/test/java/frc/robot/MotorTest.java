@@ -7,10 +7,7 @@ import frc.team2974.robot.subsystems.Drivetrain;
 import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.xml.sax.SAXException;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -28,14 +25,12 @@ public class MotorTest
         }
     }
     @Before
-    public void init() throws ParserConfigurationException, SAXException, IOException {
+    public void init() {
         loadNativeLibraries();
         CameraServerJNI.enumerateSinks();
     }
     @Test
-    void pluggedInEncoders(){
-        frc.team2974.robot.subsystems.Drivetrain drivetrain = new Drivetrain();
-        drivetrain.setEncoderDistancePerPulse();
-        Assertions.fail();
+    public void moveTest(){
+
     }
 }
