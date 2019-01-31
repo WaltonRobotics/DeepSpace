@@ -39,6 +39,8 @@ class DeepSpacePoseFinder:
         self.min_ratio = 0.0
         self.max_ratio = 1000.0
 
+        self.decision_tolerance = 0.1
+
         # Measure your U-shaped object (in meters) and set its size here:
         self.owm = 0.280  # width in meters
         self.ohm = 0.175  # height in meters
@@ -185,72 +187,72 @@ class DeepSpacePoseFinder:
 
     # ###################################################################################################
     ## Draw all detected objects in 3D
-    def drawDetections(self, outimg, hlist, rvecs=None, tvecs=None):
-        # Show trihedron and parallelepiped centered on object:
-        hw = self.owm * 0.5
-        hh = self.ohm * 0.5
-        dd = -max(hw, hh)
-        i = 0
-        empty = np.array([(0.0), (0.0), (0.0)])
+    # def drawDetections(self, outimg, hlist, rvecs=None, tvecs=None):
+    #     # Show trihedron and parallelepiped centered on object:
+    #     hw = self.owm * 0.5
+    #     hh = self.ohm * 0.5
+    #     dd = -max(hw, hh)
+    #     i = 0
+    #     empty = np.array([(0.0), (0.0), (0.0)])
+    #
+    #     for obj in hlist:
+    #         # skip those for which solvePnP failed:
+    #         if np.array_equal(rvecs[i], empty):
+    #             i += 1
+    #             continue
+    #
+    #         # Project axis points:
+    #         axisPoints = np.array([(0.0, 0.0, 0.0), (hw, 0.0, 0.0), (0.0, hh, 0.0), (0.0, 0.0, dd)])
+    #         imagePoints, jac = cv2.projectPoints(axisPoints, rvecs[i], tvecs[i], self.cam_matrix, self.dist_coeffs)
+    #
+    #         # Draw axis lines:
+    #         jevois.drawLine(outimg, int(imagePoints[0][0, 0] + 0.5), int(imagePoints[0][0, 1] + 0.5),
+    #                         int(imagePoints[1][0, 0] + 0.5), int(imagePoints[1][0, 1] + 0.5),
+    #                         2, jevois.YUYV.MedPurple)
+    #         jevois.drawLine(outimg, int(imagePoints[0][0, 0] + 0.5), int(imagePoints[0][0, 1] + 0.5),
+    #                         int(imagePoints[2][0, 0] + 0.5), int(imagePoints[2][0, 1] + 0.5),
+    #                         2, jevois.YUYV.MedGreen)
+    #         jevois.drawLine(outimg, int(imagePoints[0][0, 0] + 0.5), int(imagePoints[0][0, 1] + 0.5),
+    #                         int(imagePoints[3][0, 0] + 0.5), int(imagePoints[3][0, 1] + 0.5),
+    #                         2, jevois.YUYV.MedGrey)
+    #
+    #         # Also draw a parallelepiped:
+    #         cubePoints = np.array([(-hw, -hh, 0.0), (hw, -hh, 0.0), (hw, hh, 0.0), (-hw, hh, 0.0),
+    #                                (-hw, -hh, dd), (hw, -hh, dd), (hw, hh, dd), (-hw, hh, dd)])
+    #         cu, jac2 = cv2.projectPoints(cubePoints, rvecs[i], tvecs[i], self.cam_matrix, self.dist_coeffs)
+    #
+    #         # Round all the coordinates and cast to int for drawing:
+    #         cu = np.rint(cu)
+    #
+    #         # Draw parallelepiped lines:
+    #         jevois.drawLine(outimg, int(cu[0][0, 0]), int(cu[0][0, 1]), int(cu[1][0, 0]), int(cu[1][0, 1]),
+    #                         1, jevois.YUYV.LightGreen)
+    #         jevois.drawLine(outimg, int(cu[1][0, 0]), int(cu[1][0, 1]), int(cu[2][0, 0]), int(cu[2][0, 1]),
+    #                         1, jevois.YUYV.LightGreen)
+    #         jevois.drawLine(outimg, int(cu[2][0, 0]), int(cu[2][0, 1]), int(cu[3][0, 0]), int(cu[3][0, 1]),
+    #                         1, jevois.YUYV.LightGreen)
+    #         jevois.drawLine(outimg, int(cu[3][0, 0]), int(cu[3][0, 1]), int(cu[0][0, 0]), int(cu[0][0, 1]),
+    #                         1, jevois.YUYV.LightGreen)
+    #         jevois.drawLine(outimg, int(cu[4][0, 0]), int(cu[4][0, 1]), int(cu[5][0, 0]), int(cu[5][0, 1]),
+    #                         1, jevois.YUYV.LightGreen)
+    #         jevois.drawLine(outimg, int(cu[5][0, 0]), int(cu[5][0, 1]), int(cu[6][0, 0]), int(cu[6][0, 1]),
+    #                         1, jevois.YUYV.LightGreen)
+    #         jevois.drawLine(outimg, int(cu[6][0, 0]), int(cu[6][0, 1]), int(cu[7][0, 0]), int(cu[7][0, 1]),
+    #                         1, jevois.YUYV.LightGreen)
+    #         jevois.drawLine(outimg, int(cu[7][0, 0]), int(cu[7][0, 1]), int(cu[4][0, 0]), int(cu[4][0, 1]),
+    #                         1, jevois.YUYV.LightGreen)
+    #         jevois.drawLine(outimg, int(cu[0][0, 0]), int(cu[0][0, 1]), int(cu[4][0, 0]), int(cu[4][0, 1]),
+    #                         1, jevois.YUYV.LightGreen)
+    #         jevois.drawLine(outimg, int(cu[1][0, 0]), int(cu[1][0, 1]), int(cu[5][0, 0]), int(cu[5][0, 1]),
+    #                         1, jevois.YUYV.LightGreen)
+    #         jevois.drawLine(outimg, int(cu[2][0, 0]), int(cu[2][0, 1]), int(cu[6][0, 0]), int(cu[6][0, 1]),
+    #                         1, jevois.YUYV.LightGreen)
+    #         jevois.drawLine(outimg, int(cu[3][0, 0]), int(cu[3][0, 1]), int(cu[7][0, 0]), int(cu[7][0, 1]),
+    #                         1, jevois.YUYV.LightGreen)
+    #
+    #         i += 1
 
-        for obj in hlist:
-            # skip those for which solvePnP failed:
-            if np.array_equal(rvecs[i], empty):
-                i += 1
-                continue
-
-            # Project axis points:
-            axisPoints = np.array([(0.0, 0.0, 0.0), (hw, 0.0, 0.0), (0.0, hh, 0.0), (0.0, 0.0, dd)])
-            imagePoints, jac = cv2.projectPoints(axisPoints, rvecs[i], tvecs[i], self.cam_matrix, self.dist_coeffs)
-
-            # Draw axis lines:
-            jevois.drawLine(outimg, int(imagePoints[0][0, 0] + 0.5), int(imagePoints[0][0, 1] + 0.5),
-                            int(imagePoints[1][0, 0] + 0.5), int(imagePoints[1][0, 1] + 0.5),
-                            2, jevois.YUYV.MedPurple)
-            jevois.drawLine(outimg, int(imagePoints[0][0, 0] + 0.5), int(imagePoints[0][0, 1] + 0.5),
-                            int(imagePoints[2][0, 0] + 0.5), int(imagePoints[2][0, 1] + 0.5),
-                            2, jevois.YUYV.MedGreen)
-            jevois.drawLine(outimg, int(imagePoints[0][0, 0] + 0.5), int(imagePoints[0][0, 1] + 0.5),
-                            int(imagePoints[3][0, 0] + 0.5), int(imagePoints[3][0, 1] + 0.5),
-                            2, jevois.YUYV.MedGrey)
-
-            # Also draw a parallelepiped:
-            cubePoints = np.array([(-hw, -hh, 0.0), (hw, -hh, 0.0), (hw, hh, 0.0), (-hw, hh, 0.0),
-                                   (-hw, -hh, dd), (hw, -hh, dd), (hw, hh, dd), (-hw, hh, dd)])
-            cu, jac2 = cv2.projectPoints(cubePoints, rvecs[i], tvecs[i], self.cam_matrix, self.dist_coeffs)
-
-            # Round all the coordinates and cast to int for drawing:
-            cu = np.rint(cu)
-
-            # Draw parallelepiped lines:
-            jevois.drawLine(outimg, int(cu[0][0, 0]), int(cu[0][0, 1]), int(cu[1][0, 0]), int(cu[1][0, 1]),
-                            1, jevois.YUYV.LightGreen)
-            jevois.drawLine(outimg, int(cu[1][0, 0]), int(cu[1][0, 1]), int(cu[2][0, 0]), int(cu[2][0, 1]),
-                            1, jevois.YUYV.LightGreen)
-            jevois.drawLine(outimg, int(cu[2][0, 0]), int(cu[2][0, 1]), int(cu[3][0, 0]), int(cu[3][0, 1]),
-                            1, jevois.YUYV.LightGreen)
-            jevois.drawLine(outimg, int(cu[3][0, 0]), int(cu[3][0, 1]), int(cu[0][0, 0]), int(cu[0][0, 1]),
-                            1, jevois.YUYV.LightGreen)
-            jevois.drawLine(outimg, int(cu[4][0, 0]), int(cu[4][0, 1]), int(cu[5][0, 0]), int(cu[5][0, 1]),
-                            1, jevois.YUYV.LightGreen)
-            jevois.drawLine(outimg, int(cu[5][0, 0]), int(cu[5][0, 1]), int(cu[6][0, 0]), int(cu[6][0, 1]),
-                            1, jevois.YUYV.LightGreen)
-            jevois.drawLine(outimg, int(cu[6][0, 0]), int(cu[6][0, 1]), int(cu[7][0, 0]), int(cu[7][0, 1]),
-                            1, jevois.YUYV.LightGreen)
-            jevois.drawLine(outimg, int(cu[7][0, 0]), int(cu[7][0, 1]), int(cu[4][0, 0]), int(cu[4][0, 1]),
-                            1, jevois.YUYV.LightGreen)
-            jevois.drawLine(outimg, int(cu[0][0, 0]), int(cu[0][0, 1]), int(cu[4][0, 0]), int(cu[4][0, 1]),
-                            1, jevois.YUYV.LightGreen)
-            jevois.drawLine(outimg, int(cu[1][0, 0]), int(cu[1][0, 1]), int(cu[5][0, 0]), int(cu[5][0, 1]),
-                            1, jevois.YUYV.LightGreen)
-            jevois.drawLine(outimg, int(cu[2][0, 0]), int(cu[2][0, 1]), int(cu[6][0, 0]), int(cu[6][0, 1]),
-                            1, jevois.YUYV.LightGreen)
-            jevois.drawLine(outimg, int(cu[3][0, 0]), int(cu[3][0, 1]), int(cu[7][0, 0]), int(cu[7][0, 1]),
-                            1, jevois.YUYV.LightGreen)
-
-            i += 1
-
-    def draw_lines(self, outimg, target, rvecs=None, tvecs=None):
+    def draw_lines(self, outimg, target, rvecs=None, tvecs=None, is_closest=False):
         # Draw rotated axis lines
         axis_points = np.array([[0.0, 28.875, 0.0],
                                 [0.0, 28.875, 4.0]])
@@ -258,14 +260,22 @@ class DeepSpacePoseFinder:
         point0 = projected_axis_points[0]
         point1 = projected_axis_points[1]
         jevois.LINFO("{} {}".format(point0[0, 0], point0[0, 1]))
-        jevois.drawLine(outimg, int(point0[0, 0]), int(point0[0, 1]),
-                        int(point1[0, 0]), int(point1[0, 1]), 1, jevois.YUYV.MedGreen)
+        if is_closest:
+            jevois.drawLine(outimg, int(point0[0, 0]), int(point0[0, 1]),
+                            int(point1[0, 0]), int(point1[0, 1]), 1, jevois.YUYV.MedPurple)
+        else:
+            jevois.drawLine(outimg, int(point0[0, 0]), int(point0[0, 1]),
+                            int(point1[0, 0]), int(point1[0, 1]), 1, jevois.YUYV.MedGreen)
 
         box = target.bounding_quadrilateral
         point0 = box[-1]
         for point1 in box:
-            jevois.drawLine(outimg, int(point0[0]), int(point0[1]), int(point1[0]), int(point1[1]), 1,
-                            jevois.YUYV.LightGreen)
+            if is_closest:
+                jevois.drawLine(outimg, int(point0[0]), int(point0[1]), int(point1[0]), int(point1[1]), 1,
+                                jevois.YUYV.LightPurple)
+            else:
+                jevois.drawLine(outimg, int(point0[0]), int(point0[1]), int(point1[0]), int(point1[1]), 1,
+                                jevois.YUYV.LightGreen)
             point0 = point1
 
     # ###################################################################################################
@@ -293,20 +303,35 @@ class DeepSpacePoseFinder:
         if not hasattr(self, 'camMatrix'): self.load_camera_calibration(res_w, res_h)
 
         contour_tracker = ContourTracker()
-        center_target = contour_tracker.find_closest_contour(contours, (res_w, res_h))
+        targets = contour_tracker.find_full_contours(contours, (res_w, res_h))
+        if targets is not None:
+            target_data = []
+            for target in targets:
+                # Map to 6D (inverse perspective):
+                rvecs, tvecs = self.estimate_pose(target)
+                target_data.append((target, rvecs, tvecs))
 
-        if center_target.right_rect is not None:
-            # Map to 6D (inverse perspective):
-            rvecs, tvecs = self.estimate_pose(center_target.right_rect)
+            target_data.sort(key=self.distance_from_origin)
 
-            # Send all serial messages:
-            # self.sendAllSerial(res_w, res_h, center_target, rvecs, tvecs)
+
+            if self.percent_difference(self.distance_from_origin(target_data[0]),
+                                       self.distance_from_origin(target_data[1])) <= self.decision_tolerance:
+                self.send_all_serial()
+            else:
+                closest_target, rvecs, tvecs = target_data[0]
+
+                # Send all serial messages:
+                # self.send_all_serial(res_w, res_h, center_target, rvecs, tvecs)
+
+            # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
+            fps = self.timer.stop()
 
         self.timer.stop()
 
     # ###################################################################################################
     ## Process function with USB output
     def process(self, inframe, outframe):
+
         # Get the next camera image (may block until it is captured). To avoid wasting much time assembling a composite
         # output image with multiple panels by concatenating numpy arrays, in this module we use raw YUYV images and
         # fast paste and draw operations provided by JeVois on those images:
@@ -336,25 +361,40 @@ class DeepSpacePoseFinder:
 
         contour_tracker = ContourTracker()
 
-        center_target = contour_tracker.find_closest_contour(contours, (res_w, res_h))
+        targets = contour_tracker.find_full_contours(contours, (res_w, res_h))
+        if targets is not None:
+            target_data = []
+            for target in targets:
+                # Map to 6D (inverse perspective):
+                rvecs, tvecs = self.estimate_pose(target)
+                target_data.append((target, rvecs, tvecs))
 
-        if center_target is not None:
+            target_data.sort(key = self.distance_from_origin)
 
-            # Map to 6D (inverse perspective):
-            rvecs, tvecs = self.estimate_pose(center_target)
+            for target, rvecs, tvecs in target_data:
+                # Draw all detections in 3D:
+                self.draw_lines(outimg, target, rvecs, tvecs)
 
-            rstring = "Rotation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(math.degrees(rvecs[0]), math.degrees(rvecs[1]),
-                                                                         math.degrees(rvecs[2]))
-            jevois.writeText(outimg, rstring, 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
-            tstring = "Translation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(float(tvecs[0]), float(tvecs[1]),
-                                                                            float(tvecs[2]))
-            jevois.writeText(outimg, tstring, 3, 15, jevois.YUYV.White, jevois.Font.Font6x10)
+            if self.percent_difference(self.distance_from_origin(target_data[0]),
+                                       self.distance_from_origin(target_data[1])) <= self.decision_tolerance:
+                jevois.writeText(outimg, "cannot decide which target to go to", 3, 3, jevois.YUYV.White,
+                                 jevois.Font.Font6x10)
+                # Send all serial messages:
+                # self.send_all_serial(res_w, res_h, center_target, rvecs, tvecs)
+            else:
+                closest_target, rvecs, tvecs = target_data[0]
+                self.draw_lines(outimg, closest_target, rvecs, tvecs, True)
 
-            # Send all serial messages:
-            # self.sendAllSerial(res_w, res_h, center_target, rvecs, tvecs)
+                rstring = "Rotation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(math.degrees(rvecs[0]), math.degrees(rvecs[1]),
+                                                                             math.degrees(rvecs[2]))
+                jevois.writeText(outimg, rstring, 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
+                tstring = "Translation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(float(tvecs[0]), float(tvecs[1]),
+                                                                                float(tvecs[2]))
+                jevois.writeText(outimg, tstring, 3, 15, jevois.YUYV.White, jevois.Font.Font6x10)
 
-            # Draw all detections in 3D:
-            self.draw_lines(outimg, center_target, rvecs, tvecs)
+                # Send all serial messages:
+                # self.send_all_serial(res_w, res_h, center_target, rvecs, tvecs)
+
 
             # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
             fps = self.timer.stop()
@@ -389,7 +429,7 @@ class DeepSpacePoseFinder:
         # now that we have the top-left coordinate, use it as an anchor to calculate the Euclidean distance between the
         # top-left and right-most points; by the Pythagorean theorem, the point with the largest distance will be our
         # bottom-right point
-        if self.distance(tl, right_most[0]) > self.distance(tl, right_most[1]):
+        if self.distance_2d(tl, right_most[0]) > self.distance_2d(tl, right_most[1]):
             br, tr = right_most
         else:
             tr, br = right_most
@@ -397,8 +437,23 @@ class DeepSpacePoseFinder:
         # return the coordinates in top-left, top-right, bottom-right, and bottom-left order
         return np.array([tl, tr, br, bl], dtype="float32")
 
-    def distance(self, point0, point1):
+    def distance_2d(self, point0, point1):
+        """
+        :param point0:
+        :param point1:
+        :return: the distance between point0 and point1
+        """
         return math.sqrt(math.pow(point0[0] - point1[0], 2) + math.pow(point0[1] - point1[1], 2))
+
+    def percent_difference(self, value1, value2):
+        return math.fabs(value1 - value2) / (value1 + value2)
+
+    def distance_from_origin(self, target_data):
+        """
+        :param point:
+        :return: the distance between point and (0, y, 0)
+        """
+        return math.sqrt(math.pow(target_data[2][0], 2) + math.pow(target_data[2][2], 2))
 
 
 class Target:
@@ -472,7 +527,7 @@ class ContourTracker:
 
         return contour_rects
 
-    def find_closest_contour(self, contours, frame_size, draw_targets=False):
+    def find_full_contours(self, contours, frame_size):
 
         contour_rects = self.__get_min_area_rects(contours)
 
@@ -515,10 +570,10 @@ class ContourTracker:
         for left, right in pairwise(contour_rects):
             remainder.append(Target(left, right))
 
-        if len(remainder) > 0:
-            remainder = min(remainder, key=lambda target: math.fabs(target.average_x - frame_size[1] / 2))
-        else:
-            remainder = None
+        # if len(remainder) > 0:
+        #     remainder = min(remainder, key=lambda target: math.fabs(target.average_x - frame_size[1] / 2))
+        # else:
+        #     remainder = None
 
         return remainder
 
