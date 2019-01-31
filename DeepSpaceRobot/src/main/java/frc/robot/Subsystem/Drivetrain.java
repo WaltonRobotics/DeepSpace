@@ -5,15 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.Subsystem;
+package frc.robot.subsystem;
 
-import static frc.robot.RobotMap.leftWheel;
-import static frc.robot.RobotMap.rightWheel;
 
 import frc.robot.command.teleop.Drive;
 import frc.robot.RobotMap;
+import frc.robot.command.teleop.Drive;
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.controller.RobotPair;
+
+import static frc.robot.Config.Hardware.DISTANCE_PER_PULSE;
+import static frc.robot.RobotMap.*;
 
 /**
  * Add your docs here.
@@ -30,6 +32,7 @@ public class Drivetrain extends AbstractDrivetrain {
   @Override
   public RobotPair getWheelPositions() {
     return null;
+    return new RobotPair(encoderLeft.getDistance(), encoderRight.getDistance(), Timer.getFPGATimestamp());
   }
 
   @Override
@@ -39,7 +42,8 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public void reset() {
-
+    encoderLeft.reset();
+    encoderRight.reset();
   }
 
   @Override
@@ -50,6 +54,10 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public void setEncoderDistancePerPulse() {
+    leftWheel.setInverted(true);
+    encoderLeft.setDistancePerPulse(DISTANCE_PER_PULSE);
+    encoderLeft.setReverseDirection(true);
+    encoderRight.setDistancePerPulse(DISTANCE_PER_PULSE);
 
   }
 

@@ -33,19 +33,18 @@ public class Drive extends Command {
   }
 
   private double getLeftYJoystick() {
-    return OI.leftJoystick.getY();
+    return -OI.leftJoystick.getY();
   }
 
 
   private double getRightYJoystick() {
-    return OI.rightJoystick.getY();
+    return -OI.rightJoystick.getY();
   }
 
   // Called repeatedly when this command is scheduled to run
   @Override
   protected void execute() {
-    System.out.println("Hello");
-    double leftYJoystick = -getLeftYJoystick();
+    double leftYJoystick = getLeftYJoystick();
     double rightYJoystick = getRightYJoystick();
 
     SmartDashboard.putNumber("leftJoystick", leftYJoystick);
