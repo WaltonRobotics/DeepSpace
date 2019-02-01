@@ -31,9 +31,9 @@ public class Config {
     public static final int RIGHT_ENCODER_CHANNEL2 = 1; // digital
     public static final double DISTANCE_PER_PULSE = 0.00055805; // digital
   }
-  }
 
-  public class Motor {
+
+  public static final class Motor {
 
     public static final int LEFT_MOTOR_PORT = 0;
     public static final int RIGHT_MOTOR_PORT = 1;
