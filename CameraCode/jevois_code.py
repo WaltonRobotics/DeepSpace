@@ -163,27 +163,32 @@ class DeepSpacePoseFinder:
 
     # ###################################################################################################
     ## Send serial messages, one per object
-    def send_all_serial(self, w, h, hlist, rvecs, tvecs):
-        idx = 0
-        for c in hlist:
-            # Compute quaternion: FIXME need to check!
-            tv = tvecs[idx]
-            axis = rvecs[idx]
-            angle = (axis[0] * axis[0] + axis[1] * axis[1] + axis[2] * axis[2]) ** 0.5
+    def send_all_serial(self, x, y, z, angle, number):
 
-            # This code lifted from pyquaternion from_axis_angle:
-            mag_sq = axis[0] * axis[0] + axis[1] * axis[1] + axis[2] * axis[2]
-            if (abs(1.0 - mag_sq) > 1e-12): axis = axis / (mag_sq ** 0.5)
-            theta = angle / 2.0
-            r = math.cos(theta)
-            i = axis * math.sin(theta)
-            q = (r, i[0], i[1], i[2])
 
-            jevois.sendSerial("D3 {} {} {} {} {} {} {} {} {} {} FIRST".
-                              format(np.asscalar(tv[0]), np.asscalar(tv[1]), np.asscalar(tv[2]),  # position
-                                     self.owm, self.ohm, 1.0,  # size
-                                     r, np.asscalar(i[0]), np.asscalar(i[1]), np.asscalar(i[2])))  # pose
-            idx += 1
+        xKey = 'X'
+        yKey = 'Y'
+        zKey = 'Z'
+        angleKey = 'A'
+
+        if x < 0:
+            xKey = 'x'
+        x = round(abs(x) * 2.54)
+
+        if y < 0:
+            yKey = 'y'
+        y = round(abs(y) * 2.54)
+
+        if z < 0:
+            zKey = 'z'
+        z = round(abs(z) * 2.54)
+
+        if angle < 0:
+            angleKey = 'a'
+
+        angle = round(math.degrees(angle))
+
+        jevois.sendSerial("{}".format(xKey, x, yKey, y, zKey, z, angleKey, angle, 'N', number)) # pose
 
     # ###################################################################################################
     ## Draw all detected objects in 3D
@@ -302,7 +307,7 @@ class DeepSpacePoseFinder:
         # Load camera calibration if needed:
         if not hasattr(self, 'camMatrix'): self.load_camera_calibration(res_w, res_h)
 
-        contour_tracker = ContourTracker()
+        contour_tracker = FindTargets()
         targets = contour_tracker.find_full_contours(contours, (res_w, res_h))
         if targets is not None:
             target_data = []
@@ -316,12 +321,16 @@ class DeepSpacePoseFinder:
 
             if self.percent_difference(self.distance_from_origin(target_data[0]),
                                        self.distance_from_origin(target_data[1])) <= self.decision_tolerance:
-                self.send_all_serial()
+                jevois.sendSerial("FN{}".format(len(targets)))
+
             else:
                 closest_target, rvecs, tvecs = target_data[0]
 
                 # Send all serial messages:
-                # self.send_all_serial(res_w, res_h, center_target, rvecs, tvecs)
+                self.send_all_serial(tvecs[0], tvecs[2], tvecs[1], rvecs[1], len(targets))
+
+        else:
+            jevois.sendSerial("FN{}".format(0))
 
             # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
             fps = self.timer.stop()
@@ -359,7 +368,7 @@ class DeepSpacePoseFinder:
         # Load camera calibration if needed:
         if not hasattr(self, 'camMatrix'): self.load_camera_calibration(res_w, res_h)
 
-        contour_tracker = ContourTracker()
+        contour_tracker = FindTargets()
 
         targets = contour_tracker.find_full_contours(contours, (res_w, res_h))
         if targets is not None:
@@ -380,7 +389,7 @@ class DeepSpacePoseFinder:
                 jevois.writeText(outimg, "cannot decide which target to go to", 3, 3, jevois.YUYV.White,
                                  jevois.Font.Font6x10)
                 # Send all serial messages:
-                # self.send_all_serial(res_w, res_h, center_target, rvecs, tvecs)
+                jevois.sendSerial("FN{}".format(len(targets)))
             else:
                 closest_target, rvecs, tvecs = target_data[0]
                 self.draw_lines(outimg, closest_target, rvecs, tvecs, True)
@@ -393,7 +402,7 @@ class DeepSpacePoseFinder:
                 jevois.writeText(outimg, tstring, 3, 15, jevois.YUYV.White, jevois.Font.Font6x10)
 
                 # Send all serial messages:
-                # self.send_all_serial(res_w, res_h, center_target, rvecs, tvecs)
+                self.send_all_serial(tvecs[0], tvecs[2], tvecs[1], rvecs[1], len(targets))
 
 
             # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
@@ -402,6 +411,7 @@ class DeepSpacePoseFinder:
 
         else:
             jevois.writeText(outimg, 'no contour detected', 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
+            jevois.sendSerial("FN{}".format(0))
 
         # We are done with the output, ready to send it to host over USB:
         outframe.send()
@@ -510,12 +520,9 @@ class Target:
         return (tl[0], tl[1]), (tr[0], tr[1]), (br[0], br[1]), (bl[0], bl[1])
 
 
-class ContourTracker:
+class FindTargets:
 
     def __init__(self):
-        pass
-
-    def distinguish_contours(self):
         pass
 
     def __get_min_area_rects(self, contours):
