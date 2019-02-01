@@ -9,6 +9,7 @@ import frc.utils.Logger;
 
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public class LoggerTest {
@@ -27,7 +28,7 @@ public class LoggerTest {
 
         logger.logInfo(testLogString);
 
-        assertEquals(os.toString(), testLogString);
+        assertTrue(os.toString().contains(testLogString));
     }
 
     @Test
@@ -44,7 +45,7 @@ public class LoggerTest {
 
         logger.logWarning(testLogString);
 
-        assertEquals(os.toString(), testLogString);
+        assertTrue(os.toString().contains(testLogString));
     }
 
     @Test
@@ -61,7 +62,7 @@ public class LoggerTest {
 
         logger.logError(testLogString);
 
-        assertEquals(os.toString(), testLogString);
+        assertTrue(os.toString().contains(testLogString));
     }
 
 }
