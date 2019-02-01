@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import static frc.robot.RobotMap.encoderLeft;
+import static frc.robot.RobotMap.encoderRight;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -33,7 +36,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    System.out.println("Init");
+    drivetrain.cancelControllerMotion();
+    drivetrain.reset();
 
     SendableChooser<Transform> sendableChooser = new SendableChooser<>();
     sendableChooser.setDefaultOption("Normal", new NormalSpeed());
@@ -54,6 +58,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Encoder Left", encoderLeft.getDistance());
+    SmartDashboard.putNumber("Encoder Right", encoderRight.getDistance());
     // System.out.println("robot Periodic");
   }
 
@@ -63,7 +69,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    System.out.println("disable init");
+    drivetrain.cancelControllerMotion();
+    drivetrain.getMotionLogger().writeMotionDataCSV();
   }
 
   @Override
@@ -83,7 +90,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    System.out.println("auton init");
+    drivetrain.cancelControllerMotion();
+    drivetrain.startControllerMotion();
+    drivetrain.reset();
+    drivetrain.shiftUp();
   }
 
   /**
@@ -92,12 +102,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-    System.out.println("auton Periodic ");
   }
 
   @Override
   public void teleopInit() {
-    System.out.println("Tele ini");
+    drivetrain.cancelControllerMotion();
   }
 
   /**
@@ -105,7 +114,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    System.out.println("Tele periodci");
     Scheduler.getInstance().run();
   }
 
