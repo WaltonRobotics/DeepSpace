@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class CargoIntake extends Command {
 
   public CargoIntake() {
-    // Use requires() here to declare Subsystem dependencies
+    // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
 

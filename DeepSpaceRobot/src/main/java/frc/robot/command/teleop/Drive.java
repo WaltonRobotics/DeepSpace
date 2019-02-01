@@ -17,7 +17,7 @@ import frc.robot.command.teleop.util.Transform;
 public class Drive extends Command {
 
   public Drive() {
-    // Use requires() here to declare Subsystem dependencies
+    // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     System.out.println("Driving");
     requires(Robot.drivetrain);

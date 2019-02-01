@@ -28,6 +28,7 @@ public class MotorTest
     public void init() {
         loadNativeLibraries();
         CameraServerJNI.enumerateSinks();
+
     }
     @Test
     public void moveTest(){

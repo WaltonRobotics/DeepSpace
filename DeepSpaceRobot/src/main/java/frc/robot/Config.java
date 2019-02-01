@@ -23,6 +23,7 @@ public class Config {
     public static final int RIGHT_ENCODER_CHANNEL1 = 0; // digital
     public static final int RIGHT_ENCODER_CHANNEL2 = 1; // digital
     public static final double DISTANCE_PER_PULSE = 0.00055805; // digital
+
   }
   }
-}
+
