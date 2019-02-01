@@ -886,6 +886,7 @@
         </option>
         <option name="vmOptions" value="" />
       </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
     <configuration name="ControllerSqrtTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
@@ -898,6 +899,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="frc.robot" />
       <option name="MAIN_CLASS_NAME" value="frc.robot.ControllerSqrtTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -928,6 +930,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="frc.robot" />
       <option name="MAIN_CLASS_NAME" value="frc.robot.ControllerTestHalfSpeed" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
