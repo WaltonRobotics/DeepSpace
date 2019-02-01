@@ -18,7 +18,7 @@ public class LoggerTest {
     public void loggingInfoTest() {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        ArrayList writeables = new ArrayList<OutputStream>();
+        ArrayList<OutputStream> writeables = new ArrayList<>();
 
         writeables.add(os);
 
@@ -35,7 +35,7 @@ public class LoggerTest {
     public void loggingWarningTest() {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        ArrayList writeables = new ArrayList<OutputStream>();
+        ArrayList<OutputStream> writeables = new ArrayList<>();
 
         writeables.add(os);
 
@@ -52,7 +52,7 @@ public class LoggerTest {
     public void loggingErrorTest() {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        ArrayList writeables = new ArrayList<OutputStream>();
+        ArrayList<OutputStream> writeables = new ArrayList<>();
 
         writeables.add(os);
 
