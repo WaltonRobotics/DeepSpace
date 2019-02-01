@@ -1,0 +1,11 @@
+(X/x)---(Y/y)---(Z/z)--(A/a)---N-\n
+X---Y---Z--A---N-\n
+
+
+(X/x): the x-value of the camera relative to target in cm. Lowercase x denotes negative
+(Y/y): the z-value of the camera relative to target in cm. Lowercase y denotes negative. From calculation to robot, z -> y
+(Z/z): the y-value of the camera relative to target in cm. Lowercase z denotes negative. From calculation to robot, y -> z
+(A/a): angle in degrees. Lowercase a denotes negative.
+N: the number of targets found
+
+If it cannot decide on a target or none found: FN-\n
