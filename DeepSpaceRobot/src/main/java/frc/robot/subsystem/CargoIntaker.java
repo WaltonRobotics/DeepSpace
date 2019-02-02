@@ -7,11 +7,10 @@
 
 package frc.robot.subsystem;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.OI;
+import frc.robot.command.teleop.CargoIntake;
 
-import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
 import static frc.robot.RobotMap.leftCargoIntake;
 import static frc.robot.RobotMap.rightCargoIntake;
 
@@ -24,14 +23,9 @@ public class CargoIntaker extends Subsystem {
 
   private static final CargoIntaker instance = new CargoIntaker();
 
-  private double getJoystick() {
-    return OI.intakeJoystick.getY();
-  }
+  private final Timer timer = new Timer();
 
   private CargoIntaker() {
-    double intakeJoystick = getJoystick();
-    OI.leftIntake.set(intakeJoystick);
-    OI.rightIntake.set(intakeJoystick);
   }
 
   public static CargoIntaker getInstance() {
@@ -41,7 +35,7 @@ public class CargoIntaker extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new CargoIntake());
   }
 
   /**
