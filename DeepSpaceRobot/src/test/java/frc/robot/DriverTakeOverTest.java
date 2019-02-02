@@ -20,6 +20,7 @@ public class DriverTakeOverTest extends Command {
     public static double[] noActivity = {0, 0};
     public static double[] controllerAct = new double[2];
     public static double[] activity = new double[2];
+    public static double tolerance = 1;
     Log eventLog = new Log();
     public static boolean takeOver;
 
@@ -36,7 +37,7 @@ public class DriverTakeOverTest extends Command {
     }
 
     public static void isTakingOver() {
-        takeOver = (!(activity[0] == noActivity[0] && activity[1] == noActivity[1]));
+        takeOver = (!(activity[0] < noActivity[0] + tolerance && activity[1] < noActivity[1] + tolerance));
     }
 
     public static boolean getIsTakingOver() {
