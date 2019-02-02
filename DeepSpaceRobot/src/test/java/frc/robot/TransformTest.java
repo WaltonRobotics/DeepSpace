@@ -1,5 +1,6 @@
 package frc.robot;
 
+import frc.robot.command.teleop.TransformMap;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -39,7 +40,11 @@ public class TransformTest {
 
     @Test
     public void TransformMapTest() {
-        TransformMapTest.clearTransforms();
+        TransformMap.clearTransforms();
+        TransformMap.addTransform(new frc.robot.command.teleop.HalfSpeed());
+        TransformMap.addTransform(new frc.robot.command.teleop.BarryAllen());
+
+        Assert.assertEquals(TransformMap.calculate(0.5), Math.pow(0.5 / 2, 2), 0);
     }
 
     @Test
