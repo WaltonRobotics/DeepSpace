@@ -26,6 +26,7 @@ public class CargoIntaker extends Subsystem {
   private final Timer timer = new Timer();
 
   private CargoIntaker() {
+    timer.reset();
   }
 
   public static CargoIntaker getInstance() {
@@ -44,6 +45,10 @@ public class CargoIntaker extends Subsystem {
   private synchronized void setMotorPowers(double left, double right) {
     leftCargoIntake.set(left);
     rightCargoIntake.set(right);
+  }
+
+  public boolean timeElapsed(double time) {
+    return timer.hasPeriodPassed(time);
   }
 
 }
