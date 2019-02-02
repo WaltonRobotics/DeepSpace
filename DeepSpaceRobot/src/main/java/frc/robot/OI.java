@@ -12,8 +12,11 @@ import static frc.robot.Config.Inputs.LEFT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.SHIFT_DOWN_PORT;
 import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
+import static frc.robot.Config.Hardware.LEFT_INTAKE_MOTOR_CHANNEL;
+import static frc.robot.Config.Hardware.RIGHT_INTAKE_MOTOR_CHANNEL;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
@@ -28,6 +31,9 @@ public class OI {
 
   public static final JoystickButton shiftUp = new JoystickButton(leftJoystick, SHIFT_UP_PORT);
   public static final JoystickButton shiftDown = new JoystickButton(leftJoystick, SHIFT_DOWN_PORT);
+
+  public static final Talon leftIntake = new Talon(LEFT_INTAKE_MOTOR_CHANNEL);
+  public static final Talon rightIntake = new Talon(RIGHT_INTAKE_MOTOR_CHANNEL);
 
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
