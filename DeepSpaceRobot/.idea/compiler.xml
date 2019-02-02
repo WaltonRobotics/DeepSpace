@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="DeepSpaceRobot.main" target="1.8" />
       <module name="DeepSpaceRobot.test" target="1.8" />
+      <module name="DeepSpaceRobot_main" target="1.8" />
+      <module name="DeepSpaceRobot_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

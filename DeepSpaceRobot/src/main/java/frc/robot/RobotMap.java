@@ -7,18 +7,13 @@
 
 package frc.robot;
 
-import static frc.robot.Config.Hardware.LEFT_ENCODER_CHANNEL1;
-import static frc.robot.Config.Hardware.LEFT_ENCODER_CHANNEL2;
-import static frc.robot.Config.Hardware.LEFT_WHEEL_CHANNEL;
-import static frc.robot.Config.Hardware.RIGHT_ENCODER_CHANNEL1;
-import static frc.robot.Config.Hardware.RIGHT_ENCODER_CHANNEL2;
-import static frc.robot.Config.Hardware.RIGHT_WHEEL_CHANNEL;
-import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
+
+import static frc.robot.Config.Hardware.*;
+import static frc.robot.Config.Hardware.RIGHT_CARGO_INTAKE_MOTOR_CHANNEL;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides
@@ -41,6 +36,8 @@ public class RobotMap {
   public static final Talon leftWheel = new Talon(LEFT_WHEEL_CHANNEL);
   public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
 
+  public static final Talon leftCargoIntake = new Talon(LEFT_CARGO_INTAKE_MOTOR_CHANNEL);
+  public static final Talon rightCargoIntake = new Talon(RIGHT_CARGO_INTAKE_MOTOR_CHANNEL);
 
   public static final Encoder encoderRight = new Encoder(new DigitalInput(RIGHT_ENCODER_CHANNEL1),
       new DigitalInput(RIGHT_ENCODER_CHANNEL2));

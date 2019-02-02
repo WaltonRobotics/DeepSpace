@@ -7,7 +7,12 @@
 
 package frc.robot.subsystem;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
+
+import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
+import static frc.robot.RobotMap.leftCargoIntake;
+import static frc.robot.RobotMap.rightCargoIntake;
 
 /**
  * Add your docs here.
@@ -31,4 +36,13 @@ public class CargoIntaker extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+
+  /**
+   * Sets the motor powers.
+   */
+  private synchronized void setMotorPowers(double left, double right) {
+    leftCargoIntake.set(left);
+    rightCargoIntake.set(right);
+  }
+
 }
