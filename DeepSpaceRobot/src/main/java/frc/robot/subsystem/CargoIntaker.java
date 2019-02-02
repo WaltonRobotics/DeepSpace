@@ -9,6 +9,7 @@ package frc.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.OI;
 
 import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
 import static frc.robot.RobotMap.leftCargoIntake;
@@ -23,8 +24,14 @@ public class CargoIntaker extends Subsystem {
 
   private static final CargoIntaker instance = new CargoIntaker();
 
-  private CargoIntaker() {
+  private double getJoystick() {
+    return OI.intakeJoystick.getY();
+  }
 
+  private CargoIntaker() {
+    double intakeJoystick = getJoystick();
+    OI.leftIntake.set(intakeJoystick);
+    OI.rightIntake.set(intakeJoystick);
   }
 
   public static CargoIntaker getInstance() {
