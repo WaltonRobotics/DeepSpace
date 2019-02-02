@@ -51,4 +51,9 @@ public class CargoIntaker extends Subsystem {
     return timer.hasPeriodPassed(time);
   }
 
+  public synchronized void resetTimer() {
+    timer.reset();
+    timer.start();
+  }
+
 }
