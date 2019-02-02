@@ -14,8 +14,19 @@ public class TransformMap {
         transformArrayList.remove(t);
     }
 
-    public static void removeAll() {
-        transformArrayList.removeAll(transformArrayList);
+    public static void clearTransforms() {
+        transformArrayList.clear();
+    }
+
+    public static double calculate(double input) {
+        double lastResult = input;
+
+        for (Transform t : transformArrayList) {
+            double temp = t.transform(lastResult);
+            lastResult = temp;
+        }
+
+        return lastResult;
     }
 
 }
