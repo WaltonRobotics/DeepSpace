@@ -1,7 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Command;
 
 import static frc.robot.Robot.drivetrain;
@@ -14,11 +12,15 @@ public class EncoderTestCommand extends Command {
 
     @Override
     protected void initialize() {
+        requires(drivetrain);
         distancePerPulse = 0.0002045;
+        System.out.println("hello");
     }
 
     @Override
     protected void execute() {
+        System.out.println("an actual word");
+
         encoderLeft.setDistancePerPulse(distancePerPulse);
         encoderRight.setDistancePerPulse(distancePerPulse);
 
@@ -29,6 +31,6 @@ public class EncoderTestCommand extends Command {
     @Override
     protected boolean isFinished() {
         drivetrain.reset();
-        return true;
+        return false;
     }
 }

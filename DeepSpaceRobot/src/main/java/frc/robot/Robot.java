@@ -121,12 +121,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+    System.out.println("testinittimesya");
     CommandGroup motorTestCommand = new CommandGroup();
     motorTestCommand.addSequential(new MotorTestCommand());
     motorTestCommand.addSequential(new EncoderTestCommand());
     motorTestCommand.start();
-
-  }
+    System.out.println(motorTestCommand.isRunning());
+    System.out.println(motorTestCommand.isCompleted());
+}
 
   /**
    * This function is called periodically during test mode.
