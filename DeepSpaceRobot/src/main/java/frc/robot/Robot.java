@@ -75,7 +75,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     drivetrain.cancelControllerMotion();
-    drivetrain.getMotionLogger().writeMotionDataCSV();
+    drivetrain.getMotionLogger().writeMotionDataCSV(true);
   }
 
   @Override
