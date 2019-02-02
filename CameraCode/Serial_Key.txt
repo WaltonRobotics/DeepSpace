@@ -2,10 +2,10 @@
 X---Y---Z--A---N-\n
 
 
-(X/x): the x-value of the camera relative to target in cm. Lowercase x denotes negative. tvecs[0]
-(Y/y): the z-value of the camera relative to target in cm. Lowercase y denotes negative. From calculation to robot, z -> y. tvecs[2]
+(X/x): the x-value of the camera relative to target in cm. Lowercase x denotes negative. From calculation to robot, z -> x. tvecs[2]
+(Y/y): the z-value of the camera relative to target in cm. Lowercase y denotes negative. From calculation to robot, x -> y. tvecs[0]
 (Z/z): the y-value of the camera relative to target in cm. Lowercase z denotes negative. From calculation to robot, y -> z. tvecs[1]
-(A/a): angle in degrees. Lowercase a denotes negative. rvecs[1]
+(A/a): angle in degrees. Lowercase a denotes negative. From calculation to robot, -angle -> angle. rvecs[1]
 N: the number of targets found
 
 If it cannot decide on a target or none found: FN-\n
