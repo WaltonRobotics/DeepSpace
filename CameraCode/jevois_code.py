@@ -334,7 +334,7 @@ class DeepSpacePoseFinder:
                 closest_target, rvecs, tvecs = target_data[0]
 
                 # Send all serial messages:
-                self.send_all_serial(tvecs[0], tvecs[2], tvecs[1], rvecs[1], len(targets))
+                self.send_all_serial(Pose, targets)
 
         else:
             jevois.sendSerial("FN{}".format(0))
@@ -396,6 +396,7 @@ class DeepSpacePoseFinder:
                 jevois.writeText(outimg, "cannot decide which target to go to", 3, 3, jevois.YUYV.White,
                                  jevois.Font.Font6x10)
                 # Send all serial messages:
+                jevois.sendSerial("FN{}".format(len(targets)))
             else:
                 closest_target, rvecs, tvecs = target_data[0]
                 self.draw_lines(outimg, closest_target, rvecs, tvecs, True)
@@ -407,7 +408,8 @@ class DeepSpacePoseFinder:
                                                                                 float(tvecs[2]))
                 jevois.writeText(outimg, tstring, 3, 15, jevois.YUYV.White, jevois.Font.Font6x10)
 
-                Pose.x = tvecs[2], Pose.y = tvecs[0], Pose.z = tvecs[1], -Pose.angle = rvecs[1]
+                Pose.x = tvecs[2], Pose.y = tvecs[0], Pose.z = tvecs[1], Pose.angle = -rvecs[1]
+                self.send_all_serial(Pose, targets)
 
             # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
             fps = self.timer.stop()
