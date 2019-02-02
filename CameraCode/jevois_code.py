@@ -1,13 +1,8 @@
+import libjevois as jevois
 import cv2
 import numpy as np
 import math  # for cos, sin, etc
 import itertools as it
-
-try:
-    from libjevois import jevois
-except ImportError:
-    jevois = None
-
 
 colors = [
     (0, 0, 255),
@@ -96,7 +91,6 @@ class FirstPython:
         :param outimg:
         :return:
         """
-        res_h, res_w, chans = imgbgr.shape
 
         # Convert input image to HSV:
         imghsv = cv2.cvtColor(imgbgr, cv2.COLOR_BGR2HSV)
@@ -156,7 +150,7 @@ class FirstPython:
         if outimg.valid():
             for tape in tapes:
                 tape.draw(outimg)
-                
+
     def estimate_pose(self, target):
         """
         Estimates the rotation and position of the camera wrt the target
@@ -314,79 +308,80 @@ class FirstPython:
         # Get the next camera image (may block until it is captured). To avoid wasting much time assembling a composite
         # output image with multiple panels by concatenating numpy arrays, in this module we use raw YUYV images and
         # fast paste and draw operations provided by JeVois on those images:
+
+
         inimg = inframe.get()
+        outimg = outframe.get()
+        outimg.require("output", inimg.width, inimg.height, jevois.V4L2_PIX_FMT_YUYV)
+
+        self.draw_image(outimg, inimg)
+        imgbgr = jevois.convertToCvBGR(inimg)
+        inframe.done()
 
         # Start measuring image processing time:
         self.timer.start()
 
         # Convert input image to BGR24:
-        imgbgr = jevois.convertToCvBGR(inimg)
-        res_h, res_w, chans = imgbgr.shape
 
         # Get pre-allocated but blank output image which we will send over USB:
-        outimg = outframe.get()
-        outimg.require("output", res_w * 2, res_h + 12, jevois.V4L2_PIX_FMT_YUYV)  # WHAT? *2 + 12?
-        jevois.paste(inimg, outimg, 0, 0)
-        jevois.drawFilledRect(outimg, 0, res_h, outimg.width, outimg.height - res_h, jevois.YUYV.Black)
-
-        # Let camera know we are done using the input image:
-        inframe.done()
 
         # Get a list of quadrilateral convex hulls for all good objects:
-        contours = self.detect(imgbgr, outimg)
+        tapes = self.detect(imgbgr)
+
+        self.draw_contours(outimg, tapes)
 
         # Load camera calibration if needed:
-        if not hasattr(self, 'camMatrix'): self.load_camera_calibration(res_w, res_h)
-
-        contour_tracker = FindTargets()
-
-        targets = contour_tracker.find_full_contours(contours, (res_w, res_h))
-        if len(targets) > 0:
-            target_data = []
-            for target in targets:
-                # Map to 6D (inverse perspective):
-                try:
-                    rvecs, tvecs = self.estimate_pose(target)
-                    target_data.append((target, rvecs, tvecs))
-                except SystemError:
-                    jevois.LINFO("Oops that contour is a no bueno")
-
-            target_data.sort(key = self.distance_from_origin)
-
-            for target, rvecs, tvecs in target_data:
-                # Draw all detections in 3D:
-                self.draw_lines(outimg, target, rvecs, tvecs)
-
-            if len(target_data) != 1 and self.percent_difference(self.distance_from_origin(target_data[0]),
-                                       self.distance_from_origin(target_data[1])) <= self.decision_tolerance:
-                jevois.writeText(outimg, "cannot decide which target to go to", 3, 3, jevois.YUYV.White,
-                                 jevois.Font.Font6x10)
-                # Send all serial messages:
-                jevois.sendSerial("FN{}".format(len(targets)))
-            else:
-                closest_target, rvecs, tvecs = target_data[0]
-                self.draw_lines(outimg, closest_target, rvecs, tvecs, True)
-
-                rstring = "Rotation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(math.degrees(rvecs[0]), math.degrees(rvecs[1]),
-                                                                             math.degrees(rvecs[2]))
-                jevois.writeText(outimg, rstring, 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
-                tstring = "Translation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(float(tvecs[0]), float(tvecs[1]),
-                                                                                float(tvecs[2]))
-                jevois.writeText(outimg, tstring, 3, 15, jevois.YUYV.White, jevois.Font.Font6x10)
-
-                Pose.x = tvecs[2]
-                Pose.y = tvecs[0]
-                Pose.z = tvecs[1]
-                Pose.angle = -rvecs[2]
-                self.send_all_serial(Pose, targets)
-
-            # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
-            fps = self.timer.stop()
-            jevois.writeText(outimg, fps, 3, res_h - 10, jevois.YUYV.White, jevois.Font.Font6x10)
-
-        else:
-            jevois.writeText(outimg, 'no target detected', 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
-            jevois.sendSerial("FN{}".format(0))
+        # if not hasattr(self, 'camMatrix'): self.load_camera_calibration(res_w, res_h)
+        #
+        # contour_tracker = FindTargets()
+        #
+        # targets = contour_tracker.find_full_contours(contours, (res_w, res_h))
+        # if len(targets) > 0:
+        #     target_data = []
+        #     for target in targets:
+        #         # Map to 6D (inverse perspective):
+        #         try:
+        #             rvecs, tvecs = self.estimate_pose(target)
+        #             target_data.append((target, rvecs, tvecs))
+        #         except SystemError:
+        #             jevois.LINFO("Oops that contour is a no bueno")
+        #
+        #     target_data.sort(key = self.distance_from_origin)
+        #
+        #     for target, rvecs, tvecs in target_data:
+        #         # Draw all detections in 3D:
+        #         self.draw_lines(outimg, target, rvecs, tvecs)
+        #
+        #     if len(target_data) != 1 and self.percent_difference(self.distance_from_origin(target_data[0]),
+        #                                self.distance_from_origin(target_data[1])) <= self.decision_tolerance:
+        #         jevois.writeText(outimg, "cannot decide which target to go to", 3, 3, jevois.YUYV.White,
+        #                          jevois.Font.Font6x10)
+        #         # Send all serial messages:
+        #         jevois.sendSerial("FN{}".format(len(targets)))
+        #     else:
+        #         closest_target, rvecs, tvecs = target_data[0]
+        #         self.draw_lines(outimg, closest_target, rvecs, tvecs, True)
+        #
+        #         rstring = "Rotation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(math.degrees(rvecs[0]), math.degrees(rvecs[1]),
+        #                                                                      math.degrees(rvecs[2]))
+        #         jevois.writeText(outimg, rstring, 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
+        #         tstring = "Translation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(float(tvecs[0]), float(tvecs[1]),
+        #                                                                         float(tvecs[2]))
+        #         jevois.writeText(outimg, tstring, 3, 15, jevois.YUYV.White, jevois.Font.Font6x10)
+        #
+        #         Pose.x = tvecs[2]
+        #         Pose.y = tvecs[0]
+        #         Pose.z = tvecs[1]
+        #         Pose.angle = -rvecs[2]
+        #         self.send_all_serial(Pose, targets)
+        #
+        #     # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
+        #     fps = self.timer.stop()
+        #     jevois.writeText(outimg, fps, 3, res_h - 10, jevois.YUYV.White, jevois.Font.Font6x10)
+        #
+        # else:
+        #     jevois.writeText(outimg, 'no target detected', 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
+        #     jevois.sendSerial("FN{}".format(0))
 
         # We are done with the output, ready to send it to host over USB:
         outframe.send()
@@ -565,7 +560,7 @@ class TapePiece:
 
     def draw(self, outimg):
 
-        if self.contour:
+        if self.contour.size > 0:
             point0 = self.contour[-1]
 
             for point1 in self.contour:
