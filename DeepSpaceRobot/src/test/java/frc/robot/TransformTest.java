@@ -22,7 +22,7 @@ public class TransformTest {
     public void SigmoidTest() {
         Transform sig = new Sigmoid();
         double input = 1;
-        Assert.assertEquals(1 / (1 + Math.pow(Math.E, -input)), sig.transform(1), 0);
+        Assert.assertEquals(1 / (1 + Math.pow(Math.E, -input)) - 0.5, sig.transform(1), 0);
     }
 
     @Test
