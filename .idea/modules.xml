@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DeepSpaceRobot.iml" filepath="$PROJECT_DIR$/.idea/modules/DeepSpaceRobot.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DeepSpaceRobot_main.iml" filepath="$PROJECT_DIR$/.idea/modules/DeepSpaceRobot_main.iml" group="DeepSpaceRobot" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DeepSpaceRobot_test.iml" filepath="$PROJECT_DIR$/.idea/modules/DeepSpaceRobot_test.iml" group="DeepSpaceRobot" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Gradle.iml" filepath="$PROJECT_DIR$/.idea/modules/Gradle.iml" />
     </modules>
   </component>
 </project>

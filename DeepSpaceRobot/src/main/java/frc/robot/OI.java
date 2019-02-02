@@ -36,9 +36,9 @@ public class OI {
 
   public static final JoystickButton halfSpeedButton = new JoystickButton(leftJoystick, HALF_SPEED_PORT);
 
-  public static final JoystickButton sqrtButton = new JoystickButton(rightJoystick, SQRT_SPEED_PORT);
+  public static final JoystickButton sqrtButton = new JoystickButton(rightJoystick, SQRT_SPEED_PORT); // movement w/o controller, seems no change in speed
 
-  public static final JoystickButton superSaiyanButton = new JoystickButton(leftJoystick, EXPONENTIAL_SPEED_PORT);
+  public static final JoystickButton superSaiyanButton = new JoystickButton(leftJoystick, EXPONENTIAL_SPEED_PORT); // may hav a speed cap
 
   public static final JoystickButton normalSpeedButton = new JoystickButton(rightJoystick, NORMAL_SPEED_PORT);
 

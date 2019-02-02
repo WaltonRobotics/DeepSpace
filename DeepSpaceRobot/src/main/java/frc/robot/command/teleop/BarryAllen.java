@@ -14,6 +14,6 @@ public class BarryAllen implements Transform{
 
     @Override
     public double transform(double input) {
-        return Math.signum(input) * Math.pow(input, 10);
+        return Math.signum(input) * Math.pow(Math.abs(input), 2);
     }
 }
