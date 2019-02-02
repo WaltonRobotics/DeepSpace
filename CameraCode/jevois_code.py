@@ -1,8 +1,13 @@
-import libjevois as jevois
 import cv2
 import numpy as np
 import math  # for cos, sin, etc
 import itertools as it
+
+try:
+    from libjevois import jevois
+except ImportError:
+    jevois = None
+
 
 colors = [
     (0, 0, 255),
@@ -64,6 +69,10 @@ class FirstPython:
         # Instantiate a JeVois Timer to measure our processing framerate:
         self.timer = jevois.Timer("DeepSpacePoseFinder", 100, jevois.LOG_INFO)
 
+
+        self.erode_element = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
+        self.dilate_element = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
+
     def load_camera_calibration(self, w, h):
         """
         Load the camera's calibration matrices, determined by the width and height of the image
@@ -80,7 +89,7 @@ class FirstPython:
         else:
             jevois.LFATAL("Failed to read camera parameters from file [{}]".format(cpf))
 
-    def detect(self, imgbgr, outimg=None):
+    def detect(self, imgbgr):
         """
 
         :param imgbgr:
@@ -94,13 +103,6 @@ class FirstPython:
 
         # Isolate pixels inside our desired HSV range:
         imgth = cv2.inRange(imghsv, self.HSVmin, self.HSVmax)
-        str = "H={}-{} S={}-{} V={}-{} ".format(self.HSVmin[0], self.HSVmax[0], self.HSVmin[1],
-                                                self.HSVmax[1], self.HSVmin[2], self.HSVmax[2])
-
-        # Create structuring elements for morpho maths:
-        if not hasattr(self, 'erodeElement'):
-            self.erode_element = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
-            self.dilate_element = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
 
         # Apply morphological operations to cleanup the image noise:
         imgth = cv2.erode(imgth, self.erode_element)
@@ -108,7 +110,6 @@ class FirstPython:
 
         # Detect objects by finding contours:
         contours, hierarchy = cv2.findContours(imgth, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        str += "N={} ".format(len(contours))
 
         # Filter Contours by...
         output = []
@@ -139,22 +140,23 @@ class FirstPython:
             # W / H ratio
             if ratio < self.min_ratio or ratio > self.max_ratio:
                 continue
-            output.append(contour)
-
-        # Display any results requested by the users:
-        if outimg is not None and outimg.valid():
-            jevois.pasteGreyToYUYV(imgth, outimg, 0, 0)
-            jevois.writeText(outimg, str, 3, res_h + 1, jevois.YUYV.White, jevois.Font.Font6x10)
-            for contour in output:
-                box = cv2.boxPoints(cv2.minAreaRect(contour))
-                point0 = box[-1]
-                for point1 in box:
-                    jevois.drawLine(outimg, int(point0[0]), int(point0[1]), int(point1[0]), int(point1[1]), 1,
-                                    jevois.YUYV.LightPurple)
-                    point0 = point1
+            output.append(TapePiece(hull))
 
         return output
 
+    def draw_image(self, outimg, inimg):
+
+        if outimg.valid():
+            jevois.paste(inimg, outimg, 0, 0)
+
+
+    def draw_contours(self, outimg, tapes):
+        # Display any results requested by the users:
+
+        if outimg.valid():
+            for tape in tapes:
+                tape.draw(outimg)
+                
     def estimate_pose(self, target):
         """
         Estimates the rotation and position of the camera wrt the target
@@ -549,8 +551,7 @@ class TapePiece:
 
     @property
     def center_point(self):
-        hull = cv2.convexHull(self.contour, False)
-        moments = cv2.moments(hull)
+        moments = cv2.moments(self.contour)
         return moments['m10']/ moments['m00'], moments['m01']/moments['m00']
 
     @property
@@ -561,6 +562,19 @@ class TapePiece:
 
         else:
             return 'left'
+
+    def draw(self, outimg):
+
+        if self.contour:
+            point0 = self.contour[-1]
+
+            for point1 in self.contour:
+
+                jevois.drawLine(outimg, int(point0[0, 0]), int(point0[0, 1]),
+                                int(point1[0, 0]), int(point1[0, 1]), 1, jevois.YUYV.MedGreen)
+
+                point0 = point1
+
 
     def find_closest(self, old_targets):
 
