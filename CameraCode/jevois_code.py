@@ -23,8 +23,6 @@ class Pose:
         self.angle = 0
 
 class DeepSpacePoseFinder:
-    # ###################################################################################################
-    ## Constructor
     def __init__(self):
         # HSV color range to use:
         #
@@ -46,29 +44,23 @@ class DeepSpacePoseFinder:
         self.min_ratio = 0.0
         self.max_ratio = 1000.0
 
+        self.object_points = np.array(
+            [[-5.936, 31.5, 0.0], [-4.0, 31, 0.0], [-5.375, 25.675, 0.0], [-7.316, 26.175, 0.0],  # Left points
+             [4.0, 31, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0], [5.375, 25.675, 0.0]])  # Right points
+        self.object_points = self.object_points.astype('float32')
+
         self.decision_tolerance = 0.1
 
-        # Measure your U-shaped object (in meters) and set its size here:
-        self.owm = 0.280  # width in meters
-        self.ohm = 0.175  # height in meters
-
-        # Other processing parameters:
-        self.epsilon = 0.015  # Shape smoothing factor (higher for smoother)
-        self.hullarea = (20 * 20, 300 * 300)  # Range of object area (in pixels) to track
-        self.hullfill = 50  # Max fill ratio of the convex hull (percent)
-        self.ethresh = 900  # Shape error threshold (lower is stricter for exact shape)
-        self.margin = 5  # Margin from from frame borders (pixels)
-
         # Instantiate a JeVois Timer to measure our processing framerate:
-        self.timer = jevois.Timer("FirstPython", 100, jevois.LOG_INFO)
+        self.timer = jevois.Timer("DeepSpacePoseFinder", 100, jevois.LOG_INFO)
 
-        # CAUTION: The constructor is a time-critical code section. Taking too long here could upset USB timings and/or
-        # video capture software running on the host computer. Only init the strict minimum here, and do not use OpenCV,
-        # read files, etc
-
-    # ###################################################################################################
-    ## Load camera calibration from JeVois share directory
     def load_camera_calibration(self, w, h):
+        """
+        Load the camera's calibration matrices, determined by the width and height of the image
+        :param w:
+        :param h:
+        :return:
+        """
         cpf = "/jevois/share/camera/calibration{}x{}.yaml".format(w, h)
         fs = cv2.FileStorage(cpf, cv2.FILE_STORAGE_READ)
         if fs.isOpened():
@@ -78,9 +70,13 @@ class DeepSpacePoseFinder:
         else:
             jevois.LFATAL("Failed to read camera parameters from file [{}]".format(cpf))
 
-    # ###################################################################################################
-    ## Detect objects within our HSV range
     def detect(self, imgbgr, outimg=None):
+        """
+
+        :param imgbgr:
+        :param outimg:
+        :return:
+        """
         res_h, res_w, chans = imgbgr.shape
 
         # Convert input image to HSV:
@@ -149,14 +145,12 @@ class DeepSpacePoseFinder:
 
         return output
 
-    # ###################################################################################################
-    ## Estimate 6D pose of each of the quadrilateral objects in hlist:
     def estimate_pose(self, target):
-        object_points = np.array(
-            [[-5.936, 31.5, 0.0], [-4.0, 31, 0.0], [-5.375, 25.675, 0.0], [-7.316, 26.175, 0.0],  # Left points
-             [4.0, 31, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0], [5.375, 25.675, 0.0]])  # Right points
-        object_points = object_points.astype('float32')
-
+        """
+        Estimates the rotation and position of the camera wrt the target
+        :param target: An object
+        :return: rotation and translation of the camera
+        """
         image_points_left = np.array(self.order_corners_clockwise(target.left_rect))
         image_points_left = image_points_left.astype('float32')
 
@@ -165,15 +159,17 @@ class DeepSpacePoseFinder:
 
         image_points = np.concatenate((image_points_left, image_points_right))
 
-        ret, rotation, translation = cv2.solvePnP(object_points, image_points, self.cam_matrix, self.dist_coeffs)
+        ret, rotation, translation = cv2.solvePnP(self.object_points, image_points, self.cam_matrix, self.dist_coeffs)
         return rotation, translation
 
-    # ###################################################################################################
-    ## Send serial messages, one per object
     @staticmethod
     def send_all_serial(pose, targets):
-
-
+        """
+        Sends a message over the SerialPort to the RoboRIO
+        :param pose:
+        :param targets:
+        :return:
+        """
         if pose is not None:
 
             x_key = 'x' if pose.x < 0 else 'X'
@@ -197,81 +193,21 @@ class DeepSpacePoseFinder:
         else:
             jevois.sendSerial("FN{}".format(min(len(targets)), 9))
 
-    # ###################################################################################################
-    ## Draw all detected objects in 3D
-    # def drawDetections(self, outimg, hlist, rvecs=None, tvecs=None):
-    #     # Show trihedron and parallelepiped centered on object:
-    #     hw = self.owm * 0.5
-    #     hh = self.ohm * 0.5
-    #     dd = -max(hw, hh)
-    #     i = 0
-    #     empty = np.array([(0.0), (0.0), (0.0)])
-    #
-    #     for obj in hlist:
-    #         # skip those for which solvePnP failed:
-    #         if np.array_equal(rvecs[i], empty):
-    #             i += 1
-    #             continue
-    #
-    #         # Project axis points:
-    #         axisPoints = np.array([(0.0, 0.0, 0.0), (hw, 0.0, 0.0), (0.0, hh, 0.0), (0.0, 0.0, dd)])
-    #         imagePoints, jac = cv2.projectPoints(axisPoints, rvecs[i], tvecs[i], self.cam_matrix, self.dist_coeffs)
-    #
-    #         # Draw axis lines:
-    #         jevois.drawLine(outimg, int(imagePoints[0][0, 0] + 0.5), int(imagePoints[0][0, 1] + 0.5),
-    #                         int(imagePoints[1][0, 0] + 0.5), int(imagePoints[1][0, 1] + 0.5),
-    #                         2, jevois.YUYV.MedPurple)
-    #         jevois.drawLine(outimg, int(imagePoints[0][0, 0] + 0.5), int(imagePoints[0][0, 1] + 0.5),
-    #                         int(imagePoints[2][0, 0] + 0.5), int(imagePoints[2][0, 1] + 0.5),
-    #                         2, jevois.YUYV.MedGreen)
-    #         jevois.drawLine(outimg, int(imagePoints[0][0, 0] + 0.5), int(imagePoints[0][0, 1] + 0.5),
-    #                         int(imagePoints[3][0, 0] + 0.5), int(imagePoints[3][0, 1] + 0.5),
-    #                         2, jevois.YUYV.MedGrey)
-    #
-    #         # Also draw a parallelepiped:
-    #         cubePoints = np.array([(-hw, -hh, 0.0), (hw, -hh, 0.0), (hw, hh, 0.0), (-hw, hh, 0.0),
-    #                                (-hw, -hh, dd), (hw, -hh, dd), (hw, hh, dd), (-hw, hh, dd)])
-    #         cu, jac2 = cv2.projectPoints(cubePoints, rvecs[i], tvecs[i], self.cam_matrix, self.dist_coeffs)
-    #
-    #         # Round all the coordinates and cast to int for drawing:
-    #         cu = np.rint(cu)
-    #
-    #         # Draw parallelepiped lines:
-    #         jevois.drawLine(outimg, int(cu[0][0, 0]), int(cu[0][0, 1]), int(cu[1][0, 0]), int(cu[1][0, 1]),
-    #                         1, jevois.YUYV.LightGreen)
-    #         jevois.drawLine(outimg, int(cu[1][0, 0]), int(cu[1][0, 1]), int(cu[2][0, 0]), int(cu[2][0, 1]),
-    #                         1, jevois.YUYV.LightGreen)
-    #         jevois.drawLine(outimg, int(cu[2][0, 0]), int(cu[2][0, 1]), int(cu[3][0, 0]), int(cu[3][0, 1]),
-    #                         1, jevois.YUYV.LightGreen)
-    #         jevois.drawLine(outimg, int(cu[3][0, 0]), int(cu[3][0, 1]), int(cu[0][0, 0]), int(cu[0][0, 1]),
-    #                         1, jevois.YUYV.LightGreen)
-    #         jevois.drawLine(outimg, int(cu[4][0, 0]), int(cu[4][0, 1]), int(cu[5][0, 0]), int(cu[5][0, 1]),
-    #                         1, jevois.YUYV.LightGreen)
-    #         jevois.drawLine(outimg, int(cu[5][0, 0]), int(cu[5][0, 1]), int(cu[6][0, 0]), int(cu[6][0, 1]),
-    #                         1, jevois.YUYV.LightGreen)
-    #         jevois.drawLine(outimg, int(cu[6][0, 0]), int(cu[6][0, 1]), int(cu[7][0, 0]), int(cu[7][0, 1]),
-    #                         1, jevois.YUYV.LightGreen)
-    #         jevois.drawLine(outimg, int(cu[7][0, 0]), int(cu[7][0, 1]), int(cu[4][0, 0]), int(cu[4][0, 1]),
-    #                         1, jevois.YUYV.LightGreen)
-    #         jevois.drawLine(outimg, int(cu[0][0, 0]), int(cu[0][0, 1]), int(cu[4][0, 0]), int(cu[4][0, 1]),
-    #                         1, jevois.YUYV.LightGreen)
-    #         jevois.drawLine(outimg, int(cu[1][0, 0]), int(cu[1][0, 1]), int(cu[5][0, 0]), int(cu[5][0, 1]),
-    #                         1, jevois.YUYV.LightGreen)
-    #         jevois.drawLine(outimg, int(cu[2][0, 0]), int(cu[2][0, 1]), int(cu[6][0, 0]), int(cu[6][0, 1]),
-    #                         1, jevois.YUYV.LightGreen)
-    #         jevois.drawLine(outimg, int(cu[3][0, 0]), int(cu[3][0, 1]), int(cu[7][0, 0]), int(cu[7][0, 1]),
-    #                         1, jevois.YUYV.LightGreen)
-    #
-    #         i += 1
-
     def draw_lines(self, outimg, target, rvecs=None, tvecs=None, is_closest=False):
-        # Draw rotated axis lines
+        """
+        Draws lines around a target
+        :param outimg: the image to display the lines on
+        :param target: the target in question
+        :param rvecs: the rotation vectors calculated from self.estimate_pose
+        :param tvecs: the translation vectors calculated from self.estimate_pose
+        :param is_closest: whether or not target is the target the robot wants to choose
+        """
+        # Draw lines normal to the target's surface, from the center of the target
         axis_points = np.array([[0.0, 28.875, 0.0],
                                 [0.0, 28.875, 4.0]])
         projected_axis_points, jac = cv2.projectPoints(axis_points, rvecs, tvecs, self.cam_matrix, self.dist_coeffs)
         point0 = projected_axis_points[0]
         point1 = projected_axis_points[1]
-        jevois.LINFO("{} {}".format(point0[0, 0], point0[0, 1]))
         if is_closest:
             jevois.drawLine(outimg, int(point0[0, 0]), int(point0[0, 1]),
                             int(point1[0, 0]), int(point1[0, 1]), 1, jevois.YUYV.MedPurple)
@@ -279,6 +215,7 @@ class DeepSpacePoseFinder:
             jevois.drawLine(outimg, int(point0[0, 0]), int(point0[0, 1]),
                             int(point1[0, 0]), int(point1[0, 1]), 1, jevois.YUYV.MedGreen)
 
+        # Draw boxes around targets
         box = target.bounding_quadrilateral
         point0 = box[-1]
         for point1 in box:
@@ -290,9 +227,12 @@ class DeepSpacePoseFinder:
                                 jevois.YUYV.LightGreen)
             point0 = point1
 
-    # ###################################################################################################
-    ## Process function with no USB output
     def processNoUSB(self, inframe):
+        """
+        Process the inframe without a USB connection to JeVois Inventor. This is run automatically by the camera.
+        :param inframe:
+        :return:
+        """
         # Get the next camera image (may block until it is captured). To avoid wasting much time assembling a composite
         # output image with multiple panels by concatenating numpy arrays, in this module we use raw YUYV images and
         # fast paste and draw operations provided by JeVois on those images:
@@ -344,10 +284,13 @@ class DeepSpacePoseFinder:
 
         self.timer.stop()
 
-    # ###################################################################################################
-    ## Process function with USB output
     def process(self, inframe, outframe):
-
+        """
+        Process the inframe with USB connection to JeVois Inventor. This is run automatically by the camera.
+        :param inframe:
+        :param outframe:
+        :return:
+        """
         # Get the next camera image (may block until it is captured). To avoid wasting much time assembling a composite
         # output image with multiple panels by concatenating numpy arrays, in this module we use raw YUYV images and
         # fast paste and draw operations provided by JeVois on those images:
@@ -462,6 +405,12 @@ class DeepSpacePoseFinder:
         return math.sqrt(math.pow(point0[0] - point1[0], 2) + math.pow(point0[1] - point1[1], 2))
 
     def percent_difference(self, value1, value2):
+        """
+        Finds the percent difference between two values, between 0.0 and 1.0
+        :param value1:
+        :param value2:
+        :return:
+        """
         return math.fabs(value1 - value2) / (value1 + value2)
 
     def distance_from_origin(self, target_data):
