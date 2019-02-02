@@ -33,8 +33,9 @@ public class Config {
     public static final double kAcc = 0.28150490814209445;
 
     //    Constants to help tune the movement of the robot
-    public static final double kS = 0.8;
-    public static final double kAng = 0;
+    public static final double kS = 0.85;
+    public static final double kAng = 0.3;
+
     public static final double kL = 2;
     public static final double iL = 0;
     public static final double iAng = 0;
@@ -52,16 +53,16 @@ public class Config {
 
   public static final class SmartDashboardKeys {
 
-    public static final String CONSTANTS_KANGLE = "SmartDashboard/Constants/KAngle";
-    public static final String CONSTANTS_MAX_VELOCITY = "SmartDashboard/Constants/Max Velocity";
-    public static final String CONSTANTS_MAX_ACCELERATION = "SmartDashboard/Constants/Max Acceleration";
-    public static final String CONSTANTS_KL = "SmartDashboard/Constants/KL";
-    public static final String CONSTANTS_KV = "SmartDashboard/Constants/KV";
-    public static final String CONSTANTS_KACC = "SmartDashboard/Constants/KAcc";
-    public static final String CONSTANTS_KK = "SmartDashboard/Constants/KK";
-    public static final String CONSTANTS_KS = "SmartDashboard/Constants/KS";
+    public static final String CONSTANTS_KANGLE = "Constants/KAngle";
+    public static final String CONSTANTS_MAX_VELOCITY = "Constants/Max Velocity";
+    public static final String CONSTANTS_MAX_ACCELERATION = "Constants/Max Acceleration";
+    public static final String CONSTANTS_KL = "Constants/KL";
+    public static final String CONSTANTS_KV = "Constants/KV";
+    public static final String CONSTANTS_KACC = "Constants/KAcc";
+    public static final String CONSTANTS_KK = "Constants/KK";
+    public static final String CONSTANTS_KS = "Constants/KS";
 
-    public static final String MAX_VELOCITY = "SmartDashboard/Constants/Max Velocity";
-    public static final String MAX_ACCELERATION = "SmartDashboard/Constants/Max Acceleration";
+    public static final String MAX_VELOCITY = "Constants/Max Velocity";
+    public static final String MAX_ACCELERATION = "Constants/Max Acceleration";
   }
 }
