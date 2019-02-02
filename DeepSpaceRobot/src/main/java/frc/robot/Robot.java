@@ -13,6 +13,7 @@ import static frc.robot.RobotMap.encoderRight;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -117,10 +118,21 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
+
+  @Override
+  public void testInit() {
+    CommandGroup motorTestCommand = new CommandGroup();
+    motorTestCommand.addSequential(new MotorTestCommand());
+    motorTestCommand.addSequential(new EncoderTestCommand());
+    motorTestCommand.start();
+
+  }
+
   /**
    * This function is called periodically during test mode.
    */
   @Override
   public void testPeriodic() {
+      Scheduler.getInstance().run();
   }
 }
