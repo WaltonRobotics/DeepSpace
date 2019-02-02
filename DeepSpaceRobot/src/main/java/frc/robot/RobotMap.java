@@ -27,8 +27,6 @@ import frc.robot.Config.Motor;
  * floating around.
  */
 public class RobotMap {
-  public static Talon leftMotor = new Talon (Motor.LEFT_MOTOR_PORT);
-  public static Talon rightMotor = new Talon (Motor.RIGHT_MOTOR_PORT);
 
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.

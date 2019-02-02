@@ -17,6 +17,8 @@ import frc.robot.subsystem.Drivetrain;
 
 public class Drive extends Command {
 
+  private Transform currentT = new NormalSpeed();
+
   public Drive() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -61,21 +63,20 @@ public Transform getTransform() {
     */
 
     // speed transform
-    Transform t = new NormalSpeed();
 
     if (OI.halfSpeedButton.get()) {
-      t = new HalfSpeed();
+      currentT = new HalfSpeed();
     } else if (OI.sqrtButton.get()) {
-      t = new Sqrt();
+      currentT = new Sqrt();
     } else if (OI.superSaiyanButton.get()) {
-      t = new BarryAllen();
+      currentT = new BarryAllen();
     } else if (OI.normalSpeedButton.get()) {
-      t = new NormalSpeed();
+      currentT = new NormalSpeed();
     } else if (OI.sigmoidButton.get()) {
-      t = new Sigmoid();
+      currentT = new Sigmoid();
     }
 
-    Robot.drivetrain.setSpeeds(t.transform(leftYJoystick), t.transform(rightYJoystick));
+    Robot.drivetrain.setSpeeds(currentT.transform(leftYJoystick), currentT.transform(rightYJoystick));
     // speed transform end
 
     if (OI.shiftUp.get()) {
