@@ -10,6 +10,7 @@ package frc.robot;
 import static frc.robot.Config.Inputs.GAMEPAD_PORT;
 import static frc.robot.Config.Inputs.LEFT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
+import static frc.robot.Config.Inputs.INTAKE_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.SHIFT_DOWN_PORT;
 import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
 import static frc.robot.Config.Hardware.LEFT_INTAKE_MOTOR_CHANNEL;
@@ -27,6 +28,7 @@ public class OI {
 
   public static final Joystick leftJoystick = new Joystick(LEFT_JOYSTICK_PORT);
   public static final Joystick rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
+  public static final Joystick intakeJoystick = new Joystick(INTAKE_JOYSTICK_PORT);
   public static final Gamepad gamepad = new Gamepad(GAMEPAD_PORT);
 
   public static final JoystickButton shiftUp = new JoystickButton(leftJoystick, SHIFT_UP_PORT);

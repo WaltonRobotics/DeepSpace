@@ -8,6 +8,7 @@
 package frc.robot.subsystem;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.OI;
 
 /**
  * Add your docs here.
@@ -18,8 +19,14 @@ public class CargoIntaker extends Subsystem {
 
   private static final CargoIntaker instance = new CargoIntaker();
 
-  private CargoIntaker() {
+  private double getJoystick() {
+    return OI.intakeJoystick.getY();
+  }
 
+  private CargoIntaker() {
+    double intakeJoystick = getJoystick();
+    OI.leftIntake.set(intakeJoystick);
+    OI.rightIntake.set(intakeJoystick);
   }
 
   public static CargoIntaker getInstance() {
