@@ -14,6 +14,13 @@ def pairwise(iterable):
     a = iter(iterable)
     return it.zip_longest(a, a, fillvalue=None)
 
+class Pose:
+
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+        self.z = 0
+        self.angle = 0
 
 class DeepSpacePoseFinder:
     # ###################################################################################################
@@ -163,32 +170,32 @@ class DeepSpacePoseFinder:
 
     # ###################################################################################################
     ## Send serial messages, one per object
-    def send_all_serial(self, x, y, z, angle, number):
+    @staticmethod
+    def send_all_serial(pose, targets):
 
 
-        xKey = 'X'
-        yKey = 'Y'
-        zKey = 'Z'
-        angleKey = 'A'
+        if pose is not None:
 
-        if x < 0:
-            xKey = 'x'
-        x = round(abs(x) * 2.54)
+            x_key = 'x' if pose.x < 0 else 'X'
+            x = min(int(round(abs(pose.x) * 2.54)), 999)
 
-        if y < 0:
-            yKey = 'y'
-        y = round(abs(y) * 2.54)
 
-        if z < 0:
-            zKey = 'z'
-        z = round(abs(z) * 2.54)
+            y_key = 'z' if pose.z < 0 else 'Y'
+            y = min(int(round(abs(pose.y) * 2.54)), 999)
 
-        if angle < 0:
-            angleKey = 'a'
 
-        angle = round(math.degrees(angle))
+            z_key = 'z' if pose.z < 0 else 'Z'
+            z = min(int(round(abs(pose.z) * 2.54)), 99)
 
-        jevois.sendSerial("{}".format(xKey, x, yKey, y, zKey, z, angleKey, angle, 'N', number)) # pose
+
+            angle_key = 'a' if pose.angle < 0 else 'A'
+
+            angle = min(int(round(math.degrees(pose.angle))), 999)
+
+            jevois.sendSerial("{0:s}{1:3d}{2:s}{3:3d}{4:s}{5:2d}{6:s}{7:3d}N{8:1d}".format(x_key, x, y_key, y, z_key, z, angle_key, angle, targets)) # pose
+
+        else:
+            jevois.sendSerial("FN{}".format(min(len(targets)), 9))
 
     # ###################################################################################################
     ## Draw all detected objects in 3D
@@ -389,7 +396,6 @@ class DeepSpacePoseFinder:
                 jevois.writeText(outimg, "cannot decide which target to go to", 3, 3, jevois.YUYV.White,
                                  jevois.Font.Font6x10)
                 # Send all serial messages:
-                jevois.sendSerial("FN{}".format(len(targets)))
             else:
                 closest_target, rvecs, tvecs = target_data[0]
                 self.draw_lines(outimg, closest_target, rvecs, tvecs, True)
@@ -401,9 +407,7 @@ class DeepSpacePoseFinder:
                                                                                 float(tvecs[2]))
                 jevois.writeText(outimg, tstring, 3, 15, jevois.YUYV.White, jevois.Font.Font6x10)
 
-                # Send all serial messages:
-                self.send_all_serial(tvecs[0], tvecs[2], tvecs[1], rvecs[1], len(targets))
-
+                Pose.x = tvecs[2], Pose.y = tvecs[0], Pose.z = tvecs[1], -Pose.angle = rvecs[1]
 
             # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
             fps = self.timer.stop()
