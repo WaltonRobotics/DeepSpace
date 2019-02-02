@@ -39,7 +39,7 @@ public class TransformTest {
 
     @Test
     public void TransformMapTest() {
-        
+        TransformMapTest.clearTransforms();
     }
 
     @Test
