@@ -10,6 +10,15 @@ colors = [
 ]
 
 
+def distance_2d(point0, point1):
+    """
+    :param point0:
+    :param point1:
+    :return: the distance between point0 and point1
+    """
+    return math.sqrt(math.pow(point0[0] - point1[0], 2) + math.pow(point0[1] - point1[1], 2))
+
+
 def pairwise(iterable):
     a = iter(iterable)
     return it.zip_longest(a, a, fillvalue=None)
@@ -22,7 +31,7 @@ class Pose:
         self.z = 0
         self.angle = 0
 
-class DeepSpacePoseFinder:
+class FirstPython:
     def __init__(self):
         # HSV color range to use:
         #
@@ -32,24 +41,25 @@ class DeepSpacePoseFinder:
         # V: 0 for dark to 255 for maximally bright
         self.HSVmin = np.array([73, 110, 111], dtype=np.uint8)
         self.HSVmax = np.array([102, 255, 255], dtype=np.uint8)
-        self.min_area = 15.0
+        self.min_area = 200.0
+        self.max_area = 1000.0
         self.min_perimeter = 10.0
-        self.min_width = 0.0
+        self.min_width = 5.0
         self.max_width = 1000.0
         self.min_height = 0.0
         self.max_height = 1000.0
         self.solidity = [0, 100]
         self.max_vertices = 1000000.0
-        self.min_vertices = 0.0
-        self.min_ratio = 0.0
-        self.max_ratio = 1000.0
+        self.min_vertices = 4.0
+        self.min_ratio = 0.5
+        self.max_ratio = 2.0
 
         self.object_points = np.array(
             [[-5.936, 31.5, 0.0], [-4.0, 31, 0.0], [-5.375, 25.675, 0.0], [-7.316, 26.175, 0.0],  # Left points
              [4.0, 31, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0], [5.375, 25.675, 0.0]])  # Right points
         self.object_points = self.object_points.astype('float32')
 
-        self.decision_tolerance = 0.1
+        self.decision_tolerance = 0.05
 
         # Instantiate a JeVois Timer to measure our processing framerate:
         self.timer = jevois.Timer("DeepSpacePoseFinder", 100, jevois.LOG_INFO)
@@ -112,7 +122,7 @@ class DeepSpacePoseFinder:
                 continue
             area = cv2.contourArea(contour)
             # Area
-            if area < self.min_area:
+            if area < self.min_area or area > self.max_area:
                 continue
             # Perimeter
             if cv2.arcLength(contour, True) < self.min_perimeter:
@@ -158,7 +168,6 @@ class DeepSpacePoseFinder:
         image_points_right = image_points_right.astype('float32')
 
         image_points = np.concatenate((image_points_left, image_points_right))
-
         ret, rotation, translation = cv2.solvePnP(self.object_points, image_points, self.cam_matrix, self.dist_coeffs)
         return rotation, translation
 
@@ -173,22 +182,22 @@ class DeepSpacePoseFinder:
         if pose is not None:
 
             x_key = 'x' if pose.x < 0 else 'X'
-            x = min(int(round(abs(pose.x) * 2.54)), 999)
+            x = min(int(round(abs(float(pose.x)) * 2.54)), 999)
 
 
             y_key = 'z' if pose.z < 0 else 'Y'
-            y = min(int(round(abs(pose.y) * 2.54)), 999)
+            y = min(int(round(abs(float(pose.y)) * 2.54)), 999)
 
 
             z_key = 'z' if pose.z < 0 else 'Z'
-            z = min(int(round(abs(pose.z) * 2.54)), 99)
+            z = min(int(round(abs(float(pose.z)) * 2.54)), 99)
 
 
             angle_key = 'a' if pose.angle < 0 else 'A'
 
-            angle = min(int(round(math.degrees(pose.angle))), 999)
+            angle = min(int(round(math.degrees(float(pose.angle)))), 999)
 
-            jevois.sendSerial("{0:s}{1:3d}{2:s}{3:3d}{4:s}{5:2d}{6:s}{7:3d}N{8:1d}".format(x_key, x, y_key, y, z_key, z, angle_key, angle, targets)) # pose
+            jevois.sendSerial("{0:s}{1:3d}{2:s}{3:3d}{4:s}{5:2d}{6:s}{7:3d}N{8:1d}".format(x_key, x, y_key, y, z_key, z, angle_key, angle, len(targets))) # pose
 
         else:
             jevois.sendSerial("FN{}".format(min(len(targets)), 9))
@@ -259,19 +268,28 @@ class DeepSpacePoseFinder:
         if targets is not None:
             target_data = []
             for target in targets:
-                # Map to 6D (inverse perspective):
-                rvecs, tvecs = self.estimate_pose(target)
-                target_data.append((target, rvecs, tvecs))
+
+                try:
+                    # Map to 6D (inverse perspective):
+                    rvecs, tvecs = self.estimate_pose(target)
+                    target_data.append((target, rvecs, tvecs))
+
+                except SystemError:
+                    pass
 
             target_data.sort(key=self.distance_from_origin)
 
 
-            if self.percent_difference(self.distance_from_origin(target_data[0]),
+            if len(target_data) != 1 and self.percent_difference(self.distance_from_origin(target_data[0]),
                                        self.distance_from_origin(target_data[1])) <= self.decision_tolerance:
                 jevois.sendSerial("FN{}".format(len(targets)))
 
             else:
                 closest_target, rvecs, tvecs = target_data[0]
+                Pose.x = tvecs[2]
+                Pose.y = tvecs[0]
+                Pose.z = tvecs[1]
+                Pose.angle = -rvecs[2]
 
                 # Send all serial messages:
                 self.send_all_serial(Pose, targets)
@@ -305,7 +323,7 @@ class DeepSpacePoseFinder:
 
         # Get pre-allocated but blank output image which we will send over USB:
         outimg = outframe.get()
-        outimg.require("output", res_w, res_h, jevois.V4L2_PIX_FMT_YUYV)  # WHAT? *2 + 12?
+        outimg.require("output", res_w * 2, res_h + 12, jevois.V4L2_PIX_FMT_YUYV)  # WHAT? *2 + 12?
         jevois.paste(inimg, outimg, 0, 0)
         jevois.drawFilledRect(outimg, 0, res_h, outimg.width, outimg.height - res_h, jevois.YUYV.Black)
 
@@ -321,12 +339,15 @@ class DeepSpacePoseFinder:
         contour_tracker = FindTargets()
 
         targets = contour_tracker.find_full_contours(contours, (res_w, res_h))
-        if targets is not None:
+        if len(targets) > 0:
             target_data = []
             for target in targets:
                 # Map to 6D (inverse perspective):
-                rvecs, tvecs = self.estimate_pose(target)
-                target_data.append((target, rvecs, tvecs))
+                try:
+                    rvecs, tvecs = self.estimate_pose(target)
+                    target_data.append((target, rvecs, tvecs))
+                except SystemError:
+                    jevois.LINFO("Oops that contour is a no bueno")
 
             target_data.sort(key = self.distance_from_origin)
 
@@ -334,7 +355,7 @@ class DeepSpacePoseFinder:
                 # Draw all detections in 3D:
                 self.draw_lines(outimg, target, rvecs, tvecs)
 
-            if self.percent_difference(self.distance_from_origin(target_data[0]),
+            if len(target_data) != 1 and self.percent_difference(self.distance_from_origin(target_data[0]),
                                        self.distance_from_origin(target_data[1])) <= self.decision_tolerance:
                 jevois.writeText(outimg, "cannot decide which target to go to", 3, 3, jevois.YUYV.White,
                                  jevois.Font.Font6x10)
@@ -351,7 +372,10 @@ class DeepSpacePoseFinder:
                                                                                 float(tvecs[2]))
                 jevois.writeText(outimg, tstring, 3, 15, jevois.YUYV.White, jevois.Font.Font6x10)
 
-                Pose.x = tvecs[2], Pose.y = tvecs[0], Pose.z = tvecs[1], Pose.angle = -rvecs[1]
+                Pose.x = tvecs[2]
+                Pose.y = tvecs[0]
+                Pose.z = tvecs[1]
+                Pose.angle = -rvecs[2]
                 self.send_all_serial(Pose, targets)
 
             # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
@@ -359,7 +383,7 @@ class DeepSpacePoseFinder:
             jevois.writeText(outimg, fps, 3, res_h - 10, jevois.YUYV.White, jevois.Font.Font6x10)
 
         else:
-            jevois.writeText(outimg, 'no contour detected', 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
+            jevois.writeText(outimg, 'no target detected', 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
             jevois.sendSerial("FN{}".format(0))
 
         # We are done with the output, ready to send it to host over USB:
@@ -396,14 +420,6 @@ class DeepSpacePoseFinder:
         # return the coordinates in top-left, top-right, bottom-right, and bottom-left order
         return np.array([tl, tr, br, bl], dtype="float32")
 
-    def distance_2d(self, point0, point1):
-        """
-        :param point0:
-        :param point1:
-        :return: the distance between point0 and point1
-        """
-        return math.sqrt(math.pow(point0[0] - point1[0], 2) + math.pow(point0[1] - point1[1], 2))
-
     def percent_difference(self, value1, value2):
         """
         Finds the percent difference between two values, between 0.0 and 1.0
@@ -423,9 +439,9 @@ class DeepSpacePoseFinder:
 
 class Target:
 
-    def __init__(self, left_rect, right_rect):
-        self.left_rect = left_rect
-        self.right_rect = right_rect
+    def __init__(self, left_tape, right_tape):
+        self.left_tape = left_tape
+        self.right_tape = right_tape
 
     @property
     def average_center(self):
@@ -433,33 +449,17 @@ class Target:
 
     @property
     def average_x(self):
-        return (self.right_rect[0][0] + self.left_rect[0][0]) / 2
+        return (self.right_tape[0][0] + self.left_tape[0][0]) / 2
 
     @property
     def average_y(self):
-        return (self.left_rect[0][1] + self.right_rect[0][1]) / 2
-
-    @property
-    def center_point_left(self):
-        return self.left_rect[0]
-
-    @property
-    def center_point_right(self):
-        return self.right_rect[0]
-
-    @property
-    def angle_left(self):
-        return self.left_rect[2]
-
-    @property
-    def angle_right(self):
-        return self.right_rect[2]
+        return (self.left_tape[0][1] + self.right_tape[0][1]) / 2
 
     @property
     def bounding_quadrilateral(self):
         bl = np.array([math.inf, -math.inf])
         tl = np.array([math.inf, math.inf])
-        for point in cv2.boxPoints(self.left_rect):
+        for point in cv2.boxPoints(self.left_tape):
             bl[0] = min(float(bl[0]), float(point[0]))
             bl[1] = max(float(bl[1]), float(point[1]))
             tl[0] = min(float(tl[0]), float(point[0]))
@@ -467,7 +467,7 @@ class Target:
 
         br = np.array([-math.inf, -math.inf])
         tr = np.array([-math.inf, math.inf])
-        for point in cv2.boxPoints(self.right_rect):
+        for point in cv2.boxPoints(self.right_tape):
             br[0] = max(float(br[0]), float(point[0]))
             br[1] = max(float(br[1]), float(point[1]))
             tr[0] = max(float(tr[0]), float(point[0]))
@@ -489,7 +489,7 @@ class FindTargets:
 
         return contour_rects
 
-    def find_full_contours(self, contours, frame_size):
+    def find_full_contours(self, contours):
 
         contour_rects = self.__get_min_area_rects(contours)
 
@@ -539,3 +539,57 @@ class FindTargets:
 
         return remainder
 
+class TapePiece:
+    def __init__(self, contour):
+        self.contour = contour
+
+    @property
+    def angle(self):
+        return cv2.minAreaRect(self.contour)[2]
+
+    @property
+    def center_point(self):
+        hull = cv2.convexHull(self.contour, False)
+        moments = cv2.moments(hull)
+        return moments['m10']/ moments['m00'], moments['m01']/moments['m00']
+
+    @property
+    def parity(self):
+
+        if self.angle > -45:
+            return 'right'
+
+        else:
+            return 'left'
+
+    def find_closest(self, old_targets):
+
+
+        if self.parity not in ('left', 'right'):
+            return None, np.inf
+
+        my_center = self.center_point
+
+        min_distance = np.inf
+        min_tape = None
+
+        for target in old_targets.values():
+
+            if self.parity == 'left':
+                tape = target.left_tape
+
+            else:
+                tape = target.right_rect
+
+            if tape is None:
+                continue
+
+            tape_center = tape.center_point
+
+            distance = distance_2d(my_center, tape_center)
+
+            if distance < min_distance:
+                min_distance = distance
+                min_tape = tape
+
+        return min_tape, min_distance
