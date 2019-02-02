@@ -48,6 +48,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Transform Select", sendableChooser);
 
     UsbCamera fishEyeCamera = CameraServer.getInstance().startAutomaticCapture();
+    if (!fishEyeCamera.isConnected()) {
+      fishEyeCamera.close();
+    }
   }
 
   /**
