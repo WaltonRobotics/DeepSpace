@@ -38,6 +38,7 @@ public class RobotMap {
 
   public static final Talon leftCargoIntake = new Talon(LEFT_CARGO_INTAKE_MOTOR_CHANNEL);
   public static final Talon rightCargoIntake = new Talon(RIGHT_CARGO_INTAKE_MOTOR_CHANNEL);
+  public static final Talon elevatorMotor = new Talon(ELEVATOR_MOTOR_CHANNEL);
 
   public static final Encoder encoderRight = new Encoder(new DigitalInput(RIGHT_ENCODER_CHANNEL1),
       new DigitalInput(RIGHT_ENCODER_CHANNEL2));

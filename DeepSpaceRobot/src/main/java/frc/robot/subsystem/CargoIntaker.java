@@ -20,10 +20,12 @@ import static frc.robot.RobotMap.rightCargoIntake;
 public class CargoIntaker extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
+  //
 
   private static final CargoIntaker instance = new CargoIntaker();
 
   private final Timer timer = new Timer();
+
 
   private CargoIntaker() {
     timer.reset();
@@ -53,7 +55,7 @@ public class CargoIntaker extends Subsystem {
 
   public synchronized void resetTimer() {
     timer.reset();
-    timer.start();
+     timer.start();
   }
 
 }

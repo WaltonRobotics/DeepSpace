@@ -8,6 +8,7 @@
 package frc.robot.subsystem;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
@@ -15,10 +16,22 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Elevator extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
+  double elevatorOriginalHeight = 500; //makeshift number
+  double elevatorCurrentHeight;
+  double distanceBetweenOgAndCurrent = elevatorCurrentHeight - elevatorOriginalHeight;
 
   private static final Elevator instance = new Elevator();
 
+  //returns elevator to original height
+  public void returnNormHeight() {
+    if (elevatorCurrentHeight != elevatorCurrentHeight) {
+      RobotMap.elevatorMotor.set(Math.signum(elevatorCurrentHeight - elevatorOriginalHeight) * Math.abs(distanceBetweenOgAndCurrent)); //may work, not expecting to
+    }
+  }
+
+
   private Elevator() {
+
 
   }
 
