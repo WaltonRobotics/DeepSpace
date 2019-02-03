@@ -19,6 +19,7 @@ import static frc.robot.RobotMap.encoderRight;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import org.waltonrobotics.controller.Pose;
 
 /**
  * This class is the glue that binds the controls on the physical operator interface to the commands and command groups
@@ -67,6 +68,7 @@ public class OI {
       @Override
       protected void initialize() {
         drivetrain.reset();
+        drivetrain.setStartingPosition(Pose.ZERO);
       }
     });
   }
