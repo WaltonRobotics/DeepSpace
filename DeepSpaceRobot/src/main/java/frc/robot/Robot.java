@@ -21,9 +21,10 @@ import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.subsystem.Drivetrain;
-import org.waltonrobotics.command.SimpleLine;
 import frc.robot.util.RobotBuilder;
 import frc.robot.util.RobotConfig;
+import org.waltonrobotics.command.SimpleCameraPositioning;
+import org.waltonrobotics.command.SimpleMotion;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -108,6 +109,10 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("Transform Select", sendableChooser);
 
+    SmartDashboard.putNumber("dx", 2);
+    SmartDashboard.putNumber("dy", .5);
+    SmartDashboard.putNumber("angle", 30);
+
     UsbCamera fishEyeCamera = CameraServer.getInstance().startAutomaticCapture();
     if (!fishEyeCamera.isConnected()) {
       fishEyeCamera.close();
@@ -161,8 +166,28 @@ public class Robot extends TimedRobot {
     drivetrain.reset();
     drivetrain.shiftUp();
 
-    SimpleLine simpleLine = SimpleLine.lineWithDistance(5);
-    simpleLine.start();
+//    SimpleLine simpleLine = SimpleLine.lineWithDistance(5);
+//    simpleLine.start();
+
+    double dx = SmartDashboard.getNumber("dx", 2);
+    double dy = SmartDashboard.getNumber("dy", .5);
+    double angle = SmartDashboard.getNumber("angle", 30);
+
+    SimpleCameraPositioning simpleCameraPositioning = SimpleCameraPositioning
+        .toCameraTarget(
+            SimpleMotion
+                .getDrivetrain()
+                .getActualPosition()
+                .offset(0, 0
+                    , StrictMath.toRadians(angle))
+            ,
+
+            SimpleMotion
+                .getDrivetrain()
+                .getActualPosition()
+                .offset(dx, dy, 0)
+        );
+    simpleCameraPositioning.start();
   }
 
   /**
