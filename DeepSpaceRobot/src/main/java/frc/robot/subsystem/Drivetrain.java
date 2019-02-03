@@ -7,18 +7,6 @@
 
 package frc.robot.subsystem;
 
-import static frc.robot.Config.Constants.iAng;
-import static frc.robot.Config.Constants.iL;
-import static frc.robot.Config.Constants.kAcc;
-import static frc.robot.Config.Constants.kAng;
-import static frc.robot.Config.Constants.kK;
-import static frc.robot.Config.Constants.kL;
-import static frc.robot.Config.Constants.kS;
-import static frc.robot.Config.Constants.kV;
-import static frc.robot.Config.Constants.maxAcceleration;
-import static frc.robot.Config.Constants.maxVelocity;
-import static frc.robot.Config.Constants.robotWidth;
-import static frc.robot.Config.Hardware.DISTANCE_PER_PULSE;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KACC;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KANGLE;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KK;
@@ -27,8 +15,7 @@ import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KS;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KV;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_ACCELERATION;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_VELOCITY;
-import static frc.robot.Config.SmartDashboardKeys.MAX_ACCELERATION;
-import static frc.robot.Config.SmartDashboardKeys.MAX_VELOCITY;
+import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.leftWheel;
@@ -48,16 +35,14 @@ public class Drivetrain extends AbstractDrivetrain {
 
 
   public Drivetrain() {
-    SmartDashboard.putNumber(CONSTANTS_KV, kV);
-    SmartDashboard.putNumber(CONSTANTS_KACC, kAcc);
-    SmartDashboard.putNumber(CONSTANTS_KK, kK);
-    SmartDashboard.putNumber(CONSTANTS_KS, kS);
-    SmartDashboard.putNumber(CONSTANTS_KANGLE, kAng);
-    SmartDashboard.putNumber(CONSTANTS_MAX_VELOCITY, maxVelocity);
-    SmartDashboard.putNumber(CONSTANTS_MAX_ACCELERATION, maxAcceleration);
-    SmartDashboard.putNumber(CONSTANTS_KL, kL);
-    SmartDashboard.putNumber(MAX_VELOCITY, kL);
-    SmartDashboard.putNumber(MAX_ACCELERATION, kL);
+    SmartDashboard.putNumber(CONSTANTS_KV, currentRobot.getkV());
+    SmartDashboard.putNumber(CONSTANTS_KACC, currentRobot.getkAcc());
+    SmartDashboard.putNumber(CONSTANTS_KK, currentRobot.getkK());
+    SmartDashboard.putNumber(CONSTANTS_KS, currentRobot.getkS());
+    SmartDashboard.putNumber(CONSTANTS_KANGLE, currentRobot.getkAng());
+    SmartDashboard.putNumber(CONSTANTS_MAX_VELOCITY, currentRobot.getMaxVelocity());
+    SmartDashboard.putNumber(CONSTANTS_MAX_ACCELERATION, currentRobot.getMaxAcceleration());
+    SmartDashboard.putNumber(CONSTANTS_KL, currentRobot.getkL());
   }
 
   @Override
@@ -67,7 +52,12 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public double getRobotWidth() {
-    return robotWidth;
+    return currentRobot.getRobotWidth();
+  }
+
+  @Override
+  public double getRobotLength() {
+    return currentRobot.getRobotLength();
   }
 
   @Override
@@ -78,67 +68,72 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public void setSpeeds(double leftYJoystick, double rightYJoystick) {
+    SmartDashboard.putNumber("leftSpeed", leftYJoystick);
+    SmartDashboard.putNumber("rightSpeed", rightYJoystick);
+
     leftWheel.set(leftYJoystick);
     rightWheel.set(rightYJoystick);
   }
 
   @Override
   public void setEncoderDistancePerPulse() {
-    leftWheel.setInverted(true);
-    encoderLeft.setDistancePerPulse(DISTANCE_PER_PULSE);
-    encoderLeft.setReverseDirection(true);
-    encoderRight.setDistancePerPulse(DISTANCE_PER_PULSE);
+    leftWheel.setInverted(currentRobot.isMotorLeftInverted());
+    rightWheel.setInverted(currentRobot.isMotorRightInverted());
+    encoderLeft.setDistancePerPulse(currentRobot.getDistancePerPulse());
+    encoderRight.setDistancePerPulse(currentRobot.getDistancePerPulse());
+    encoderLeft.setReverseDirection(currentRobot.isEncoderLeftInverted());
+    encoderRight.setReverseDirection(currentRobot.isEncoderRightInverted());
 
   }
 
   @Override
   public double getKV() {
-    return SmartDashboard.getNumber(CONSTANTS_KV, kV);
+    return SmartDashboard.getNumber(CONSTANTS_KV, currentRobot.getkV());
   }
 
   @Override
   public double getKAcc() {
-    return SmartDashboard.getNumber(CONSTANTS_KACC, kAcc);
+    return SmartDashboard.getNumber(CONSTANTS_KACC, currentRobot.getkAcc());
   }
 
   @Override
   public double getKK() {
-    return SmartDashboard.getNumber(CONSTANTS_KK, kK);
+    return SmartDashboard.getNumber(CONSTANTS_KK, currentRobot.getkK());
   }
 
   @Override
   public double getKS() {
-    return SmartDashboard.getNumber(CONSTANTS_KS, kS);
+    return SmartDashboard.getNumber(CONSTANTS_KS, currentRobot.getkS());
   }
 
   @Override
   public double getKAng() {
-    return SmartDashboard.getNumber(CONSTANTS_KANGLE, kAng);
+    return SmartDashboard.getNumber(CONSTANTS_KANGLE, currentRobot.getkAng());
   }
 
   @Override
   public double getKL() {
-    return SmartDashboard.getNumber(CONSTANTS_KL, kL);
+    return SmartDashboard.getNumber(CONSTANTS_KL, currentRobot.getkL());
   }
 
   @Override
   public double getILag() {
-    return iL;
+    return currentRobot.getiL();
   }
 
   @Override
   public double getIAng() {
-    return iAng;
+    return currentRobot.getiAng();
   }
 
   @Override
   public double getMaxVelocity() {
-    return SmartDashboard.getNumber(MAX_VELOCITY, maxVelocity);
+    return SmartDashboard.getNumber(CONSTANTS_MAX_VELOCITY, currentRobot.getMaxVelocity());
   }
 
   @Override
   public double getMaxAcceleration() {
-    return SmartDashboard.getNumber(MAX_ACCELERATION, maxAcceleration);
+    return SmartDashboard.getNumber(CONSTANTS_MAX_ACCELERATION, currentRobot.getMaxAcceleration());
   }
 
 
