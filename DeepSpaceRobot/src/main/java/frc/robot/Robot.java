@@ -22,6 +22,8 @@ import frc.robot.command.teleop.util.Sqrt;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.subsystem.Drivetrain;
 import org.waltonrobotics.command.SimpleLine;
+import frc.robot.util.RobotBuilder;
+import frc.robot.util.RobotConfig;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -30,7 +32,66 @@ import org.waltonrobotics.command.SimpleLine;
  */
 public class Robot extends TimedRobot {
 
-  public static final Drivetrain drivetrain = new Drivetrain();
+  public static final RobotConfig powerUpCompBot = new RobotConfig(
+      "PowerUp Comp",
+      0.78,
+      0.83,
+      4,
+      3.5,
+      0,
+      true,
+      1,
+      false,
+      2,
+      3,
+      false,
+      0,
+      1,
+      true,
+      0.0002045,
+      0.194350,
+      0.194350,
+      0.125,
+      -2,
+      -1,
+      -2,
+      () -> true);
+
+  public static final RobotConfig steamworksComp = new RobotConfig(
+      "SteamWorks Comp",
+      0.75,
+      0.85,
+      (1 + 0.02306185102694297) / 0.5349180715909608,
+      4,
+      0,
+      true,
+      1,
+      false,
+      0,
+      1,
+      false,
+      2,
+      3,
+      true,
+      0.00055805,
+      0.5349180715909608,
+      -0.02306185102694297,
+      0.28150490814209445,
+      .85,
+      .3,
+      2,
+      () -> false);
+
+  public static final RobotBuilder robotBuilder;
+  public static final RobotConfig currentRobot;
+
+  public static final Drivetrain drivetrain;
+
+  static {
+    robotBuilder = new RobotBuilder(powerUpCompBot, steamworksComp);
+    currentRobot = robotBuilder.getCurrentRobotConfig();
+    drivetrain = new Drivetrain();
+  }
 
   /**
    * This function is run when the robot is first started up and should be used for any initialization code.
