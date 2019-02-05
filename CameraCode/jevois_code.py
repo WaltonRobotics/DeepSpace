@@ -1,3 +1,6 @@
+import collections
+import itertools
+
 import libjevois as jevois
 import cv2
 import numpy as np
@@ -53,6 +56,9 @@ class FirstPython:
         self.min_vertices = 4.0
         self.min_ratio = 0.5
         self.max_ratio = 2.0
+
+        self.targets = None
+        self.current_target = None
 
         self.object_points = np.array(
             [[-5.936, 31.5, 0.0], [-4.0, 31, 0.0], [-5.375, 25.675, 0.0], [-7.316, 26.175, 0.0],  # Left points
@@ -161,10 +167,10 @@ class FirstPython:
         :param target: An object
         :return: rotation and translation of the camera
         """
-        image_points_left = np.array(self.order_corners_clockwise(target.left_rect))
+        image_points_left = np.array(self.order_corners_clockwise(target.left_tape.contour))
         image_points_left = image_points_left.astype('float32')
 
-        image_points_right = np.array(self.order_corners_clockwise(target.right_rect))
+        image_points_right = np.array(self.order_corners_clockwise(target.right_tape.contour))
         image_points_right = image_points_right.astype('float32')
 
         image_points = np.concatenate((image_points_left, image_points_right))
@@ -264,7 +270,7 @@ class FirstPython:
         if not hasattr(self, 'camMatrix'): self.load_camera_calibration(res_w, res_h)
 
         contour_tracker = FindTargets()
-        targets = contour_tracker.find_full_contours(contours, (res_w, res_h))
+        targets = contour_tracker.find_full_contours(contours)
         if targets is not None:
             target_data = []
             for target in targets:
@@ -338,7 +344,7 @@ class FirstPython:
 
         contour_tracker = FindTargets()
 
-        targets = contour_tracker.find_full_contours(contours, (res_w, res_h))
+        targets = contour_tracker.find_full_contours(contours)
         if len(targets) > 0:
             target_data = []
             for target in targets:
@@ -396,7 +402,7 @@ class FirstPython:
         :return: the sorted corners
         """
         # get corners of contour
-        corners = cv2.boxPoints(contour)
+        corners = cv2.boxPoints(cv2.minAreaRect(contour))
         # sort corners by x value
         x_sorted = corners[np.argsort(corners[:, 0]), :]
 
@@ -412,7 +418,7 @@ class FirstPython:
         # now that we have the top-left coordinate, use it as an anchor to calculate the Euclidean distance between the
         # top-left and right-most points; by the Pythagorean theorem, the point with the largest distance will be our
         # bottom-right point
-        if self.distance_2d(tl, right_most[0]) > self.distance_2d(tl, right_most[1]):
+        if distance_2d(tl, right_most[0]) > distance_2d(tl, right_most[1]):
             br, tr = right_most
         else:
             tr, br = right_most
@@ -431,11 +437,10 @@ class FirstPython:
 
     def distance_from_origin(self, target_data):
         """
-        :param point:
+        :param target_data:
         :return: the distance between point and (0, y, 0)
         """
         return math.sqrt(math.pow(target_data[2][0], 2) + math.pow(target_data[2][2], 2))
-
 
 class Target:
 
@@ -473,7 +478,6 @@ class Target:
             tr[0] = max(float(tr[0]), float(point[0]))
             tr[1] = min(float(tr[1]), float(point[1]))
         return (tl[0], tl[1]), (tr[0], tr[1]), (br[0], br[1]), (bl[0], bl[1])
-
 
 class FindTargets:
 
@@ -558,7 +562,6 @@ class TapePiece:
 
         if self.angle > -45:
             return 'right'
-
         else:
             return 'left'
 
@@ -572,8 +575,9 @@ class TapePiece:
 
         min_distance = np.inf
         min_tape = None
+        min_target_name = ''
 
-        for target in old_targets.values():
+        for target_name, target in old_targets.items():
 
             if self.parity == 'left':
                 tape = target.left_tape
@@ -591,5 +595,85 @@ class TapePiece:
             if distance < min_distance:
                 min_distance = distance
                 min_tape = tape
+                min_target_name = target_name
 
-        return min_tape, min_distance
+        return min_target_name, min_tape, min_distance
+
+class TargetTracker:
+    def __init__(self):
+        self.next_i_target = itertools.count()
+
+    def track_targets(self, old_targets, tapes):
+        if old_targets is None:
+            return self.create_new_targets(tapes)
+
+        new_targets_rough = {}
+        for tape in tapes:
+            old_target_name, old_tape, distance = tape.find_closest(old_targets)
+            if old_target_name not in new_targets_rough:
+                new_targets_rough[old_target_name] = {}
+            new_targets_rough[old_target_name].update({tape: (old_tape, distance)})
+
+        #If a new tape has come in from the left
+        if len(new_targets_rough['target0']) > 2:
+            new_left_tape = tapes[0]
+            new_left_tape_data = new_targets_rough['target0'].pop(new_left_tape)
+            new_targets_rough['target-1'].update({None: (None, None)})
+            new_targets_rough['target-1'].update({new_left_tape: new_left_tape_data})
+            new_targets_rough = self.increment_target_names(new_targets_rough)
+
+        #If a new tape has come in from the right
+        last_target_name = 'target' + str(len(old_targets))
+        if len(new_targets_rough[last_target_name]) > 2:
+            new_right_tape = tapes[-1]
+            new_right_tape_data = new_targets_rough[last_target_name].pop(new_right_tape)
+            new_targets_rough['target' + str(len(old_targets) + 1)].update({new_right_tape: new_right_tape_data})
+            new_targets_rough['target' + str(len(old_targets) + 1)].update({None: (None, None)})
+
+        #Create new targets from the tape pairs
+        new_targets = {}
+        for target_name, tapes in new_targets_rough:
+            left_tape = tapes.keys()[0]
+            right_tape = tapes.keys()[1]
+            new_targets.update({target_name: Target(left_tape, right_tape)})
+
+        return new_targets
+
+    def create_new_targets(self, tapes):
+        """
+        Creates targets from a list of tapes
+        :param tapes:
+        :return: A dictionary of Targets, mapped as {targetN: Target}, where n is an integer representing the index
+        """
+        new_targets = {}
+
+        #If the first tape is a right, make a new Target with only the right side
+        if tapes[0].parity == 'right':
+            target_name = 'target' + str(next(self.next_i_target))
+            new_targets.update({target_name: Target(None, tapes.pop(0))})
+
+        while len(tapes) >= 2:
+            target_name = 'target' + str(next(self.next_i_target))
+            left_tape = tapes.pop(0)
+            right_tape = tapes.pop(0)
+            new_targets.update({target_name: Target(left_tape, right_tape)})
+
+        #If there is a Tape left over, it is the left tape of a Target
+        if len(tapes) > 0:
+            target_name = 'target' + str(next(self.next_i_target))
+            new_targets.update({target_name: Target(tapes.pop(0), None)})
+
+        return new_targets
+
+    @staticmethod
+    def increment_target_names(targets):
+        """
+        If there is new target on the left, this will be used to increment all target indices
+        :param targets:
+        :return: A dictionary of Targets, mapped as {targetN: Target}, where n is an integer representing the proper index
+        """
+        new_targets = {}
+        for target_name, data in targets:
+            new_target_name = 'target' + str(int(target_name[6:]) + 1)
+            new_targets.update({new_target_name: data})
+        return new_targets
