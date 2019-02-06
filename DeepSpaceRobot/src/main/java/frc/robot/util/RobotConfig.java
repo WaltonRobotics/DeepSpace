@@ -43,8 +43,11 @@ public class RobotConfig {
   private final double iL;
   private final double iAng;
   private final Supplier<Boolean> isCurrentRobot;
+  private final boolean leftJoystickInverted;
+  private final boolean rightJoystickInverted;
 
-  public RobotConfig(String robotName, double robotWidth, double robotLength, double maxVelocity,
+  public RobotConfig(String robotName, boolean leftJoystickInverted, boolean rightJoystickInverted, double robotWidth,
+      double robotLength, double maxVelocity,
       double maxAcceleration,
       int motorLeftChannel, boolean motorLeftInverted, int motorRightChannel, boolean motorRightInverted,
       int leftEncoderChannel1, int leftEncoderChannel2, boolean encoderLeftInverted, int rightEncoderChannel1,
@@ -52,6 +55,8 @@ public class RobotConfig {
       double kAcc, double kS, double kAng,
       double kL, double iL, double iAng, Supplier<Boolean> isCurrentRobot) {
     this.robotName = robotName;
+    this.leftJoystickInverted = leftJoystickInverted;
+    this.rightJoystickInverted = rightJoystickInverted;
     this.robotWidth = robotWidth;
     this.robotLength = robotLength;
     this.maxVelocity = maxVelocity;
@@ -78,14 +83,15 @@ public class RobotConfig {
     this.isCurrentRobot = isCurrentRobot;
   }
 
-  public RobotConfig(String robotName, double robotWidth, double robotLength, double maxVelocity,
+  public RobotConfig(String robotName, boolean leftJoystickInverted, boolean rightJoystickInverted, double robotWidth,
+      double robotLength, double maxVelocity,
       double maxAcceleration,
       int motorLeftChannel, boolean motorLeftInverted, int motorRightChannel, boolean motorRightInverted,
       int leftEncoderChannel1, int leftEncoderChannel2, boolean encoderLeftInverted, int rightEncoderChannel1,
       int rightEncoderChannel2, boolean encoderRightInverted, double distancePerPulse, double kV, double kK,
       double kAcc, double kS, double kAng,
       double kL, Supplier<Boolean> isCurrentRobot) {
-    this(robotName,
+    this(robotName, leftJoystickInverted, rightJoystickInverted,
         robotWidth,
         robotLength,
         maxVelocity,
@@ -110,6 +116,14 @@ public class RobotConfig {
         0,
         0,
         isCurrentRobot);
+  }
+
+  public boolean isLeftJoystickInverted() {
+    return leftJoystickInverted;
+  }
+
+  public boolean isRightJoystickInverted() {
+    return rightJoystickInverted;
   }
 
   public String getRobotName() {

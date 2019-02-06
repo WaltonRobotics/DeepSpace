@@ -7,6 +7,8 @@
 
 package frc.robot.command.teleop;
 
+import static frc.robot.Robot.currentRobot;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,12 +35,12 @@ public class Drive extends Command {
   }
 
   private double getLeftYJoystick() {
-    return -OI.leftJoystick.getY();
+    return (currentRobot.isLeftJoystickInverted() ? -1 : 1) * OI.leftJoystick.getY();
   }
 
 
   private double getRightYJoystick() {
-    return -OI.rightJoystick.getY();
+    return (currentRobot.isRightJoystickInverted() ? -1 : 1) * OI.rightJoystick.getY();
   }
 
   // Called repeatedly when this Command is scheduled to run

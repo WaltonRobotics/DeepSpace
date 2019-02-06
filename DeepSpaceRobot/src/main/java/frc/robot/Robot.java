@@ -38,6 +38,8 @@ public class Robot extends TimedRobot {
   public static final Drivetrain drivetrain;
   private static final RobotConfig powerUpCompBot = new RobotConfig(
       "PowerUp Comp",
+      true,
+      true,
       0.78,
       0.83,
       4,
@@ -62,6 +64,8 @@ public class Robot extends TimedRobot {
       () -> true);
   private static final RobotConfig steamworksComp = new RobotConfig(
       "SteamWorks Comp",
+      true,
+      true,
       0.75,
       0.85,
       (1 + 0.02306185102694297) / 0.5349180715909608,
