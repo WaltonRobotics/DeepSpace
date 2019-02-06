@@ -69,7 +69,9 @@ public class Drivetrain extends AbstractDrivetrain {
   @Override
   public void setSpeeds(double leftYJoystick, double rightYJoystick) {
     SmartDashboard.putNumber("leftSpeed", leftYJoystick);
+    SmartDashboard.putNumber("leftMotor", leftWheel.get());
     SmartDashboard.putNumber("rightSpeed", rightYJoystick);
+    SmartDashboard.putNumber("rightMotor", rightWheel.get());
 
     leftWheel.set(leftYJoystick);
     rightWheel.set(rightYJoystick);
