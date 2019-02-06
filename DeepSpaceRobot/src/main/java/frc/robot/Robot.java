@@ -34,7 +34,9 @@ import org.waltonrobotics.command.SimpleMotion;
  */
 public class Robot extends TimedRobot {
 
-  public static final RobotConfig powerUpCompBot = new RobotConfig(
+  public static final RobotConfig currentRobot;
+  public static final Drivetrain drivetrain;
+  private static final RobotConfig powerUpCompBot = new RobotConfig(
       "PowerUp Comp",
       0.78,
       0.83,
@@ -58,8 +60,7 @@ public class Robot extends TimedRobot {
       -1,
       -2,
       () -> true);
-
-  public static final RobotConfig steamworksComp = new RobotConfig(
+  private static final RobotConfig steamworksComp = new RobotConfig(
       "SteamWorks Comp",
       0.75,
       0.85,
@@ -83,11 +84,7 @@ public class Robot extends TimedRobot {
       .3,
       2,
       () -> false);
-
-  public static final RobotBuilder robotBuilder;
-  public static final RobotConfig currentRobot;
-
-  public static final Drivetrain drivetrain;
+  private static final RobotBuilder robotBuilder;
   private static final int DEFAULT_CAMERA_COMPRESSION_QUALITY = 80; // between 0 and 100, 100 being the max, -1 being left to Shuffleboard
 
   static {
