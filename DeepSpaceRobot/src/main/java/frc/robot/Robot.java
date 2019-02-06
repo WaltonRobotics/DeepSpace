@@ -58,9 +58,9 @@ public class Robot extends TimedRobot {
       0.194350,
       0.194350,
       0.125,
-      -2,
-      -1,
-      -2,
+      2,
+      1,
+      2,
       () -> true);
   private static final RobotConfig steamworksComp = new RobotConfig(
       "SteamWorks Comp",
