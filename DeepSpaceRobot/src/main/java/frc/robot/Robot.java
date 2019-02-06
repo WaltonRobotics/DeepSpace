@@ -10,6 +10,7 @@ package frc.robot;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 
+import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -87,6 +88,7 @@ public class Robot extends TimedRobot {
   public static final RobotConfig currentRobot;
 
   public static final Drivetrain drivetrain;
+  private static final int DEFAULT_CAMERA_COMPRESSION_QUALITY = 80; // between 0 and 100, 100 being the max, -1 being left to Shuffleboard
 
   static {
     robotBuilder = new RobotBuilder(powerUpCompBot, steamworksComp);
@@ -113,9 +115,27 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("dy", .5);
     SmartDashboard.putNumber("angle", 30);
 
-    UsbCamera fishEyeCamera = CameraServer.getInstance().startAutomaticCapture();
+    initCamera();
+  }
+
+  private void initCamera() {
+    CameraServer cameraServer = CameraServer.getInstance();
+
+    UsbCamera fishEyeCamera = new UsbCamera("Fisheye Camera", 0);
+    fishEyeCamera.setResolution(320, 240);
+    fishEyeCamera.setFPS(30);
+
+    cameraServer.addCamera(fishEyeCamera);
+
+    MjpegServer fisheyeServer = CameraServer.getInstance().addServer("Fisheye Camera Server");
+    fisheyeServer.setSource(fishEyeCamera);
+
+    fisheyeServer.getProperty("compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+    fisheyeServer.getProperty("default_compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+
     if (!fishEyeCamera.isConnected()) {
       fishEyeCamera.close();
+      fisheyeServer.close();
     }
   }
 
