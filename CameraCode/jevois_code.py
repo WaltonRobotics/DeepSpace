@@ -13,6 +13,36 @@ def distance_2d(point0, point1):
     """
     return math.sqrt(math.pow(point0[0] - point1[0], 2) + math.pow(point0[1] - point1[1], 2))
 
+def order_corners_clockwise(tape):
+        """
+        Sorts the corners of a contour clockwise from the top left point
+        :param tape: the contour to sort the corners of
+        :return: the sorted corners
+        """
+        # get corners of contour
+        corners = tape.box_points
+        # sort corners by x value
+        x_sorted = corners[np.argsort(corners[:, 0]), :]
+
+        # grab the left-most and right-most points from the sorted x-coordinate points
+        left_most = x_sorted[:2, :]
+        right_most = x_sorted[2:, :]
+
+        # now, sort the left-most coordinates according to their y-coordinates so we can grab the top-left and
+        # bottom-left points, respectively
+        left_most = left_most[np.argsort(left_most[:, 1]), :]
+        (tl, bl) = left_most
+
+        # now that we have the top-left coordinate, use it as an anchor to calculate the Euclidean distance between the
+        # top-left and right-most points; by the Pythagorean theorem, the point with the largest distance will be our
+        # bottom-right point
+        if distance_2d(tl, right_most[0]) > distance_2d(tl, right_most[1]):
+            br, tr = right_most
+        else:
+            tr, br = right_most
+
+        # return the coordinates in top-left, top-right, bottom-right, and bottom-left order
+        return np.array([tl, tr, br, bl], dtype="float32")
 
 def pairwise(iterable):
     a = iter(iterable)
@@ -36,10 +66,9 @@ class FirstPython:
         #      105=light blue, 120=blue, 135=purple, 150=pink
         # S: 0 for unsaturated (whitish discolored object) to 255 for fully saturated (solid color)
         # V: 0 for dark to 255 for maximally bright
-        self.HSVmin = np.array([73, 110, 111], dtype=np.uint8)
-        self.HSVmax = np.array([102, 255, 255], dtype=np.uint8)
+        self.HSVmin = np.array([50, 110, 111], dtype=np.uint8)
+        self.HSVmax = np.array([70, 255, 255], dtype=np.uint8)
         self.min_area = 200.0
-        self.max_area = 1000.0
         self.min_perimeter = 10.0
         self.min_width = 5.0
         self.max_width = 1000.0
@@ -48,8 +77,8 @@ class FirstPython:
         self.solidity = [0, 100]
         self.max_vertices = 1000000.0
         self.min_vertices = 4.0
-        self.min_ratio = 0.5
-        self.max_ratio = 2.0
+        self.min_ratio = 0.25
+        self.max_ratio = 4.0
 
         self.object_points = np.array(
             [[-5.936, 31.5, 0.0], [-4.0, 31, 0.0], [-5.375, 25.675, 0.0], [-7.316, 26.175, 0.0],  # Left points
@@ -59,6 +88,7 @@ class FirstPython:
         self.current_target = None
 
         self.decision_tolerance = 0.05
+        self.target_lost_factor = 1
 
         # Instantiate a JeVois Timer to measure our processing framerate:
         self.timer = jevois.Timer("DeepSpacePoseFinder", 100, jevois.LOG_INFO)
@@ -75,7 +105,7 @@ class FirstPython:
         if fs.isOpened():
             self.cam_matrix = fs.getNode("camera_matrix").mat()
             self.dist_coeffs = fs.getNode("distortion_coefficients").mat()
-            jevois.LINFO("Loaded camera calibration from {}".format(cpf))
+            #jevois.LINFO("Loaded camera calibration from {}".format(cpf))
         else:
             jevois.LFATAL("Failed to read camera parameters from file [{}]".format(cpf))
 
@@ -89,6 +119,10 @@ class FirstPython:
         if not hasattr(self, 'erodeElement'):
             self.erode_element = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
             self.dilate_element = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
+
+        #Loads intrinsic parameters of the camera while we're at it
+        h, w, channels = imgbgr.shape
+        if not hasattr(self, 'camMatrix'): self.load_camera_calibration(w, h)
 
         # Convert input image to HSV:
         imghsv = cv2.cvtColor(imgbgr, cv2.COLOR_BGR2HSV)
@@ -115,7 +149,7 @@ class FirstPython:
                 continue
             area = cv2.contourArea(contour)
             # Area
-            if area < self.min_area or area > self.max_area:
+            if area < self.min_area:
                 continue
             # Perimeter
             if cv2.arcLength(contour, True) < self.min_perimeter:
@@ -135,7 +169,7 @@ class FirstPython:
             output.append(TapePiece(hull))
 
         # Sort the tapes from left to right
-        sorted_output = sorted(output, key=lambda tape: cv2.boundingRect(tape)[0])
+        sorted_output = sorted(output, key=lambda tape: tape.center_point[0])
 
         return imgth, sorted_output
 
@@ -146,7 +180,6 @@ class FirstPython:
 
     def draw_tapes(self, outimg, tapes):
         # Display any results requested by the users:
-
         if outimg.valid():
             for tape in tapes:
                 tape.draw(outimg)
@@ -162,22 +195,22 @@ class FirstPython:
         :param targets: An array of targets
         :return: rotation and translation of the camera
         """
+
         rotation_array = []
         translation_array = []
 
         for target in targets:
-            if target.left_tape is not None and target.right_tape is not None:
-                image_points_left = np.array(self.order_corners_clockwise(target.left_rect))
-                image_points_left = image_points_left.astype('float32')
+            image_points_left = np.array(order_corners_clockwise(target.left_tape))
+            image_points_left = image_points_left.astype('float32')
 
-                image_points_right = np.array(self.order_corners_clockwise(target.right_rect))
-                image_points_right = image_points_right.astype('float32')
+            image_points_right = np.array(order_corners_clockwise(target.right_tape))
+            image_points_right = image_points_right.astype('float32')
 
-                image_points = np.concatenate((image_points_left, image_points_right))
-                ret, rotation, translation = cv2.solvePnP(self.object_points, image_points, self.cam_matrix,
-                                                          self.dist_coeffs)
-                rotation_array.append(rotation)
-                translation_array.append(translation)
+            image_points = np.concatenate((image_points_left, image_points_right))
+            ret, rotation, translation = cv2.solvePnP(self.object_points, image_points, self.cam_matrix,
+                                                      self.dist_coeffs)
+            rotation_array.append(rotation)
+            translation_array.append(translation)
         return rotation_array, translation_array
 
     def estimate_pose(self, target):
@@ -186,16 +219,8 @@ class FirstPython:
         :param target: An array of targets
         :return: rotation and translation of the camera
         """
-        image_points_left = np.array(self.order_corners_clockwise(target.left_rect))
-        image_points_left = image_points_left.astype('float32')
-
-        image_points_right = np.array(self.order_corners_clockwise(target.right_rect))
-        image_points_right = image_points_right.astype('float32')
-
-        image_points = np.concatenate((image_points_left, image_points_right))
-        ret, rotation, translation = cv2.solvePnP(self.object_points, image_points, self.cam_matrix,
-                                                  self.dist_coeffs)
-        return rotation, translation
+        rotation, translation = self.estimate_poses([target])
+        return rotation[0], translation[0]
 
     @staticmethod
     def send_all_serial(pose, targets):
@@ -338,6 +363,7 @@ class FirstPython:
         imgth, tapes = self.detect(imgbgr)
         self.draw_tapes(outimg, tapes)
 
+
         targets = self.define_targets(tapes)
         self.draw_targets(outimg, targets)
 
@@ -402,37 +428,6 @@ class FirstPython:
         # We are done with the output, ready to send it to host over USB:
         outframe.send()
 
-    def order_corners_clockwise(self, contour):
-        """
-        Sorts the corners of a contour clockwise from the top left point
-        :param contour: the contour to sort the corners of
-        :return: the sorted corners
-        """
-        # get corners of contour
-        corners = cv2.boxPoints(contour)
-        # sort corners by x value
-        x_sorted = corners[np.argsort(corners[:, 0]), :]
-
-        # grab the left-most and right-most points from the sorted x-coordinate points
-        left_most = x_sorted[:2, :]
-        right_most = x_sorted[2:, :]
-
-        # now, sort the left-most coordinates according to their y-coordinates so we can grab the top-left and
-        # bottom-left points, respectively
-        left_most = left_most[np.argsort(left_most[:, 1]), :]
-        (tl, bl) = left_most
-
-        # now that we have the top-left coordinate, use it as an anchor to calculate the Euclidean distance between the
-        # top-left and right-most points; by the Pythagorean theorem, the point with the largest distance will be our
-        # bottom-right point
-        if distance_2d(tl, right_most[0]) > distance_2d(tl, right_most[1]):
-            br, tr = right_most
-        else:
-            tr, br = right_most
-
-        # return the coordinates in top-left, top-right, bottom-right, and bottom-left order
-        return np.array([tl, tr, br, bl], dtype="float32")
-
     def percent_difference(self, value1, value2):
         """
         Finds the percent difference between two values, between 0.0 and 1.0
@@ -451,16 +446,17 @@ class FirstPython:
 
     def define_targets(self, tapes):
         targets = []
-        if tapes[0].parity == 'right':
-            targets.append(Target(None, tapes.pop(0)))
-        while len(tapes) >= 2:
-            left_tape = tapes.pop(0)
-            right_tape = tapes.pop(0)
-            targets.append(Target(left_tape, right_tape))
+        if len(tapes) > 2:
+            if tapes[0].parity == 'right':
+                tapes.pop(0)
+            while len(tapes) >= 2:
+                left_tape = tapes.pop(0)
+                right_tape = tapes.pop(0)
+                targets.append(Target(left_tape, right_tape))
 
         # If there is a Tape left over, it is the left tape of a Target
         if len(tapes) > 0:
-            targets.append(Target(tapes.pop(0), None))
+            tapes.pop(0)
         return targets
 
     def choose_target(self, inimg, targets, outimg=None):
@@ -471,27 +467,29 @@ class FirstPython:
         :param outimg:
         :return:
         """
-        rotations, translations = self.estimate_poses(targets)
-        target_data = []
-        for i, target in enumerate(targets):
-            target_data.append((target, rotations[i], translations[i]))
-        target_data.sort(key=self.distance_from_origin)
+        if len(targets) > 0:
+            rotations, translations = self.estimate_poses(targets)
+            target_data = []
+            for i, target in enumerate(targets):
+                target_data.append((target, rotations[i], translations[i]))
+            target_data.sort(key=self.distance_from_origin)
 
-        if len(target_data) is 0:
-            jevois.LINFO("No target found")
-        elif len(target_data) != 1 and self.percent_difference(self.distance_from_origin(target_data[0]),
-                                                             self.distance_from_origin(target_data[1])) <= \
-                self.decision_tolerance:
-            jevois.LINFO("Cannot decide which target to choose")
-            if outimg is not None:
-                jevois.writeText(outimg, "Cannot decide which target to choose", 3, 3, jevois.YUYV.White,
-                                 jevois.Font.Font6x10)
-        else:
-            closest_target, rotation, translation = target_data[0]
-            tracker = cv2.TrackerCSRT_create()
-            tracker.init(inimg, closest_target.bounding_rectangle)
-            self.current_target = (target_data, tracker)
-            jevois.LINFO("Target found")
+            if len(target_data) is 0:
+                jevois.LINFO("No target found")
+            elif len(target_data) != 1 and self.percent_difference(self.distance_from_origin(target_data[0]),
+                                                                 self.distance_from_origin(target_data[1])) <= \
+                    self.decision_tolerance:
+                jevois.LINFO("Cannot decide which target to choose")
+                if outimg is not None:
+                    jevois.writeText(outimg, "Cannot decide which target to choose", 3, 3, jevois.YUYV.White,
+                                     jevois.Font.Font6x10)
+            else:
+                closest_target, rotation, translation = target_data[0]
+                # tracker = cv2.TrackerKCF_create()
+                # tracker.init(inimg, closest_target.bounding_rectangle)
+                closest_box = closest_target.bounding_rectangle
+                self.current_target = np.array([target_data, closest_box])
+                jevois.LINFO("Target found")
 
     def track(self, inimg, targets, outimg=None):
         """
@@ -501,10 +499,10 @@ class FirstPython:
         :param outimg:
         :return:
         """
-        tracker = self.current_target[1]
-        success, bounding_rect = tracker.update(inimg)
+        previous_box = self.current_target[1]
+        success, target = self.find_target_in_rectangle(targets, previous_box)
+        # success, bounding_rect = tracker.update(inimg)
         if success:
-            target = self.find_target_in_rectangle(targets, bounding_rect)
             rotation, translation = self.estimate_pose(target)
             self.current_target[0] = (target, rotation, translation)
             if outimg is not None:
@@ -530,8 +528,14 @@ class FirstPython:
         :param rectangle:
         :return:
         """
+        if len(targets) is 0:
+            return False, None
         targets.sort(key=lambda target: distance_2d(rectangle, target.bounding_rectangle))
-        return targets[0]
+        most_likely_target = targets[0]
+        if distance_2d(most_likely_target.bounding_rectangle, rectangle) > most_likely_target.bounding_rectangle[3] * \
+                self.target_lost_factor:
+            return False, None
+        return True, targets[0]
 
 class Target:
 
@@ -555,7 +559,7 @@ class Target:
     def bounding_quadrilateral(self):
         bl = np.array([math.inf, -math.inf])
         tl = np.array([math.inf, math.inf])
-        for point in cv2.boxPoints(self.left_tape):
+        for point in self.left_tape.box_points:
             bl[0] = min(float(bl[0]), float(point[0]))
             bl[1] = max(float(bl[1]), float(point[1]))
             tl[0] = min(float(tl[0]), float(point[0]))
@@ -563,7 +567,7 @@ class Target:
 
         br = np.array([-math.inf, -math.inf])
         tr = np.array([-math.inf, math.inf])
-        for point in cv2.boxPoints(self.right_tape):
+        for point in self.right_tape.box_points:
             br[0] = max(float(br[0]), float(point[0]))
             br[1] = max(float(br[1]), float(point[1]))
             tr[0] = max(float(tr[0]), float(point[0]))
@@ -610,12 +614,18 @@ class TapePiece:
 
     @property
     def parity(self):
-
-        if self.angle > -45:
-            return 'right'
-
-        else:
+        corners = order_corners_clockwise(self)
+        if corners[0][0] > corners[3][0]:
             return 'left'
+        elif corners[3][0] > corners[0][0]:
+            #If the bottom left corner is more right than the top left
+            return 'right'
+        else:
+            return ''
+
+    @property
+    def box_points(self):
+        return cv2.boxPoints(cv2.minAreaRect(self.contour))
 
     def draw(self, outimg):
         if self.contour.size > 0:
@@ -623,6 +633,6 @@ class TapePiece:
 
             for point1 in self.contour:
                 jevois.drawLine(outimg, int(point0[0, 0]), int(point0[0, 1]),
-                                int(point1[0, 0]), int(point1[0, 1]), 1, jevois.YUYV.MedGreen)
+                                int(point1[0, 0]), int(point1[0, 1]), 1, jevois.YUYV.MedGrey)
 
                 point0 = point1
