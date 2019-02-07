@@ -77,8 +77,8 @@ class FirstPython:
         self.solidity = [0, 100]
         self.max_vertices = 1000000.0
         self.min_vertices = 4.0
-        self.min_ratio = 0.25
-        self.max_ratio = 4.0
+        self.min_ratio = 1.6
+        self.max_ratio = 2.8
 
         self.object_points = np.array(
             [[-5.936, 31.5, 0.0], [-4.0, 31, 0.0], [-5.375, 25.675, 0.0], [-7.316, 26.175, 0.0],  # Left points
@@ -121,8 +121,8 @@ class FirstPython:
             self.dilate_element = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
 
         #Loads intrinsic parameters of the camera while we're at it
-        h, w, channels = imgbgr.shape
-        if not hasattr(self, 'camMatrix'): self.load_camera_calibration(w, h)
+        res_y, res_x, channels = imgbgr.shape
+        if not hasattr(self, 'camMatrix'): self.load_camera_calibration(res_x, res_y)
 
         # Convert input image to HSV:
         imghsv = cv2.cvtColor(imgbgr, cv2.COLOR_BGR2HSV)
@@ -162,8 +162,8 @@ class FirstPython:
             # Vertex Count
             if len(contour) < self.min_vertices or len(contour) > self.max_vertices:
                 continue
-            ratio = float(w) / h
-            # W / H ratio
+            ratio = float(h) / w
+            # h / w ratio
             if ratio < self.min_ratio or ratio > self.max_ratio:
                 continue
             output.append(TapePiece(hull))
@@ -446,17 +446,26 @@ class FirstPython:
 
     def define_targets(self, tapes):
         targets = []
-        if len(tapes) > 2:
-            if tapes[0].parity == 'right':
+        if len(tapes) >= 2:
+            while tapes[0].parity is 'right':
                 tapes.pop(0)
-            while len(tapes) >= 2:
-                left_tape = tapes.pop(0)
-                right_tape = tapes.pop(0)
-                targets.append(Target(left_tape, right_tape))
+            while tapes[-1].parity is 'left':
+                tapes.pop(-1)
 
-        # If there is a Tape left over, it is the left tape of a Target
-        if len(tapes) > 0:
-            tapes.pop(0)
+            first_tape = tapes[0]
+            second_tape = None
+            i = 1
+            while i < len(tapes) - 1:
+                second_tape = tapes[i]
+                if first_tape.parity is 'left' and second_tape.parity is 'right':
+                    targets.append(Target(first_tape, second_tape))
+                    i += 1
+                first_tape = tapes[i]
+                i += 1
+            if i is len(tapes) - 1:
+                second_tape = tapes[i]
+                if first_tape.parity is 'left' and second_tape.parity is 'right':
+                    targets.append(Target(first_tape, second_tape))
         return targets
 
     def choose_target(self, inimg, targets, outimg=None):
