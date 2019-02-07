@@ -1,12 +1,11 @@
 package frc.robot;
 
 
-import frc.team2974.robot.subsystems.Drivetrain;
+import frc.robot.subsystem.Drivetrain;
 import org.junit.Assert;
 import org.junit.Test;
-
-import static frc.team2974.robot.RobotMap.motorLeft;
-import static frc.team2974.robot.RobotMap.motorRight;
+import static frc.robot.RobotMap.leftWheel;
+import static frc.robot.RobotMap.rightWheel;
 
 
 public class MotorTest
@@ -17,13 +16,10 @@ public class MotorTest
         int speed = 1;
         Drivetrain drivetrain = new Drivetrain();
         drivetrain.setSpeeds(speed, speed);
-        System.out.println(motorLeft.get());
-        System.out.println(motorRight.get());
-        System.out.println(speed + "sped");
+        System.out.println(leftWheel.get());
+        System.out.println(rightWheel.get());
 
-        Assert.assertEquals(speed, -motorLeft.get(), .005);
-        System.out.println("Left motor test is running");
-        Assert.assertEquals(speed, motorRight.get(), .005);
-        System.out.println("Right motor test is running");
+        Assert.assertEquals(speed, -leftWheel.get(), .005);
+        Assert.assertEquals(speed, rightWheel.get(), .005);
     }
 }

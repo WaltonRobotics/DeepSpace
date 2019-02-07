@@ -14,7 +14,6 @@ import static frc.robot.Config.Inputs.SHIFT_DOWN_PORT;
 import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**

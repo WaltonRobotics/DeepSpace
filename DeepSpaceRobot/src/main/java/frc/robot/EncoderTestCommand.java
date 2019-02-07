@@ -3,8 +3,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 import static frc.robot.Robot.drivetrain;
-import static frc.team2974.robot.RobotMap.encoderLeft;
-import static frc.team2974.robot.RobotMap.encoderRight;
+import static frc.robot.RobotMap.encoderLeft;
+import static frc.robot.RobotMap.encoderRight;
 
 public class EncoderTestCommand extends Command {
 

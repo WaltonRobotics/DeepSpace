@@ -13,6 +13,7 @@ import static frc.robot.RobotMap.encoderRight;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -108,6 +109,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     drivetrain.cancelControllerMotion();
+    CommandGroup motorTestCommand = new CommandGroup();
+    motorTestCommand.addSequential(new MotorTestCommand());
+    motorTestCommand.addSequential(new EncoderTestCommand());
+    motorTestCommand.start();
+    
   }
 
   /**
@@ -121,13 +127,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    System.out.println("testinittimesya");
-    CommandGroup motorTestCommand = new CommandGroup();
-    motorTestCommand.addSequential(new MotorTestCommand());
-    motorTestCommand.addSequential(new EncoderTestCommand());
-    motorTestCommand.start();
-    System.out.println(motorTestCommand.isRunning());
-    System.out.println(motorTestCommand.isCompleted());
+    System.out.println("testinit");
+    // CommandGroup motorTestCommand = new CommandGroup();
+    // motorTestCommand.addSequential(new MotorTestCommand());
+    //motorTestCommand.addSequential(new EncoderTestCommand());
+    // motorTestCommand.start();
+
 }
 
   /**

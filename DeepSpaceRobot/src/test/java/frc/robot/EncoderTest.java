@@ -3,12 +3,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import org.junit.Assert;
-
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static frc.team2974.robot.RobotMap.encoderLeft;
-import static frc.team2974.robot.RobotMap.encoderRight;
+import static frc.robot.RobotMap.encoderLeft;
+import static frc.robot.RobotMap.encoderRight;
 
 public class EncoderTest {
 
@@ -24,12 +22,7 @@ public class EncoderTest {
         encoderRight.setDistancePerPulse(distancePerPulse);
 
         Assert.assertEquals(distancePerPulse, encoder.getDistancePerPulse(), .005);
-        System.out.println("encoder test running");
-
         Assert.assertEquals(encoder.getDistancePerPulse(), encoderLeft.getDistancePerPulse(), .005);
-        System.out.println("encoder left test running");
-
         Assert.assertEquals(distancePerPulse, encoderRight.getDistancePerPulse(), .005);
-        System.out.println("encoder right test running");
     }
 }
