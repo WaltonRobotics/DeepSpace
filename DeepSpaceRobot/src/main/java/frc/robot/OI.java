@@ -13,8 +13,6 @@ import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.SHIFT_DOWN_PORT;
 import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
 import static frc.robot.Robot.drivetrain;
-import static frc.robot.RobotMap.encoderLeft;
-import static frc.robot.RobotMap.encoderRight;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
