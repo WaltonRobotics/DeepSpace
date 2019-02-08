@@ -35,12 +35,12 @@ public class Drive extends Command {
   }
 
   private double getLeftYJoystick() {
-    return (currentRobot.isLeftJoystickInverted() ? -1 : 1) * OI.leftJoystick.getY();
+    return (currentRobot.getLeftJoystickConfig().isInverted() ? -1 : 1) * OI.leftJoystick.getY();
   }
 
 
   private double getRightYJoystick() {
-    return (currentRobot.isRightJoystickInverted() ? -1 : 1) * OI.rightJoystick.getY();
+    return (currentRobot.getRightJoystickConfig().isInverted() ? -1 : 1) * OI.rightJoystick.getY();
   }
 
   // Called repeatedly when this Command is scheduled to run

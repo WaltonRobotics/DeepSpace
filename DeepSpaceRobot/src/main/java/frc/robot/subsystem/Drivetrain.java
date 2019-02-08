@@ -35,29 +35,22 @@ public class Drivetrain extends AbstractDrivetrain {
 
 
   public Drivetrain() {
-    SmartDashboard.putNumber(CONSTANTS_KV, currentRobot.getkV());
-    SmartDashboard.putNumber(CONSTANTS_KACC, currentRobot.getkAcc());
-    SmartDashboard.putNumber(CONSTANTS_KK, currentRobot.getkK());
-    SmartDashboard.putNumber(CONSTANTS_KS, currentRobot.getkS());
-    SmartDashboard.putNumber(CONSTANTS_KANGLE, currentRobot.getkAng());
+    super(currentRobot);
+    System.out.println("Created Drivetrain");
+
+    SmartDashboard.putNumber(CONSTANTS_KV, currentRobot.getKV());
+    SmartDashboard.putNumber(CONSTANTS_KACC, currentRobot.getKAcc());
+    SmartDashboard.putNumber(CONSTANTS_KK, currentRobot.getKK());
+    SmartDashboard.putNumber(CONSTANTS_KS, currentRobot.getKS());
+    SmartDashboard.putNumber(CONSTANTS_KANGLE, currentRobot.getKAng());
     SmartDashboard.putNumber(CONSTANTS_MAX_VELOCITY, currentRobot.getMaxVelocity());
     SmartDashboard.putNumber(CONSTANTS_MAX_ACCELERATION, currentRobot.getMaxAcceleration());
-    SmartDashboard.putNumber(CONSTANTS_KL, currentRobot.getkL());
+    SmartDashboard.putNumber(CONSTANTS_KL, currentRobot.getKL());
   }
 
   @Override
   public RobotPair getWheelPositions() {
     return new RobotPair(encoderLeft.getDistance(), encoderRight.getDistance(), Timer.getFPGATimestamp());
-  }
-
-  @Override
-  public double getRobotWidth() {
-    return currentRobot.getRobotWidth();
-  }
-
-  @Override
-  public double getRobotLength() {
-    return currentRobot.getRobotLength();
   }
 
   @Override
@@ -79,65 +72,14 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public void setEncoderDistancePerPulse() {
-    leftWheel.setInverted(currentRobot.isMotorLeftInverted());
-    rightWheel.setInverted(currentRobot.isMotorRightInverted());
-    encoderLeft.setDistancePerPulse(currentRobot.getDistancePerPulse());
-    encoderRight.setDistancePerPulse(currentRobot.getDistancePerPulse());
-    encoderLeft.setReverseDirection(currentRobot.isEncoderLeftInverted());
-    encoderRight.setReverseDirection(currentRobot.isEncoderRightInverted());
+    leftWheel.setInverted(currentRobot.getLeftTalonConfig().isInverted());
+    rightWheel.setInverted(currentRobot.getRightTalonConfig().isInverted());
+    encoderLeft.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
+    encoderRight.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
+    encoderLeft.setReverseDirection(currentRobot.getLeftEncoderConfig().isInverted());
+    encoderRight.setReverseDirection(currentRobot.getRightEncoderConfig().isInverted());
 
   }
-
-  @Override
-  public double getKV() {
-    return SmartDashboard.getNumber(CONSTANTS_KV, currentRobot.getkV());
-  }
-
-  @Override
-  public double getKAcc() {
-    return SmartDashboard.getNumber(CONSTANTS_KACC, currentRobot.getkAcc());
-  }
-
-  @Override
-  public double getKK() {
-    return SmartDashboard.getNumber(CONSTANTS_KK, currentRobot.getkK());
-  }
-
-  @Override
-  public double getKS() {
-    return SmartDashboard.getNumber(CONSTANTS_KS, currentRobot.getkS());
-  }
-
-  @Override
-  public double getKAng() {
-    return SmartDashboard.getNumber(CONSTANTS_KANGLE, currentRobot.getkAng());
-  }
-
-  @Override
-  public double getKL() {
-    return SmartDashboard.getNumber(CONSTANTS_KL, currentRobot.getkL());
-  }
-
-  @Override
-  public double getILag() {
-    return currentRobot.getiL();
-  }
-
-  @Override
-  public double getIAng() {
-    return currentRobot.getiAng();
-  }
-
-  @Override
-  public double getMaxVelocity() {
-    return SmartDashboard.getNumber(CONSTANTS_MAX_VELOCITY, currentRobot.getMaxVelocity());
-  }
-
-  @Override
-  public double getMaxAcceleration() {
-    return SmartDashboard.getNumber(CONSTANTS_MAX_ACCELERATION, currentRobot.getMaxAcceleration());
-  }
-
 
   @Override
   public void initDefaultCommand() {
@@ -157,5 +99,4 @@ public class Drivetrain extends AbstractDrivetrain {
       RobotMap.shifter.set(true);
     }
   }
-
 }

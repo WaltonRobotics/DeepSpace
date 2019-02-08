@@ -32,16 +32,19 @@ public class RobotMap {
   // public static int rangefinderModule = 1;
 
 
-  public static final Talon rightWheel = new Talon(currentRobot.getMotorRightChannel());
-  public static final Talon leftWheel = new Talon(currentRobot.getMotorLeftChannel());
+  public static final Talon rightWheel = new Talon(currentRobot.getRightTalonConfig().getChanell());
+  public static final Talon leftWheel = new Talon(currentRobot.getLeftTalonConfig().getChanell());
 
   public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
 
 
-  public static final Encoder encoderRight = new Encoder(new DigitalInput(currentRobot.getRightEncoderChannel1()),
-      new DigitalInput(currentRobot.getRightEncoderChannel2()));
-  public static final Encoder encoderLeft = new Encoder(new DigitalInput(currentRobot.getLeftEncoderChannel1()),
-      new DigitalInput(currentRobot.getLeftEncoderChannel2()));
+  public static final Encoder encoderRight = new Encoder(
+      new DigitalInput(currentRobot.getRightEncoderConfig().getChannell1()),
+      new DigitalInput(currentRobot.getRightEncoderConfig().getChannell2()));
+
+  public static final Encoder encoderLeft = new Encoder(
+      new DigitalInput(currentRobot.getLeftEncoderConfig().getChannell1()),
+      new DigitalInput(currentRobot.getLeftEncoderConfig().getChannell2()));
 
 
 }

@@ -21,11 +21,13 @@ import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
 import frc.robot.command.teleop.util.Transform;
+import frc.robot.robot.CompPowerUp;
+import frc.robot.robot.CompSteamWorks;
 import frc.robot.subsystem.Drivetrain;
 import frc.robot.util.RobotBuilder;
-import frc.robot.util.RobotConfig;
 import org.waltonrobotics.command.SimpleCameraPositioning;
 import org.waltonrobotics.command.SimpleMotion;
+import org.waltonrobotics.util.RobotConfig;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -36,63 +38,11 @@ public class Robot extends TimedRobot {
 
   public static final RobotConfig currentRobot;
   public static final Drivetrain drivetrain;
-  private static final RobotConfig powerUpCompBot = new RobotConfig(
-      "PowerUp Comp",
-      true,
-      true,
-      0.78,
-      0.83,
-      4,
-      3.5,
-      0,
-      true,
-      1,
-      false,
-      2,
-      3,
-      false,
-      0,
-      1,
-      true,
-      0.0002045,
-      0.194350,
-      0.194350,
-      0.125,
-      2,
-      1,
-      2,
-      () -> true);
-  private static final RobotConfig steamworksComp = new RobotConfig(
-      "SteamWorks Comp",
-      true,
-      true,
-      0.75,
-      0.85,
-      (1 + 0.02306185102694297) / 0.5349180715909608,
-      4,
-      0,
-      true,
-      1,
-      false,
-      0,
-      1,
-      false,
-      2,
-      3,
-      true,
-      0.00055805,
-      0.5349180715909608,
-      -0.02306185102694297,
-      0.28150490814209445,
-      .85,
-      .3,
-      2,
-      () -> false);
   private static final RobotBuilder robotBuilder;
   private static final int DEFAULT_CAMERA_COMPRESSION_QUALITY = 80; // between 0 and 100, 100 being the max, -1 being left to Shuffleboard
 
   static {
-    robotBuilder = new RobotBuilder(powerUpCompBot, steamworksComp);
+    robotBuilder = new RobotBuilder(new CompPowerUp(), new CompSteamWorks());
     currentRobot = robotBuilder.getCurrentRobotConfig();
     drivetrain = new Drivetrain();
   }
