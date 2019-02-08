@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.command.teleop.EncoderTestCommand;
+import frc.robot.command.teleop.MotorTestCommand;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
@@ -127,12 +129,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    System.out.println("testinit");
-    // CommandGroup motorTestCommand = new CommandGroup();
-    // motorTestCommand.addSequential(new MotorTestCommand());
-    //motorTestCommand.addSequential(new EncoderTestCommand());
-    // motorTestCommand.start();
-
+    System.out.println("testInit");
 }
 
   /**

@@ -12,7 +12,6 @@ public class MotorTest
 {
     @Test
     public void MotorTests() {
-
         int speed = 1;
         Drivetrain drivetrain = new Drivetrain();
         drivetrain.setSpeeds(speed, speed);
