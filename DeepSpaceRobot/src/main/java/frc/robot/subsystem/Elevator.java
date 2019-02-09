@@ -10,21 +10,43 @@ package frc.robot.subsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
+import static frc.robot.OI.elevatorDownButton;
+import static frc.robot.OI.elevatorUpButton;
+import static frc.robot.OI.gamepad;
+
 /**
  * Add your docs here.
  */
 public class Elevator extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  double elevatorOriginalHeight = 500; //makeshift number
-  double elevatorCurrentHeight;
-  double distanceBetweenOgAndCurrent = elevatorCurrentHeight - elevatorOriginalHeight;
 
   private static final Elevator instance = new Elevator();
+
+  private boolean lastUpButtonState = false;
+  private boolean lastDownButtonState = false;
 
   private Elevator() {
 
 
+  }
+
+  public boolean isUpButtonPressed() {
+    return elevatorUpButton.getPressed(gamepad);
+  }
+
+  public boolean isDownButtonPressed() {
+    return elevatorDownButton.getPressed(gamepad);
+  }
+
+  public boolean wasUpButtonPressed() {
+    boolean currentValue = isUpButtonPressed();
+    return (currentValue != lastUpButtonState) && currentValue;
+  }
+
+  public boolean wasDownButtonPressed() {
+    boolean currentValue = isDownButtonPressed();
+    return (currentValue != lastDownButtonState) && currentValue;
   }
 
   public static Elevator getInstance() {
@@ -37,10 +59,12 @@ public class Elevator extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  //returns elevator to original height
-  public void returnNormHeight() {
-    if (elevatorCurrentHeight != elevatorCurrentHeight) {
-      RobotMap.elevatorMotor.set(Math.signum(elevatorCurrentHeight - elevatorOriginalHeight) * Math.abs(distanceBetweenOgAndCurrent)); //may work, not expecting to
-    }
+  @Override
+  public void periodic() {
+    /* Do logic. */
+
+    lastUpButtonState = isUpButtonPressed();
+    lastDownButtonState = isDownButtonPressed();
   }
+
 }

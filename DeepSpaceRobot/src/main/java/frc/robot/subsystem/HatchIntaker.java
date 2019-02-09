@@ -9,6 +9,9 @@ package frc.robot.subsystem;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import static frc.robot.OI.gamepad;
+import static frc.robot.OI.hatchLoadButton;
+
 /**
  * Add your docs here.
  */
@@ -16,6 +19,7 @@ public class HatchIntaker extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
+  private boolean lastHatchLoadButtonState = false;
 
   private static final HatchIntaker instance = new HatchIntaker();
 
@@ -26,9 +30,22 @@ public class HatchIntaker extends Subsystem {
     return instance;
   }
 
+  public boolean wasHatchLoadButtonPressed() {
+    boolean currentValue = hatchLoadButton.getPressed(gamepad);
+    return (currentValue != lastHatchLoadButtonState) && currentValue;
+  }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+
+  @Override
+  public void periodic() {
+    /* Do logic. */
+
+    lastHatchLoadButtonState = hatchLoadButton.getPressed(gamepad);
+  }
+
 }

@@ -29,13 +29,10 @@ public class Config {
     public static final int RIGHT_CARGO_INTAKE_MOTOR_CHANNEL = 2;
 
     public static final int ELEVATOR_MOTOR_CHANNEL = 3;
+
+    public static final int ELEVATOR_UP_GAMEPAD_PORT = 1;
+    public static final int ELEVATOR_DOWN_GAMEPAD_PORT = 2;
   }
 
-  public static final class Elevator {
-
-    public static final double MINIMUM_HEIGHT = 0; // makeshift number
-    public static final double MAXIMUM_HEIGHT = 0; // makeshift number
-
-  }
 }
 
