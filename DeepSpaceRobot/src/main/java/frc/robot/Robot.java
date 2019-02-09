@@ -19,9 +19,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.command.teleop.EncoderTestCommand;
-import frc.robot.command.teleop.HatchIntake;
-import frc.robot.command.teleop.MotorTestCommand;
+import frc.robot.test.CargoIntakerTestCommand;
+import frc.robot.test.ElevatorTestCommand;
+import frc.robot.test.EncoderTestCommand;
+import frc.robot.test.HatchIntakerTestCommand;
+import frc.robot.test.MotorTestCommand;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
@@ -30,8 +32,6 @@ import frc.robot.robot.CompPowerUp;
 import frc.robot.robot.CompSteamWorks;
 import frc.robot.subsystem.Drivetrain;
 import frc.robot.util.RobotBuilder;
-import org.waltonrobotics.command.SimpleCameraPositioning;
-import org.waltonrobotics.command.SimpleMotion;
 import org.waltonrobotics.util.RobotConfig;
 
 /**

@@ -1,4 +1,4 @@
-package frc.robot.command.teleop;
+package frc.robot.test;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;

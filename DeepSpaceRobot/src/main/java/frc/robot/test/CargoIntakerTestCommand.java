@@ -1,8 +1,8 @@
-package frc.robot;
+package frc.robot.test;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ElevatorTestCommand extends Command
+public class CargoIntakerTestCommand extends Command
 {
     @Override
     protected void initialize() {

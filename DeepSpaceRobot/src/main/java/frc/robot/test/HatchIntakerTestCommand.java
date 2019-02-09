@@ -1,9 +1,8 @@
-package frc.robot;
+package frc.robot.test;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystem.CargoIntaker;
 
-public class CargoIntakerTestCommand extends Command
+public class HatchIntakerTestCommand extends Command
 {
     @Override
     protected void initialize() {
