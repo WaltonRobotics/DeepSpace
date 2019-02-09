@@ -36,6 +36,8 @@ public class MotorTestCommand extends Command {
         }
 
         SmartDashboard.putBoolean("Wheel tests passed", true);
+        if ((speed != -leftWheel.get())) throw new AssertionError("Issue with the left wheel speed");
+        if ((speed != rightWheel.get())) throw new AssertionError("Issue with the right wheel speed");
     }
 
     @Override

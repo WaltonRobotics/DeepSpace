@@ -58,6 +58,8 @@ public class EncoderTestCommand extends Command {
         }
 */
         SmartDashboard.putBoolean("Encoder tests passed", true);
+        if (encoderLeft.getDistancePerPulse() != distancePerPulse) throw new AssertionError("Issue with the left encoder distance per pulse");
+        if (encoderRight.getDistancePerPulse() != distancePerPulse) throw new AssertionError("Issue with the right encoder distance per pulse");
     }
 
     @Override

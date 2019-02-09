@@ -65,7 +65,6 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("Encoder Left", encoderLeft.getDistance());
     SmartDashboard.putNumber("Encoder Right", encoderRight.getDistance());
-    // System.out.println("robot Periodic");
   }
 
   /**
