@@ -15,6 +15,11 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.LayoutType;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.command.teleop.util.NormalSpeed;
@@ -55,6 +60,12 @@ public class Robot extends TimedRobot {
     drivetrain.cancelControllerMotion();
     drivetrain.reset();
 
+    initShuffleBoard();
+
+    initCamera();
+  }
+
+  private void initShuffleBoard() {
     SendableChooser<Transform> sendableChooser = new SendableChooser<>();
     sendableChooser.setDefaultOption("Normal", new NormalSpeed());
     sendableChooser.addOption("Sigmoid", new Sigmoid());
@@ -65,8 +76,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("dx", 2);
     SmartDashboard.putNumber("dy", .5);
     SmartDashboard.putNumber("angle", 30);
-
-    initCamera();
   }
 
   private void initCamera() {
