@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-import static frc.robot.Config.Hardware.DISTANCE_PER_PULSE;
 import static frc.robot.Robot.drivetrain;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
@@ -21,7 +20,7 @@ public class EncoderTestCommand extends Command {
 
     @Override
     protected void initialize() {
-        distancePerPulse = DISTANCE_PER_PULSE;
+        distancePerPulse = drivetrain.getRobotConfig().getLeftEncoderConfig().getDistancePerPulse();
         timer = new Timer();
         timer.start();
     }
