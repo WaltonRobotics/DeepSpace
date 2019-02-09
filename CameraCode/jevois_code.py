@@ -3,6 +3,7 @@ import math  # for cos, sin, etc
 import cv2
 import libjevois as jevois
 import numpy as np
+from datetime import datetime as date
 
 
 def distance_2d(point0, point1):
@@ -73,18 +74,21 @@ class FirstPython:
         self.solidity = [0, 100]
         self.max_vertices = 1000000.0
         self.min_vertices = 4.0
-        self.min_ratio = 0.8
+        self.min_ratio = 0.5
         self.max_ratio = 1.1
+        self.max_contour_y = 50
 
         self.object_points = np.array(
             [[-5.936, 31.5, 0.0], [-4.0, 31, 0.0], [-5.375, 25.675, 0.0], [-7.316, 26.175, 0.0],  # Left points
              [4.0, 31, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0], [5.375, 25.675, 0.0]])  # Right points
         self.object_points = self.object_points.astype('float32')
 
-        self.current_target = np.array([None, None])
-
         self.decision_tolerance = 0.05
+        self.current_target = np.array([None, None])
         self.target_lost_factor = 1.25
+        self.target_lost_time = -1
+        self.target_lost_timeout = 5
+
 
         self.isEnabled = False
 
@@ -136,6 +140,9 @@ class FirstPython:
         output = []
         for contour in contours:
             x, y, w, h = cv2.boundingRect(contour)
+            #Contour height
+            if y < self.max_contour_y:
+                continue
             # Width
             if w < self.min_width or w > self.max_width:
                 continue
@@ -404,6 +411,7 @@ class FirstPython:
         """
         success, target = self.find_target_closest_to_current(targets)
         if success:
+            self.target_lost_time = -1
             rotation, translation = self.estimate_pose(target)
             self.current_target[0] = (target, rotation, translation)
             self.current_target[1] = target.bounding_rectangle
@@ -418,10 +426,21 @@ class FirstPython:
                 jevois.writeText(outimg, tstring, 3, 15, jevois.YUYV.White, jevois.Font.Font6x10)
         else:
             self.current_target[0] = None
-            if outimg is not None:
-                jevois.writeText(outimg, "Target lost", 3, 3, jevois.YUYV.White,
+            if self.target_lost_time is -1:
+                self.target_lost_time = date.now().second
+            if date.now().second - self.target_lost_time < self.target_lost_timeout:
+                if outimg is not None:
+                    jevois.writeText(outimg, "Target lost, waiting {} more seconds".format(self.target_lost_timeout -
+                                     date.now().second + self.target_lost_time), 3, 3, jevois.YUYV.White,
+                                     jevois.Font.Font6x10)
+                jevois.LINFO("Target lost, waiting {} more seconds".format(self.target_lost_timeout -
+                                     date.now().second + self.target_lost_time))
+            else:
+                self.current_target[1] = None
+                self.target_lost_time = -1
+                jevois.writeText(outimg, "Lost target has been timed out", 3, 3, jevois.YUYV.White,
                                  jevois.Font.Font6x10)
-            jevois.LINFO("Target lost")
+                jevois.LINFO("Lost target has been timed out")
 
     def find_target_closest_to_current(self, targets):
         """
@@ -506,9 +525,9 @@ class TapePiece:
     @property
     def parity(self):
         corners = order_corners_clockwise(self)
-        if corners[0][0] > corners[3][0]:
+        if corners[0][0] > corners[3][0] or corners[1][0] > corners[2][0]:
             return 'left'
-        elif corners[3][0] > corners[0][0]:
+        elif corners[3][0] > corners[0][0] or corners[2][0] > corners[1][0]:
             #If the bottom left corner is more right than the top left
             return 'right'
         else:
