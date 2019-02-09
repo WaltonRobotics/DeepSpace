@@ -47,6 +47,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Transform Select", sendableChooser);
 
     UsbCamera fishEyeCamera = CameraServer.getInstance().startAutomaticCapture();
+
+    drivetrain.getController().enableCameraStream();
   }
 
   /**
@@ -61,6 +63,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Encoder Left", encoderLeft.getDistance());
     SmartDashboard.putNumber("Encoder Right", encoderRight.getDistance());
     // System.out.println("robot Periodic");
+
+    SmartDashboard.putString("CameraData", drivetrain.getController().getCurrentCameraData().toString());
   }
 
   /**
