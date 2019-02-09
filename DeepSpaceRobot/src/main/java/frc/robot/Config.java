@@ -13,16 +13,18 @@ public class Config {
 
   public static final class Hardware {
 
-    public static final int LEFT_WHEEL_CHANNEL = 0;
-    public static final int RIGHT_WHEEL_CHANNEL = 1;
     public static final int SHIFTER_CHANNEL = 0;
+  }
 
-    public static final int LEFT_ENCODER_CHANNEL1 = 2;
-    public static final int LEFT_ENCODER_CHANNEL2 = 3; // for second digital input
+  public static final class SmartDashboardKeys {
 
-    public static final int RIGHT_ENCODER_CHANNEL1 = 0; // digital
-    public static final int RIGHT_ENCODER_CHANNEL2 = 1; // digital
-    public static final double DISTANCE_PER_PULSE = 0.00055805; // digital
+    public static final String CONSTANTS_KANGLE = "Constants/KAngle";
+    public static final String CONSTANTS_MAX_VELOCITY = "Constants/Max Velocity";
+    public static final String CONSTANTS_MAX_ACCELERATION = "Constants/Max Acceleration";
+    public static final String CONSTANTS_KL = "Constants/KL";
+    public static final String CONSTANTS_KV = "Constants/KV";
+    public static final String CONSTANTS_KACC = "Constants/KAcc";
+    public static final String CONSTANTS_KK = "Constants/KK";
+    public static final String CONSTANTS_KS = "Constants/KS";
   }
 }
-
