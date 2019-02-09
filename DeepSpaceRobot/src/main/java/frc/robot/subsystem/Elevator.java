@@ -10,9 +10,7 @@ package frc.robot.subsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
-import static frc.robot.OI.elevatorDownButton;
-import static frc.robot.OI.elevatorUpButton;
-import static frc.robot.OI.gamepad;
+import static frc.robot.OI.*;
 
 /**
  * Add your docs here.
@@ -23,30 +21,36 @@ public class Elevator extends Subsystem {
 
   private static final Elevator instance = new Elevator();
 
-  private boolean lastUpButtonState = false;
-  private boolean lastDownButtonState = false;
+  private boolean lastUpButtonPressed = false;
+  private boolean lastDownButtonPressed = false;
+  private boolean currentUpButtonPressed = false;
+  private boolean currentDownButtonPressed = false;
+
+  private static final int baseLevelMinimum = 0;
+  private static final int levelOneMinimum = 100;
+  private static final int levelTwoMinimum = 200;
+  private static final int levelThreeMinimum = 300;
+
+  private int currentEncoderPosition = 0;
 
   private Elevator() {
-
 
   }
 
   public boolean isUpButtonPressed() {
-    return elevatorUpButton.getPressed(gamepad);
+    return currentUpButtonPressed;
   }
 
   public boolean isDownButtonPressed() {
-    return elevatorDownButton.getPressed(gamepad);
+    return currentDownButtonPressed;
   }
 
   public boolean wasUpButtonPressed() {
-    boolean currentValue = isUpButtonPressed();
-    return (currentValue != lastUpButtonState) && currentValue;
+    return (currentUpButtonPressed != lastUpButtonPressed) && currentUpButtonPressed;
   }
 
   public boolean wasDownButtonPressed() {
-    boolean currentValue = isDownButtonPressed();
-    return (currentValue != lastDownButtonState) && currentValue;
+    return (currentDownButtonPressed != lastDownButtonPressed) && currentDownButtonPressed;
   }
 
   public static Elevator getInstance() {
@@ -61,10 +65,14 @@ public class Elevator extends Subsystem {
 
   @Override
   public void periodic() {
-    /* Do logic. */
+    /* Read state of inputs. */
+    lastUpButtonPressed = currentUpButtonPressed;
+    currentUpButtonPressed = elevatorUpButton.getPressed(gamepad);
 
-    lastUpButtonState = isUpButtonPressed();
-    lastDownButtonState = isDownButtonPressed();
+    lastDownButtonPressed = currentDownButtonPressed;
+    currentDownButtonPressed = elevatorDownButton.getPressed(gamepad);
+
+    /* Process values relevant to subsystem. */
   }
 
 }

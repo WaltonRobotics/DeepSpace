@@ -30,8 +30,8 @@ public class Config {
 
     public static final int ELEVATOR_MOTOR_CHANNEL = 3;
 
-    public static final int ELEVATOR_UP_GAMEPAD_PORT = 1;
-    public static final int ELEVATOR_DOWN_GAMEPAD_PORT = 2;
+    public static final int HATCH_SENSOR_DIGITAL_INPUT_PORT = 1;
+    public static final int HATCH_PRONGS_ACTUATOR_PORT = 2;
   }
 
 }

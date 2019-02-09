@@ -20,7 +20,7 @@ import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
 import frc.robot.command.teleop.util.Transform;
-import frc.robot.subsystem.Drivetrain;
+import frc.team2974.robot.subsystems.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -93,7 +93,6 @@ public class Robot extends TimedRobot {
     drivetrain.cancelControllerMotion();
     drivetrain.startControllerMotion();
     drivetrain.reset();
-    drivetrain.shiftUp();
   }
 
   /**
