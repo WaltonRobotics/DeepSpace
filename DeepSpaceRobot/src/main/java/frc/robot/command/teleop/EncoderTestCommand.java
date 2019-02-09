@@ -2,6 +2,7 @@ package frc.robot.command.teleop;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 import static frc.robot.Config.Hardware.DISTANCE_PER_PULSE;
@@ -30,17 +31,23 @@ public class EncoderTestCommand extends Command {
         encoderLeft.setDistancePerPulse(distancePerPulse);
         encoderRight.setDistancePerPulse(distancePerPulse);
 
-        assert (encoderLeft.getDistancePerPulse() == 2) : "something happened";
-        assert (encoderRight.getDistancePerPulse() == distancePerPulse);
-        System.out.println(timer.get());
+        if ((encoderLeft.getDistancePerPulse() != distancePerPulse))
+            throw new AssertionError("Issue with left encoder distance per pulse");
+        {
+            SmartDashboard.putBoolean("Test failed, check left encoder", false);
+        }
+        if ((encoderRight.getDistancePerPulse() != distancePerPulse))
+            throw new AssertionError("Issue with right encoder distance per pulse");
+        {
+            SmartDashboard.putBoolean("Test failed, check right encoder", false);
+        }
+
+        SmartDashboard.putBoolean("Encoder tests passed", true);
     }
 
     @Override
     protected boolean isFinished() {
         drivetrain.reset();
-        if(timer.hasPeriodPassed(1)){
-            return true;
-        }
-        return false;
+        return timer.hasPeriodPassed(1);
     }
 }

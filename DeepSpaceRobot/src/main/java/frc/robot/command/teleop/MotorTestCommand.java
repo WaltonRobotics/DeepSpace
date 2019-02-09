@@ -2,6 +2,7 @@ package frc.robot.command.teleop;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 import static frc.robot.Robot.drivetrain;
@@ -23,9 +24,18 @@ public class MotorTestCommand extends Command {
     @Override
     protected void execute() {
         drivetrain.setSpeeds(speed, speed);
-        assert(speed == leftWheel.get());
-        assert(speed == rightWheel.get());
-        System.out.println(timer.get());
+        if ((speed != -leftWheel.get()))
+            throw new AssertionError("Left wheel speed issue");
+        {
+            SmartDashboard.putBoolean("Left wheel test failed", false);
+        }
+        if ((speed != rightWheel.get()))
+            throw new AssertionError("Right wheel speed issue");
+        {
+            SmartDashboard.putBoolean("Right wheel test failed", false);
+        }
+
+        SmartDashboard.putBoolean("Wheel tests passed", true);
     }
 
     @Override

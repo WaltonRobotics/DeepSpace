@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.command.teleop.EncoderTestCommand;
+import frc.robot.command.teleop.HatchIntake;
 import frc.robot.command.teleop.MotorTestCommand;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
@@ -114,8 +115,10 @@ public class Robot extends TimedRobot {
     CommandGroup motorTestCommand = new CommandGroup();
     motorTestCommand.addSequential(new MotorTestCommand());
     motorTestCommand.addSequential(new EncoderTestCommand());
+    motorTestCommand.addSequential(new CargoIntakerTestCommand());
+    motorTestCommand.addSequential(new HatchIntakerTestCommand());
     motorTestCommand.start();
-    
+    SmartDashboard.putData("Test commands", motorTestCommand);
   }
 
   /**
