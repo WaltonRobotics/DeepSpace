@@ -45,6 +45,8 @@ public class TransformTest {
         TransformMap.addTransform(new frc.robot.command.teleop.BarryAllen());
 
         Assert.assertEquals(TransformMap.calculate(0.5), Math.pow(0.5 / 2, 2), 0);
+
+        TransformMap.clearTransforms();
     }
 
     @Test
