@@ -30,17 +30,13 @@ public class EncoderTestCommand extends Command {
         encoderLeft.setDistancePerPulse(distancePerPulse);
         encoderRight.setDistancePerPulse(distancePerPulse);
 
-        assert (encoderLeft.getDistancePerPulse() == 2) : "something happened";
-        assert (encoderRight.getDistancePerPulse() == distancePerPulse);
-        System.out.println(timer.get());
+        if (encoderLeft.getDistancePerPulse() != distancePerPulse) throw new AssertionError("Issue with the left encoder distance per pulse");
+        if (encoderRight.getDistancePerPulse() != distancePerPulse) throw new AssertionError("Issue with the right encoder distance per pulse");
     }
 
     @Override
     protected boolean isFinished() {
         drivetrain.reset();
-        if(timer.hasPeriodPassed(1)){
-            return true;
-        }
-        return false;
+        return timer.hasPeriodPassed(1);
     }
 }

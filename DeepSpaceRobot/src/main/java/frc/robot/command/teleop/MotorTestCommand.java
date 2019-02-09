@@ -23,9 +23,8 @@ public class MotorTestCommand extends Command {
     @Override
     protected void execute() {
         drivetrain.setSpeeds(speed, speed);
-        assert(speed == leftWheel.get());
-        assert(speed == rightWheel.get());
-        System.out.println(timer.get());
+        if ((speed != -leftWheel.get())) throw new AssertionError("Issue with the left wheel speed");
+        if ((speed != rightWheel.get())) throw new AssertionError("Issue with the right wheel speed");
     }
 
     @Override

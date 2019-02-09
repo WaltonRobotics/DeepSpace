@@ -64,7 +64,6 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("Encoder Left", encoderLeft.getDistance());
     SmartDashboard.putNumber("Encoder Right", encoderRight.getDistance());
-    // System.out.println("robot Periodic");
   }
 
   /**
@@ -114,8 +113,7 @@ public class Robot extends TimedRobot {
     CommandGroup motorTestCommand = new CommandGroup();
     motorTestCommand.addSequential(new MotorTestCommand());
     motorTestCommand.addSequential(new EncoderTestCommand());
-    motorTestCommand.start();
-    
+    SmartDashboard.putData("TestCommands", motorTestCommand);
   }
 
   /**
