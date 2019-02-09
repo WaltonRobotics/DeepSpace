@@ -10,6 +10,7 @@ package frc.robot;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 
+import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -25,7 +26,13 @@ import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
 import frc.robot.command.teleop.util.Transform;
+import frc.robot.robot.CompPowerUp;
+import frc.robot.robot.CompSteamWorks;
 import frc.robot.subsystem.Drivetrain;
+import frc.robot.util.RobotBuilder;
+import org.waltonrobotics.command.SimpleCameraPositioning;
+import org.waltonrobotics.command.SimpleMotion;
+import org.waltonrobotics.util.RobotConfig;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -34,7 +41,16 @@ import frc.robot.subsystem.Drivetrain;
  */
 public class Robot extends TimedRobot {
 
-  public static final Drivetrain drivetrain = new Drivetrain();
+  public static final RobotConfig currentRobot;
+  public static final Drivetrain drivetrain;
+  private static final RobotBuilder robotBuilder;
+  private static final int DEFAULT_CAMERA_COMPRESSION_QUALITY = 40; // between 0 and 100, 100 being the max, -1 being left to Shuffleboard
+
+  static {
+    robotBuilder = new RobotBuilder(new CompPowerUp(), new CompSteamWorks());
+    currentRobot = robotBuilder.getCurrentRobotConfig();
+    drivetrain = new Drivetrain();
+  }
 
   /**
    * This function is run when the robot is first started up and should be used for any initialization code.
@@ -44,6 +60,12 @@ public class Robot extends TimedRobot {
     drivetrain.cancelControllerMotion();
     drivetrain.reset();
 
+    initShuffleBoard();
+
+    initCamera();
+  }
+
+  private void initShuffleBoard() {
     SendableChooser<Transform> sendableChooser = new SendableChooser<>();
     sendableChooser.setDefaultOption("Normal", new NormalSpeed());
     sendableChooser.addOption("Sigmoid", new Sigmoid());
@@ -51,7 +73,30 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("Transform Select", sendableChooser);
 
-    UsbCamera fishEyeCamera = CameraServer.getInstance().startAutomaticCapture();
+    SmartDashboard.putNumber("dx", 2);
+    SmartDashboard.putNumber("dy", .5);
+    SmartDashboard.putNumber("angle", 30);
+  }
+
+  private void initCamera() {
+    CameraServer cameraServer = CameraServer.getInstance();
+
+    UsbCamera fishEyeCamera = new UsbCamera("Fisheye Camera", 0);
+    fishEyeCamera.setResolution(320, 240);
+    fishEyeCamera.setFPS(30);
+
+    cameraServer.addCamera(fishEyeCamera);
+
+    MjpegServer fisheyeServer = CameraServer.getInstance().addServer("Fisheye Camera Server");
+    fisheyeServer.setSource(fishEyeCamera);
+
+    fisheyeServer.getProperty("compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+    fisheyeServer.getProperty("default_compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+
+    if (!fishEyeCamera.isConnected()) {
+      fishEyeCamera.close();
+      fisheyeServer.close();
+    }
   }
 
   /**
@@ -65,6 +110,8 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("Encoder Left", encoderLeft.getDistance());
     SmartDashboard.putNumber("Encoder Right", encoderRight.getDistance());
+    SmartDashboard.putString("Position", String.valueOf(drivetrain.getActualPosition()));
+    // System.out.println("robot Periodic");
   }
 
   /**
@@ -74,7 +121,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     drivetrain.cancelControllerMotion();
-    drivetrain.getMotionLogger().writeMotionDataCSV();
+    drivetrain.getMotionLogger().writeMotionDataCSV(true);
   }
 
   @Override
