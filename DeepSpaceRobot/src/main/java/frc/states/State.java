@@ -16,13 +16,13 @@ public class State {
         this(() -> null, periodic, () -> null);
     }
 
-    public void initialize() {
+    protected void initialize() {
         if (initialize != null) {
             initialize.run();
         }
     }
 
-    public State periodic() {
+    protected State periodic() {
         if (periodic != null) {
             return periodic.run();
         }
@@ -30,7 +30,7 @@ public class State {
         return null;
     }
 
-    public void finish() {
+    protected void finish() {
         if (finish != null) {
             finish.run();
         }

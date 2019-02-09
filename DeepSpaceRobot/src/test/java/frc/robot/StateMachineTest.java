@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import frc.states.State;
 import org.junit.Test;
 
@@ -20,18 +21,18 @@ public class StateMachineTest {
     public void testGenericTransition() {
         GenericTransition t = () -> null;
 
-        assertEquals(t.run(), null);
+        assertNull(t.run());
     }
 
     @Test
     public void testPeriodicTransition() {
         PeriodicTransition t = () -> null;
 
-        assertEquals(t.run(), null);
+        assertNull(t.run());
     }
 
     @Test
-    public void testStateBuilder() {
+    public void testStateBuilder() throws InvalidArgumentException {
         State secondState = new State(() -> null, () -> null, () -> null);
         State firstState = new State(() -> null, () -> secondState, () -> null);
 
@@ -43,7 +44,7 @@ public class StateMachineTest {
     }
 
     @Test
-    public void testMultipleStateTransitions() {
+    public void testMultipleStateTransitions() throws InvalidArgumentException {
         StateMachineTest.periodicCounter = 0;
 
         class TestFinish implements GenericTransition {
@@ -88,7 +89,7 @@ public class StateMachineTest {
 
         StateBuilder builder = new StateBuilder(firstState);
 
-        assertTrue(builder.getCurrentState() == firstState);
+        assertSame(builder.getCurrentState(), firstState);
 
         for (int i = 0; i < StateMachineTest.periodicNumberOfTimes - 1; i++) {
             builder.step();
@@ -98,7 +99,7 @@ public class StateMachineTest {
 
         builder.step();
 
-        assertTrue(builder.getCurrentState().getInitialize().getClass() == TestFinish.class);
+        assertSame(builder.getCurrentState().getInitialize().getClass(), TestFinish.class);
     }
 
 }

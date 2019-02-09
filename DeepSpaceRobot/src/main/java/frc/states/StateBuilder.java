@@ -1,19 +1,27 @@
 package frc.states;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
+import frc.utils.CrashDump;
+
 public class StateBuilder {
 
     private State current;
 
-    public StateBuilder(State current) {
+    public StateBuilder(State current) throws InvalidArgumentException {
         this.current = current;
+
+        if (current == null) {
+            InvalidArgumentException e = new InvalidArgumentException(new String[]{"Make the first state not null!"});
+
+            CrashDump.logThrowableCrash(e);
+
+            throw e;
+        }
+
         current.initialize();
     }
 
     public void step() {
-        if (current == null) {
-            return;
-        }
-
         State state = current.periodic();
 
         if (!current.equals(state)) {
