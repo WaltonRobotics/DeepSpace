@@ -1,5 +1,7 @@
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import java.util.ArrayList;
 import java.util.Collections;
 import org.waltonrobotics.util.RobotConfig;
@@ -22,5 +24,18 @@ public class RobotBuilder {
 
   public RobotConfig getCurrentRobotConfig() {
     return robotConfigs.stream().filter(RobotConfig::isCurrentRobot).findFirst().orElse(null);
+  }
+
+  public SendableChooser<RobotConfig> getSendableList(){
+    SendableChooser<RobotConfig> robotConfigSendableChooser = new SendableChooser<>();
+    for (RobotConfig robotConfig : robotConfigs){
+      robotConfigSendableChooser.addOption(robotConfig.getRobotName(), robotConfig);
+    }
+
+    RobotConfig currentRobot = getCurrentRobotConfig();
+    robotConfigSendableChooser.setDefaultOption(currentRobot.getRobotName(), currentRobot);
+
+    return robotConfigSendableChooser;
+
   }
 }
