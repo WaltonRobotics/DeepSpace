@@ -34,20 +34,41 @@ public class EncoderTestCommand extends Command {
         if ((encoderLeft.getDistancePerPulse() != distancePerPulse))
             throw new AssertionError("Issue with left encoder distance per pulse");
         {
-            SmartDashboard.putBoolean("Test failed, check left encoder", false);
+            SmartDashboard.putBoolean("Check left encoder distance per pulse", false);
         }
         if ((encoderRight.getDistancePerPulse() != distancePerPulse))
             throw new AssertionError("Issue with right encoder distance per pulse");
         {
-            SmartDashboard.putBoolean("Test failed, check right encoder", false);
+            SmartDashboard.putBoolean("Check right encoder distance per pulse", false);
         }
 
+        /* Assertions to be implemented after we get a robot
+
+        drivetrain.setSpeeds(.25, .25);
+
+        if ((encoderLeft.get() != 0))
+            throw new AssertionError();
+        {
+            SmartDashboard.putBoolean("Encoder left did not return the expected digit", false);
+        }
+        if ((encoderRight.get() != 0))
+            throw new AssertionError();
+        {
+            SmartDashboard.putBoolean("Encoder right did not return the expected digit", false);
+        }
+*/
         SmartDashboard.putBoolean("Encoder tests passed", true);
     }
 
     @Override
     protected boolean isFinished() {
         drivetrain.reset();
-        return timer.hasPeriodPassed(1);
+        if(timer.hasPeriodPassed(3))
+        {
+            timer.stop();
+            return true;
+        }
+
+        return false;
     }
 }
