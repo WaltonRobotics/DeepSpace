@@ -22,14 +22,6 @@ public class Elevator extends Subsystem {
 
   private static final Elevator instance = new Elevator();
 
-  //returns elevator to original height
-  public void returnNormHeight() {
-    if (elevatorCurrentHeight != elevatorCurrentHeight) {
-      RobotMap.elevatorMotor.set(Math.signum(elevatorCurrentHeight - elevatorOriginalHeight) * Math.abs(distanceBetweenOgAndCurrent)); //may work, not expecting to
-    }
-  }
-
-
   private Elevator() {
 
 
@@ -43,5 +35,12 @@ public class Elevator extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+  }
+
+  //returns elevator to original height
+  public void returnNormHeight() {
+    if (elevatorCurrentHeight != elevatorCurrentHeight) {
+      RobotMap.elevatorMotor.set(Math.signum(elevatorCurrentHeight - elevatorOriginalHeight) * Math.abs(distanceBetweenOgAndCurrent)); //may work, not expecting to
+    }
   }
 }
