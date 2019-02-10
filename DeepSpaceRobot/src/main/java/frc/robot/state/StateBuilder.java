@@ -1,7 +1,7 @@
-package frc.states;
+package frc.robot.state;
 
 import com.sun.javaws.exceptions.InvalidArgumentException;
-import frc.utils.CrashDump;
+import frc.robot.util.CrashDump;
 
 public class StateBuilder {
 

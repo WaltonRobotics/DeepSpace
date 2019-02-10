@@ -1,13 +1,13 @@
 package frc.robot;
 
 import com.sun.javaws.exceptions.InvalidArgumentException;
-import frc.states.State;
+import frc.robot.state.State;
 import org.junit.Test;
 
-import frc.states.GenericTransition;
-import frc.states.PeriodicTransition;
-import frc.states.StateBuilder;
-import frc.utils.Logger;
+import frc.robot.state.GenericTransition;
+import frc.robot.state.PeriodicTransition;
+import frc.robot.state.StateBuilder;
+import frc.robot.util.Logger;
 
 import static org.junit.Assert.*;
 

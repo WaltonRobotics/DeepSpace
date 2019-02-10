@@ -1,4 +1,4 @@
-package frc.states;
+package frc.robot.state;
 
 public interface PeriodicTransition {
 
