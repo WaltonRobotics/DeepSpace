@@ -205,9 +205,8 @@ class FirstPython:
         translation_array = []
 
         for target in targets:
-            image_points_left = np.array(order_corners_clockwise(target.left_tape))
-
-            image_points_right = np.array(order_corners_clockwise(target.right_tape))
+            image_points_left = order_corners_clockwise(target.left_tape)
+            image_points_right = order_corners_clockwise(target.right_tape)
 
             image_points = np.concatenate((image_points_left, image_points_right))
             ret, rotation, translation = cv2.solvePnP(self.object_points, image_points, self.cam_matrix,
