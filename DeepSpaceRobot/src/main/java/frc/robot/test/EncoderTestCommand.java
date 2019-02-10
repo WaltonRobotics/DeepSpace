@@ -1,15 +1,15 @@
 package frc.robot.test;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.util.TestCommand;
 
 import static frc.robot.Robot.drivetrain;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 
-public class EncoderTestCommand extends Command {
+public class EncoderTestCommand extends TestCommand {
 
     private static double distancePerPulse;
     private Timer timer;
@@ -19,14 +19,14 @@ public class EncoderTestCommand extends Command {
     }
 
     @Override
-    protected void initialize() {
+    protected void initializeTest() {
         distancePerPulse = drivetrain.getRobotConfig().getLeftEncoderConfig().getDistancePerPulse();
         timer = new Timer();
         timer.start();
     }
 
     @Override
-    protected void execute() {
+    protected void executeTest() {
         encoderLeft.setDistancePerPulse(distancePerPulse);
         encoderRight.setDistancePerPulse(distancePerPulse);
 
@@ -61,7 +61,12 @@ public class EncoderTestCommand extends Command {
         if (encoderRight.getDistancePerPulse() != distancePerPulse) throw new AssertionError("Issue with the right encoder distance per pulse");
     }
 
-    @Override
+  @Override
+  protected void endTest() {
+
+  }
+
+  @Override
     protected boolean isFinished() {
         drivetrain.reset();
         if(timer.hasPeriodPassed(3))

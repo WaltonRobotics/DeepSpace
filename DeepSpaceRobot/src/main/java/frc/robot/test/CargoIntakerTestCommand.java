@@ -1,21 +1,26 @@
 package frc.robot.test;
 
-import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.util.TestCommand;
 
-public class CargoIntakerTestCommand extends Command
-{
-    @Override
-    protected void initialize() {
+public class CargoIntakerTestCommand extends TestCommand {
 
-    }
+  @Override
+  protected void initializeTest() {
 
-    @Override
-    protected void execute() {
+  }
 
-    }
+  @Override
+  protected void executeTest() {
 
-    @Override
-    protected boolean isFinished() {
-        return true;
-    }
+  }
+
+  @Override
+  protected void endTest() {
+
+  }
+
+  @Override
+  protected boolean isFinished() {
+    return false;
+  }
 }
