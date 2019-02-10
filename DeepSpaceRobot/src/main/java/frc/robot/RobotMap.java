@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -38,7 +39,6 @@ public class RobotMap {
 
   public static final Talon leftCargoIntake = new Talon(LEFT_CARGO_INTAKE_MOTOR_CHANNEL);
   public static final Talon rightCargoIntake = new Talon(RIGHT_CARGO_INTAKE_MOTOR_CHANNEL);
-  public static final Talon elevatorMotor = new Talon(ELEVATOR_MOTOR_CHANNEL);
 
   public static final Encoder encoderRight = new Encoder(new DigitalInput(RIGHT_ENCODER_CHANNEL1),
       new DigitalInput(RIGHT_ENCODER_CHANNEL2));
@@ -48,4 +48,9 @@ public class RobotMap {
   public static final DigitalInput hatchSensor = new DigitalInput(HATCH_SENSOR_DIGITAL_INPUT_PORT);
 
   public static final Solenoid hatchProngs = new Solenoid(HATCH_PRONGS_ACTUATOR_PORT);
+
+  public static final TalonSRX elevatorMotor = new TalonSRX(ELEVATOR_TALON_PORT);
+  public static final Encoder elevatorEncoder = new Encoder(new DigitalInput(ELEVATOR_ENCODER_CHANNEL1),
+          new DigitalInput(ELEVATOR_ENCODER_CHANNEL2));
+
 }

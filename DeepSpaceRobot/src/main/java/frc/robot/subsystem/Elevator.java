@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
 import static frc.robot.OI.*;
+import static frc.robot.RobotMap.elevatorMotor;
 
 /**
  * Add your docs here.
@@ -19,6 +20,24 @@ public class Elevator extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
+  public enum Level {
+    UNKNOWN(0), BASE(100), LEVEL1(200), LEVEL2(300), LEVEL3(400);
+
+    double target;
+
+    Level(double target) {
+      this.target = target;
+    }
+
+    public double getTarget() {
+      return target;
+    }
+  }
+
+  public enum ControlMode {
+    AUTO, POWER
+  }
+
   private static final Elevator instance = new Elevator();
 
   private boolean lastUpButtonPressed = false;
@@ -26,12 +45,9 @@ public class Elevator extends Subsystem {
   private boolean currentUpButtonPressed = false;
   private boolean currentDownButtonPressed = false;
 
-  private static final int baseLevelMinimum = 0;
-  private static final int levelOneMinimum = 100;
-  private static final int levelTwoMinimum = 200;
-  private static final int levelThreeMinimum = 300;
-
   private int currentEncoderPosition = 0;
+
+  private ControlMode controlMode;
 
   private Elevator() {
 
@@ -53,6 +69,27 @@ public class Elevator extends Subsystem {
     return (currentDownButtonPressed != lastDownButtonPressed) && currentDownButtonPressed;
   }
 
+  /* Get raw height of elevator from encoder ticks. */
+  public int getHeight() {
+    return currentEncoderPosition;
+  }
+
+  public Level getLevel() {
+    int currentHeight = getHeight();
+
+    if (currentHeight >= baseLevelMinimum && currentHeight < levelOneMinimum) return Level.BASE;
+    if (currentHeight >= levelOneMinimum && currentHeight < levelTwoMinimum) return Level.LEVEL1;
+    if (currentHeight >= levelTwoMinimum && currentHeight < levelThreeMinimum) return Level.LEVEL2;
+    if (currentHeight >= levelThreeMinimum) return Level.LEVEL3;
+
+    return Level.UNKNOWN;
+  }
+
+  public void setLevel(Level level) {
+    elevatorMotor.set
+    elevatorMotor.set(com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic, level.encoderPosition);
+  }
+
   public static Elevator getInstance() {
     return instance;
   }
@@ -71,6 +108,8 @@ public class Elevator extends Subsystem {
 
     lastDownButtonPressed = currentDownButtonPressed;
     currentDownButtonPressed = elevatorDownButton.getPressed(gamepad);
+
+    currentEncoderPosition = elevatorMotor.getSelectedSensorPosition();
 
     /* Process values relevant to subsystem. */
   }
