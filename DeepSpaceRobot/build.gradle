@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2019.1.1"
+    id "edu.wpi.first.GradleRIO" version "2019.2.1"
 }
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
@@ -50,6 +50,7 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'
+    compile fileTree(dir: 'lib', include: ['*.jar'])
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
@@ -58,4 +59,12 @@ dependencies {
 jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
+}
+
+test {
+    useJUnit()
+
+    filter {
+        includeTestsMatching "frc.robot.*"
+    }
 }

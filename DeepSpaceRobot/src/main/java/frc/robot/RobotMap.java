@@ -7,10 +7,17 @@
 
 package frc.robot;
 
+import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
+import static frc.robot.Robot.currentRobot;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Talon;
+
 /**
- * The RobotMap is a mapping from the ports sensors and actuators are wired into
- * to a variable name. This provides flexibility changing wiring, makes checking
- * the wiring easier and significantly reduces the number of magic numbers
+ * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides
+ * flexibility changing wiring, makes checking the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
 public class RobotMap {
@@ -23,4 +30,21 @@ public class RobotMap {
   // number and the module. For example you with a rangefinder:
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
+
+
+  public static final Talon rightWheel = new Talon(currentRobot.getRightTalonConfig().getChanell());
+  public static final Talon leftWheel = new Talon(currentRobot.getLeftTalonConfig().getChanell());
+
+  public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
+
+
+  public static final Encoder encoderRight = new Encoder(
+      new DigitalInput(currentRobot.getRightEncoderConfig().getChannell1()),
+      new DigitalInput(currentRobot.getRightEncoderConfig().getChannell2()));
+
+  public static final Encoder encoderLeft = new Encoder(
+      new DigitalInput(currentRobot.getLeftEncoderConfig().getChannell1()),
+      new DigitalInput(currentRobot.getLeftEncoderConfig().getChannell2()));
+
+
 }

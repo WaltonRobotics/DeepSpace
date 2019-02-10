@@ -5,30 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystem;
+package frc.robot;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 /**
  * Add your docs here.
  */
-public class Elevator extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+public class TestTest {
 
-  private static final Elevator instance = new Elevator();
-
-  private Elevator() {
-
+  @Test
+  public void testTestingTest() {
+    assertTrue(true);
   }
 
-  public static Elevator getInstance() {
-    return instance;
-  }
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
 }
