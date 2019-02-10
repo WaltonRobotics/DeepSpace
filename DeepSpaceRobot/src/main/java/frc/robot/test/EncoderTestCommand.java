@@ -1,16 +1,15 @@
-package frc.robot.command.teleop;
+package frc.robot.test;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.util.TestCommand;
 
-import static frc.robot.Config.Hardware.DISTANCE_PER_PULSE;
 import static frc.robot.Robot.drivetrain;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 
-public class EncoderTestCommand extends Command {
+public class EncoderTestCommand extends TestCommand {
 
     private static double distancePerPulse;
     private Timer timer;
@@ -30,9 +29,19 @@ public class EncoderTestCommand extends Command {
             throw new AssertionError("Failed to reset left encoder" + encoderLeft.get());
 
 
-        distancePerPulse = DISTANCE_PER_PULSE;
+        distancePerPulse = .00035;
         timer = new Timer();
         timer.start();
+    protected void initializeTest() {
+        distancePerPulse = drivetrain.getRobotConfig().getLeftEncoderConfig().getDistancePerPulse();
+        timer = new Timer();
+        timer.start();
+    }
+
+    @Override
+    protected void executeTest() {
+        encoderLeft.setDistancePerPulse(distancePerPulse);
+        encoderRight.setDistancePerPulse(distancePerPulse);
 
         if ((encoderLeft.getDistancePerPulse() != distancePerPulse))
             throw new AssertionError("Issue with left encoder distance per pulse");
@@ -61,7 +70,12 @@ public class EncoderTestCommand extends Command {
 */
     }
 
-    @Override
+  @Override
+  protected void endTest() {
+
+  }
+
+  @Override
     protected boolean isFinished() {
         if(timer.hasPeriodPassed(1))
         {
