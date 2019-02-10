@@ -17,16 +17,14 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.command.teleop.util.NormalSpeed;
-import frc.robot.command.teleop.util.Sigmoid;
-import frc.robot.command.teleop.util.Sqrt;
-import frc.robot.command.teleop.util.Transform;
+import frc.robot.command.teleop.NormalSpeed;
+import frc.robot.command.teleop.Sigmoid;
+import frc.robot.command.teleop.Sqrt;
+import frc.robot.command.teleop.Transform;
 import frc.robot.robot.CompPowerUp;
 import frc.robot.robot.CompSteamWorks;
 import frc.robot.subsystem.Drivetrain;
 import frc.robot.util.RobotBuilder;
-import org.waltonrobotics.command.SimpleCameraPositioning;
-import org.waltonrobotics.command.SimpleMotion;
 import org.waltonrobotics.util.RobotConfig;
 
 /**
