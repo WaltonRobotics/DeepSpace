@@ -43,7 +43,7 @@ def order_corners_clockwise(tape):
             tr, br = right_most
 
         # return the coordinates in top-left, top-right, bottom-right, and bottom-left order
-        return np.array([tl, tr, br, bl], dtype="float32")
+        return np.array([tl, tr, br, bl], dtype=np.float32)
 
 def pairwise(iterable):
     a = iter(iterable)
@@ -80,8 +80,7 @@ class FirstPython:
 
         self.object_points = np.array(
             [[-5.936, 31.5, 0.0], [-4.0, 31, 0.0], [-5.375, 25.675, 0.0], [-7.316, 26.175, 0.0],  # Left points
-             [4.0, 31, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0], [5.375, 25.675, 0.0]])  # Right points
-        self.object_points = self.object_points.astype('float32')
+             [4.0, 31, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0], [5.375, 25.675, 0.0]], dtype=np.float32)  # Right points
 
         self.decision_tolerance = 0.05
         self.current_target = np.array([None, None])
@@ -207,10 +206,8 @@ class FirstPython:
 
         for target in targets:
             image_points_left = np.array(order_corners_clockwise(target.left_tape))
-            image_points_left = image_points_left.astype('float32')
 
             image_points_right = np.array(order_corners_clockwise(target.right_tape))
-            image_points_right = image_points_right.astype('float32')
 
             image_points = np.concatenate((image_points_left, image_points_right))
             ret, rotation, translation = cv2.solvePnP(self.object_points, image_points, self.cam_matrix,
