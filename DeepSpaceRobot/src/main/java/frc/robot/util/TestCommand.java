@@ -1,5 +1,6 @@
 package frc.robot.util;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,25 +9,56 @@ public abstract class TestCommand extends Command {
 
   private List<TestResult> testResult = new ArrayList<>();
 
-  public abstract String getTestName();
+  public String getTestName() {
+    return getClass().getSimpleName();
+  }
 
   @Override
   protected void initialize() {
     try {
       initializeTest();
-      testResult.add(new TestResult(String.format("%s %s", getTestName(), "initialize"), true, null));
+      addSuccess("initialize");
     } catch (AssertionError error) {
-      testResult.add(new TestResult(String.format("%s %s", getTestName(), "initialize"), false, error));
+      addFail("initialize", error);
     }
+  }
+
+
+  public void addSuccess(String testFunction) {
+    testResult.add(
+        new TestResult(
+            String.format(
+                "%s %s",
+                getTestName(),
+                testFunction
+            ),
+            true,
+            Timer.getFPGATimestamp(),
+            null
+        ));
+  }
+
+
+  public void addFail(String testFunction, AssertionError assertionError) {
+    testResult.add(
+        new TestResult(
+            String.format(
+                "%s %s",
+                getTestName(),
+                testFunction
+            ),
+            false,
+            Timer.getFPGATimestamp(), assertionError
+        ));
   }
 
   @Override
   protected void execute() {
     try {
       executeTest();
-      testResult.add(new TestResult(String.format("%s %s", getTestName(), "execute"), true, null));
+      addSuccess("execute");
     } catch (AssertionError error) {
-      testResult.add(new TestResult(String.format("%s %s", getTestName(), "execute"), false, error));
+      addFail("execute", error);
     }
   }
 
@@ -34,9 +66,9 @@ public abstract class TestCommand extends Command {
   protected void end() {
     try {
       endTest();
-      testResult.add(new TestResult(String.format("%s %s", getTestName(), "end"), true, null));
+      addSuccess("end");
     } catch (AssertionError error) {
-      testResult.add(new TestResult(String.format("%s %s", getTestName(), "end"), false, error));
+      addFail("end", error);
     }
   }
 
