@@ -11,7 +11,7 @@ import static frc.robot.RobotMap.rightWheel;
 
 public class MotorTestCommand extends Command {
 
-    private final double speed = .25;
+    private final double speed = .5;
     private Timer timer;
 
     @Override
@@ -34,19 +34,11 @@ public class MotorTestCommand extends Command {
         {
             SmartDashboard.putBoolean("Check right wheel", false);
         }
-
-        SmartDashboard.putBoolean("Wheel tests passed", true);
-        if ((speed != -leftWheel.get())) throw new AssertionError("Issue with the left wheel speed");
-        if ((speed != rightWheel.get())) throw new AssertionError("Issue with the right wheel speed");
     }
 
     @Override
     protected boolean isFinished() {
         drivetrain.reset();
-        if(timer.hasPeriodPassed(3)){
-            timer.stop();
-            return true;
-        }
-        return false;
+        return timer.hasPeriodPassed(1);
     }
 }

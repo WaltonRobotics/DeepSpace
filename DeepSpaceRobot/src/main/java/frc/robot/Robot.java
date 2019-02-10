@@ -112,12 +112,11 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     drivetrain.cancelControllerMotion();
     CommandGroup motorTestCommand = new CommandGroup();
-    motorTestCommand.addSequential(new MotorTestCommand());
+    //motorTestCommand.addSequential(new MotorTestCommand());
     motorTestCommand.addSequential(new EncoderTestCommand());
     motorTestCommand.addSequential(new CargoIntakerTestCommand());
     motorTestCommand.addSequential(new HatchIntakerTestCommand());
     motorTestCommand.addSequential(new ElevatorTestCommand());
-    motorTestCommand.start();
     SmartDashboard.putData("Test commands", motorTestCommand);
   }
 
