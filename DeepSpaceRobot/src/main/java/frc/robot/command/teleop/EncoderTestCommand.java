@@ -22,25 +22,28 @@ public class EncoderTestCommand extends Command {
     @Override
     protected void initialize() {
         distancePerPulse = DISTANCE_PER_PULSE;
+        drivetrain.reset();
+        encoderLeft.setDistancePerPulse(distancePerPulse);
+        encoderRight.setDistancePerPulse(distancePerPulse);
+
         timer = new Timer();
         timer.start();
+
+        if ((encoderLeft.get() != 0))
+            throw new AssertionError("Left encoder reset failed");
+        if ((encoderRight.get() != 0))
+            throw new AssertionError("Right encoder reset failed");
+
+        if ((encoderLeft.getDistancePerPulse() != distancePerPulse))
+            throw new AssertionError("Issue with left encoder distance per pulse");
+        if ((encoderRight.getDistancePerPulse() != distancePerPulse))
+            throw new AssertionError("Issue with right encoder distance per pulse");
     }
 
     @Override
     protected void execute() {
-        encoderLeft.setDistancePerPulse(distancePerPulse);
-        encoderRight.setDistancePerPulse(distancePerPulse);
 
-        if ((encoderLeft.getDistancePerPulse() != distancePerPulse))
-            throw new AssertionError("Issue with left encoder distance per pulse");
-        {
-            SmartDashboard.putBoolean("Check left encoder distance per pulse", false);
-        }
-        if ((encoderRight.getDistancePerPulse() != distancePerPulse))
-            throw new AssertionError("Issue with right encoder distance per pulse");
-        {
-            SmartDashboard.putBoolean("Check right encoder distance per pulse", false);
-        }
+
 
         /* Assertions to be implemented after we get a robot
 
@@ -57,15 +60,11 @@ public class EncoderTestCommand extends Command {
             SmartDashboard.putBoolean("Encoder right did not return the expected digit", false);
         }
 */
-        SmartDashboard.putBoolean("Encoder tests passed", true);
-        if (encoderLeft.getDistancePerPulse() != distancePerPulse) throw new AssertionError("Issue with the left encoder distance per pulse");
-        if (encoderRight.getDistancePerPulse() != distancePerPulse) throw new AssertionError("Issue with the right encoder distance per pulse");
     }
 
     @Override
     protected boolean isFinished() {
-        drivetrain.reset();
-        if(timer.hasPeriodPassed(3))
+        if(timer.hasPeriodPassed(1.5))
         {
             timer.stop();
             return true;
