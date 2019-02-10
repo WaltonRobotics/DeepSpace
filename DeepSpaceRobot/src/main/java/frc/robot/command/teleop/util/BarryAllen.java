@@ -5,12 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.command.teleop;
+package frc.robot.command.teleop.util;
 
 /**
  * Add your docs here.
  */
-public class BarryAllen implements Transform{
+public class BarryAllen implements Transform {
 
     @Override
     public double transform(double input) {

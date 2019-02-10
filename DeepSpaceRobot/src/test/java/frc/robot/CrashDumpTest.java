@@ -1,6 +1,6 @@
 package frc.robot;
 
-import frc.utils.CrashDump;
+import frc.robot.util.CrashDump;
 import org.junit.Test;
 
 import java.io.File;

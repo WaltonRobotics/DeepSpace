@@ -1,7 +1,5 @@
 package frc.robot.command.teleop.util;
 
-import frc.robot.command.teleop.Transform;
-
 public class Sqrt implements Transform {
 
   @Override

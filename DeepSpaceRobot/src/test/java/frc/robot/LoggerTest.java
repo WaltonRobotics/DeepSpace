@@ -3,9 +3,8 @@ package frc.robot;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
-import frc.utils.Logger;
+import frc.robot.util.Logger;
 
 import org.junit.Test;
 

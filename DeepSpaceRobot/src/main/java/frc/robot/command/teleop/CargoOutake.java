@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.Command.teleop;
+package frc.robot.command.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 
