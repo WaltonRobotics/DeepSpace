@@ -32,6 +32,7 @@ import frc.robot.robot.CompPowerUp;
 import frc.robot.robot.CompSteamWorks;
 import frc.robot.subsystem.Drivetrain;
 import frc.robot.util.RobotBuilder;
+import frc.robot.util.TestRunner;
 import org.waltonrobotics.util.RobotConfig;
 
 /**
@@ -158,7 +159,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     drivetrain.cancelControllerMotion();
-    CommandGroup motorTestCommand = new CommandGroup();
+    TestRunner motorTestCommand = new TestRunner();
     motorTestCommand.addSequential(new MotorTestCommand());
     motorTestCommand.addSequential(new EncoderTestCommand());
     motorTestCommand.addSequential(new CargoIntakerTestCommand());
