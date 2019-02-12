@@ -1,6 +1,5 @@
 package frc.robot;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import frc.robot.state.State;
 import org.junit.Test;
 
@@ -32,7 +31,7 @@ public class StateMachineTest {
     }
 
     @Test
-    public void testStateBuilder() throws InvalidArgumentException {
+    public void testStateBuilder() {
         State secondState = new State(() -> null, () -> null, () -> null);
         State firstState = new State(() -> null, () -> secondState, () -> null);
 
@@ -44,7 +43,7 @@ public class StateMachineTest {
     }
 
     @Test
-    public void testMultipleStateTransitions() throws InvalidArgumentException {
+    public void testMultipleStateTransitions() {
         StateMachineTest.periodicCounter = 0;
 
         class TestFinish implements GenericTransition {

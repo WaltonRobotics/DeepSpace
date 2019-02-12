@@ -1,17 +1,16 @@
 package frc.robot.state;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import frc.robot.util.CrashDump;
 
 public class StateBuilder {
 
     private State current;
 
-    public StateBuilder(State current) throws InvalidArgumentException {
+    public StateBuilder(State current) throws IllegalArgumentException {
         this.current = current;
 
         if (current == null) {
-            InvalidArgumentException e = new InvalidArgumentException(new String[]{"Make the first state not null!"});
+            IllegalArgumentException e = new IllegalArgumentException("Make the first state not null!");
 
             CrashDump.logThrowableCrash(e);
 
