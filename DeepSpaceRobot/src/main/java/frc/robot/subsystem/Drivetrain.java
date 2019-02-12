@@ -7,36 +7,50 @@
 
 package frc.robot.subsystem;
 
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KACC;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KANGLE;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KK;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KL;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KS;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KV;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_ACCELERATION;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_VELOCITY;
+import static frc.robot.Robot.currentRobot;
+import static frc.robot.RobotMap.encoderLeft;
+import static frc.robot.RobotMap.encoderRight;
+import static frc.robot.RobotMap.leftWheel;
+import static frc.robot.RobotMap.rightWheel;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotMap;
 import frc.robot.command.teleop.Drive;
 import frc.robot.RobotMap;
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.controller.RobotPair;
 
-import static frc.robot.Config.Hardware.DISTANCE_PER_PULSE;
-import static frc.robot.RobotMap.*;
-
 /**
  * Add your docs here.
  */
 public class Drivetrain extends AbstractDrivetrain {
-  // Put methods for controlling this Subsystem
-  // here. Call these from Commands.
 
 
   public Drivetrain() {
+    super(currentRobot);
 
+    SmartDashboard.putNumber(CONSTANTS_KV, currentRobot.getKV());
+    SmartDashboard.putNumber(CONSTANTS_KACC, currentRobot.getKAcc());
+    SmartDashboard.putNumber(CONSTANTS_KK, currentRobot.getKK());
+    SmartDashboard.putNumber(CONSTANTS_KS, currentRobot.getKS());
+    SmartDashboard.putNumber(CONSTANTS_KANGLE, currentRobot.getKAng());
+    SmartDashboard.putNumber(CONSTANTS_MAX_VELOCITY, currentRobot.getMaxVelocity());
+    SmartDashboard.putNumber(CONSTANTS_MAX_ACCELERATION, currentRobot.getMaxAcceleration());
+    SmartDashboard.putNumber(CONSTANTS_KL, currentRobot.getKL());
   }
 
   @Override
   public RobotPair getWheelPositions() {
     return new RobotPair(encoderLeft.getDistance(), encoderRight.getDistance(), Timer.getFPGATimestamp());
-  }
-
-  @Override
-  public double getRobotWidth() {
-    return 0;
   }
 
   @Override
@@ -47,69 +61,25 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public void setSpeeds(double leftYJoystick, double rightYJoystick) {
+    SmartDashboard.putNumber("leftSpeed", leftYJoystick);
+    SmartDashboard.putNumber("leftMotor", leftWheel.get());
+    SmartDashboard.putNumber("rightSpeed", rightYJoystick);
+    SmartDashboard.putNumber("rightMotor", rightWheel.get());
+
     leftWheel.set(leftYJoystick);
     rightWheel.set(rightYJoystick);
   }
 
   @Override
   public void setEncoderDistancePerPulse() {
-    leftWheel.setInverted(true);
-    encoderLeft.setDistancePerPulse(DISTANCE_PER_PULSE);
-    encoderLeft.setReverseDirection(true);
-    encoderRight.setDistancePerPulse(DISTANCE_PER_PULSE);
+    leftWheel.setInverted(currentRobot.getLeftTalonConfig().isInverted());
+    rightWheel.setInverted(currentRobot.getRightTalonConfig().isInverted());
+    encoderLeft.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
+    encoderRight.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
+    encoderLeft.setReverseDirection(currentRobot.getLeftEncoderConfig().isInverted());
+    encoderRight.setReverseDirection(currentRobot.getRightEncoderConfig().isInverted());
 
   }
-
-  @Override
-  public double getKV() {
-    return 0;
-  }
-
-  @Override
-  public double getKAcc() {
-    return 0;
-  }
-
-  @Override
-  public double getKK() {
-    return 0;
-  }
-
-  @Override
-  public double getKS() {
-    return 0;
-  }
-
-  @Override
-  public double getKAng() {
-    return 0;
-  }
-
-  @Override
-  public double getKL() {
-    return 0;
-  }
-
-  @Override
-  public double getILag() {
-    return 0;
-  }
-
-  @Override
-  public double getIAng() {
-    return 0;
-  }
-
-  @Override
-  public double getMaxVelocity() {
-    return 0;
-  }
-
-  @Override
-  public double getMaxAcceleration() {
-    return 0;
-  }
-
 
   @Override
   public void initDefaultCommand() {
@@ -129,5 +99,4 @@ public class Drivetrain extends AbstractDrivetrain {
       RobotMap.shifter.set(true);
     }
   }
-
 }
