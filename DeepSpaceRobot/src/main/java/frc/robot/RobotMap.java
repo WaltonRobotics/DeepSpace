@@ -7,13 +7,17 @@
 
 package frc.robot;
 
-import static frc.robot.Config.Hardware.LEFT_WHEEL_CHANNEL;
-import static frc.robot.Config.Hardware.RIGHT_WHEEL_CHANNEL;
-import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
-
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
-import frc.robot.Config.Motor;
+
+import static frc.robot.Config.Hardware.*;
+import static frc.robot.Config.Hardware.LEFT_ENCODER_CHANNEL1;
+import static frc.robot.Config.Hardware.LEFT_ENCODER_CHANNEL2;
+import static frc.robot.Config.Hardware.RIGHT_ENCODER_CHANNEL1;
+import static frc.robot.Config.Hardware.RIGHT_ENCODER_CHANNEL2;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides
@@ -21,9 +25,6 @@ import frc.robot.Config.Motor;
  * floating around.
  */
 public class RobotMap {
-  public static Talon leftMotor = new Talon (Motor.LEFT_MOTOR_PORT);
-  public static Talon rightMotor = new Talon (Motor.RIGHT_MOTOR_PORT);
-
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.
   // public static int leftMotor = 1;
@@ -38,4 +39,14 @@ public class RobotMap {
   public static final Talon rightWheel = new Talon(RIGHT_WHEEL_CHANNEL);
   public static final Talon leftWheel = new Talon(LEFT_WHEEL_CHANNEL);
   public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
+
+  public static final Encoder encoderRight = new Encoder(new DigitalInput(RIGHT_ENCODER_CHANNEL1),
+          new DigitalInput(RIGHT_ENCODER_CHANNEL2));
+  public static final Encoder encoderLeft = new Encoder(new DigitalInput(LEFT_ENCODER_CHANNEL1),
+          new DigitalInput(LEFT_ENCODER_CHANNEL2));
+
+  public static final TalonSRX elevatorMotor = new TalonSRX(ELEVATOR_TALON_PORT);
+  public static final Encoder elevatorEncoder = new Encoder(new DigitalInput(ELEVATOR_ENCODER_CHANNEL1),
+          new DigitalInput(ELEVATOR_ENCODER_CHANNEL2));
+
 }

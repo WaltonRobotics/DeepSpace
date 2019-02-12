@@ -77,17 +77,16 @@ public class Elevator extends Subsystem {
   public Level getLevel() {
     int currentHeight = getHeight();
 
-    if (currentHeight >= baseLevelMinimum && currentHeight < levelOneMinimum) return Level.BASE;
-    if (currentHeight >= levelOneMinimum && currentHeight < levelTwoMinimum) return Level.LEVEL1;
-    if (currentHeight >= levelTwoMinimum && currentHeight < levelThreeMinimum) return Level.LEVEL2;
-    if (currentHeight >= levelThreeMinimum) return Level.LEVEL3;
+    if (currentHeight >= Level.BASE.target && currentHeight < Level.LEVEL1.target) return Level.BASE;
+    if (currentHeight >= Level.LEVEL1.target && currentHeight < Level.LEVEL2.target) return Level.LEVEL1;
+    if (currentHeight >= Level.LEVEL2.target && currentHeight < Level.LEVEL3.target) return Level.LEVEL2;
+    if (currentHeight >= Level.LEVEL3.target) return Level.LEVEL3;
 
     return Level.UNKNOWN;
   }
 
   public void setLevel(Level level) {
-    elevatorMotor.set
-    elevatorMotor.set(com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic, level.encoderPosition);
+    elevatorMotor.set(com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic, level.target);
   }
 
   public static Elevator getInstance() {
@@ -109,7 +108,7 @@ public class Elevator extends Subsystem {
     lastDownButtonPressed = currentDownButtonPressed;
     currentDownButtonPressed = elevatorDownButton.getPressed(gamepad);
 
-    currentEncoderPosition = elevatorMotor.getSelectedSensorPosition();
+    currentEncoderPosition = elevatorMotor.getSelectedSensorPosition(0);
 
     /* Process values relevant to subsystem. */
   }

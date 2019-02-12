@@ -7,19 +7,21 @@
 
 package frc.robot;
 
+import static frc.robot.Config.Hardware.*;
 import static frc.robot.Config.Inputs.GAMEPAD_PORT;
 import static frc.robot.Config.Inputs.LEFT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
+import static frc.robot.Config.Inputs.INTAKE_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.SHIFT_DOWN_PORT;
 import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
-import static frc.robot.Config.Inputs.HALF_SPEED_PORT;
-import static frc.robot.Config.Inputs.SQRT_SPEED_PORT;
-import static frc.robot.Config.Inputs.EXPONENTIAL_SPEED_PORT;
-import static frc.robot.Config.Inputs.NORMAL_SPEED_PORT;
-import static frc.robot.Config.Inputs.SIGMOID_SPEED_PORT;
+import static frc.robot.Gamepad.Button.LEFT_BUMPER;
+import static frc.robot.Gamepad.Button.LEFT_TRIGGER;
+import static frc.robot.Gamepad.Button.RIGHT_TRIGGER;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.team2974.robot.util.ButtonOnce;
 
 /**
  * This class is the glue that binds the controls on the physical operator interface to the commands and command groups
@@ -29,20 +31,14 @@ public class OI {
 
   public static final Joystick leftJoystick = new Joystick(LEFT_JOYSTICK_PORT);
   public static final Joystick rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
+
   public static final Gamepad gamepad = new Gamepad(GAMEPAD_PORT);
 
   public static final JoystickButton shiftUp = new JoystickButton(leftJoystick, SHIFT_UP_PORT);
   public static final JoystickButton shiftDown = new JoystickButton(leftJoystick, SHIFT_DOWN_PORT);
 
-  public static final JoystickButton halfSpeedButton = new JoystickButton(leftJoystick, HALF_SPEED_PORT);
-
-  public static final JoystickButton sqrtButton = new JoystickButton(rightJoystick, SQRT_SPEED_PORT);
-
-  public static final JoystickButton superSaiyanButton = new JoystickButton(leftJoystick, EXPONENTIAL_SPEED_PORT);
-
-  public static final JoystickButton normalSpeedButton = new JoystickButton(rightJoystick, NORMAL_SPEED_PORT);
-
-  public static final JoystickButton sigmoidButton = new JoystickButton(leftJoystick, SIGMOID_SPEED_PORT);
+  public static final Gamepad.Button elevatorUpButton = LEFT_TRIGGER;
+  public static final Gamepad.Button elevatorDownButton = RIGHT_TRIGGER;
 
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
