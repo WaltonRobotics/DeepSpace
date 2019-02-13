@@ -91,12 +91,11 @@ public class Robot extends TimedRobot {
 
       CameraServer cameraServer = CameraServer.getInstance();
 
-      UsbCamera fishEyeCamera = new UsbCamera("Fisheye Camera", 0);
+      UsbCamera fishEyeCamera = cameraServer.startAutomaticCapture();
       fishEyeCamera.setResolution(WIDTH, HEIGHT);
-      fishEyeCamera.setFPS(FPS);
 
       CvSink cvSink = cameraServer.getVideo();
-      CvSource outputStream = cameraServer.putVideo("Blur", WIDTH, HEIGHT);
+      CvSource outputStream = cameraServer.putVideo("Fisheye Camera", WIDTH, HEIGHT);
       outputStream.setFPS(FPS);
 
       MjpegServer fisheyeServer = cameraServer.addServer("Fisheye Camera Server");
