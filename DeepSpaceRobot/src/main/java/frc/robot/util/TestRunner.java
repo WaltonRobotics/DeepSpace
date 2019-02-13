@@ -1,13 +1,15 @@
 package frc.robot.util;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.IllegalUseOfCommandException;
+import edu.wpi.first.wpilibj.command.Scheduler;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestRunner extends CommandGroup {
 
   private List<TestCommand> testCommands = new ArrayList<>();
-
 
   public final synchronized void addSequential(TestCommand testCommand) {
     super.addSequential(testCommand);
@@ -31,7 +33,17 @@ public class TestRunner extends CommandGroup {
   }
 
   @Override
+  public synchronized void start() {
+    super.start();
+  }
+
+
+
+  @Override
   protected void end() {
+    super.end();
+    System.out.println("hello i am ending");
+
     for (TestCommand testCommand : testCommands) {
       System.out.println(testCommand.getTestName());
       if (testCommand.isCompleted()) {

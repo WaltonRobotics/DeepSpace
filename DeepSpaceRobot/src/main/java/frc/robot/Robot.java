@@ -109,8 +109,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Encoder Left", encoderLeft.getDistance());
-    SmartDashboard.putNumber("Encoder Right", encoderRight.getDistance());
+    SmartDashboard.putNumber("Encoder Left", encoderLeft.getDistancePerPulse());
+    SmartDashboard.putNumber("Encoder Right", encoderRight.getDistancePerPulse());
     SmartDashboard.putString("Position", String.valueOf(drivetrain.getActualPosition()));
     // System.out.println("robot Periodic");
   }
@@ -167,7 +167,6 @@ public class Robot extends TimedRobot {
     motorTestCommand.addSequential(new ElevatorTestCommand());
     motorTestCommand.start();
     SmartDashboard.putData("Test commands", motorTestCommand);
-    System.out.println(motorTestCommand.isCompleted());
   }
 
   /**
