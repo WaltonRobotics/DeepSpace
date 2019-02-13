@@ -263,14 +263,14 @@ class FirstPython:
             y = min(int(round(abs(float(pose.y)) * 2.54)), 999)
 
             z_key = 'z' if pose.z < 0 else 'Z'
-            z = min(int(round(abs(float(pose.z)) * 2.54)), 99)
+            z = min(int(round(abs(float(pose.z)) * 2.54)), 999)
 
             angle_key = 'a' if pose.angle < 0 else 'A'
 
             angle = min(int(round(float(pose.angle))), 999)
 
             jevois.sendSerial(
-                "{0:s}{1:3d}{2:s}{3:3d}{4:s}{5:2d}{6:s}{7:3d}N{8:1d}".format(x_key, x, y_key, y, z_key, z, angle_key,
+                "{0:s}{1:3d}{2:s}{3:3d}{4:s}{5:3d}{6:s}{7:3d}N{8:1d}".format(x_key, x, y_key, y, z_key, z, angle_key,
                                                                              angle, len(targets)))  # pose
 
         else:
