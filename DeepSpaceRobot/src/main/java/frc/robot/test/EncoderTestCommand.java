@@ -21,26 +21,23 @@ public class EncoderTestCommand extends TestCommand {
     @Override
     protected void initializeTest() {
         distancePerPulse = drivetrain.getRobotConfig().getLeftEncoderConfig().getDistancePerPulse();
+        System.out.println(distancePerPulse);
         timer = new Timer();
         timer.start();
+        drivetrain.reset();
+
+        encoderLeft.setDistancePerPulse(distancePerPulse);
+        encoderRight.setDistancePerPulse(distancePerPulse);
     }
 
     @Override
     protected void executeTest() {
-        encoderLeft.setDistancePerPulse(distancePerPulse);
-        encoderRight.setDistancePerPulse(distancePerPulse);
 
-        if ((encoderLeft.getDistancePerPulse() != distancePerPulse))
+        if ((encoderLeft.getDistancePerPulse() != distancePerPulse - 1))
             throw new AssertionError("Issue with left encoder distance per pulse");
-        {
-            SmartDashboard.putBoolean("Check left encoder distance per pulse", false);
-        }
+
         if ((encoderRight.getDistancePerPulse() != distancePerPulse))
             throw new AssertionError("Issue with right encoder distance per pulse");
-        {
-            SmartDashboard.putBoolean("Check right encoder distance per pulse", false);
-        }
-
         /* Assertions to be implemented after we get a robot
 
         drivetrain.setSpeeds(.25, .25);
@@ -56,9 +53,6 @@ public class EncoderTestCommand extends TestCommand {
             SmartDashboard.putBoolean("Encoder right did not return the expected digit", false);
         }
 */
-        SmartDashboard.putBoolean("Encoder tests passed", true);
-        if (encoderLeft.getDistancePerPulse() != distancePerPulse) throw new AssertionError("Issue with the left encoder distance per pulse");
-        if (encoderRight.getDistancePerPulse() != distancePerPulse) throw new AssertionError("Issue with the right encoder distance per pulse");
     }
 
   @Override
@@ -68,10 +62,10 @@ public class EncoderTestCommand extends TestCommand {
 
   @Override
     protected boolean isFinished() {
-        drivetrain.reset();
-        if(timer.hasPeriodPassed(3))
+        if(timer.hasPeriodPassed(1.5))
         {
             timer.stop();
+            drivetrain.setSpeeds(0, 0);
             return true;
         }
 

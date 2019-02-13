@@ -27,3 +27,4 @@ public class Config {
     public static final String CONSTANTS_KK = "Constants/KK";
     public static final String CONSTANTS_KS = "Constants/KS";
   }
+}

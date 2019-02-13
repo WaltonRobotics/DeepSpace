@@ -12,11 +12,12 @@ import static frc.robot.RobotMap.rightWheel;
 
 public class MotorTestCommand extends TestCommand {
 
-    private final double speed = .25;
+    private final double speed = .5;
     private Timer timer;
 
     @Override
     protected void initializeTest() {
+        drivetrain.reset();
         drivetrain.setSpeeds(0, 0);
         timer = new Timer();
         timer.start();
@@ -44,7 +45,6 @@ public class MotorTestCommand extends TestCommand {
 
     @Override
     protected boolean isFinished() {
-        drivetrain.reset();
         return timer.hasPeriodPassed(1.5);
     }
 }
