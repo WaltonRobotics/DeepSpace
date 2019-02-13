@@ -26,6 +26,7 @@ public class EncoderTestCommand extends TestCommand {
 
     @Override
     protected void executeTest() {
+
         encoderLeft.setDistancePerPulse(distancePerPulse);
         encoderRight.setDistancePerPulse(distancePerPulse);
 
@@ -33,6 +34,7 @@ public class EncoderTestCommand extends TestCommand {
             throw new AssertionError("Issue with left encoder distance per pulse");
         if ((encoderRight.getDistancePerPulse() != distancePerPulse))
             throw new AssertionError("Issue with right encoder distance per pulse");
+
     }
 
   @Override
