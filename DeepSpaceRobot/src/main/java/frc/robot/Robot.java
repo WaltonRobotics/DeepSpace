@@ -165,7 +165,6 @@ public class Robot extends TimedRobot {
     motorTestCommand.addSequential(new CargoIntakerTestCommand());
     motorTestCommand.addSequential(new HatchIntakerTestCommand());
     motorTestCommand.addSequential(new ElevatorTestCommand());
-    motorTestCommand.start();
     SmartDashboard.putData("Test commands", motorTestCommand);
 
   }

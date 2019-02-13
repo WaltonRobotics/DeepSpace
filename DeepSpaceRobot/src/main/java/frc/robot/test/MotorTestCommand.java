@@ -17,7 +17,6 @@ public class MotorTestCommand extends TestCommand {
 
     @Override
     protected void initializeTest() {
-        drivetrain.reset();
         drivetrain.setSpeeds(0, 0);
         timer = new Timer();
         timer.start();
@@ -45,6 +44,7 @@ public class MotorTestCommand extends TestCommand {
 
     @Override
     protected boolean isFinished() {
-        return timer.hasPeriodPassed(1.5);
+        drivetrain.reset();
+        return timer.hasPeriodPassed(1);
     }
 }
