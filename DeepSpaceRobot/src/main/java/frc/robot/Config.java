@@ -23,6 +23,8 @@ public class Config {
 
     public static final int RIGHT_ENCODER_CHANNEL1 = 0; // digital
     public static final int RIGHT_ENCODER_CHANNEL2 = 1; // digital
+    public static final int CARGO_INTAKE_ENCODER_CHANNEL3 = 2; // digital
+
     public static final double DISTANCE_PER_PULSE = 0.00055805; // digital
 
     public static final int LEFT_CARGO_INTAKE_MOTOR_CHANNEL = 1;
