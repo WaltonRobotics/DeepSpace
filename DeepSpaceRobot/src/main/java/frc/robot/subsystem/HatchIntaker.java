@@ -34,7 +34,7 @@ public class HatchIntaker extends Subsystem {
   private HatchIntaker() {
   }
 
-  public static HatchIntaker getHinstance() {
+  public static HatchIntaker getinstance() {
     return instance;
   }
 
