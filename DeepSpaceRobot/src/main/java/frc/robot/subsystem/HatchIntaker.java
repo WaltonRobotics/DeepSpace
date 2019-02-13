@@ -12,8 +12,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 
 import static frc.robot.OI.*;
-import static frc.robot.RobotMap.hatchProngs;
-import static frc.robot.RobotMap.hatchSensor;
+import static frc.robot.RobotMap.*;
 
 /**
  * Add your docs here.
@@ -33,6 +32,9 @@ public class HatchIntaker extends Subsystem {
 
   private double speedCapDuringLoose = 0.1;
   private double looseStateDuration = 1.5;
+
+  private double hatchUpMotor = 1;
+  private double hatchDownMotor = -1;
 
   private boolean isHatchButtonPressed = false;
 
@@ -75,8 +77,10 @@ public class HatchIntaker extends Subsystem {
   }
 
   public void hatchSwitchLocal() {
-    if (isHatchButtonPressed) {
-
+    if (isHatchButtonPressed && !lastHatchLoadButtonPressed) {
+      hatchMotor.set(hatchUpMotor);
+    } if (isHatchButtonPressed && lastHatchLoadButtonPressed) {
+      hatchMotor.set(hatchDownMotor);
     }
   }
 

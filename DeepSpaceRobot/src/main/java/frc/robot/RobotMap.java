@@ -55,4 +55,5 @@ public class RobotMap {
   public static final Encoder elevatorEncoder = new Encoder(new DigitalInput(ELEVATOR_ENCODER_CHANNEL1),
           new DigitalInput(ELEVATOR_ENCODER_CHANNEL2));
 
+  public static final Talon hatchMotor = new Talon(HATCH_MOTOR_PORT);
 }
