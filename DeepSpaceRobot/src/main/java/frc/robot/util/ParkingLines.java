@@ -5,7 +5,6 @@ import static org.opencv.imgproc.Imgproc.line;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 
 public class ParkingLines {
 
@@ -17,28 +16,23 @@ public class ParkingLines {
   private static Scalar lineColor = new Scalar(0, 255, 0);
 
   private static void drawLeftLine(Mat input) {
-    double l = Math.hypot(focusX, focusY) * percentage;
 
-    double r = focusY / focusX;
-    double x = l * Math.cos(Math.atan(r));
-    double y = r * x;
-
+    double x = xOffset + percentage * (focusX - xOffset);
+    double y = percentage * focusY;
     double height = input.height();
 
     line(input, new Point(xOffset, height), new Point(x, height - y), lineColor, 2);
   }
 
   private static void drawRightLine(Mat input) {
-    double l = Math.hypot(focusX, focusY) * percentage;
+    double width = input.width();
+    double height = input.height();
+    double xOffset = width - ParkingLines.xOffset;
 
-    Size size = input.size();
+    double x = xOffset + percentage * (focusX - xOffset);
+    double y = percentage * focusY;
 
-    double r = focusY / (focusX - size.width);
-    double x = l * Math.cos(Math.PI + Math.atan(r));
-    double y = r * x;
-
-    Point endPoint = new Point(x + size.width, size.height - y);
-    line(input, new Point(size.width - xOffset, size.height), endPoint, lineColor, 2);
+    line(input, new Point(width - ParkingLines.xOffset, height), new Point(x, height - y), lineColor, 2);
   }
 
   public static void drawParkingLines(Mat input) {
