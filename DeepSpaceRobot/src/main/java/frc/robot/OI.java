@@ -17,6 +17,7 @@ import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
 import static frc.robot.Gamepad.Button.LEFT_BUMPER;
 import static frc.robot.Gamepad.Button.LEFT_TRIGGER;
 import static frc.robot.Gamepad.Button.RIGHT_TRIGGER;
+import static frc.robot.Gamepad.Button._3;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Talon;
@@ -40,8 +41,7 @@ public class OI {
   public static final Gamepad.Button elevatorUpButton = LEFT_TRIGGER;
   public static final Gamepad.Button elevatorDownButton = RIGHT_TRIGGER;
 
-  public static final Gamepad.Button hatchLoadButton = LEFT_BUMPER;
-
+  public static final Gamepad.Button hatchLoadButton = _3;
 
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a

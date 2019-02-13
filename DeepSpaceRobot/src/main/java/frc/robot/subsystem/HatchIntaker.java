@@ -7,10 +7,11 @@
 
 package frc.robot.subsystem;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Robot;
 
-import static frc.robot.OI.gamepad;
-import static frc.robot.OI.hatchLoadButton;
+import static frc.robot.OI.*;
 import static frc.robot.RobotMap.hatchProngs;
 import static frc.robot.RobotMap.hatchSensor;
 
@@ -21,9 +22,19 @@ public class HatchIntaker extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
+  private Timer timer = new Timer();
+
   private boolean lastHatchLoadButtonPressed = false;
   private boolean currentHatchLoadButtonPressed = false;
   private boolean isHatchLoose = false;
+
+  private boolean isSlow = false;
+  private double whenSlowWasStarted;
+
+  private double speedCapDuringLoose = 0.1;
+  private double looseStateDuration = 1.5;
+
+  private boolean isHatchButtonPressed = false;
 
   private enum ProngsPosition {
     OPEN, CLOSED
@@ -43,8 +54,32 @@ public class HatchIntaker extends Subsystem {
   }
 
   public boolean isHatchLoose() {
+    if (currentHatchLoadButtonPressed) {
+      return !isHatchLoose;
+    }
     return isHatchLoose;
   }
+
+  public void looseStateDrive() {
+    if (isHatchLoose) {
+      Robot.drivetrain.setSpeeds(speedCapDuringLoose, speedCapDuringLoose);
+      isSlow = true;
+      whenSlowWasStarted = timer.get();
+    }
+  }
+
+  public void prongsActivation() {
+    if (currentHatchLoadButtonPressed) {
+      hatchProngs.close();
+    }
+  }
+
+  public void hatchSwitchLocal() {
+    if (isHatchButtonPressed) {
+
+    }
+  }
+
 
   public void setProngsPosition(ProngsPosition p) {
     if (p == ProngsPosition.OPEN) {
@@ -68,9 +103,17 @@ public class HatchIntaker extends Subsystem {
     lastHatchLoadButtonPressed = currentHatchLoadButtonPressed;
     currentHatchLoadButtonPressed = hatchLoadButton.getPressed(gamepad);
 
+    isHatchButtonPressed = hatchLoadButton.getPressed(gamepad);
+
     isHatchLoose = !hatchSensor.get();
 
     /* Process values relevant to subsystem. */
+
+    if (timer.get() - whenSlowWasStarted > looseStateDuration && isSlow) {
+      Robot.drivetrain.setSpeeds(leftJoystick.getY(), rightJoystick.getY());
+      isSlow = false;
+
+    }
   }
 
 }

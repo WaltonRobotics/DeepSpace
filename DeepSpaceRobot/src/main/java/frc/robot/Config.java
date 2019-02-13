@@ -34,6 +34,8 @@ public class Config {
     public static final int ELEVATOR_TALON_PORT = 1;
     public static final int ELEVATOR_ENCODER_CHANNEL1 = 2;
     public static final int ELEVATOR_ENCODER_CHANNEL2 = 3;
+
+    public static final int HATCH_SOLENOID_PORT = 0;
   }
 
 }

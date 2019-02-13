@@ -42,6 +42,7 @@ public class RobotMap {
 
   public static final Encoder encoderRight = new Encoder(new DigitalInput(RIGHT_ENCODER_CHANNEL1),
       new DigitalInput(RIGHT_ENCODER_CHANNEL2));
+
   public static final Encoder encoderLeft = new Encoder(new DigitalInput(LEFT_ENCODER_CHANNEL1),
       new DigitalInput(LEFT_ENCODER_CHANNEL2));
 
@@ -50,6 +51,7 @@ public class RobotMap {
   public static final Solenoid hatchProngs = new Solenoid(HATCH_PRONGS_ACTUATOR_PORT);
 
   public static final TalonSRX elevatorMotor = new TalonSRX(ELEVATOR_TALON_PORT);
+
   public static final Encoder elevatorEncoder = new Encoder(new DigitalInput(ELEVATOR_ENCODER_CHANNEL1),
           new DigitalInput(ELEVATOR_ENCODER_CHANNEL2));
 
