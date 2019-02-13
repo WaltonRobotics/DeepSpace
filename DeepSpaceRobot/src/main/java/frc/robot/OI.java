@@ -71,3 +71,17 @@ public class OI {
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
 }
+
+
+/*
+
+
+right bumper - intake in cargo
+left bumper - intake out cargo
+
+elevator up and down - right joystick
+
+
+
+
+ */
