@@ -30,4 +30,11 @@ public class Config {
     public static final int ELEVATOR_ENCODER_CHANNEL2 = 3;
   }
 
+  public static final class Elevator {
+
+    public static final double LOWERING_TO_BASE_POWER = -0.2;
+    public static final double LOWERING_TO_BASE_TIMEOUT = 5.0;
+
+  }
+
 }

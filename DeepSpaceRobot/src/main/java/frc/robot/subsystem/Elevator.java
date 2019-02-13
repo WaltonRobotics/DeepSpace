@@ -7,9 +7,12 @@
 
 package frc.robot.subsystem;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotMap;
+import frc.utils.Logger;
 
+import static frc.robot.Config.Elevator.LOWERING_TO_BASE_POWER;
+import static frc.robot.Config.Elevator.LOWERING_TO_BASE_TIMEOUT;
 import static frc.robot.OI.*;
 import static frc.robot.RobotMap.elevatorMotor;
 
@@ -34,23 +37,49 @@ public class Elevator extends Subsystem {
     }
   }
 
-  public enum ControlMode {
-    AUTO, POWER
-  }
-
   private static final Elevator instance = new Elevator();
 
-  private boolean lastUpButtonPressed = false;
-  private boolean lastDownButtonPressed = false;
-  private boolean currentUpButtonPressed = false;
-  private boolean currentDownButtonPressed = false;
+  private Timer runtime;
 
-  private int currentEncoderPosition = 0;
+  private boolean lastUpButtonPressed;
+  private boolean lastDownButtonPressed;
+  private boolean currentUpButtonPressed;
+  private boolean currentDownButtonPressed;
 
-  private ControlMode controlMode;
+  private int currentEncoderPosition;
+
+  private double currentPower;
+
+  private double loweringToBaseStartTime;
+  private boolean isLoweringToBase;
+  private boolean isAtBase;
+
+  private Logger elevatorLogger;
 
   private Elevator() {
+    reset();
+  }
 
+  public void reset() {
+    runtime = new Timer();
+    runtime.reset();
+
+    lastUpButtonPressed = false;
+    lastDownButtonPressed = false;
+    currentUpButtonPressed = false;
+    currentDownButtonPressed = false;
+
+    currentEncoderPosition = 0;
+
+    currentPower = 0.0;
+
+    loweringToBaseStartTime = 0.0;
+    isLoweringToBase = true;
+    isAtBase = false;
+
+    elevatorLogger = new Logger();
+
+    zero();
   }
 
   public boolean isUpButtonPressed() {
@@ -89,8 +118,30 @@ public class Elevator extends Subsystem {
     elevatorMotor.set(com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic, level.target);
   }
 
+  public void setPower(double percent) {
+    currentPower = percent;
+
+    elevatorMotor.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, percent);
+  }
+
+  public void zero() {
+    isLoweringToBase = true;
+    isAtBase = false;
+    elevatorMotor.configReverseSoftLimitEnable(false, 10);
+
+    loweringToBaseStartTime = runtime.get();
+  }
+
   public static Elevator getInstance() {
     return instance;
+  }
+
+  public boolean isAtBase() {
+    return isAtBase;
+  }
+
+  public boolean isLoweringToBase() {
+    return isLoweringToBase;
   }
 
   @Override
@@ -111,6 +162,17 @@ public class Elevator extends Subsystem {
     currentEncoderPosition = elevatorMotor.getSelectedSensorPosition(0);
 
     /* Process values relevant to subsystem. */
+
+    elevatorLogger.logInfo("[" + Double.toString(runtime.get()) + "]: Height: " + Integer.toString(getHeight()) + ", Current Power: " + Double.toString(currentPower));
+
+    if (isLoweringToBase) {
+      setPower(LOWERING_TO_BASE_POWER);
+
+      if (getHeight() < Level.BASE.target || (runtime.get() - loweringToBaseStartTime > LOWERING_TO_BASE_TIMEOUT)) {
+        isLoweringToBase = false;
+        isAtBase = true;
+      }
+    }
   }
 
 }
