@@ -1,9 +1,10 @@
 import itertools as it
 import math  # for cos, sin, etc
+from datetime import datetime as date
+
 import cv2
 import libjevois as jevois
 import numpy as np
-from datetime import datetime as date
 
 
 def distance_2d(point0, point1):
@@ -14,40 +15,43 @@ def distance_2d(point0, point1):
     """
     return math.sqrt(math.pow(point0[0] - point1[0], 2) + math.pow(point0[1] - point1[1], 2))
 
+
 def order_corners_clockwise(tape):
-        """
-        Sorts the corners of a contour clockwise from the top left point
-        :param tape: the contour to sort the corners of
-        :return: the sorted corners
-        """
-        # get corners of contour
-        corners = tape.box_points
-        # sort corners by x value
-        x_sorted = corners[np.argsort(corners[:, 0]), :]
+    """
+    Sorts the corners of a contour clockwise from the top left point
+    :param tape: the contour to sort the corners of
+    :return: the sorted corners
+    """
+    # get corners of contour
+    corners = tape.box_points
+    # sort corners by x value
+    x_sorted = corners[np.argsort(corners[:, 0]), :]
 
-        # grab the left-most and right-most points from the sorted x-coordinate points
-        left_most = x_sorted[:2, :]
-        right_most = x_sorted[2:, :]
+    # grab the left-most and right-most points from the sorted x-coordinate points
+    left_most = x_sorted[:2, :]
+    right_most = x_sorted[2:, :]
 
-        # now, sort the left-most coordinates according to their y-coordinates so we can grab the top-left and
-        # bottom-left points, respectively
-        left_most = left_most[np.argsort(left_most[:, 1]), :]
-        (tl, bl) = left_most
+    # now, sort the left-most coordinates according to their y-coordinates so we can grab the top-left and
+    # bottom-left points, respectively
+    left_most = left_most[np.argsort(left_most[:, 1]), :]
+    (tl, bl) = left_most
 
-        # now that we have the top-left coordinate, use it as an anchor to calculate the Euclidean distance between the
-        # top-left and right-most points; by the Pythagorean theorem, the point with the largest distance will be our
-        # bottom-right point
-        if distance_2d(tl, right_most[0]) > distance_2d(tl, right_most[1]):
-            br, tr = right_most
-        else:
-            tr, br = right_most
+    # now that we have the top-left coordinate, use it as an anchor to calculate the Euclidean distance between the
+    # top-left and right-most points; by the Pythagorean theorem, the point with the largest distance will be our
+    # bottom-right point
+    if distance_2d(tl, right_most[0]) > distance_2d(tl, right_most[1]):
+        br, tr = right_most
+    else:
+        tr, br = right_most
 
-        # return the coordinates in top-left, top-right, bottom-right, and bottom-left order
-        return np.array([tl, tr, br, bl], dtype=np.float32)
+    # return the coordinates in top-left, top-right, bottom-right, and bottom-left order
+    return np.array([tl, tr, br, bl], dtype=np.float32)
+
 
 def pairwise(iterable):
     a = iter(iterable)
     return it.zip_longest(a, a, fillvalue=None)
+
 
 class Pose:
 
@@ -56,6 +60,7 @@ class Pose:
         self.y = 0
         self.z = 0
         self.angle = 0
+
 
 class FirstPython:
     def __init__(self):
@@ -80,14 +85,16 @@ class FirstPython:
 
         self.object_points = np.array(
             [[-5.936, 31.5, 0.0], [-4.0, 31, 0.0], [-5.375, 25.675, 0.0], [-7.316, 26.175, 0.0],  # Left points
-             [4.0, 31, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0], [5.375, 25.675, 0.0]], dtype=np.float32)  # Right points
+             [4.0, 31, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0], [5.375, 25.675, 0.0]],
+            dtype=np.float32)  # Right points
+        # self.object_points = np.array([[-5.936, 31.5, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0],
+        #                                [-7.316, 26.175, 0.0]], dtype=np.float32)
 
         self.decision_tolerance = 0.05
         self.current_target = np.array([None, None])
         self.target_lost_factor = 1.25
         self.target_lost_time = -1
         self.target_lost_timeout = 5
-
 
         self.isEnabled = False
 
@@ -103,7 +110,7 @@ class FirstPython:
         if fs.isOpened():
             self.cam_matrix = fs.getNode("camera_matrix").mat()
             self.dist_coeffs = fs.getNode("distortion_coefficients").mat()
-            #jevois.LINFO("Loaded camera calibration from {}".format(cpf))
+            # jevois.LINFO("Loaded camera calibration from {}".format(cpf))
         else:
             jevois.LFATAL("Failed to read camera parameters from file [{}]".format(cpf))
 
@@ -118,7 +125,7 @@ class FirstPython:
             self.erode_element = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
             self.dilate_element = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
 
-        #Loads intrinsic parameters of the camera while we're at it
+        # Loads intrinsic parameters of the camera while we're at it
         res_y, res_x, channels = imgbgr.shape
         if not hasattr(self, 'camMatrix'): self.load_camera_calibration(res_x, res_y)
 
@@ -139,7 +146,7 @@ class FirstPython:
         output = []
         for contour in contours:
             x, y, w, h = cv2.boundingRect(contour)
-            #Contour height
+            # Contour height
             if y < self.max_contour_y:
                 continue
             # Width
@@ -205,12 +212,23 @@ class FirstPython:
         translation_array = []
 
         for target in targets:
+            # Setup point correspondences
             image_points_left = order_corners_clockwise(target.left_tape)
             image_points_right = order_corners_clockwise(target.right_tape)
-
             image_points = np.concatenate((image_points_left, image_points_right))
-            ret, rotation, translation = cv2.solvePnP(self.object_points, image_points, self.cam_matrix,
-                                                      self.dist_coeffs)
+
+            # Collect the 3 rotation vectors and origin translation vector
+            ret, rvecs, tvecs = cv2.solvePnP(self.object_points, image_points, self.cam_matrix, self.dist_coeffs)
+
+            # Calculate the actual camera position
+            np_rodrigues = np.asarray(rvecs[:, :], np.float64)
+            rot_matrix = cv2.Rodrigues(np_rodrigues)[0]
+            translation = -np.matrix(rot_matrix).T * np.matrix(tvecs)
+
+            # Calculate the Euler angles (in degrees)
+            projection_matrix = np.hstack((rot_matrix, tvecs))
+            rotation = cv2.decomposeProjectionMatrix(projection_matrix)[-1]
+
             rotation_array.append(rotation)
             translation_array.append(translation)
         return rotation_array, translation_array
@@ -249,7 +267,7 @@ class FirstPython:
 
             angle_key = 'a' if pose.angle < 0 else 'A'
 
-            angle = min(int(round(math.degrees(float(pose.angle)))), 999)
+            angle = min(int(round(float(pose.angle))), 999)
 
             jevois.sendSerial(
                 "{0:s}{1:3d}{2:s}{3:3d}{4:s}{5:2d}{6:s}{7:3d}N{8:1d}".format(x_key, x, y_key, y, z_key, z, angle_key,
@@ -287,7 +305,6 @@ class FirstPython:
 
         self.send_all_serial(targets)
 
-
     def process(self, inframe, outframe):
         """
         Process the inframe with USB connection to JeVois Inventor. This is run automatically by the camera.
@@ -311,7 +328,6 @@ class FirstPython:
         # Get a list of quadrilateral convex hulls for all good objects:
         imgth, tapes = self.detect(imgbgr)
         self.draw_tapes(outimg, tapes)
-
 
         targets = self.define_targets(tapes)
         self.draw_targets(outimg, targets)
@@ -413,8 +429,8 @@ class FirstPython:
             self.current_target[1] = target.bounding_rectangle
             if outimg is not None:
                 target.draw_quadrilateral(outimg, 0x048f)
-                rstring = "Rotation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(math.degrees(rotation[0]), math.degrees(
-                    rotation[1]), math.degrees(rotation[2]))
+                rstring = "Rotation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(float(rotation[0]), float(
+                    rotation[1]), float(rotation[2]))
                 jevois.writeText(outimg, rstring, 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
                 tstring = "Translation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(float(translation[0]),
                                                                                 float(translation[1]),
@@ -427,10 +443,11 @@ class FirstPython:
             if date.now().second - self.target_lost_time < self.target_lost_timeout:
                 if outimg is not None:
                     jevois.writeText(outimg, "Target lost, waiting {} more seconds".format(self.target_lost_timeout -
-                                     date.now().second + self.target_lost_time), 3, 3, jevois.YUYV.White,
+                                                                                           date.now().second + self.target_lost_time),
+                                     3, 3, jevois.YUYV.White,
                                      jevois.Font.Font6x10)
                 jevois.LINFO("Target lost, waiting {} more seconds".format(self.target_lost_timeout -
-                                     date.now().second + self.target_lost_time))
+                                                                           date.now().second + self.target_lost_time))
             else:
                 self.current_target[1] = None
                 self.target_lost_time = -1
@@ -452,6 +469,7 @@ class FirstPython:
                 most_likely_target.bounding_rectangle[3] * self.target_lost_factor:
             return False, None
         return True, targets[0]
+
 
 class Target:
 
@@ -505,6 +523,7 @@ class Target:
                 jevois.drawLine(outimg, int(point0[0]), int(point0[1]), int(point1[0]), int(point1[1]), 1, color)
                 point0 = point1
 
+
 class TapePiece:
     def __init__(self, contour):
         self.contour = contour
@@ -524,7 +543,7 @@ class TapePiece:
         if corners[0][0] > corners[3][0] or corners[1][0] > corners[2][0]:
             return 'left'
         elif corners[3][0] > corners[0][0] or corners[2][0] > corners[1][0]:
-            #If the bottom left corner is more right than the top left
+            # If the bottom left corner is more right than the top left
             return 'right'
         else:
             return ''
@@ -535,10 +554,10 @@ class TapePiece:
 
     def draw(self, outimg):
         if self.contour.size > 0:
-            point0 = self.contour[-1]
+            point0 = self.box_points[-1]
 
-            for point1 in self.contour:
-                jevois.drawLine(outimg, int(point0[0, 0]), int(point0[0, 1]),
-                                int(point1[0, 0]), int(point1[0, 1]), 1, jevois.YUYV.MedGrey)
+            for point1 in self.box_points:
+                jevois.drawLine(outimg, int(point0[0]), int(point0[1]),
+                                int(point1[0]), int(point1[1]), 1, jevois.YUYV.MedGrey)
 
                 point0 = point1
