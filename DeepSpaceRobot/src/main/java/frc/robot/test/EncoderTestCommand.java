@@ -44,7 +44,7 @@ public class EncoderTestCommand extends TestCommand {
 
   @Override
     protected boolean isFinished() {
-        if(timer.hasPeriodPassed(1))
+        if(timer.hasPeriodPassed(1.5))
         {
             timer.stop();
             return true;

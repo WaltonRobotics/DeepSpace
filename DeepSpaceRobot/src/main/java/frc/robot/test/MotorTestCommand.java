@@ -39,7 +39,7 @@ public class MotorTestCommand extends TestCommand {
     @Override
     protected boolean isFinished() {
         drivetrain.reset();
-        if(timer.hasPeriodPassed(1)){
+        if(timer.hasPeriodPassed(1.5)){
             drivetrain.setSpeeds(0,0);
             return true;
         }
