@@ -27,14 +27,8 @@ public class MotorTestCommand extends TestCommand {
         drivetrain.setSpeeds(speed, speed);
         if ((speed != -leftWheel.get()))
             throw new AssertionError("Left wheel speed issue");
-        {
-            SmartDashboard.putBoolean("Check left wheel", false);
-        }
         if ((speed != rightWheel.get()))
             throw new AssertionError("Right wheel speed issue");
-        {
-            SmartDashboard.putBoolean("Check right wheel", false);
-        }
     }
 
     @Override
@@ -45,6 +39,10 @@ public class MotorTestCommand extends TestCommand {
     @Override
     protected boolean isFinished() {
         drivetrain.reset();
-        return timer.hasPeriodPassed(1);
+        if(timer.hasPeriodPassed(1)){
+            drivetrain.setSpeeds(0,0);
+            return true;
+        }
+        return false;
     }
 }

@@ -5,11 +5,6 @@ import frc.robot.util.TestCommand;
 public class ElevatorTestCommand extends TestCommand {
 
   @Override
-  protected boolean isFinished() {
-    return true;
-  }
-
-  @Override
   protected void initializeTest() {
 
   }
@@ -22,5 +17,10 @@ public class ElevatorTestCommand extends TestCommand {
   @Override
   protected void endTest() {
 
+  }
+
+  @Override
+  protected boolean isFinished() {
+    return true;
   }
 }

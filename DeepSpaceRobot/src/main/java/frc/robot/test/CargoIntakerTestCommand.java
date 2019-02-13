@@ -21,6 +21,6 @@ public class CargoIntakerTestCommand extends TestCommand {
 
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 }
