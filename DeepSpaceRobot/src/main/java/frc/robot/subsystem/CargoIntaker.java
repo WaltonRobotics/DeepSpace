@@ -30,16 +30,29 @@ public class CargoIntaker extends Subsystem {
   }
 
   public void activateIntake() {
-    if (gamepad.getButton(RIGHT_BUMPER)) {
+      if (gamepad.getButton(RIGHT_BUMPER)) {
 
-      rightCargoIntake.set(1);
-      leftCargoIntake.set(1);
+          rightCargoIntake.set(1);
+          leftCargoIntake.set(1);
 
-    }
-    else if (gamepad.getButton(LEFT_BUMPER)) {
-      rightCargoIntake.set(-1);
-      leftCargoIntake.set(-1);
-    }
+      } else if (gamepad.getButton(LEFT_BUMPER)) {
+          rightCargoIntake.set(-1);
+          leftCargoIntake.set(-1);
+      }
+
+  }
+
+  public void getIntakeState() {
+
+      
+
+  }
+
+
+  public void rotateIntake() {
+
+
+
   }
 
   @Override
