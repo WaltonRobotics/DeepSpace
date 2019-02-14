@@ -10,10 +10,14 @@ package frc.robot;
 import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
 import static frc.robot.Robot.currentRobot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
+
+import java.util.Random;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides
@@ -32,10 +36,17 @@ public class RobotMap {
   // public static int rangefinderModule = 1;
 
 
-  public static final Talon rightWheel = new Talon(currentRobot.getRightTalonConfig().getChanell());
-  public static final Talon leftWheel = new Talon(currentRobot.getLeftTalonConfig().getChanell());
+  public static final VictorSPX rightWheel = new VictorSPX(currentRobot.getRightTalonConfig().getChanell());// FIXME: 2019-02-13
+  public static final VictorSPX leftWheel = new VictorSPX(currentRobot.getLeftTalonConfig().getChanell());// FIXME: 2019-02-13
+  public static final Talon leftIntakeMotor = new Talon(1);
+  public static final Talon rightIntakeMotor = new Talon(1);
+  public static final TalonSRX clawRotationMotor = new TalonSRX(1);
+  public static final TalonSRX hatchRotationMotor = new TalonSRX(1);
+  public static final TalonSRX elevatorMotor = new TalonSRX(1);
+
 
   public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
+  public static final Solenoid hatchIntake = new Solenoid(1);
 
 
   public static final Encoder encoderRight = new Encoder(
@@ -45,6 +56,14 @@ public class RobotMap {
   public static final Encoder encoderLeft = new Encoder(
       new DigitalInput(currentRobot.getLeftEncoderConfig().getChannell1()),
       new DigitalInput(currentRobot.getLeftEncoderConfig().getChannell2()));
+
+
+
+  public static final Encoder cargoEncoder = new Encoder(
+      new DigitalInput(1),
+      new DigitalInput(1)
+  );
+
 
 
 }
