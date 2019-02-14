@@ -12,6 +12,7 @@ import static frc.robot.Config.Inputs.LEFT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.SHIFT_DOWN_PORT;
 import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
+import static frc.robot.Gamepad.Button.*;
 import static frc.robot.Robot.drivetrain;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -31,6 +32,13 @@ public class OI {
 
   public static final JoystickButton shiftUp = new JoystickButton(leftJoystick, SHIFT_UP_PORT);
   public static final JoystickButton shiftDown = new JoystickButton(leftJoystick, SHIFT_DOWN_PORT);
+  public static final Gamepad.Button elevatorUpButton = RIGHT_TRIGGER;
+  public static final Gamepad.Button elevatorDownButton = LEFT_TRIGGER;
+  public static final Gamepad.Button elevatorZeroButton = _1;
+  public static final Gamepad.Button hatchIntakeButton = _2;
+  public static final Gamepad.Button hatchFlipOutButton = _4;
+  public static final Gamepad.Button intakeCargoButton = RIGHT_BUMPER;
+  public static final Gamepad.Button outtakeCargoButton = LEFT_BUMPER; 
 
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
