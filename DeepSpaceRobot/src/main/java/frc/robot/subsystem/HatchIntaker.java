@@ -50,6 +50,7 @@ public class HatchIntaker extends Subsystem {
   private static final HatchIntaker instance = new HatchIntaker();
 
   private HatchIntaker() {
+
   }
 
   public static HatchIntaker getHinstance() {
@@ -93,7 +94,6 @@ public class HatchIntaker extends Subsystem {
     }
   }
 
-
   public void setProngsPosition(ProngsPosition p) {
     if (p == ProngsPosition.OPEN) {
       hatchProngs.set(true);
@@ -104,8 +104,22 @@ public class HatchIntaker extends Subsystem {
     }
   }
 
+  //this should be in init but i dont think im doing it right
+
+  public void initPosition() {
+    if (hatchCurrentEncoderPosition != hatchStartingEncoderPosition) {
+      hatchMotor.set(hatchStartingEncoderPosition);
+      if (hatchProngs.get()) {                                //assuming prongs are booleans
+        hatchProngs.close();
+      }
+    }
+  }
+
   @Override
   public void initDefaultCommand() {
+
+    initPosition(); //not sure if this is correct
+
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
@@ -125,7 +139,7 @@ public class HatchIntaker extends Subsystem {
     if (timer.get() - whenSlowWasStarted > looseStateDuration && isSlow) {
       Robot.drivetrain.setSpeeds(leftJoystick.getY(), rightJoystick.getY());
       isSlow = false;
-
+      hatchProngs.close();
     }
   }
 
