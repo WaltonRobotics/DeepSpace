@@ -18,6 +18,7 @@ import frc.robot.command.teleop.Sigmoid;
 import frc.robot.command.teleop.Sqrt;
 import frc.robot.command.teleop.Transform;
 import frc.robot.subsystem.Drivetrain;
+import frc.robot.subsystem.Elevator;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -27,6 +28,7 @@ import frc.robot.subsystem.Drivetrain;
 public class Robot extends TimedRobot {
 
   public static final Drivetrain drivetrain = new Drivetrain();
+  public static final Elevator elevator = new Elevator();
 
   /**
    * This function is run when the robot is first started up and should be used for any initialization code.

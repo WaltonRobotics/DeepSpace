@@ -37,7 +37,9 @@ public class Elevator extends Subsystem {
     }
   }
 
-  private static final Elevator instance = new Elevator();
+  public enum ControlMode {
+    AUTO, MANUAL
+  }
 
   private Timer runtime;
 
@@ -54,9 +56,11 @@ public class Elevator extends Subsystem {
   private boolean isLoweringToBase;
   private boolean isAtBase;
 
+  private ControlMode controlMode;
+
   private Logger elevatorLogger;
 
-  private Elevator() {
+  public Elevator() {
     reset();
   }
 
@@ -76,6 +80,8 @@ public class Elevator extends Subsystem {
     loweringToBaseStartTime = 0.0;
     isLoweringToBase = true;
     isAtBase = false;
+
+    controlMode = ControlMode.MANUAL;
 
     elevatorLogger = new Logger();
 
@@ -132,16 +138,20 @@ public class Elevator extends Subsystem {
     loweringToBaseStartTime = runtime.get();
   }
 
-  public static Elevator getInstance() {
-    return instance;
-  }
-
   public boolean isAtBase() {
     return isAtBase;
   }
 
   public boolean isLoweringToBase() {
     return isLoweringToBase;
+  }
+
+  public ControlMode getControlMode() {
+    return controlMode;
+  }
+
+  public void setControlMode(ControlMode controlMode) {
+    this.controlMode = controlMode;
   }
 
   @Override

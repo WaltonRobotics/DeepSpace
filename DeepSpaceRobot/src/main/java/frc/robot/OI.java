@@ -38,6 +38,8 @@ public class OI {
   public static final Gamepad.Button elevatorUpButton = LEFT_BUMPER;
   public static final Gamepad.Button elevatorDownButton = RIGHT_BUMPER;
 
+  public static final Gamepad.Button elevatorZeroButton = _1;
+
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.

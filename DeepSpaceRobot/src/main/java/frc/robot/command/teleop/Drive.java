@@ -60,22 +60,6 @@ public Transform getTransform() {
     */
 
     // speed transform
-    Transform t = new NormalSpeed();
-
-    if (OI.halfSpeedButton.get()) {
-      t = new HalfSpeed();
-    } else if (OI.sqrtButton.get()) {
-      t = new Sqrt();
-    } else if (OI.superSaiyanButton.get()) {
-      t = new BarryAllen();
-    } else if (OI.normalSpeedButton.get()) {
-      t = new NormalSpeed();
-    } else if (OI.sigmoidButton.get()) {
-      t = new Sigmoid();
-    }
-
-    Robot.drivetrain.setSpeeds(t.transform(leftYJoystick), t.transform(rightYJoystick));
-    // speed transform end
 
     if (OI.shiftUp.get()) {
       Robot.drivetrain.shiftUp();
