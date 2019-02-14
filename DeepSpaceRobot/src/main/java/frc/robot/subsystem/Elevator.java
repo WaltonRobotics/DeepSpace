@@ -7,7 +7,10 @@
 
 package frc.robot.subsystem;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
+
+import static frc.robot.RobotMap.elevatorMotor;
 
 /**
  * Add your docs here.
@@ -21,6 +24,11 @@ public class Elevator extends Subsystem {
   private Elevator() {
 
   }
+
+  public void resetElevator() {
+    elevatorMotor.set(ControlMode.MotionMagic, 0);
+  }
+
 
   public static Elevator getInstance() {
     return instance;
