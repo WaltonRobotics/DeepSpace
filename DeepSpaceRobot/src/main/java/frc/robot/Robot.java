@@ -24,9 +24,8 @@ import frc.robot.command.teleop.util.Transform;
 import frc.robot.robot.CompPowerUp;
 import frc.robot.robot.CompSteamWorks;
 import frc.robot.subsystem.Drivetrain;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 import frc.robot.util.RobotBuilder;
-import org.waltonrobotics.command.SimpleCameraPositioning;
-import org.waltonrobotics.command.SimpleMotion;
 import org.waltonrobotics.util.RobotConfig;
 
 /**
@@ -38,6 +37,7 @@ public class Robot extends TimedRobot {
 
   public static final RobotConfig currentRobot;
   public static final Drivetrain drivetrain;
+  public static final ElevatorCargoHatchSubsystem godSubsystem;
   private static final RobotBuilder robotBuilder;
   private static final int DEFAULT_CAMERA_COMPRESSION_QUALITY = 40; // between 0 and 100, 100 being the max, -1 being left to Shuffleboard
 
@@ -45,6 +45,7 @@ public class Robot extends TimedRobot {
     robotBuilder = new RobotBuilder(new CompPowerUp(), new CompSteamWorks());
     currentRobot = robotBuilder.getCurrentRobotConfig();
     drivetrain = new Drivetrain();
+    godSubsystem = new ElevatorCargoHatchSubsystem();
   }
 
   /**
