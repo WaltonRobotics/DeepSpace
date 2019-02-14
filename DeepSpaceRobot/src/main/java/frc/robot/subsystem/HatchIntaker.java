@@ -7,12 +7,21 @@
 
 package frc.robot.subsystem;
 
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 
 import static frc.robot.OI.*;
 import static frc.robot.RobotMap.*;
+=======
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
+
+import static frc.robot.RobotMap.hatchIntake;
+import static frc.robot.RobotMap.hatchRotationMotor;
+>>>>>>> Subsystems
 
 /**
  * Add your docs here.

@@ -14,15 +14,24 @@ import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.INTAKE_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.SHIFT_DOWN_PORT;
 import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
+<<<<<<< HEAD
 import static frc.robot.Gamepad.Button.LEFT_BUMPER;
 import static frc.robot.Gamepad.Button.LEFT_TRIGGER;
 import static frc.robot.Gamepad.Button.RIGHT_TRIGGER;
 import static frc.robot.Gamepad.Button._3;
+=======
+import static frc.robot.Robot.drivetrain;
+>>>>>>> Subsystems
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+<<<<<<< HEAD
 import frc.team2974.robot.util.ButtonOnce;
+=======
+import edu.wpi.first.wpilibj.command.InstantCommand;
+import org.waltonrobotics.controller.Pose;
+>>>>>>> Subsystems
 
 /**
  * This class is the glue that binds the controls on the physical operator interface to the commands and command groups
@@ -70,6 +79,17 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
+
+  static {
+    JoystickButton resetEncoders = new JoystickButton(rightJoystick, 2);
+    resetEncoders.whenPressed(new InstantCommand() {
+      @Override
+      protected void initialize() {
+        drivetrain.reset();
+        drivetrain.setStartingPosition(Pose.ZERO);
+      }
+    });
+  }
 }
 
 

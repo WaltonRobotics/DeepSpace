@@ -7,10 +7,13 @@
 
 package frc.robot.subsystem;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
 import static frc.robot.OI.*;
+import static frc.robot.RobotMap.elevatorMotor;
+
 import static frc.robot.RobotMap.elevatorMotor;
 
 /**
