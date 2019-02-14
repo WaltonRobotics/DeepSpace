@@ -30,14 +30,16 @@ public class Config {
     public static final int LEFT_CARGO_INTAKE_MOTOR_CHANNEL = 1;
     public static final int RIGHT_CARGO_INTAKE_MOTOR_CHANNEL = 2;
 
+    public static final int HATCH_INTAKE_ENCODER_CHANNEL1 = 0; // makeshift
+    public static final int HATCH_INTAKE_ENCODER_CHANNEL2 = 1; // makeshift
     public static final int HATCH_SENSOR_DIGITAL_INPUT_PORT = 1;
     public static final int HATCH_PRONGS_ACTUATOR_PORT = 2;
+    public static final int HATCH_MOTOR_PORT = 0;
 
     public static final int ELEVATOR_TALON_PORT = 1;
     public static final int ELEVATOR_ENCODER_CHANNEL1 = 2;
     public static final int ELEVATOR_ENCODER_CHANNEL2 = 3;
 
-    public static final int HATCH_MOTOR_PORT = 0;
   }
 
 }

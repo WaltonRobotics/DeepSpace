@@ -46,6 +46,8 @@ public class RobotMap {
   public static final Encoder encoderLeft = new Encoder(new DigitalInput(LEFT_ENCODER_CHANNEL1),
       new DigitalInput(LEFT_ENCODER_CHANNEL2));
 
+  public static final Encoder hatchEncoder = new Encoder(new DigitalInput(HATCH_INTAKE_ENCODER_CHANNEL1), new DigitalInput(HATCH_INTAKE_ENCODER_CHANNEL2));
+
   public static final DigitalInput hatchSensor = new DigitalInput(HATCH_SENSOR_DIGITAL_INPUT_PORT);
 
   public static final Solenoid hatchProngs = new Solenoid(HATCH_PRONGS_ACTUATOR_PORT);

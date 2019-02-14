@@ -38,6 +38,11 @@ public class HatchIntaker extends Subsystem {
 
   private boolean isHatchButtonPressed = false;
 
+  private double hatchStartingEncoderPosition = 1000; //makeshift
+  private double hatchIntakingEncoderPosition = 100;  //makeshift
+
+  private double hatchCurrentEncoderPosition = hatchEncoder.get();
+
   private enum ProngsPosition {
     OPEN, CLOSED
   }
@@ -76,11 +81,15 @@ public class HatchIntaker extends Subsystem {
     }
   }
 
-  public void hatchSwitchLocal() {
+  public void hatchSwitchLocation() {
     if (isHatchButtonPressed && !lastHatchLoadButtonPressed) {
-      hatchMotor.set(hatchUpMotor);
+      while (hatchCurrentEncoderPosition <= hatchStartingEncoderPosition) {
+        hatchMotor.set(hatchUpMotor);
+      }
     } if (isHatchButtonPressed && lastHatchLoadButtonPressed) {
-      hatchMotor.set(hatchDownMotor);
+      while (hatchCurrentEncoderPosition >= hatchIntakingEncoderPosition) {
+        hatchMotor.set(hatchDownMotor);
+      }
     }
   }
 
