@@ -7,7 +7,12 @@
 
 package frc.robot.subsystem;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
+
+import static frc.robot.RobotMap.hatchIntake;
+import static frc.robot.RobotMap.hatchRotationMotor;
 
 /**
  * Add your docs here.
@@ -21,6 +26,28 @@ public class HatchIntaker extends Subsystem {
 
   private HatchIntaker() {
   }
+
+
+  public void openHatchIntake() {
+    if(!hatchIntake.get()) {
+      hatchIntake.set(true);
+    }
+  }
+
+  public void closeHatchIntake() {
+    if(hatchIntake.get()) {
+      hatchIntake.set(false);
+    }
+  }
+
+  public void flipOutHatchIntake() {
+    hatchRotationMotor.set(ControlMode.MotionMagic, 1);
+  }
+
+  public void flipInHatchIntake() {
+    hatchRotationMotor.set(ControlMode.MotionMagic, -1);
+  }
+
 
   public static HatchIntaker getHinstance() {
     return instance;
