@@ -141,6 +141,14 @@ public class Robot extends TimedRobot {
     drivetrain.startControllerMotion();
     drivetrain.reset();
     drivetrain.shiftUp();
+
+    CameraData currentCameraData = drivetrain.getController().getCurrentCameraData();
+    System.out.println(currentCameraData);
+
+    if (currentCameraData.getNumberOfTargets() > 0) {
+      SimpleCameraPositioning simpleCameraPositioning = SimpleCameraPositioning.toCameraTarget(currentCameraData);
+      simpleCameraPositioning.start();
+    }
   }
 
   /**
