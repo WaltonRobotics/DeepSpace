@@ -3,7 +3,6 @@ package frc.robot.robotState;
 import frc.robot.Robot;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
-import frc.robot.subsystem.HatchIntaker;
 
 public class HatchHandling implements State {
     @Override
@@ -19,8 +18,6 @@ public class HatchHandling implements State {
 
     @Override
     public void finish() {
-
-        HatchIntaker.getHinstance().closeHatchIntake();
-
+        ElevatorCargoHatchSubsystem.getInstance().closeHatchIntake();
     }
 }

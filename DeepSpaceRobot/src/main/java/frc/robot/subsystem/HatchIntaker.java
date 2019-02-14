@@ -27,28 +27,6 @@ public class HatchIntaker extends Subsystem {
   private HatchIntaker() {
   }
 
-
-  public void openHatchIntake() {
-    if(!hatchIntake.get()) {
-      hatchIntake.set(true);
-    }
-  }
-
-  public void closeHatchIntake() {
-    if(hatchIntake.get()) {
-      hatchIntake.set(false);
-    }
-  }
-
-  public void flipOutHatchIntake() {
-    hatchRotationMotor.set(ControlMode.MotionMagic, 1);
-  }
-
-  public void flipInHatchIntake() {
-    hatchRotationMotor.set(ControlMode.MotionMagic, -1);
-  }
-
-
   public static HatchIntaker getHinstance() {
     return instance;
   }

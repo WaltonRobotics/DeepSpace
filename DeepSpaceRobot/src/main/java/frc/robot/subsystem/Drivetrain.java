@@ -21,6 +21,7 @@ import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.leftWheel;
 import static frc.robot.RobotMap.rightWheel;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -61,12 +62,11 @@ public class Drivetrain extends AbstractDrivetrain {
   @Override
   public void setSpeeds(double leftYJoystick, double rightYJoystick) {
     SmartDashboard.putNumber("leftSpeed", leftYJoystick);
-    SmartDashboard.putNumber("leftMotor", leftWheel.get());
+    SmartDashboard.putNumber("leftMotor", leftWheel.getMotorOutputPercent());
     SmartDashboard.putNumber("rightSpeed", rightYJoystick);
-    SmartDashboard.putNumber("rightMotor", rightWheel.get());
-
-    leftWheel.set(leftYJoystick);
-    rightWheel.set(rightYJoystick);
+    SmartDashboard.putNumber("rightMotor", rightWheel.getMotorOutputPercent());
+    leftWheel.set(ControlMode.MotionMagic ,leftYJoystick);
+    rightWheel.set(ControlMode.MotionMagic, rightYJoystick);
   }
 
   @Override

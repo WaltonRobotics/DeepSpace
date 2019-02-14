@@ -2,7 +2,6 @@ package frc.robot.robotState;
 
 import frc.robot.Robot;
 import frc.robot.state.State;
-import frc.robot.subsystem.CargoIntaker;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 
 public class CargoHandling implements State {
@@ -22,7 +21,7 @@ public class CargoHandling implements State {
     @Override
     public void finish() {
 
-        CargoIntaker.getInstance().outTakeCargo();
+        ElevatorCargoHatchSubsystem.getInstance().outTakeCargo();
 
     }
 }

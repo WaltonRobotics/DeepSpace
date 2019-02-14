@@ -25,11 +25,6 @@ public class Elevator extends Subsystem {
 
   }
 
-  public void resetElevator() {
-    elevatorMotor.set(ControlMode.MotionMagic, 0);
-  }
-
-
   public static Elevator getInstance() {
     return instance;
   }

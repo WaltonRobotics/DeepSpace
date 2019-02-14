@@ -24,29 +24,6 @@ public class CargoIntaker extends Subsystem {
 
   }
 
-  public void intakeCargo() {
-
-    RobotMap.leftIntakeMotor.set(1);
-    RobotMap.rightIntakeMotor.set(1);
-
-  }
-
-  public void outTakeCargo() {
-
-    RobotMap.leftIntakeMotor.set(-1);
-    RobotMap.rightIntakeMotor.set(-1);
-
-  }
-
-  public void flipOutClawSystem() {
-      RobotMap.clawRotationMotor.set(ControlMode.MotionMagic, 1);
-  }
-
-  public void flipInClawSystem() {
-      RobotMap.clawRotationMotor.set(ControlMode.MotionMagic, -1);
-  }
-
-
 
   public static CargoIntaker getInstance() {
     return instance;
