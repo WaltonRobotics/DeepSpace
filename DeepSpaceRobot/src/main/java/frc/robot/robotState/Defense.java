@@ -8,8 +8,6 @@ public class Defense implements State {
     @Override
     public void initialize() {
         Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.DEFENSE);
-
-
     }
 
     @Override

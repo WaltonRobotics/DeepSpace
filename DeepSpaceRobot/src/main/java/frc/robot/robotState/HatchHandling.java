@@ -18,6 +18,6 @@ public class HatchHandling implements State {
 
     @Override
     public void finish() {
-        ElevatorCargoHatchSubsystem.getInstance().closeHatchIntake();
+        Robot.godSubsystem.closeHatchIntake();
     }
 }

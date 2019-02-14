@@ -8,7 +8,7 @@ public class CargoHandlingTransition implements State {
     @Override
     public void initialize() {
         Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.CARGO_HANDLING);
-        ElevatorCargoHatchSubsystem.getInstance().flipOutClawSystem();
+        Robot.godSubsystem.flipOutClawSystem();
     }
 
     @Override

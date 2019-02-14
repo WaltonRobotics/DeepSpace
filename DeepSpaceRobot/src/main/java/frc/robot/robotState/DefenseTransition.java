@@ -8,9 +8,9 @@ public class DefenseTransition implements State {
     @Override
     public void initialize() {
         Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.DEFENSE);
-        ElevatorCargoHatchSubsystem.getInstance().resetElevator();
-        ElevatorCargoHatchSubsystem.getInstance().flipInHatchIntake();
-        ElevatorCargoHatchSubsystem.getInstance().flipInClawSystem();
+        Robot.godSubsystem.resetElevator();
+        Robot.godSubsystem.flipInHatchIntake();
+        Robot.godSubsystem.flipInClawSystem();
     }
 
     @Override

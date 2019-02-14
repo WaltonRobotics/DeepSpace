@@ -21,7 +21,7 @@ public class CargoHandling implements State {
     @Override
     public void finish() {
 
-        ElevatorCargoHatchSubsystem.getInstance().outTakeCargo();
+        Robot.godSubsystem.outTakeCargo();
 
     }
 }

@@ -17,8 +17,6 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 
-import java.util.Random;
-
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides
  * flexibility changing wiring, makes checking the wiring easier and significantly reduces the number of magic numbers
@@ -56,8 +54,6 @@ public class RobotMap {
   public static final Encoder encoderLeft = new Encoder(
       new DigitalInput(currentRobot.getLeftEncoderConfig().getChannell1()),
       new DigitalInput(currentRobot.getLeftEncoderConfig().getChannell2()));
-
-
 
   public static final Encoder cargoEncoder = new Encoder(
       new DigitalInput(1),
