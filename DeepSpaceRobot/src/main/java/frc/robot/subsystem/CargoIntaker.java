@@ -7,7 +7,9 @@
 
 package frc.robot.subsystem;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
@@ -21,6 +23,30 @@ public class CargoIntaker extends Subsystem {
   private CargoIntaker() {
 
   }
+
+  public void intakeCargo() {
+
+    RobotMap.leftIntakeMotor.set(1);
+    RobotMap.rightIntakeMotor.set(1);
+
+  }
+
+  public void outTakeCargo() {
+
+    RobotMap.leftIntakeMotor.set(-1);
+    RobotMap.rightIntakeMotor.set(-1);
+
+  }
+
+  public void flipOutClawSystem() {
+      RobotMap.clawRotationMotor.set(ControlMode.MotionMagic, 1);
+  }
+
+  public void flipInClawSystem() {
+      RobotMap.clawRotationMotor.set(ControlMode.MotionMagic, -1);
+  }
+
+
 
   public static CargoIntaker getInstance() {
     return instance;
