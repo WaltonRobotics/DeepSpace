@@ -26,7 +26,7 @@ import frc.robot.robot.CompSteamWorks;
 import frc.robot.subsystem.Drivetrain;
 import frc.robot.util.RobotBuilder;
 import org.waltonrobotics.command.SimpleCameraPositioning;
-import org.waltonrobotics.command.SimpleMotion;
+import org.waltonrobotics.controller.CameraData;
 import org.waltonrobotics.util.RobotConfig;
 
 /**
@@ -107,6 +107,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Encoder Right", encoderRight.getDistance());
     SmartDashboard.putString("Position", String.valueOf(drivetrain.getActualPosition()));
     // System.out.println("robot Periodic");
+    System.out.println(drivetrain.getCurrentCameraData());
   }
 
   /**
