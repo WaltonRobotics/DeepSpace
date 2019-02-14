@@ -33,8 +33,8 @@ public class HatchIntaker extends Subsystem {
   private double speedCapDuringLoose = 0.1;
   private double looseStateDuration = 1.5;
 
-  private double hatchUpMotor = 1;
-  private double hatchDownMotor = -1;
+  private double hatchUpMotorSpeed = 1;
+  private double hatchDownMotorSpeed = -1;
 
   private boolean isHatchButtonPressed = false;
 
@@ -42,6 +42,10 @@ public class HatchIntaker extends Subsystem {
   private double hatchIntakingEncoderPosition = 100;  //makeshift
 
   private double hatchCurrentEncoderPosition = hatchEncoder.get();
+
+  private boolean switchToDefenseButton = false; // makeshift since dont know if defense is going to have a button
+
+  private boolean compStart = false;
 
   private enum ProngsPosition {
     OPEN, CLOSED
@@ -53,8 +57,21 @@ public class HatchIntaker extends Subsystem {
 
   }
 
+
   public static HatchIntaker getHinstance() {
     return instance;
+  }
+
+  //set prongs and intake to defense
+  public void setDefense() {
+    if (switchToDefenseButton) {
+      while (hatchCurrentEncoderPosition != hatchStartingEncoderPosition) {
+        hatchMotor.set(hatchUpMotorSpeed);
+        if (hatchProngs.get()) {
+          hatchProngs.close();
+        }
+      }
+    }
   }
 
   public boolean wasHatchLoadButtonPressed() {
@@ -85,11 +102,11 @@ public class HatchIntaker extends Subsystem {
   public void hatchSwitchLocation() {
     if (isHatchButtonPressed && !lastHatchLoadButtonPressed) {
       while (hatchCurrentEncoderPosition <= hatchStartingEncoderPosition) {
-        hatchMotor.set(hatchUpMotor);
+        hatchMotor.set(hatchUpMotorSpeed);
       }
     } if (isHatchButtonPressed && lastHatchLoadButtonPressed) {
       while (hatchCurrentEncoderPosition >= hatchIntakingEncoderPosition) {
-        hatchMotor.set(hatchDownMotor);
+        hatchMotor.set(hatchDownMotorSpeed);
       }
     }
   }
