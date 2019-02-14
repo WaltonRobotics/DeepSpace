@@ -52,6 +52,9 @@ def pairwise(iterable):
     a = iter(iterable)
     return it.zip_longest(a, a, fillvalue=None)
 
+def angle_2d(point0, point1):
+    return math.atan2(point1[1] - point0[1], point1[0] - point0[0])
+
 
 class Pose:
 
@@ -203,7 +206,10 @@ class FirstPython:
 
     def estimate_poses(self, targets):
         """
-        Estimates the rotation and position of the camera wrt the target
+        Estimates the rotation and position of the camera wrt the target\n\n
+        See also:\n
+        https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html#solvepnp\n
+        https://stackoverflow.com/questions/14515200/python-opencv-solvepnp-yields-wrong-translation-vector
         :param targets: An array of targets
         :return: rotation and translation of the camera
         """
@@ -251,15 +257,15 @@ class FirstPython:
         if self.current_target[0] is not None and len(self.current_target[0]) is 3:
             current_target, rotation, translation = self.current_target[0]
             pose = Pose()
-            pose.x = translation[2]
-            pose.y = translation[0]
+            pose.x = -translation[2]
+            pose.y = -translation[0]
             pose.z = translation[1]
-            pose.angle = -rotation[2]
+            pose.angle = rotation[1]
 
             x_key = 'x' if pose.x < 0 else 'X'
             x = min(int(round(abs(float(pose.x)) * 2.54)), 999)
 
-            y_key = 'z' if pose.z < 0 else 'Y'
+            y_key = 'y' if pose.y < 0 else 'Y'
             y = min(int(round(abs(float(pose.y)) * 2.54)), 999)
 
             z_key = 'z' if pose.z < 0 else 'Z'
@@ -270,9 +276,8 @@ class FirstPython:
             angle = min(int(round(float(pose.angle))), 999)
 
             jevois.sendSerial(
-                "{0:s}{1:3d}{2:s}{3:3d}{4:s}{5:3d}{6:s}{7:3d}N{8:1d}".format(x_key, x, y_key, y, z_key, z, angle_key,
-                                                                             angle, len(targets)))  # pose
-
+                "{0:s}{1:3d}{2:s}{3:3d}{4:s}{5:3d}{6:s}{7:3d}N{8:1d}".format(x_key, x, y_key, y, z_key, z,
+                                                                                 angle_key, angle, len(targets)))
         else:
             jevois.sendSerial("FN{}".format(min(len(targets), 9)))
 
@@ -362,6 +367,10 @@ class FirstPython:
 
     @staticmethod
     def define_targets(tapes):
+        str = ""
+        for tape in tapes:
+            str += tape.parity + " "
+        jevois.LINFO(str)
         targets = []
         if len(tapes) >= 2:
             while len(tapes) > 0 and tapes[0].parity is 'right':
@@ -530,7 +539,7 @@ class TapePiece:
 
     @property
     def angle(self):
-        return cv2.minAreaRect(self.contour)[2]
+        return angle_2d(self.corners[1], self.corners[2])
 
     @property
     def center_point(self):
@@ -539,11 +548,10 @@ class TapePiece:
 
     @property
     def parity(self):
-        corners = order_corners_clockwise(self)
-        if corners[0][0] > corners[3][0] or corners[1][0] > corners[2][0]:
+        corners = self.corners
+        if corners[0][1] < corners[1][1]:
             return 'left'
-        elif corners[3][0] > corners[0][0] or corners[2][0] > corners[1][0]:
-            # If the bottom left corner is more right than the top left
+        elif corners[0][1] > corners[1][1]:
             return 'right'
         else:
             return ''
@@ -552,12 +560,22 @@ class TapePiece:
     def box_points(self):
         return cv2.boxPoints(cv2.minAreaRect(self.contour))
 
+    @property
+    def corners(self):
+        return order_corners_clockwise(self)
+
     def draw(self, outimg):
         if self.contour.size > 0:
+            if self.parity is 'left':
+                color = jevois.YUYV.LightPurple
+            elif self.parity is 'right':
+                color = jevois.YUYV.DarkGreen
+            else:
+                color = jevois.YUYV.MedGrey
             point0 = self.box_points[-1]
 
             for point1 in self.box_points:
                 jevois.drawLine(outimg, int(point0[0]), int(point0[1]),
-                                int(point1[0]), int(point1[1]), 1, jevois.YUYV.MedGrey)
+                                int(point1[0]), int(point1[1]), 1, color)
 
                 point0 = point1
