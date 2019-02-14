@@ -9,12 +9,6 @@ import static frc.robot.RobotMap.*;
 import static frc.robot.RobotMap.hatchRotationMotor;
 
 public class ElevatorCargoHatchSubsystem extends Subsystem {
-  private static final ElevatorCargoHatchSubsystem instance = new ElevatorCargoHatchSubsystem();
-
-  public static ElevatorCargoHatchSubsystem getInstance() {
-    return instance;
-  }
-
 
   public ActiveState currentActiveState = ActiveState.ROBOT_SWITCHED_ON;
 
