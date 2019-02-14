@@ -39,8 +39,8 @@ public class OI {
   public static final Gamepad.Button hatchFlipOutButton = _4;
   public static final Gamepad.Button intakeCargoButton = RIGHT_BUMPER;
   public static final Gamepad.Button outtakeCargoButton = LEFT_BUMPER; 
-  public static final Gamepad.Button flipCargoIntake = _3;
-  
+  public static final Gamepad.Button flipCargoIntakeButton = _3;
+
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.
