@@ -28,7 +28,7 @@ public class AutoAssist extends Command {
     boolean isValidPosition = isValidRobotPosition(SimpleMotion.getDrivetrain().getActualPosition());
 
     if (isValidPosition) {
-      if (OI.rightJoystick.getTrigger()) {
+      if (OI.rightJoystick.getTrigger()){
 
       }
     }

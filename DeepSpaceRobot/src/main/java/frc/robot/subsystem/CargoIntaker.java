@@ -7,9 +7,7 @@
 
 package frc.robot.subsystem;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
-<<<<<<< HEAD
 import frc.robot.command.teleop.CargoIntake;
 
 import static frc.robot.Gamepad.Button.RIGHT_BUMPER;
@@ -18,9 +16,6 @@ import static frc.robot.RobotMap.leftCargoIntake;
 import static frc.robot.RobotMap.rightCargoIntake;
 import static frc.robot.OI.gamepad;
 
-=======
-import frc.robot.RobotMap;
->>>>>>> Subsystems
 
 public class CargoIntaker extends Subsystem {
 
@@ -29,7 +24,6 @@ public class CargoIntaker extends Subsystem {
 
   private CargoIntaker() {
   }
-
 
   public static CargoIntaker getInstance() {
     return instance;

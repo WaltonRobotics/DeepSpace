@@ -16,9 +16,9 @@ import org.junit.Test;
  */
 public class TestTest {
 
-  @Test
-  public void testTestingTest() {
-    assertTrue(true);
-  }
+    @Test
+    public void testTestingTest() {
+        assertTrue(true);
+    }
 
 }
