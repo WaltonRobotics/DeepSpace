@@ -1,9 +1,10 @@
 package frc.robot.state;
 
-public abstract class State {
-    protected abstract void initialize();
+public interface State {
 
-    protected abstract State periodic();
+  void initialize();
 
-    protected abstract void finish();
+  State periodic();
+
+  void finish();
 }
