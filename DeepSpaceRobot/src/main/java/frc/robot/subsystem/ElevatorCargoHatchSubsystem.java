@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.command.teleop.HatchIntake;
 import frc.robot.robotState.Disabled;
 import frc.robot.state.StateBuilder;
 import frc.robot.util.Logger;
@@ -33,6 +34,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     // Output
     private double elevatorCurrentPower;
     private double elevatorCurrentTarget;
+
+    private double hatchIntakeCurrentPower;
 
     // ???
 
@@ -164,7 +167,35 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
         this.elevatorControlMode = controlMode;
     }
 
-    @Override
+  /**
+   *
+   * @return if the getAngle() value is in the enumerated range above
+   *          the hatch position will be returned
+   */
+  public HatchPosition findHatchClosestPosition(HatchPosition hatchPosition, double angle)
+  {
+    if(HatchPosition.DEPLOY.inRange(angle)){
+      return HatchPosition.DEPLOY;
+    }
+    else if (HatchPosition.SAFE.inRange(angle)) {
+      return HatchPosition.SAFE;
+    }
+    else if (HatchPosition.HATCH_START.inRange(angle)) {
+      return HatchPosition.HATCH_START;
+    }
+    else {
+      return HatchPosition.CARGO_START;
+    }
+  }
+
+  public double hatchIntakePower()
+  {
+    return hatchIntakeCurrentPower;
+  }
+
+
+
+  @Override
     public void periodic() {
         collectSensorData();
         processSensorData();
@@ -235,5 +266,32 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
         DEFENSE,
         HATCH_HANDLING
     }
+
+  public enum HatchPosition {
+    DEPLOY(0, 40),
+    SAFE(80, 90),
+    HATCH_START(100, 140),
+    CARGO_START(180, 200);
+
+    private double angle;
+    private double upperBound;
+
+    HatchPosition(double angle, double upperBound) {
+      this.angle = angle;
+      this.upperBound = upperBound;
+    }
+
+    public double getAngle() {
+      return angle;
+    }
+
+    public boolean inRange(double angle) {
+      return angle < upperBound;
+    }
+
+    public boolean isClose(double angle) {
+      return Math.abs(angle - this.angle) < 10;
+    }
+  }
 
 }
