@@ -44,28 +44,7 @@ public class RobotMap {
   public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
   public static final Solenoid hatchIntake = new Solenoid(1);
 
-  public static final Potentiometer cargoPotentiometer = new Potentiometer() {
-    @Override
-    public double get() {
-      return 0;
-    }
-
-    @Override
-    public void setPIDSourceType(PIDSourceType pidSource) {
-
-    }
-
-    @Override
-    public PIDSourceType getPIDSourceType() {
-      return null;
-    }
-
-    @Override
-    public double pidGet() {
-      return 0;
-    }
-  };
-
+  public static final AnalogPotentiometer cargoPotentiometer = new AnalogPotentiometer(0, 360, 30);// FIXME: 2019-02-14 
   public static final Encoder encoderRight = new Encoder(
       new DigitalInput(currentRobot.getRightEncoderConfig().getChannell1()),
       new DigitalInput(currentRobot.getRightEncoderConfig().getChannell2()));
