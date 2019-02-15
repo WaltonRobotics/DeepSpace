@@ -163,10 +163,10 @@ public class Elevator extends Subsystem {
   public void periodic() {
     /* Read state of inputs. */
     lastUpButtonPressed = currentUpButtonPressed;
-    currentUpButtonPressed = elevatorUpButton.getPressed(gamepad);
+    currentUpButtonPressed = elevatorUpButton.get();
 
     lastDownButtonPressed = currentDownButtonPressed;
-    currentDownButtonPressed = elevatorDownButton.getPressed(gamepad);
+    currentDownButtonPressed = elevatorDownButton.get();
 
     currentEncoderPosition = elevatorMotor.getSelectedSensorPosition(0);
 
