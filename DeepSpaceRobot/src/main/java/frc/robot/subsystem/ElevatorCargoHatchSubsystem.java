@@ -10,8 +10,7 @@ import frc.robot.robotState.Disabled;
 import frc.robot.state.StateBuilder;
 import frc.robot.util.Logger;
 
-import static frc.robot.OI.elevatorDownButton;
-import static frc.robot.OI.elevatorUpButton;
+import static frc.robot.OI.*;
 import static frc.robot.RobotMap.*;
 
 public class ElevatorCargoHatchSubsystem extends Subsystem {
@@ -218,6 +217,13 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
         elevatorCurrentDownButtonPressed = elevatorDownButton.get();
 
         elevatorCurrentEncoderPosition = elevatorMotor.getSelectedSensorPosition(0);
+
+        cargoLastInButtonPressed = cargoCurrentInButtonPressed;
+        cargoCurrentInButtonPressed = intakeCargoButton.get();
+        cargoLastOutButtonPressed = cargoCurrentOutButtonPressed;
+        cargoCurrentOutButtonPressed = outtakeCargoButton.get();
+        cargoLastFlipButtonPressed = cargoCurrentFlipButtonPressed;
+        cargoCurrentFlipButtonPressed = flipCargoIntakeButton.get();
     }
 
     private void processSensorData() {
