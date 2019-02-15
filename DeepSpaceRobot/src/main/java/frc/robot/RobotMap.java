@@ -53,6 +53,8 @@ public class RobotMap {
       new DigitalInput(currentRobot.getLeftEncoderConfig().getChannell1()),
       new DigitalInput(currentRobot.getLeftEncoderConfig().getChannell2()));
 
+  public static final DigitalInput hatchSensor = new DigitalInput(1); //makeshift number
+
   public static final Encoder cargoEncoder = new Encoder(
       new DigitalInput(1),
       new DigitalInput(1)
