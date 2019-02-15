@@ -287,7 +287,7 @@ class FirstPython:
             angle = min(int(round(abs(float(pose.angle)))), 999)
 
             jevois.sendSerial(
-                "{0:s}{1:3d}{2:s}{3:3d}{4:s}{5:3d}{6:s}{7:3d}N{8:1d}".format(x_key, x, y_key, y, z_key, z,
+                "{0:s}{1:03d}{2:s}{3:03d}{4:s}{5:03d}{6:s}{7:03d}N{8:1d}".format(x_key, x, y_key, y, z_key, z,
                                                                              angle_key, angle, len(targets)))
         else:
             jevois.sendSerial("FN{}".format(min(len(targets), 9)))
