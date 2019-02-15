@@ -1,12 +1,13 @@
 package frc.robot.robot;
 
 
+import frc.robot.subsystem.SubsystemLimits;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
 import org.waltonrobotics.util.RobotConfig;
 import org.waltonrobotics.util.TalonConfig;
 
-public class CompPowerUp extends RobotConfig {
+public class CompPowerUp extends LimitedRobot {
 
   public CompPowerUp() {
     super("Comp PowerUp");
@@ -156,5 +157,10 @@ public class CompPowerUp extends RobotConfig {
   @Override
   public boolean isCurrentRobot() {
     return true;
+  }
+
+  @Override
+  SubsystemLimits getSubsystemLimits() {
+    return null;
   }
 }

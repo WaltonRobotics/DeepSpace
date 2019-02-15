@@ -1,12 +1,13 @@
 package frc.robot.robot;
 
 
+import frc.robot.subsystem.SubsystemLimits;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
 import org.waltonrobotics.util.RobotConfig;
 import org.waltonrobotics.util.TalonConfig;
 
-public class PracticeDeepSpace extends RobotConfig {
+public class PracticeDeepSpace extends LimitedRobot {
 
   public PracticeDeepSpace() {
     super("Practice DeepSpace");
@@ -156,5 +157,10 @@ public class PracticeDeepSpace extends RobotConfig {
   @Override
   public boolean isCurrentRobot() {
     return false;
+  }
+
+  @Override
+  SubsystemLimits getSubsystemLimits() {
+    return null;
   }
 }

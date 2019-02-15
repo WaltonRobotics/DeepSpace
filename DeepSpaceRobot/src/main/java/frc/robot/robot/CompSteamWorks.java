@@ -1,11 +1,12 @@
 package frc.robot.robot;
 
+import frc.robot.subsystem.SubsystemLimits;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
 import org.waltonrobotics.util.RobotConfig;
 import org.waltonrobotics.util.TalonConfig;
 
-public class CompSteamWorks extends RobotConfig {
+public class CompSteamWorks extends LimitedRobot {
 
   public CompSteamWorks() {
     super("SteamWorks Comp");
@@ -150,5 +151,10 @@ public class CompSteamWorks extends RobotConfig {
   @Override
   public boolean isCurrentRobot() {
     return false;
+  }
+
+  @Override
+  SubsystemLimits getSubsystemLimits() {
+    return null;
   }
 }
