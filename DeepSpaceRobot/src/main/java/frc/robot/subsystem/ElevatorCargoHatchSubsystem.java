@@ -75,11 +75,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public void flipOutClawSystem() {
-        RobotMap.clawRotationMotor.set(ControlMode.PercentOutput, 1);
+        RobotMap.clawRotationMotor.set(ControlMode.MotionMagic, 1);
     }
 
     public void flipInClawSystem() {
-        RobotMap.clawRotationMotor.set(ControlMode.PercentOutput, -1);
+        RobotMap.clawRotationMotor.set(ControlMode.MotionMagic, -1);
     }
 
     public void openHatchIntake() {
