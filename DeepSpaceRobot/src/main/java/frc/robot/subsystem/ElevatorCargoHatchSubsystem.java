@@ -111,29 +111,29 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
         elevatorControlMode = ElevatorControlMode.AUTO;
     }
 
-    public boolean isUpButtonPressed() {
+    public boolean isElevatorUpButtonPressed() {
         return elevatorCurrentUpButtonPressed;
     }
 
-    public boolean isDownButtonPressed() {
+    public boolean isElevatorDownButtonPressed() {
         return elevatorCurrentDownButtonPressed;
     }
 
-    public boolean wasUpButtonPressed() {
+    public boolean wasElevatorUpButtonPressed() {
         return (elevatorCurrentUpButtonPressed != elevatorLastUpButtonPressed) && elevatorCurrentUpButtonPressed;
     }
 
-    public boolean wasDownButtonPressed() {
+    public boolean wasElevatorDownButtonPressed() {
         return (elevatorCurrentDownButtonPressed != elevatorLastDownButtonPressed) && elevatorCurrentDownButtonPressed;
     }
 
     /* Get raw height of elevator from encoder ticks. */
-    public int getHeight() {
+    public int getElevatorHeight() {
         return elevatorCurrentEncoderPosition;
     }
 
-    public ElevatorLevel getLevel() {
-        int currentHeight = getHeight();
+    public ElevatorLevel getElevatorLevel() {
+        int currentHeight = getElevatorHeight();
 
         if (currentHeight >= ElevatorLevel.BASE.target && currentHeight < ElevatorLevel.LEVEL1.target)
             return ElevatorLevel.BASE;
@@ -146,22 +146,21 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
         return ElevatorLevel.UNKNOWN;
     }
 
-    public void setLevel(ElevatorLevel level) {
+    public void setElevatorLevel(ElevatorLevel level) {
         elevatorCurrentTarget = level.getTarget();
-
-        // Move this to set output
-        elevatorMotor.set(ControlMode.Position, level.getTarget());
     }
 
-    public void setPower(double percent) {
+    public double getElevatorPower() { return elevatorCurrentPower; }
+
+    public void setElevatorPower(double percent) {
         elevatorCurrentPower = percent;
     }
 
-    public ElevatorControlMode getControlMode() {
+    public ElevatorControlMode getElevatorControlMode() {
         return elevatorControlMode;
     }
 
-    public void setControlMode(ElevatorControlMode controlMode) {
+    public void setElevatorControlMode(ElevatorControlMode controlMode) {
         this.elevatorControlMode = controlMode;
     }
 
@@ -189,7 +188,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     private void output() {
         // Here's where we actually set the motors etc...
-        String logOutput = String.format("[%s]: Encoder height: %d, Current power: %f", elevatorRuntime.get(), getHeight(), elevatorCurrentPower);
+        String logOutput = String.format("[%s]: Encoder height: %d, Current height target: %f, Current power: %f", elevatorRuntime.get(), getElevatorHeight(), elevatorCurrentTarget, getElevatorPower());
         elevatorLogger.logInfo(logOutput);
 
         switch (elevatorControlMode) {
