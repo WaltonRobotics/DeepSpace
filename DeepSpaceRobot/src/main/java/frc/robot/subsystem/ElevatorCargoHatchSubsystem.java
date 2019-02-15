@@ -25,6 +25,18 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private Hatch hatch = new Hatch();
   private ActiveState currentActiveState = ActiveState.ROBOT_SWITCHED_ON;
 
+  public Elevator getElevator() {
+    return elevator;
+  }
+
+  public Cargo getCargo() {
+    return cargo;
+  }
+
+  public Hatch getHatch() {
+    return hatch;
+  }
+
   private StateBuilder stateMachine;
 
   // Inputs
