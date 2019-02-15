@@ -119,7 +119,7 @@ public class CompPowerUp extends RobotConfig {
 
   @Override
   public double getKAcc() {
-    return 0.125;
+    return 0.05;
   }
 
   @Override
@@ -139,7 +139,7 @@ public class CompPowerUp extends RobotConfig {
 
   @Override
   public double getKL() {
-    return 2;
+    return 1;
   }
 
 
