@@ -12,10 +12,8 @@ import static frc.robot.Robot.currentRobot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides
@@ -46,6 +44,27 @@ public class RobotMap {
   public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
   public static final Solenoid hatchIntake = new Solenoid(1);
 
+  public static final Potentiometer cargoPotentiometer = new Potentiometer() {
+    @Override
+    public double get() {
+      return 0;
+    }
+
+    @Override
+    public void setPIDSourceType(PIDSourceType pidSource) {
+
+    }
+
+    @Override
+    public PIDSourceType getPIDSourceType() {
+      return null;
+    }
+
+    @Override
+    public double pidGet() {
+      return 0;
+    }
+  };
 
   public static final Encoder encoderRight = new Encoder(
       new DigitalInput(currentRobot.getRightEncoderConfig().getChannell1()),
@@ -59,7 +78,4 @@ public class RobotMap {
       new DigitalInput(1),
       new DigitalInput(1)
   );
-
-
-
 }
