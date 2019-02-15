@@ -13,7 +13,7 @@ public class HatchHandling implements State {
     private double hatchUprightPosition = 100;
     private boolean looseState = false;
     private double looseStateDuration = 2;
-    private double speedCap = 0.1;
+    private double speedCapMultiplier = 0.1;
 
     private boolean lastHatchButtonPressed;
     private boolean lastHatchIntakeButtonPressed;
@@ -39,7 +39,7 @@ public class HatchHandling implements State {
         if (!hatchSensor.get()) {
             looseState = true;
             while (looseState && timer.get() <= looseStateDuration) {
-                Robot.drivetrain.setSpeeds(speedCap, speedCap);
+                Robot.drivetrain.setSpeeds(leftJoystick.getY() * speedCapMultiplier, rightJoystick.getY() * speedCapMultiplier);
                 if (timer.get() == looseStateDuration) {
                     looseState = false;
                     Robot.drivetrain.setSpeeds(leftJoystick.getY(), rightJoystick.getY());

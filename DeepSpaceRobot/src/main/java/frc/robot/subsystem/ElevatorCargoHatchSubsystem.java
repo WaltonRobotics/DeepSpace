@@ -95,11 +95,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public void flipOutHatchIntake() {
-        hatchRotationMotor.set(ControlMode.MotionMagic, 1);
+        hatchRotationMotor.set(ControlMode.PercentOutput, 1);
     }
 
     public void flipInHatchIntake() {
-        hatchRotationMotor.set(ControlMode.MotionMagic, -1);
+        hatchRotationMotor.set(ControlMode.PercentOutput, -1);
     }
 
     public void resetElevator() {
