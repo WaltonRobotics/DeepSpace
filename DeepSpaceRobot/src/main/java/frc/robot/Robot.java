@@ -143,7 +143,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Encoder Right", encoderRight.getDistance());
     SmartDashboard.putString("Position", String.valueOf(drivetrain.getActualPosition()));
     // System.out.println("robot Periodic");
-    System.out.println(drivetrain.getCurrentCameraData());
+    drivetrain.getCurrentCameraData();
   }
 
   /**
