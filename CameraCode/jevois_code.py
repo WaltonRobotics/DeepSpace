@@ -16,6 +16,11 @@ def distance_2d(point0, point1):
     return math.sqrt(math.pow(point0[0] - point1[0], 2) + math.pow(point0[1] - point1[1], 2))
 
 
+def distance_3d(point0, point1):
+    return math.sqrt(math.pow(point0[0] - point1[0], 2) + math.pow(point0[1] - point1[1], 2) + math.pow(point0[2] -
+                                                                                                        point1[2], 2))
+
+
 def order_corners_clockwise(tape):
     """
     Sorts the corners of a contour clockwise from the top left point
@@ -52,6 +57,7 @@ def pairwise(iterable):
     a = iter(iterable)
     return it.zip_longest(a, a, fillvalue=None)
 
+
 def angle_2d(point0, point1):
     return math.atan2(point1[1] - point0[1], point1[0] - point0[0])
 
@@ -75,7 +81,7 @@ class FirstPython:
         self.HLSmax = np.array([70, 255, 255], dtype=np.uint8)
         self.min_area = 200.0
         self.min_perimeter = 10.0
-        self.min_width = 5.0
+        self.min_width = 0.0
         self.max_width = 1000.0
         self.min_height = 0.0
         self.max_height = 1000.0
@@ -84,7 +90,8 @@ class FirstPython:
         self.min_vertices = 4.0
         self.min_ratio = 0.5
         self.max_ratio = 1.1
-        self.max_contour_y = 50
+        self.min_h_w_ratio = 1.0
+        self.max_contour_y = 0
 
         self.object_points = np.array(
             [[-5.936, 31.5, 0.0], [-4.0, 31, 0.0], [-5.375, 25.675, 0.0], [-7.316, 26.175, 0.0],  # Left points
@@ -96,8 +103,10 @@ class FirstPython:
         self.decision_tolerance = 0.05
         self.current_target = np.array([None, None])
         self.target_lost_factor = 1.25
+        self.min_x_ang = -160
+        self.max_x_ang = -140
         self.target_lost_time = -1
-        self.target_lost_timeout = 5
+        self.target_lost_timeout = 2
 
         self.isEnabled = False
 
@@ -177,6 +186,8 @@ class FirstPython:
             ratio = area / (length * width)
             # areas ratio
             if ratio < self.min_ratio or ratio > self.max_ratio:
+                continue
+            if h / w < self.min_h_w_ratio:
                 continue
             output.append(TapePiece(hull))
 
@@ -277,7 +288,7 @@ class FirstPython:
 
             jevois.sendSerial(
                 "{0:s}{1:3d}{2:s}{3:3d}{4:s}{5:3d}{6:s}{7:3d}N{8:1d}".format(x_key, x, y_key, y, z_key, z,
-                                                                                 angle_key, angle, len(targets)))
+                                                                             angle_key, angle, len(targets)))
         else:
             jevois.sendSerial("FN{}".format(min(len(targets), 9)))
 
@@ -324,8 +335,6 @@ class FirstPython:
         outimg = outframe.get()
         outimg.require("output", 640, 480, jevois.V4L2_PIX_FMT_YUYV)
 
-        # target_tracker = TargetTracker()
-
         self.draw_image(outimg, inimg)
         imgbgr = jevois.convertToCvBGR(inimg)
         inframe.done()
@@ -367,11 +376,10 @@ class FirstPython:
 
     @staticmethod
     def define_targets(tapes):
-        str = ""
-        for tape in tapes:
-            str += tape.parity + " "
-        jevois.LINFO(str)
         targets = []
+        if len(tapes) % 2 == 0:
+            while len(tapes) > 0:
+                targets.append(Target(tapes.pop(0), tapes.pop(0)))
         if len(tapes) >= 2:
             while len(tapes) > 0 and tapes[0].parity is 'right':
                 tapes.pop(0)
@@ -392,6 +400,13 @@ class FirstPython:
                     second_tape = tapes[i]
                     if first_tape.parity is 'left' and second_tape.parity is 'right':
                         targets.append(Target(first_tape, second_tape))
+            # i = 1
+            # tape0 = tapes[0]
+            # while i < len(tapes):
+            #     tape1 = tapes[i]
+            #     targets.append(Target(tape0, tape1))
+            #     tape0 = tape1
+            #     i += 1
         return targets
 
     def choose_target(self, targets, outimg=None):
@@ -419,8 +434,10 @@ class FirstPython:
                 closest_target, rotation, translation = target_data[0]
                 # tracker = cv2.TrackerKCF_create()
                 # tracker.init(inimg, closest_target.bounding_rectangle)
+                if rotation[0] < self.min_x_ang or rotation[0] > self.max_x_ang:
+                    return
                 closest_box = closest_target.bounding_rectangle
-                self.current_target = np.array([target_data, closest_box])
+                self.current_target = np.array([[closest_target, rotation, translation], closest_box])
                 jevois.LINFO("Target found")
 
     def track(self, targets, outimg=None):
@@ -446,6 +463,9 @@ class FirstPython:
                                                                                 float(translation[2]))
                 jevois.writeText(outimg, tstring, 3, 15, jevois.YUYV.White, jevois.Font.Font6x10)
         else:
+            if self.target_lost_time != -1 and self.target_lost_timeout - date.now().second + self.target_lost_time >\
+                    self.target_lost_timeout:
+                self.target_lost_time = -1
             self.current_target[0] = None
             if self.target_lost_time is -1:
                 self.target_lost_time = date.now().second
@@ -474,6 +494,9 @@ class FirstPython:
             return False, None
         targets.sort(key=lambda target: distance_2d(self.current_target[1], target.bounding_rectangle))
         most_likely_target = targets[0]
+        most_likely_x_ang = self.estimate_pose(most_likely_target)[0][0]
+        if most_likely_x_ang < self.min_x_ang or most_likely_x_ang > self.max_x_ang:
+            return False, None
         if distance_2d(most_likely_target.bounding_rectangle, self.current_target[1]) > \
                 most_likely_target.bounding_rectangle[3] * self.target_lost_factor:
             return False, None
@@ -539,7 +562,7 @@ class TapePiece:
 
     @property
     def angle(self):
-        return angle_2d(self.corners[1], self.corners[2])
+        return cv2.minAreaRect(self.contour)[2]
 
     @property
     def center_point(self):
@@ -548,13 +571,16 @@ class TapePiece:
 
     @property
     def parity(self):
-        corners = self.corners
-        if corners[0][1] < corners[1][1]:
-            return 'left'
-        elif corners[0][1] > corners[1][1]:
-            return 'right'
-        else:
+        # corners = self.corners
+        # if corners[0][0] > corners[3][0] or corners[1][0] > corners[2][0]:
+        if self.angle == -90 or self.angle == 0:
             return ''
+        elif self.angle < -45:
+            return 'left'
+        # elif corners[0][0] < corners[3][0] or corners[1][0] < corners[2][0]:
+        elif self.angle > -45:
+            return 'right'
+        return ''
 
     @property
     def box_points(self):
