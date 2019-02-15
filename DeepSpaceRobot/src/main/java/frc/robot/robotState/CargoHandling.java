@@ -33,11 +33,11 @@ public class CargoHandling implements State {
 
     else if(flipCargoIntakeButton.get()) {
 
-        if(isFlipped())
+        if (isFlipped()) {
             Robot.godSubsystem.flipInClawSystem();
-
-        else
+        } else {
             Robot.godSubsystem.flipOutClawSystem();
+        }
     }
 
     return null;

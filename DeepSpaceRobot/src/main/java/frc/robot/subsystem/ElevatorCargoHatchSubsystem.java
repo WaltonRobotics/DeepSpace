@@ -31,6 +31,13 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private boolean elevatorCurrentDownButtonPressed;
     private int elevatorCurrentEncoderPosition;
 
+    private boolean cargoLastOutButtonPressed;
+    private boolean cargoLastInButtonPressed;
+    private boolean cargoLastFlipButtonPressed;
+    private boolean cargoCurrentOutButtonPressed;
+    private boolean cargoCurrentInButtonPressed;
+    private boolean cargoCurrentFlipButtonPressed;
+
     // Output
     private double elevatorCurrentPower;
     private double elevatorCurrentTarget;
