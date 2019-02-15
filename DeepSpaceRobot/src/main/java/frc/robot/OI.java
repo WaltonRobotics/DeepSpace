@@ -32,9 +32,9 @@ public class OI {
 
   public static final JoystickButton shiftUp = new JoystickButton(leftJoystick, SHIFT_UP_PORT);
   public static final JoystickButton shiftDown = new JoystickButton(leftJoystick, SHIFT_DOWN_PORT);
-  public static final Gamepad.Button elevatorUpButton = RIGHT_TRIGGER;
-  public static final Gamepad.Button elevatorDownButton = LEFT_TRIGGER;
-  public static final Gamepad.Button elevatorZeroButton = _1;
+  public static final JoystickButton elevatorUpButton = new JoystickButton(leftJoystick, 3); // All elevator joystick button ports are makeshift for now.
+  public static final JoystickButton elevatorDownButton = new JoystickButton(leftJoystick, 4);
+  public static final JoystickButton elevatorZeroButton = new JoystickButton(leftJoystick, 5);
   public static final Gamepad.Button hatchIntakeButton = _2;
   public static final Gamepad.Button hatchFlipOutButton = _4;
   public static final Gamepad.Button intakeCargoButton = RIGHT_BUMPER;
