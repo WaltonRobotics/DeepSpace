@@ -182,12 +182,15 @@ public class Robot extends TimedRobot {
     System.out.println(currentCameraData);
 
     if (currentCameraData.getNumberOfTargets() > 0) {
+//    if (currentCameraData.getNumberOfTargets() >= 0) {
       double x = SmartDashboard.getNumber("dx", -2);
       double y = SmartDashboard.getNumber("dy", -.5);
-      double angle = SmartDashboard.getNumber("angle", 30);
+      double angle = SmartDashboard.getNumber("angle", 0);
 
       SimpleCameraPositioning simpleCameraPositioning = SimpleCameraPositioning
-          .toCameraTarget(new Pose(x, y, StrictMath.toRadians(angle)));
+//          .toCameraTarget(new Pose(x, y, StrictMath.toRadians(angle)));
+          .toCameraTarget(currentCameraData);
+
       simpleCameraPositioning.start();
     }
   }
