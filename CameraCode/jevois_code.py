@@ -284,7 +284,7 @@ class FirstPython:
 
             angle_key = 'a' if pose.angle < 0 else 'A'
 
-            angle = min(int(round(float(pose.angle))), 999)
+            angle = min(int(round(abs(float(pose.angle)))), 999)
 
             jevois.sendSerial(
                 "{0:s}{1:3d}{2:s}{3:3d}{4:s}{5:3d}{6:s}{7:3d}N{8:1d}".format(x_key, x, y_key, y, z_key, z,
