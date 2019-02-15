@@ -7,9 +7,19 @@
 
 package frc.robot;
 
+import static frc.robot.Config.Camera.DEFAULT_CAMERA_COMPRESSION_QUALITY;
+import static frc.robot.Config.Camera.FPS;
+import static frc.robot.Config.Camera.HEIGHT;
+import static frc.robot.Config.Camera.WIDTH;
+import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_X;
+import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_Y;
+import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_OFFSET;
+import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_PERCENTAGE;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -26,7 +36,9 @@ import frc.robot.robot.CompSteamWorks;
 import frc.robot.robot.LimitedRobot;
 import frc.robot.subsystem.Drivetrain;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
+import frc.robot.util.ParkingLines;
 import frc.robot.util.RobotBuilder;
+import org.opencv.core.Mat;
 import org.waltonrobotics.util.RobotConfig;
 
 /**
@@ -40,7 +52,6 @@ public class Robot extends TimedRobot {
   public static final Drivetrain drivetrain;
   public static final ElevatorCargoHatchSubsystem godSubsystem;
   private static final RobotBuilder<LimitedRobot> robotBuilder;
-  private static final int DEFAULT_CAMERA_COMPRESSION_QUALITY = 40; // between 0 and 100, 100 being the max, -1 being left to Shuffleboard
 
   static {
     robotBuilder = new RobotBuilder<>(new CompPowerUp(), new CompSteamWorks());
@@ -76,24 +87,48 @@ public class Robot extends TimedRobot {
   }
 
   private void initCamera() {
-    CameraServer cameraServer = CameraServer.getInstance();
+    new Thread(() -> {
+      SmartDashboard.putNumber(PARKING_LINE_OFFSET, 0);
+      SmartDashboard.putNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0);
+      SmartDashboard.putNumber(PARKING_LINE_FOCUS_Y, HEIGHT / 2.0);
+      SmartDashboard.putNumber(PARKING_LINE_PERCENTAGE, 1.0);
 
-    UsbCamera fishEyeCamera = new UsbCamera("Fisheye Camera", 0);
-    fishEyeCamera.setResolution(320, 240);
-    fishEyeCamera.setFPS(30);
+      CameraServer cameraServer = CameraServer.getInstance();
 
-    cameraServer.addCamera(fishEyeCamera);
+      UsbCamera fishEyeCamera = cameraServer.startAutomaticCapture();
+      fishEyeCamera.setResolution(WIDTH, HEIGHT);
 
-    MjpegServer fisheyeServer = CameraServer.getInstance().addServer("Fisheye Camera Server");
-    fisheyeServer.setSource(fishEyeCamera);
+      CvSink cvSink = cameraServer.getVideo();
+      CvSource outputStream = cameraServer.putVideo("Fisheye Camera", WIDTH, HEIGHT);
+      outputStream.setFPS(FPS);
 
-    fisheyeServer.getProperty("compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
-    fisheyeServer.getProperty("default_compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+      MjpegServer fisheyeServer = cameraServer.addServer("Fisheye Camera Server");
+      fisheyeServer.setSource(outputStream);
 
-    if (!fishEyeCamera.isConnected()) {
-      fishEyeCamera.close();
-      fisheyeServer.close();
-    }
+      fisheyeServer.getProperty("compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+      fisheyeServer.getProperty("default_compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+
+      if (!fishEyeCamera.isConnected()) {
+        fishEyeCamera.close();
+        fisheyeServer.close();
+        return;
+      }
+
+      Mat source = new Mat();
+
+      while (!Thread.interrupted()) {
+        cvSink.grabFrame(source);
+        ParkingLines.setFocusPoint(
+            SmartDashboard.getNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0),
+            SmartDashboard.getNumber(PARKING_LINE_FOCUS_Y, HEIGHT / 2.0)
+        );
+        ParkingLines.setPercentage(SmartDashboard.getNumber(PARKING_LINE_PERCENTAGE, 1));
+        ParkingLines.setXOffset(SmartDashboard.getNumber(PARKING_LINE_OFFSET, 0));
+
+        ParkingLines.drawParkingLines(source);
+        outputStream.putFrame(source);
+      }
+    }).start();
   }
 
   /**
