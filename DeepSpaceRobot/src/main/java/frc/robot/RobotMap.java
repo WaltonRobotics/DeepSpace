@@ -45,6 +45,8 @@ public class RobotMap {
   public static final Solenoid hatchIntake = new Solenoid(1);
 
   public static final AnalogPotentiometer cargoPotentiometer = new AnalogPotentiometer(0, 360, 30);// FIXME: 2019-02-14 
+  public static final Potentiometer hatchPotentiometer = new AnalogPotentiometer(0, 360, 0);
+
   public static final Encoder encoderRight = new Encoder(
       new DigitalInput(currentRobot.getRightEncoderConfig().getChannell1()),
       new DigitalInput(currentRobot.getRightEncoderConfig().getChannell2()));
