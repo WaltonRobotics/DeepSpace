@@ -39,6 +39,7 @@ import frc.robot.util.RobotBuilder;
 import org.opencv.core.Mat;
 import org.waltonrobotics.command.SimpleCameraPositioning;
 import org.waltonrobotics.controller.CameraData;
+import org.waltonrobotics.controller.Pose;
 import org.waltonrobotics.util.RobotConfig;
 
 /**
@@ -79,8 +80,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("Transform Select", sendableChooser);
 
-    SmartDashboard.putNumber("dx", 2);
-    SmartDashboard.putNumber("dy", .5);
+    SmartDashboard.putNumber("dx", -2);
+    SmartDashboard.putNumber("dy", -.5);
     SmartDashboard.putNumber("angle", 30);
   }
 
@@ -181,7 +182,12 @@ public class Robot extends TimedRobot {
     System.out.println(currentCameraData);
 
     if (currentCameraData.getNumberOfTargets() > 0) {
-      SimpleCameraPositioning simpleCameraPositioning = SimpleCameraPositioning.toCameraTarget(currentCameraData);
+      double x = SmartDashboard.getNumber("dx", -2);
+      double y = SmartDashboard.getNumber("dy", -.5);
+      double angle = SmartDashboard.getNumber("angle", 30);
+
+      SimpleCameraPositioning simpleCameraPositioning = SimpleCameraPositioning
+          .toCameraTarget(new Pose(x, y, StrictMath.toRadians(angle)));
       simpleCameraPositioning.start();
     }
   }
