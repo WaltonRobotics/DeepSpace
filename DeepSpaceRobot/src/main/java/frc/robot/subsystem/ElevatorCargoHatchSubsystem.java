@@ -6,12 +6,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.robotState.Disabled;
-import frc.robot.state.State;
 import frc.robot.state.StateBuilder;
 import frc.robot.util.Logger;
 
-import static frc.robot.Config.Elevator.LOWERING_TO_BASE_POWER;
-import static frc.robot.Config.Elevator.LOWERING_TO_BASE_TIMEOUT_SECONDS;
 import static frc.robot.OI.elevatorDownButton;
 import static frc.robot.OI.elevatorUpButton;
 import static frc.robot.RobotMap.*;
@@ -158,9 +155,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     public void setPower(double percent) {
         elevatorCurrentPower = percent;
-
-        // Move this to set output
-        elevatorMotor.set(ControlMode.PercentOutput, percent);
     }
 
     public ElevatorControlMode getControlMode() {
@@ -190,15 +184,26 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     private void processSensorData() {
-        // run state machine
+        stateMachine.step();
     }
+
     private void output() {
         // Here's where we actually set the motors etc...
         String logOutput = String.format("[%s]: Encoder height: %d, Current power: %f", elevatorRuntime.get(), getHeight(), elevatorCurrentPower);
         elevatorLogger.logInfo(logOutput);
 
         switch (elevatorControlMode) {
-            // blah blah blah
+            case ZEROING:
+                elevatorMotor.set(ControlMode.PercentOutput, elevatorCurrentPower);
+                break;
+            case AUTO:
+                elevatorMotor.set(ControlMode.MotionMagic, elevatorCurrentTarget);
+                break;
+            case MANUAL:
+                elevatorMotor.set(ControlMode.PercentOutput, elevatorCurrentPower);
+                break;
+            default:
+                break;
         }
     }
 
@@ -231,4 +236,5 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
         DEFENSE,
         HATCH_HANDLING
     }
+
 }
