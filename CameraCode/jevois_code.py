@@ -66,7 +66,7 @@ class Pose:
         self.angle = 0
 
 
-class FirstPython:
+class DeepSpacePoseFinder:
     def __init__(self):
         # !!THERE CAN BE NO FILE LOADING IN THE __init__ FUNCTION!!
 
