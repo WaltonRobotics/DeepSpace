@@ -14,7 +14,7 @@ public abstract class LimitedRobot extends RobotConfig {
     abstract SubsystemLimits getElevatorSubsystemLimits();
     abstract SusystemTargets getTargets();
 
-    public double getTarget(String target){
+    public int getTarget(String target){
         return getTargets().getTargets().get(target);
     }
 
