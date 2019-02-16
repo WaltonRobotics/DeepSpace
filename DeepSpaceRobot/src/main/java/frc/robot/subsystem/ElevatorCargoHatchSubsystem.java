@@ -3,15 +3,19 @@ package frc.robot.subsystem;
 
 import static frc.robot.OI.elevatorDownButton;
 import static frc.robot.OI.elevatorUpButton;
+import static frc.robot.OI.elevatorZeroButton;
 import static frc.robot.OI.flipCargoIntakeButton;
+import static frc.robot.OI.gamepad;
 import static frc.robot.OI.hatchIntakeButton;
 import static frc.robot.OI.intakeCargoButton;
 import static frc.robot.OI.outtakeCargoButton;
 import static frc.robot.RobotMap.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Gamepad;
+import frc.robot.OI;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.robotState.Disabled;
 import frc.robot.state.StateBuilder;
@@ -136,7 +140,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   }
 
   public enum ElevatorLevel {
-    UNKNOWN(0), BASE(100), LEVEL1(200), LEVEL2(300), LEVEL3(400);
+    UNKNOWN(0), BASE(100), CARGO1(200), HATCH1(250), CARGO2(300), HATCH2(350), CARGO3(400), HATCH3(450);
 
     private double target;
 
@@ -180,6 +184,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private boolean outtakeButtonPressed;
     private boolean lowerLimit;
     private boolean isZeroed;
+    private boolean resetLimits = false;
+    private boolean releaseLower = false;
+    private double elevatorJoystick;
+    private boolean baseIsPressed;
+
+    private ElevatorLevel limits = ElevatorLevel.BASE;
 
     public boolean isZeroed() {
       return isZeroed;
@@ -209,12 +219,15 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       lastUpButtonPressed = currentUpButtonPressed;
       currentUpButtonPressed = elevatorUpButton.get();
 
+      elevatorJoystick = OI.gamepad.getRightY();
+
       lastDownButtonPressed = currentDownButtonPressed;
       currentDownButtonPressed = elevatorDownButton.get();
 
       currentEncoderPosition = elevatorMotor.getSelectedSensorPosition(0);
 
       lowerLimit = elevatorLowerLimit.get();
+      baseIsPressed = elevatorZeroButton.get();
     }
 
     @Override
@@ -224,16 +237,30 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
               getElevatorHeight(), elevatorCurrentTarget, getElevatorPower());
       elevatorLogger.logInfo(logOutput);
 
+      if(resetLimits) {
+        Robot.currentRobot.setElevator(elevatorMotor, limits);
+        resetLimits = false;
+      }
+
+      if(releaseLower) {
+        elevatorMotor.configReverseSoftLimitEnable(false);
+      }
+
       switch (elevatorControlMode) {
         case ZEROING:
           elevatorMotor.set(ControlMode.PercentOutput, -0.1);
           elevatorMotor.setSelectedSensorPosition(0);
+          elevatorCurrentTarget = 0;
           break;
         case AUTO:
           elevatorMotor.set(ControlMode.MotionMagic, elevatorCurrentTarget);
           break;
         case MANUAL:
           elevatorMotor.set(ControlMode.PercentOutput, elevatorCurrentPower);
+          elevatorCurrentTarget = currentEncoderPosition;
+          break;
+        case DISABLED:
+          elevatorMotor.set(ControlMode.Disabled, 0);
           break;
       }
     }
@@ -241,6 +268,14 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     @Override
     public void intialize() {
 
+    }
+
+    public boolean isBasePressed() {
+      return baseIsPressed;
+    }
+
+    public double getElevatorJoystick() {
+      return elevatorJoystick;
     }
 
     public boolean isElevatorUpButtonPressed() {
@@ -267,19 +302,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     public ElevatorLevel getElevatorLevel() {
       int currentHeight = getElevatorHeight();
 
-      if (currentHeight >= ElevatorLevel.BASE.target && currentHeight < ElevatorLevel.LEVEL1.target) {
-        return ElevatorLevel.BASE;
-      }
-      if (currentHeight >= ElevatorLevel.LEVEL1.target && currentHeight < ElevatorLevel.LEVEL2.target) {
-        return ElevatorLevel.LEVEL1;
-      }
-      if (currentHeight >= ElevatorLevel.LEVEL2.target && currentHeight < ElevatorLevel.LEVEL3.target) {
-        return ElevatorLevel.LEVEL2;
-      }
-      if (currentHeight >= ElevatorLevel.LEVEL3.target) {
-        return ElevatorLevel.LEVEL3;
-      }
-
       return ElevatorLevel.UNKNOWN;
     }
 
@@ -302,6 +324,15 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     public void setElevatorControlMode(ElevatorControlMode controlMode) {
       this.elevatorControlMode = controlMode;
     }
+
+    public void setLimits(ElevatorLevel limits) {
+      this.limits = limits;
+      resetLimits = true;
+    }
+
+    public void releaseLowerLimit() {
+      releaseLower = true;
+    }
   }
 
   public class Cargo implements SubSubsystem {
@@ -317,6 +348,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private boolean currentInButtonPressed;
     private boolean currentFlipButtonPressed;
     private int angle;
+    private boolean resetLimits = false;
+    private double cargoJoystick;
+
+    private CargoPosition limits = CargoPosition.SAFE;
+
+
     // Outputs
     private double intakePower;
     private double clawRotationPower;
@@ -332,6 +369,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       lastFlipButtonPressed = currentFlipButtonPressed;
       currentFlipButtonPressed = flipCargoIntakeButton.get();
       angle = clawRotationMotor.getSelectedSensorPosition();
+      cargoJoystick = gamepad.getLeftY();
     }
 
     public void intakeCargo(int timeout) {
@@ -396,6 +434,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       return currentFlipButtonPressed && !lastFlipButtonPressed;
     }
 
+    public double getCargoJoystick() {
+      return cargoJoystick;
+    }
+
     public int getAngle() {
       return angle;
     }
@@ -403,13 +445,22 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     @Override
     public void outputData() {
 
+      if(resetLimits) {
+        Robot.currentRobot.setCargoLimit(clawRotationMotor, limits);
+        resetLimits = false;
+      }
+
       switch (clawControlMode) {
         case AUTO:
           clawRotationMotor.set(ControlMode.MotionMagic, clawTarget);
+          break;
         case MANUAL:
           clawRotationMotor.set(ControlMode.PercentOutput, clawRotationPower);
+          clawTarget = angle;
+          break;
         case DISABLED:
           clawRotationMotor.set(ControlMode.Disabled, 0);
+          break;
       }
 
       if (currentTime <= intakeTimeout) {
@@ -419,10 +470,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
         RobotMap.leftIntakeMotor.set(0);
         RobotMap.rightIntakeMotor.set(0);
       }
-
     }
 
-
+    public void setLimits(CargoPosition limits) {
+      this.limits = limits;
+      resetLimits = true;
+    }
     @Override
     public void intialize() {
 
@@ -465,7 +518,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private boolean currentIntakeButtonPressed;
     private boolean lastFlipButtonPressed;
     private boolean currentFlipButtonPressed;
+    private boolean resetLimits = false;
 
+    private HatchPosition limits = HatchPosition.SAFE;
     private int angle;
     private boolean intakeIsSet;
     private double hatchRotationPower;
@@ -483,13 +538,23 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void outputData() {
+
+      if(resetLimits) {
+        Robot.currentRobot.setHatchLimit(hatchRotationMotor, limits);
+        resetLimits = false;
+      }
+
       switch (hatchControlMode) {
         case AUTO:
           hatchRotationMotor.set(ControlMode.MotionMagic, hatchTarget);
+          break;
         case MANUAL:
           hatchRotationMotor.set(ControlMode.PercentOutput, hatchRotationPower);
+          hatchTarget = angle;
+          break;
         case DISABLED:
           hatchRotationMotor.set(ControlMode.Disabled, 0);
+          break;
       }
 
       hatchIntake.set(intakeIsSet);
@@ -530,6 +595,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     public boolean intakeButtonRising() {
       return currentIntakeButtonPressed && !lastIntakeButtonPressed;
+    }
+
+    public void setLimits(HatchPosition limits) {
+      this.limits = limits;
+      resetLimits = true;
     }
 
   }
