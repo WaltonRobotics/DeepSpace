@@ -437,7 +437,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     @Override
     public void collectData()
     {
-      
+      angle = hatchRotationMotor.getSelectedSensorPosition();
     }
 
     @Override
