@@ -50,7 +50,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     // Set sense of encoder
     // Set sense of motors
-    // Set soft limits on
+    // Set soft targets on
     // Configure elevator encoder
 
   }
@@ -104,22 +104,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   public void flipInHatchIntake() {
     hatchRotationMotor.set(ControlMode.PercentOutput, -1);
   }
-
-  /**
-   * @return if the getAngle() value is in the enumerated range above the hatch position will be returned
-   */
-  public HatchPosition findHatchClosestPosition(HatchPosition hatchPosition, double angle) {
-    if (HatchPosition.DEPLOY.inRange(angle)) {
-      return HatchPosition.DEPLOY;
-    } else if (HatchPosition.SAFE.inRange(angle)) {
-      return HatchPosition.SAFE;
-    } else if (HatchPosition.HATCH_START.inRange(angle)) {
-      return HatchPosition.HATCH_START;
-    } else {
-      return HatchPosition.CARGO_START;
-    }
-  }
-
 
   @Override
   public void periodic() {
@@ -175,33 +159,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     CARGO_HANDLING,
     DEFENSE,
     HATCH_HANDLING
-  }
-
-  public enum HatchPosition {
-    DEPLOY(0, 40),
-    SAFE(80, 90),
-    HATCH_START(100, 140),
-    CARGO_START(180, 200);
-
-    private double angle;
-    private double upperBound;
-
-    HatchPosition(double angle, double upperBound) {
-      this.angle = angle;
-      this.upperBound = upperBound;
-    }
-
-    public double getAngle() {
-      return angle;
-    }
-
-    public boolean inRange(double angle) {
-      return angle < upperBound;
-    }
-
-    public boolean isClose(double angle) {
-      return Math.abs(angle - this.angle) < 10;
-    }
   }
 
   public class Elevator implements SubSubsystem {
@@ -380,5 +337,47 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       return hatchIntakeCurrentPower;
     }
 
+  }
+
+  public enum HatchPosition {
+    DEPLOY(0, 40),
+    SAFE(80, 90),
+    HATCH_START(100, 140),
+    CARGO_START(180, 200);
+
+    private double angle;
+    private double upperBound;
+
+    HatchPosition(double angle, double upperBound) {
+      this.angle = angle;
+      this.upperBound = upperBound;
+    }
+
+    public double getAngle() {
+      return angle;
+    }
+
+    public boolean inRange(double angle) {
+      return angle < upperBound;
+    }
+
+    public boolean isClose(double angle) {
+      return Math.abs(angle - this.angle) < 10;
+    }
+  }
+
+  /**
+   * @return if the getAngle() value is in the enumerated range above the hatch position will be returned
+   */
+  public HatchPosition findHatchClosestPosition(HatchPosition hatchPosition, double angle) {
+    if (HatchPosition.DEPLOY.inRange(angle)) {
+      return HatchPosition.DEPLOY;
+    } else if (HatchPosition.SAFE.inRange(angle)) {
+      return HatchPosition.SAFE;
+    } else if (HatchPosition.HATCH_START.inRange(angle)) {
+      return HatchPosition.HATCH_START;
+    } else {
+      return HatchPosition.CARGO_START;
+    }
   }
 }
