@@ -1,5 +1,6 @@
 package frc.robot.robotState;
 
+import frc.robot.Robot;
 import frc.robot.state.State;
 
 public class TakeControl implements State {
@@ -11,6 +12,10 @@ public class TakeControl implements State {
 
     @Override
     public State periodic() {
+        if(!Robot.godSubsystem.isEnabled()){
+            return new Disabled();
+        }
+
         return this;
     }
 

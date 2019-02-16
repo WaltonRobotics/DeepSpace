@@ -19,6 +19,9 @@ public class HatchHandling implements State {
 
   @Override
   public State periodic() {
+    if(!Robot.godSubsystem.isEnabled()){
+      return new Disabled();
+    }
 
     if (Robot.godSubsystem.defenceModeRising()) {
       return new DefenseTransition();

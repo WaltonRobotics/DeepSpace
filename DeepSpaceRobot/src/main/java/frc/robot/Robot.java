@@ -151,6 +151,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    godSubsystem.setEnabled(false);
     drivetrain.cancelControllerMotion();
     drivetrain.getMotionLogger().writeMotionDataCSV(true);
   }
@@ -172,6 +173,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    godSubsystem.setEnabled(true);
     drivetrain.cancelControllerMotion();
     drivetrain.startControllerMotion();
     drivetrain.reset();
@@ -188,6 +190,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    godSubsystem.setEnabled(true);
     drivetrain.cancelControllerMotion();
   }
 

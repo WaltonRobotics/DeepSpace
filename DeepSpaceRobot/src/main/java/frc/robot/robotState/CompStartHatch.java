@@ -14,6 +14,10 @@ public class CompStartHatch implements State
 
     @Override
     public State periodic() {
+
+        if(!Robot.godSubsystem.isEnabled()){
+            return new Disabled();
+        }
         int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
         int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
 

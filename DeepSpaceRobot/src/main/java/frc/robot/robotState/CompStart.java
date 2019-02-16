@@ -15,6 +15,10 @@ public class CompStart implements State {
 
     @Override
     public State periodic() {
+        if(!Robot.godSubsystem.isEnabled()){
+            return new Disabled();
+        }
+
         ElevatorCargoHatchSubsystem.ActiveState currentActiveState = Robot.godSubsystem.getCurrentActiveState();
 
         if (currentActiveState == ElevatorCargoHatchSubsystem.ActiveState.CARGO_HANDLING)

@@ -30,6 +30,16 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private boolean currentCargoModePressed;
   private boolean lastHatchModePressed;
   private boolean currentHatchModePressed;
+  private boolean isEnabled = false;
+
+
+  public boolean isEnabled() {
+    return isEnabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    isEnabled = enabled;
+  }
 
   public Elevator getElevator() {
     return elevator;

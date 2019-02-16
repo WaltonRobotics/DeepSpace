@@ -16,6 +16,10 @@ public class HatchHandlingTransition implements State {
 
     @Override
     public State periodic() {
+
+        if(!Robot.godSubsystem.isEnabled()){
+            return new Disabled();
+        }
         int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
         int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
 
