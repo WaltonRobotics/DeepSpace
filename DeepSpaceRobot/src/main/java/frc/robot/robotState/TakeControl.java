@@ -5,14 +5,17 @@ import frc.robot.Robot;
 import frc.robot.command.teleop.ZeroElevator;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Elevator;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchControlMode;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 
 public class TakeControl implements State {
 
   @Override
   public void initialize() {
-
     ElevatorCargoHatchSubsystem.Cargo cargo = Robot.godSubsystem.getCargo();
     ElevatorCargoHatchSubsystem.Hatch hatch = Robot.godSubsystem.getHatch();
     ElevatorCargoHatchSubsystem.Elevator elevator = Robot.godSubsystem.getElevator();
@@ -29,7 +32,9 @@ public class TakeControl implements State {
 
     elevator.setZeroed(false);
     Scheduler.getInstance().add(new ZeroElevator());
-
+    cargo.setLimits(CargoPosition.SAFE);
+    hatch.setLimits(HatchPosition.SAFE);
+    elevator.releaseLowerLimit();
   }
 
   @Override
@@ -56,6 +61,6 @@ public class TakeControl implements State {
 
   @Override
   public void finish() {
-
+    Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.BASE);
   }
 }
