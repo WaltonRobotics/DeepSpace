@@ -1,10 +1,7 @@
 package frc.robot.robotState;
 
-import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.Robot;
 import frc.robot.state.State;
-import frc.robot.subsystem.Drivetrain;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchControlMode;

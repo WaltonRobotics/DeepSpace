@@ -157,6 +157,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     DISABLED, AUTO, MANUAL
   }
 
+  public enum HatchControlMode {
+    DISABLED, AUTO, MANUAL
+  }
+
   public enum ActiveState {
     ROBOT_SWITCHED_ON,
     CARGO_HANDLING,
@@ -167,60 +171,69 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   public class Elevator implements SubSubsystem {
 
     // Inputs
-    private boolean elevatorLastUpButtonPressed;
-    private boolean elevatorLastDownButtonPressed;
-    private boolean elevatorCurrentUpButtonPressed;
-    private boolean elevatorCurrentDownButtonPressed;
-    private int elevatorCurrentEncoderPosition;
+    private boolean lastUpButtonPressed;
+    private boolean lastDownButtonPressed;
+    private boolean currentUpButtonPressed;
+    private boolean currentDownButtonPressed;
+    private int currentEncoderPosition;
     private boolean intakeButtonPressed;
     private boolean outtakeButtonPressed;
+    private boolean lowerLimit;
+    private boolean isZeroed;
 
+    public boolean isZeroed() {
+      return isZeroed;
+    }
+
+    public void setZeroed(boolean zeroed) {
+      isZeroed = zeroed;
+    }
+
+    public boolean isLowerLimit() {
+      return lowerLimit;
+    }
 
     // Output
     private double elevatorCurrentPower;
     private double elevatorCurrentTarget;
 
-    private Timer elevatorRuntime;
-
     private ElevatorControlMode elevatorControlMode;
     private Logger elevatorLogger;
 
     public Elevator() {
-      elevatorRuntime = new Timer();
       elevatorLogger = new Logger();
-      elevatorControlMode = ElevatorControlMode.DISABLED;
     }
 
     @Override
     public void collectData() {
-      elevatorLastUpButtonPressed = elevatorCurrentUpButtonPressed;
-      elevatorCurrentUpButtonPressed = elevatorUpButton.get();
+      lastUpButtonPressed = currentUpButtonPressed;
+      currentUpButtonPressed = elevatorUpButton.get();
 
-      elevatorLastDownButtonPressed = elevatorCurrentDownButtonPressed;
-      elevatorCurrentDownButtonPressed = elevatorDownButton.get();
+      lastDownButtonPressed = currentDownButtonPressed;
+      currentDownButtonPressed = elevatorDownButton.get();
 
-      elevatorCurrentEncoderPosition = elevatorMotor.getSelectedSensorPosition(0);
+      currentEncoderPosition = elevatorMotor.getSelectedSensorPosition(0);
 
+      lowerLimit = elevatorLowerLimit.get();
     }
 
     @Override
     public void outputData() {
       String logOutput = String
-          .format("[%s]: Encoder height: %d, Current height target: %f, Current power: %f", elevatorRuntime.get(),
+          .format("[%s]: Encoder height: %d, Current height target: %f, Current power: %f", currentTime,
               getElevatorHeight(), elevatorCurrentTarget, getElevatorPower());
       elevatorLogger.logInfo(logOutput);
 
       switch (elevatorControlMode) {
         case ZEROING:
-          elevatorMotor.set(ControlMode.PercentOutput, elevatorCurrentPower);
+          elevatorMotor.set(ControlMode.PercentOutput, -0.1);
+          elevatorMotor.setSelectedSensorPosition(0);
           break;
         case AUTO:
           elevatorMotor.set(ControlMode.MotionMagic, elevatorCurrentTarget);
           break;
         case MANUAL:
           elevatorMotor.set(ControlMode.PercentOutput, elevatorCurrentPower);
-          break;
-        default:
           break;
       }
     }
@@ -230,37 +243,25 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     }
 
-    public void resetElevator() {
-      elevatorRuntime.reset();
-
-      elevatorLastUpButtonPressed = false;
-      elevatorLastDownButtonPressed = false;
-
-      elevatorCurrentPower = 0.0;
-      elevatorCurrentTarget = elevatorMotor.getSelectedSensorPosition(0);
-
-      elevatorControlMode = ElevatorControlMode.AUTO;
-    }
-
     public boolean isElevatorUpButtonPressed() {
-      return elevatorCurrentUpButtonPressed;
+      return currentUpButtonPressed;
     }
 
     public boolean isElevatorDownButtonPressed() {
-      return elevatorCurrentDownButtonPressed;
+      return currentDownButtonPressed;
     }
 
     public boolean wasElevatorUpButtonPressed() {
-      return (elevatorCurrentUpButtonPressed != elevatorLastUpButtonPressed) && elevatorCurrentUpButtonPressed;
+      return (currentUpButtonPressed != lastUpButtonPressed) && currentUpButtonPressed;
     }
 
     public boolean wasElevatorDownButtonPressed() {
-      return (elevatorCurrentDownButtonPressed != elevatorLastDownButtonPressed) && elevatorCurrentDownButtonPressed;
+      return (currentDownButtonPressed != lastDownButtonPressed) && currentDownButtonPressed;
     }
 
     /* Get raw height of elevator from encoder ticks. */
     public int getElevatorHeight() {
-      return elevatorCurrentEncoderPosition;
+      return currentEncoderPosition;
     }
 
     public ElevatorLevel getElevatorLevel() {
@@ -319,7 +320,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     // Outputs
     private double intakePower;
     private double clawRotationPower;
-    private CargoPosition clawTarget;
+    private int clawTarget;
     private ClawControlMode clawControlMode;
 
     @Override
@@ -342,6 +343,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       intakeTimeout = currentTime + timeout;
       intakePower = -1;
     }
+
     public void holdCargo() {
       intakePower = 0;
     }
@@ -362,12 +364,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       this.clawRotationPower = clawRotationPower;
     }
 
-    public CargoPosition getClawTarget() {
-      return clawTarget;
+    public void setClawTarget(CargoPosition clawTarget) {
+      this.clawTarget = clawTarget.getAngle();
     }
 
-    public void setClawTarget(CargoPosition clawTarget) {
-      this.clawTarget = clawTarget;
+    public void setClawAngle(int angle) {
+      this.clawTarget = angle;
     }
 
     public boolean inButtonPressed() {
@@ -403,19 +405,17 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
       switch (clawControlMode) {
         case AUTO:
-          clawRotationMotor.set(ControlMode.MotionMagic, clawTarget.getAngle());
+          clawRotationMotor.set(ControlMode.MotionMagic, clawTarget);
         case MANUAL:
           clawRotationMotor.set(ControlMode.PercentOutput, clawRotationPower);
         case DISABLED:
           clawRotationMotor.set(ControlMode.Disabled, 0);
       }
 
-      if(currentTime <= intakeTimeout) {
+      if (currentTime <= intakeTimeout) {
         RobotMap.leftIntakeMotor.set(intakePower);
         RobotMap.rightIntakeMotor.set(intakePower);
-      }
-
-      else {
+      } else {
         RobotMap.leftIntakeMotor.set(0);
         RobotMap.rightIntakeMotor.set(0);
       }
@@ -469,12 +469,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private int angle;
     private boolean intakeIsSet;
     private double hatchRotationPower;
-    private HatchPosition hatchTarget;
+    private int hatchTarget;
     private HatchControlMode hatchControlMode;
 
     @Override
-    public void collectData()
-    {
+    public void collectData() {
       lastIntakeButtonPressed = currentIntakeButtonPressed;
       currentIntakeButtonPressed = hatchIntakeButton.get();
       lastFlipButtonPressed = currentFlipButtonPressed;
@@ -484,9 +483,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void outputData() {
-      switch (hatchControlMode){
+      switch (hatchControlMode) {
         case AUTO:
-          hatchRotationMotor.set(ControlMode.MotionMagic, hatchTarget.getAngle());
+          hatchRotationMotor.set(ControlMode.MotionMagic, hatchTarget);
         case MANUAL:
           hatchRotationMotor.set(ControlMode.PercentOutput, hatchRotationPower);
         case DISABLED:
@@ -509,13 +508,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       return intakeIsSet;
     }
 
-    public void setIntake(boolean setOpen)
-    {
+    public void setIntake(boolean setOpen) {
       intakeIsSet = setOpen;
     }
 
-    public HatchControlMode getHatchControlMode()
-    {
+    public HatchControlMode getHatchControlMode() {
       return hatchControlMode;
     }
 
@@ -523,23 +520,18 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       this.hatchControlMode = hatchControlMode;
     }
 
-    public HatchPosition getHatchTarget() {
-      return hatchTarget;
-    }
-
     public void setHatchTarget(HatchPosition hatchTarget) {
-      this.hatchTarget = hatchTarget;
+      this.hatchTarget = hatchTarget.getAngle();
     }
 
-    public boolean intakeButtonRising()
-    {
+    public void setHatchAngle(int angle) {
+      this.hatchTarget = angle;
+    }
+
+    public boolean intakeButtonRising() {
       return currentIntakeButtonPressed && !lastIntakeButtonPressed;
     }
 
-  }
-
-  public enum HatchControlMode {
-    DISABLED, AUTO, MANUAL
   }
 
   public enum HatchPosition {
@@ -548,23 +540,23 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     HATCH_START(100, 140),
     CARGO_START(180, 200);
 
-    private double angle;
-    private double upperBound;  // halfway between two different positions
+    private int angle;
+    private int upperBound;  // halfway between two different positions
 
-    HatchPosition(double angle, double upperBound) {
+    HatchPosition(int angle, int upperBound) {
       this.angle = angle;
       this.upperBound = upperBound;
     }
 
-    public double getAngle() {
+    public int getAngle() {
       return angle;
     }
 
-    public boolean inRange(double angle) {
+    public boolean inRange(int angle) {
       return angle < upperBound;
     }
 
-    public boolean isClose(double angle) {
+    public boolean isClose(int angle) {
       return Math.abs(angle - this.angle) < 10;
     }
   }
@@ -573,7 +565,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
    * @return if the getAngle() value is in the enumerated range above the hatch position will be returned
    */
 
-  public HatchPosition findHatchClosestPosition(HatchPosition hatchPosition, double angle) {
+  public HatchPosition findHatchClosestPosition(HatchPosition hatchPosition, int angle) {
     if (HatchPosition.DEPLOY.inRange(angle)) {
       return HatchPosition.DEPLOY;
     } else if (HatchPosition.SAFE.inRange(angle)) {
