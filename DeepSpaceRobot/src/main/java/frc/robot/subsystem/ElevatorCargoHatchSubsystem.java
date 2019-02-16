@@ -4,6 +4,7 @@ package frc.robot.subsystem;
 import static frc.robot.OI.elevatorDownButton;
 import static frc.robot.OI.elevatorUpButton;
 import static frc.robot.OI.flipCargoIntakeButton;
+import static frc.robot.OI.hatchIntakeButton;
 import static frc.robot.OI.intakeCargoButton;
 import static frc.robot.OI.outtakeCargoButton;
 import static frc.robot.RobotMap.*;
@@ -450,20 +451,39 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   public class Hatch implements SubSubsystem {
     // Output
 
+    private boolean lastIntakeButtonPressed;
+    private boolean currentIntakeButtonPressed;
+    private boolean lastFlipButtonPressed;
+    private boolean currentFlipButtonPressed;
+
     private int angle;
-    private boolean intakePower;
-    private double clawPower;
-    private HatchPosition clawTarget;
+    private boolean intakeIsSet;
+    private double hatchRotationPower;
+    private HatchPosition hatchTarget;
+    private HatchControlMode hatchControlMode;
 
     @Override
     public void collectData()
     {
+      lastIntakeButtonPressed = currentIntakeButtonPressed;
+      currentIntakeButtonPressed = hatchIntakeButton.get();
+      lastFlipButtonPressed = currentFlipButtonPressed;
+      currentIntakeButtonPressed = hatchIntakeButton.get();
       angle = hatchRotationMotor.getSelectedSensorPosition();
     }
 
     @Override
     public void outputData() {
+      switch (hatchControlMode){
+        case AUTO:
+          hatchRotationMotor.set(ControlMode.MotionMagic, hatchTarget.getAngle());
+        case MANUAL:
+          hatchRotationMotor.set(ControlMode.PercentOutput, hatchRotationPower);
+        case DISABLED:
+          hatchRotationMotor.set(ControlMode.Disabled, 0);
+      }
 
+      hatchIntake.set(intakeIsSet);
     }
 
     @Override
@@ -475,26 +495,37 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       return angle;
     }
 
-    public boolean getIntakePower() {
-      return intakePower;
+    public boolean getIntakeIsSet() {
+      return intakeIsSet;
     }
 
-    public double getClawPower() {
-      return clawPower;
+    public void setIntake(boolean setOpen)
+    {
+      intakeIsSet = setOpen;
     }
 
-    public HatchPosition getClawTarget() {
-      return clawTarget;
+    public HatchControlMode getHatchControlMode()
+    {
+      return hatchControlMode;
     }
 
-    public void setClawPower(double clawPower) {
-      this.clawPower = clawPower;
+    public void setHatchControlMode(HatchControlMode hatchControlMode) {
+      this.hatchControlMode = hatchControlMode;
     }
 
-
-    public void setClawTarget(HatchPosition clawTarget) {
-      this.clawTarget = clawTarget;
+    public HatchPosition getHatchTarget() {
+      return hatchTarget;
     }
+
+    public void setHatchTarget(HatchPosition hatchTarget) {
+      this.hatchTarget = hatchTarget;
+    }
+
+    public boolean intakeButtonRising()
+    {
+      return currentIntakeButtonPressed && !lastIntakeButtonPressed;
+    }
+
   }
 
   public enum HatchControlMode {

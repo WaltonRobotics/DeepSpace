@@ -12,7 +12,7 @@ public class CargoHandlingTransition implements State {
 
         // set limits for play mode
         Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.CARGO_HANDLING);
-        Robot.godSubsystem.getHatch().setClawTarget(HatchPosition.SAFE);
+        Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
         Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.DEPLOY);
 
     }
