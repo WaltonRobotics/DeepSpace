@@ -415,36 +415,25 @@ class FirstPython:
     @staticmethod
     def define_targets(tapes):
         targets = []
-        if len(tapes) % 2 == 0:
-            while len(tapes) > 0:
-                targets.append(Target(tapes.pop(0), tapes.pop(0)))
         if len(tapes) >= 2:
-            while len(tapes) > 0 and tapes[0].parity is 'right':
-                tapes.pop(0)
-            while len(tapes) > 0 and tapes[-1].parity is 'left':
-                tapes.pop(-1)
-
-            if len(tapes) > 0:
-                first_tape = tapes[0]
-                i = 1
-                while i < len(tapes) - 1:
-                    second_tape = tapes[i]
-                    if first_tape.parity is 'left' and second_tape.parity is 'right':
-                        targets.append(Target(first_tape, second_tape))
-                        i += 1
-                    first_tape = tapes[i]
+            #Try to group up tapes by parity
+            first_tape = tapes[0]
+            i = 1
+            while i < len(tapes) - 1:
+                second_tape = tapes[i]
+                if first_tape.parity is 'left' and second_tape.parity is 'right':
+                    targets.append(Target(first_tape, second_tape))
                     i += 1
-                if i is len(tapes) - 1:
-                    second_tape = tapes[i]
-                    if first_tape.parity is 'left' and second_tape.parity is 'right':
-                        targets.append(Target(first_tape, second_tape))
-            # i = 1
-            # tape0 = tapes[0]
-            # while i < len(tapes):
-            #     tape1 = tapes[i]
-            #     targets.append(Target(tape0, tape1))
-            #     tape0 = tape1
-            #     i += 1
+                first_tape = tapes[i]
+                i += 1
+            if i is len(tapes) - 1:
+                second_tape = tapes[i]
+                if first_tape.parity is 'left' and second_tape.parity is 'right':
+                    targets.append(Target(first_tape, second_tape))
+
+        #Group up any remaining tapes
+        while len(tapes) >= 2:
+            targets.append(Target(tapes.pop(0), tapes.pop(0)))
         return targets
 
     def choose_target(self, outimg=None):
