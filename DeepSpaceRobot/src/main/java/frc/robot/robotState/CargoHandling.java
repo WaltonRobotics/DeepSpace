@@ -7,6 +7,7 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 
 import static frc.robot.OI.*;
 
+public
 
 public class CargoHandling implements State {
 
@@ -23,12 +24,12 @@ public class CargoHandling implements State {
     @Override
     public State periodic() {
 
-    if(intakeCargoButton.get()) {
-        Robot.godSubsystem.intakeCargo();
+    if() {
+        Robot.godSubsystem.getCargo().intakeCargo();
     }
 
     else if(outtakeCargoButton.get()) {
-        Robot.godSubsystem.outTakeCargo();
+        Robot.godSubsystem.getCargo().outtakeCargo();
     }
 
     else if(flipCargoIntakeButton.get()) {
