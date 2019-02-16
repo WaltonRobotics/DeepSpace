@@ -26,7 +26,7 @@ public class CompStartCargo implements State
       return new HatchHandling();
     }
 
-    return null;
+    return this;
   }
 
   @Override
