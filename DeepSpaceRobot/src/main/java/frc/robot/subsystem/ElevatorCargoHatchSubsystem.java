@@ -432,11 +432,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private int angle;
     private boolean intakePower;
     private double clawPower;
-    private double clawTarget;
+    private HatchPosition clawTarget;
 
     @Override
-    public void collectData() {
-
+    public void collectData()
+    {
+      
     }
 
     @Override
@@ -461,7 +462,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       return clawPower;
     }
 
-    public double getClawTarget() {
+    public HatchPosition getClawTarget() {
       return clawTarget;
     }
 
@@ -473,7 +474,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       this.clawPower = clawPower;
     }
 
-    public void setClawTarget(double clawTarget) {
+    public void setClawTarget(HatchPosition clawTarget) {
       this.clawTarget = clawTarget;
     }
   }
