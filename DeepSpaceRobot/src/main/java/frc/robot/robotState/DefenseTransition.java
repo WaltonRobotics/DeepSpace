@@ -25,16 +25,22 @@ public class DefenseTransition implements State {
         Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.DEFENSE);
         Robot.godSubsystem.getElevator().resetElevator();
         if (lastState == ActiveState.HATCH_HANDLING) {
-            Robot.godSubsystem.getHatch().setClawTarget(HatchPosition.SAFE);
+            Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
         }
         if (lastState == ActiveState.CARGO_HANDLING) {
-            Robot.godSubsystem.getHatch().setClawTarget(HatchPosition.SAFE);
+            Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
             Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.SAFE);
         }
     }
 
     @Override
     public State periodic() {
+        int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
+        int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
+
+        if(CargoPosition.SAFE.isClose(cargoAngle) && HatchPosition.SAFE.isClose(hatchAngle)){
+            return new Defense();
+        }
         return this;
     }
 
