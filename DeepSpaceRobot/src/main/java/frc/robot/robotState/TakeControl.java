@@ -6,7 +6,6 @@ import frc.robot.command.teleop.ZeroElevator;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Elevator;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchControlMode;
 
 public class TakeControl implements State {
@@ -40,9 +39,18 @@ public class TakeControl implements State {
     }
 
     if(Robot.godSubsystem.getElevator().isZeroed()) {
-      //TODO:
+      //TODO:move to comp start mode
+      switch (Robot.godSubsystem.getCurrentActiveState()) {
+        case DEFENSE:
+          return new DefenseTransition();
+        case CARGO_HANDLING:
+          return new CargoHandlingTransition();
+        case HATCH_HANDLING:
+          return new HatchHandlingTransition();
+        case ROBOT_SWITCHED_ON:
+          return new HatchHandlingTransition();
+      }
     }
-        return
     return this;
   }
 
