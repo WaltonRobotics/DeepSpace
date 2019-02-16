@@ -229,7 +229,7 @@ class FirstPython:
         """
         if outimg.valid():
             for target in targets:
-                target.draw_quadrilateral(outimg)
+                target.draw_trapezoid(outimg)
 
     def estimate_poses(self, targets):
         """
@@ -246,9 +246,7 @@ class FirstPython:
 
         for target in targets:
             # Setup point correspondences
-            image_points_left = order_corners_clockwise(target.left_tape)
-            image_points_right = order_corners_clockwise(target.right_tape)
-            image_points = np.concatenate((image_points_left, image_points_right))
+            image_points = target.tape_corners
 
             # Collect the 3 rotation vectors and origin translation vector
             ret, rvecs, tvecs = cv2.solvePnP(self.object_points, image_points, self.cam_matrix, self.dist_coeffs)
@@ -525,7 +523,7 @@ class FirstPython:
             self.current_target[0] = (target, rotation, translation)
             self.current_target[1] = target.bounding_rectangle
             if outimg is not None:
-                target.draw_quadrilateral(outimg, 0x048f)
+                target.draw_trapezoid(outimg, 0x048f)
                 rstring = "Rotation = ({0:6.1f}, {1:6.1f}, {2:6.1f})".format(float(rotation[0]), float(
                     rotation[1]), float(rotation[2]))
                 jevois.writeText(outimg, rstring, 3, 3, jevois.YUYV.White, jevois.Font.Font6x10)
@@ -594,28 +592,26 @@ class Target:
         return (self.left_tape[0][1] + self.right_tape[0][1]) / 2
 
     @property
-    def bounding_quadrilateral(self):
+    def bounding_trapezoid(self):
         """
-        Returns points corresponding to the smallest area quadrilateral surrounding a target
+        Returns points corresponding to the smallest area quadrilateral surrounding a target. Parallel bases are left
+        and right sides
         :return:
         """
-        # TODO make this better
-        bl = np.array([math.inf, -math.inf])
-        tl = np.array([math.inf, math.inf])
-        for point in self.left_tape.box_points:
-            bl[0] = min(float(bl[0]), float(point[0]))
-            bl[1] = max(float(bl[1]), float(point[1]))
-            tl[0] = min(float(tl[0]), float(point[0]))
-            tl[1] = min(float(tl[1]), float(point[1]))
+        points = self.tape_corners
+        top_slope = (points[5][1] - points[0][1]) / (points[5][0] - points[0][0])
+        bottom_slope = (points[7][1] - points[2][1]) / (points[7][0] - points[2][0])
+        tl = (points[3][0], top_slope * (points[3][0] - points[0][0]) + points[0][1])
+        tr = (points[6][0], top_slope * (points[6][0] - points[5][0]) + points[5][1])
+        br = (points[6][0], bottom_slope * (points[6][0] - points[7][0]) + points[7][1])
+        bl = (points[3][0], bottom_slope * (points[3][0] - points[2][0]) + points[2][1])
+        return np.array([tl, tr, br, bl])
 
-        br = np.array([-math.inf, -math.inf])
-        tr = np.array([-math.inf, math.inf])
-        for point in self.right_tape.box_points:
-            br[0] = max(float(br[0]), float(point[0]))
-            br[1] = max(float(br[1]), float(point[1]))
-            tr[0] = max(float(tr[0]), float(point[0]))
-            tr[1] = min(float(tr[1]), float(point[1]))
-        return (tl[0], tl[1]), (tr[0], tr[1]), (br[0], br[1]), (bl[0], bl[1])
+    @property
+    def tape_corners(self):
+        points_left = self.left_tape.corners
+        points_right = self.right_tape.corners
+        return np.concatenate((points_left, points_right))
 
     @property
     def bounding_rectangle(self):
@@ -624,12 +620,12 @@ class Target:
         :return: x - the x value of the top left corner, y - the y value of the top left corner, w - the width,
         h - the height
         """
-        (x, y), tr, br, bl = self.bounding_quadrilateral
+        (x, y), tr, br, bl = self.bounding_trapezoid
         w = max(br[0], tr[0]) - x
         h = max(br[1], bl[1]) - y
         return x, y, w, h
 
-    def draw_quadrilateral(self, outimg, color=jevois.YUYV.LightPurple):
+    def draw_trapezoid(self, outimg, color=jevois.YUYV.LightPurple):
         """
         Draws the bounding_quadrilateral onto outimg
         :param outimg:
@@ -637,7 +633,7 @@ class Target:
         :return:
         """
         if self.left_tape is not None and self.right_tape is not None:
-            bbox = self.bounding_quadrilateral
+            bbox = self.bounding_trapezoid
             point0 = bbox[-1]
             for point1 in bbox:
                 jevois.drawLine(outimg, int(point0[0]), int(point0[1]), int(point1[0]), int(point1[1]), 1, color)
