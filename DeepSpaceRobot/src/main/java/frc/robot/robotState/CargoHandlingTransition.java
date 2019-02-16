@@ -20,9 +20,10 @@ public class CargoHandlingTransition implements State {
     @Override
     public State periodic() {
 
-        int angle = Robot.godSubsystem.getCargo().getAngle();
+        int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
+        int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
 
-        if(CargoPosition.DEPLOY.isClose(angle))
+        if(CargoPosition.DEPLOY.isClose(cargoAngle) && HatchPosition.SAFE.isClose(hatchAngle))
             return new CargoHandling();
         else
             return this;
@@ -30,7 +31,6 @@ public class CargoHandlingTransition implements State {
 
     @Override
     public void finish() {
-
 
     }
 }
