@@ -32,7 +32,7 @@ public class DefenseTransition implements State {
                 Robot.godSubsystem.flipOutHatchIntake();
             }
             if (ElevatorCargoHatchSubsystem.CargoPosition.SAFE.inRange(Robot.godSubsystem.getCargo().getAngle())) {
-                Robot.godSubsystem.getCargo().flipInClawSystem();
+                Robot.godSubsystem.getCargo().;
             }
         }
     }

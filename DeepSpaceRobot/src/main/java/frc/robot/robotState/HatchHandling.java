@@ -61,7 +61,7 @@ public class HatchHandling implements State {
         }
 
 
-        return null;
+        return this;
     }
 
 
