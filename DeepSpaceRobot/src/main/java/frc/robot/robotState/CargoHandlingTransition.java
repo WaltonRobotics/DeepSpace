@@ -14,7 +14,7 @@ public class CargoHandlingTransition implements State {
         Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.CARGO_HANDLING);
         Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
         Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.DEPLOY);
-
+        Robot.godSubsystem.getCargo().setLimits(CargoPosition.DEPLOY);
     }
 
     @Override
