@@ -48,9 +48,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   public ElevatorCargoHatchSubsystem() {
     stateMachine = new StateBuilder(new Disabled());
 
-    elevator.intialize();
-    hatch.intialize();
-    cargo.intialize();
     // Set sense of encoder
     // Set sense of motors
     // Set soft targets on
@@ -222,11 +219,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       }
     }
 
-    @Override
-    public void intialize() {
-
-    }
-
     public void resetElevator() {
       elevatorRuntime.reset();
 
@@ -324,17 +316,15 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     public void outputData() {
 
     }
-
-    @Override
-    public void intialize() {
-
-    }
   }
 
   public class Hatch implements SubSubsystem {
     // Output
 
-    private double hatchIntakeCurrentPower;
+    private double angle;
+    private boolean intakePower;
+    private double clawPower;
+    private double clawTarget;
 
     @Override
     public void collectData() {
@@ -346,15 +336,36 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     }
 
-    @Override
-    public void intialize() {
-
+    public double getAngle() {
+      return angle;
+    }
+    public boolean getIntakePower() {
+      return intakePower;
     }
 
-    public double hatchIntakePower() {
-      return hatchIntakeCurrentPower;
+    public double getClawPower() {
+      return clawPower;
     }
 
+    public double getClawTarget() {
+      return clawTarget;
+    }
+
+    public void setIntakePower(boolean intakePower) {
+      this.intakePower = intakePower;
+    }
+
+    public void setClawPower(double clawPower) {
+      this.clawPower = clawPower;
+    }
+
+    public void setClawTarget(double clawTarget) {
+      this.clawTarget = clawTarget;
+    }
+  }
+
+  public enum HatchControlMode {
+    DISABLED, AUTO, MANUAL
   }
 
   public enum HatchPosition {
@@ -364,7 +375,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     CARGO_START(180, 200);
 
     private double angle;
-    private double upperBound;
+    private double upperBound;  // halfway between two different positions
 
     HatchPosition(double angle, double upperBound) {
       this.angle = angle;
