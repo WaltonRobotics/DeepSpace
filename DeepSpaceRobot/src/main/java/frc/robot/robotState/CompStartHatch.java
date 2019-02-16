@@ -23,7 +23,7 @@ public class CompStartHatch implements State
         }
         else if(HatchPosition.DEPLOY.inRange(hatchAngle) && CargoPosition.SAFE.inRange(cargoAngle))
         {
-            return new HatchHandling();
+            return new HatchHandlingTransition();
         }
 
         return this;

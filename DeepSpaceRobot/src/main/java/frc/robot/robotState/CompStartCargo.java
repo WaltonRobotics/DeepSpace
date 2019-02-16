@@ -19,11 +19,11 @@ public class CompStartCargo implements State
 
 
     if (HatchPosition.DEPLOY.isClose(cargoAngle) && CargoPosition.SAFE.isClose(hatchAngle)){
-      return new HatchHandlingTransition();
+      return new CargoHandlingTransition();
     }
     else if(HatchPosition.DEPLOY.inRange(cargoAngle) && CargoPosition.SAFE.inRange(hatchAngle))
     {
-      return new HatchHandling();
+      return new CargoHandlingTransition();
     }
 
     return this;
