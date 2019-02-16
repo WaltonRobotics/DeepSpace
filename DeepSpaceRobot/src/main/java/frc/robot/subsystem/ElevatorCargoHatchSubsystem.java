@@ -354,7 +354,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     public boolean inButtonRising() {
       return currentInButtonPressed && !lastInButtonPressed;
-
     }
 
     public boolean outButtonRising() {
@@ -367,6 +366,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     public boolean flipButtonRising() {
       return currentFlipButtonPressed && !lastFlipButtonPressed;
+    }
+
+    public int getAngle() {
+      return angle;
     }
 
     @Override
@@ -509,6 +512,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   /**
    * @return if the getAngle() value is in the enumerated range above the hatch position will be returned
    */
+
   public HatchPosition findHatchClosestPosition(HatchPosition hatchPosition, double angle) {
     if (HatchPosition.DEPLOY.inRange(angle)) {
       return HatchPosition.DEPLOY;
