@@ -59,7 +59,6 @@ public class OI {
   public static final JoystickButton intakeCargoButton = new JoystickButton(gamepad, RIGHT_BUMPER.index());
   public static final JoystickButton outtakeCargoButton = new JoystickButton(gamepad, LEFT_BUMPER.index());
   public static final JoystickButton flipCargoIntakeButton = new JoystickButton(gamepad, _3.index());
-
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.
