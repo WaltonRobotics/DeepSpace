@@ -13,23 +13,22 @@ public class DefenseTransition implements State {
 
     @Override
     public void initialize() {
-        if (Robot.godSubsystem.getCurrentActiveState() == ElevatorCargoHatchSubsystem.ActiveState.CARGO_HANDLING) {
-            lastState = ActiveState.CARGO_HANDLING;
-        }
-        if (Robot.godSubsystem.getCurrentActiveState() == ElevatorCargoHatchSubsystem.ActiveState.HATCH_HANDLING) {
-            lastState = ActiveState.HATCH_HANDLING;
-        }
-        if (Robot.godSubsystem.getCurrentActiveState() == ActiveState.DEFENSE) {
-            lastState = ActiveState.DEFENSE;
+        switch (Robot.godSubsystem.getCurrentActiveState()){
+            case HATCH_HANDLING:
+                lastState = ActiveState.HATCH_HANDLING;
+            case CARGO_HANDLING:
+                lastState = ActiveState.CARGO_HANDLING;
+            case DEFENSE:
+                lastState = ActiveState.DEFENSE;
         }
         Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.DEFENSE);
         Robot.godSubsystem.getElevator().resetElevator();
-        if (lastState == ActiveState.HATCH_HANDLING) {
-            Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
-        }
-        if (lastState == ActiveState.CARGO_HANDLING) {
-            Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
-            Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.SAFE);
+        switch (lastState){
+            case CARGO_HANDLING:
+                Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
+                Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.SAFE);
+            case HATCH_HANDLING:
+                Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
         }
     }
 
