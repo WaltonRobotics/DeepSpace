@@ -39,7 +39,6 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 import frc.robot.util.ParkingLines;
 import frc.robot.util.RobotBuilder;
 import org.opencv.core.Mat;
-import org.waltonrobotics.util.RobotConfig;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -48,7 +47,7 @@ import org.waltonrobotics.util.RobotConfig;
  */
 public class Robot extends TimedRobot {
 
-  public static final RobotConfig currentRobot;
+  public static final LimitedRobot currentRobot;
   public static final Drivetrain drivetrain;
   public static final ElevatorCargoHatchSubsystem godSubsystem;
   private static final RobotBuilder<LimitedRobot> robotBuilder;

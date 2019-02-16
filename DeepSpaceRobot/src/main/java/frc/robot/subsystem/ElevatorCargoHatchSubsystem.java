@@ -456,8 +456,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private HatchPosition clawTarget;
 
     @Override
-    public void collectData() {
-
+    public void collectData()
+    {
+      angle = hatchRotationMotor.getSelectedSensorPosition();
     }
 
     @Override
