@@ -22,6 +22,13 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private Cargo cargo = new Cargo();
   private Hatch hatch = new Hatch();
   private ActiveState currentActiveState = ActiveState.ROBOT_SWITCHED_ON;
+  private long currentTime = 0;
+  private boolean lastDefenceModePressed;
+  private boolean currentDefenceModePressed;
+  private boolean lastCargoModePressed;
+  private boolean currentCargoModePressed;
+  private boolean lastHatchModePressed;
+  private boolean currentHatchModePressed;
 
   public Elevator getElevator() {
     return elevator;
@@ -64,39 +71,40 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     this.currentActiveState = currentActiveState;
   }
 
-
-  public void openHatchIntake() {
-    if (!hatchIntake.get()) {
-      hatchIntake.set(true);
-    }
-  }
-
-  public void closeHatchIntake() {
-    if (hatchIntake.get()) {
-      hatchIntake.set(false);
-    }
-  }
-
-  public void flipOutHatchIntake() {
-    hatchRotationMotor.set(ControlMode.PercentOutput, 1);
-  }
-
-  public void flipInHatchIntake() {
-    hatchRotationMotor.set(ControlMode.PercentOutput, -1);
-  }
-
   @Override
   public void periodic() {
+
     collectSensorData();
     processSensorData();
     output();
+
   }
 
   private void collectSensorData() {
     /* Read state of inputs. */
+    currentTime = System.currentTimeMillis();
     elevator.collectData();
     cargo.collectData();
     hatch.collectData();
+
+    lastCargoModePressed = currentCargoModePressed;
+    //TODO:currentCargoModePressed = button;
+    lastHatchModePressed = currentHatchModePressed;
+    //TODO:currentHatchModePressed = button;
+    lastDefenceModePressed = currentDefenceModePressed;
+    //TODO:currentDefenceModePressed = button;
+  }
+
+  public boolean cargoModeRising() {
+    return currentCargoModePressed && !lastCargoModePressed;
+  }
+
+  public boolean hatchModeRising() {
+    return currentHatchModePressed && !lastHatchModePressed;
+  }
+
+  public boolean defenceModeRising() {
+    return currentDefenceModePressed && !lastDefenceModePressed;
   }
 
   private void processSensorData() {
@@ -153,6 +161,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private boolean elevatorCurrentUpButtonPressed;
     private boolean elevatorCurrentDownButtonPressed;
     private int elevatorCurrentEncoderPosition;
+    private boolean intakeButtonPressed;
+    private boolean outtakeButtonPressed;
+
 
     // Output
     private double elevatorCurrentPower;
@@ -283,6 +294,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
   public class Cargo implements SubSubsystem {
 
+    private long intakeTimeout = 0;
+
+
     // Inputs
     private boolean lastOutButtonPressed;
     private boolean lastInButtonPressed;
@@ -308,14 +322,15 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       angle = clawRotationMotor.getSelectedSensorPosition();
     }
 
-    public void intakeCargo() {
+    public void intakeCargo(int timeout) {
+      intakeTimeout = currentTime + timeout;
       intakePower = 1;
     }
 
-    public void outtakeCargo() {
+    public void outtakeCargo(int timeout) {
+      intakeTimeout = currentTime + timeout;
       intakePower = -1;
     }
-
     public void holdCargo() {
       intakePower = 0;
     }
@@ -384,8 +399,15 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
           clawRotationMotor.set(ControlMode.Disabled, 0);
       }
 
-      RobotMap.leftIntakeMotor.set(intakePower);
-      RobotMap.rightIntakeMotor.set(intakePower);
+      if(currentTime <= intakeTimeout) {
+        RobotMap.leftIntakeMotor.set(intakePower);
+        RobotMap.rightIntakeMotor.set(intakePower);
+      }
+
+      else {
+        RobotMap.leftIntakeMotor.set(0);
+        RobotMap.rightIntakeMotor.set(0);
+      }
 
     }
 
@@ -425,7 +447,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
   }
 
-
   public class Hatch implements SubSubsystem {
     // Output
 
@@ -435,9 +456,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private HatchPosition clawTarget;
 
     @Override
-    public void collectData()
-    {
-      
+    public void collectData() {
+
     }
 
     @Override
@@ -466,13 +486,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       return clawTarget;
     }
 
-    public void setIntakePower(boolean intakePower) {
-      this.intakePower = intakePower;
-    }
-
     public void setClawPower(double clawPower) {
       this.clawPower = clawPower;
     }
+
 
     public void setClawTarget(HatchPosition clawTarget) {
       this.clawTarget = clawTarget;
