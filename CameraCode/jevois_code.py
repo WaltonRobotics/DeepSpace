@@ -113,7 +113,7 @@ class FirstPython:
 
         self.enabled = False
         self.save_frame = False
-        self.current_time = []
+        self.current_time = date.now()
 
     def load_camera_calibration(self, w, h):
         """
@@ -378,7 +378,7 @@ class FirstPython:
         self.save_frame = True
         self.enabled = True
         if string is not "":
-            self.current_time = string.split('.')
+            self.current_time = date.strptime(string, "%Y%m%d%H%M%S")
         return "Started Sending"
 
     def end_sending(self):
@@ -386,10 +386,7 @@ class FirstPython:
         return "Stopped Sending"
 
     def save_image(self, img):
-        if self.current_time is []:
-            self.current_time = ["oof", randint(0, 100)]
-        file_name = 'data/ImageCapture {}.png'.format("-".join(map(str, self.current_time)))
-        self.current_time = []
+        file_name = 'data/ImageCapture {}.png'.format(self.current_time.strftime("%Y-%m-%d-%H-%M-%S"))
         jevois.LINFO("Saving current image to {}".format(file_name))
         cv2.imwrite(file_name, img)
         self.save_frame = False
