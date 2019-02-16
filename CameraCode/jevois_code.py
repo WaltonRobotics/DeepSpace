@@ -1,7 +1,5 @@
-import itertools as it
 import math  # for cos, sin, etc
 from datetime import datetime as date
-from random import randint
 
 import cv2
 import libjevois as jevois
@@ -18,6 +16,11 @@ def distance_2d(point0, point1):
 
 
 def distance_3d(point0, point1):
+    """
+    :param point0:
+    :param point1:
+    :return: the distance between point0 and point1
+    """
     return math.sqrt(math.pow(point0[0] - point1[0], 2) + math.pow(point0[1] - point1[1], 2) + math.pow(point0[2] -
                                                                                                         point1[2], 2))
 
@@ -54,15 +57,6 @@ def order_corners_clockwise(tape):
     return np.array([tl, tr, br, bl], dtype=np.float32)
 
 
-def pairwise(iterable):
-    a = iter(iterable)
-    return it.zip_longest(a, a, fillvalue=None)
-
-
-def angle_2d(point0, point1):
-    return math.atan2(point1[1] - point0[1], point1[0] - point0[0])
-
-
 class Pose:
 
     def __init__(self):
@@ -74,12 +68,11 @@ class Pose:
 
 class FirstPython:
     def __init__(self):
-        # HSV color range to use:
-        #
-        # H: 0=red/do not use because of wraparound, 30=yellow, 45=light green, 60=green, 75=green cyan, 90=cyan,
-        #      105=light blue, 120=blue, 135=purple, 150=pink
-        self.HLSmin = np.array([50, 100, 180], dtype=np.uint8)
-        self.HLSmax = np.array([70, 255, 255], dtype=np.uint8)
+        # !!THERE CAN BE NO FILE LOADING IN THE __init__ FUNCTION!!
+
+        # Values used in detect
+        self.HLSmin = np.array([60, 100, 180], dtype=np.uint8)
+        self.HLSmax = np.array([80, 255, 255], dtype=np.uint8)
         self.min_area = 200.0
         self.min_perimeter = 10.0
         self.min_width = 0.0
@@ -93,24 +86,26 @@ class FirstPython:
         self.max_ratio = 1.1
         self.min_h_w_ratio = 1.0
         self.max_contour_y = 0
-
         self.targets = []
 
+        # Values used in estimate_poses
         self.object_points = np.array(
             [[-5.936, 31.5, 0.0], [-4.0, 31, 0.0], [-5.375, 25.675, 0.0], [-7.316, 26.175, 0.0],  # Left points
-             [4.0, 31, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0], [5.375, 25.675, 0.0]],
-            dtype=np.float32)  # Right points
-        # self.object_points = np.array([[-5.936, 31.5, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0],
-        #                                [-7.316, 26.175, 0.0]], dtype=np.float32)
+             [4.0, 31, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0], [5.375, 25.675, 0.0]],  # Right points
+            dtype=np.float32)
 
+        # Values used to filter out unlikely targets
         self.decision_tolerance = 0.05
         self.current_target = np.array([None, None])
         self.target_lost_factor = 1.25
-        self.min_x_ang = -160
-        self.max_x_ang = -140
         self.target_lost_time = -1
         self.target_lost_timeout = 2
+        self.min_x_ang = -160
+        self.max_x_ang = -140
+        self.min_z_ang = -10
+        self.max_z_ang = 10
 
+        # Values used with user-commands
         self.enabled = False
         self.save_frame = False
         self.current_time = date.now()
@@ -133,7 +128,7 @@ class FirstPython:
 
     def detect(self, imgbgr):
         """
-
+        Filters out information that are not tape pieces
         :param imgbgr:
         :return: binary image and tape contours sorted left to right
         """
@@ -203,26 +198,42 @@ class FirstPython:
 
     @staticmethod
     def draw_image(outimg, inimg):
-
+        """
+        Draws inimg onto outimg
+        :param outimg:
+        :param inimg:
+        :return:
+        """
         if outimg.valid():
             jevois.paste(inimg, outimg, 0, 0)
 
     @staticmethod
     def draw_tapes(outimg, tapes):
-        # Display any results requested by the users:
+        """
+        Draws boxes around all of the tape pieces
+        :param outimg:
+        :param tapes:
+        :return:
+        """
         if outimg.valid():
             for tape in tapes:
                 tape.draw(outimg)
 
     @staticmethod
     def draw_targets(outimg, targets):
+        """
+        Draws boxes around all of the targets
+        :param outimg:
+        :param targets:
+        :return:
+        """
         if outimg.valid():
             for target in targets:
                 target.draw_quadrilateral(outimg)
 
     def estimate_poses(self, targets):
         """
-        Estimates the rotation and position of the camera wrt the target\n\n
+        Estimates the rotation and position of the camera wrt all the targets\n\n
         See also:\n
         https://docs.opencv.org/2.4/modules/calib3d/doc/camera_calibration_and_3d_reconstruction.html#solvepnp\n
         https://stackoverflow.com/questions/14515200/python-opencv-solvepnp-yields-wrong-translation-vector
@@ -257,7 +268,7 @@ class FirstPython:
 
     def estimate_pose(self, target):
         """
-        Estimates the rotation and position of the camera wrt the target
+        Estimates the rotation and position of the camera wrt one target
         :param target: An array of targets
         :return: rotation and translation of the camera
         """
@@ -364,16 +375,31 @@ class FirstPython:
         outframe.send()
 
     def parseSerial(self, string):
+        """
+        Processes user commands
+        :param string:
+        :return:
+        """
+        # Start sending data
         if string[0] == 'S':
             return self.start_sending(string[1:])
+
+        # Stop sending data
         if string == 'E':
             return self.end_sending()
+
+        # Send data once
         if string == 's':
             self.send_all_serial()
             return ''
         return ""
 
     def start_sending(self, string):
+        """
+        Start sending data over the serial
+        :param string:
+        :return:
+        """
         self.send_all_serial()
         self.save_frame = True
         self.enabled = True
@@ -382,10 +408,19 @@ class FirstPython:
         return "Started Sending"
 
     def end_sending(self):
+        """
+        Stop sending data over the serial
+        :return:
+        """
         self.enabled = False
         return "Stopped Sending"
 
     def save_image(self, img):
+        """
+        Save img to a new .png file, tagged with a date
+        :param img:
+        :return:
+        """
         file_name = 'data/ImageCapture {}.png'.format(self.current_time.strftime("%Y-%m-%d-%H-%M-%S"))
         jevois.LINFO("Saving current image to {}".format(file_name))
         cv2.imwrite(file_name, img)
@@ -404,33 +439,46 @@ class FirstPython:
     @staticmethod
     def distance_from_origin(target_data):
         """
+        Finds the distance between between the camera's estimated translation and (0, y, 0)
         :param target_data:
-        :return: the distance between point and (0, y, 0)
+        :return:
         """
         return math.sqrt(math.pow(target_data[2][0], 2) + math.pow(target_data[2][2], 2))
 
-    @staticmethod
-    def define_targets(tapes):
+    def define_targets(self, tapes):
+        """
+        Organizes tape pieces into targets
+        :param tapes:
+        :return:
+        """
         targets = []
+        # Remove a leading right tape
+        if len(tapes) >= 2 and tapes[0].parity is 'right' and tapes[1].parity is 'left':
+            tapes.pop(0)
+        # remove a trailing left tape
+        if len(tapes) >= 2 and tapes[-1].parity is 'left' and tapes[-2].parity is 'right':
+            tapes.pop(-1)
+
+        # if len(tapes) % 2 == 0:
+        #     while len(tapes) >= 2:
+        #         targets.append(Target(tapes.pop(0), tapes.pop(0)))
         if len(tapes) >= 2:
-            #Try to group up tapes by parity
+            # Group up every possible combination of tapes, removing unlikely targets
             first_tape = tapes[0]
             i = 1
             while i < len(tapes) - 1:
                 second_tape = tapes[i]
-                if first_tape.parity is 'left' and second_tape.parity is 'right':
+                target = Target(first_tape, second_tape)
+                if self.does_target_fit_angle_range(target):
                     targets.append(Target(first_tape, second_tape))
-                    i += 1
                 first_tape = tapes[i]
                 i += 1
             if i is len(tapes) - 1:
                 second_tape = tapes[i]
-                if first_tape.parity is 'left' and second_tape.parity is 'right':
+                target = Target(first_tape, second_tape)
+                if self.does_target_fit_angle_range(target):
                     targets.append(Target(first_tape, second_tape))
 
-        #Group up any remaining tapes
-        while len(tapes) >= 2:
-            targets.append(Target(tapes.pop(0), tapes.pop(0)))
         return targets
 
     def choose_target(self, outimg=None):
@@ -458,7 +506,7 @@ class FirstPython:
                 closest_target, rotation, translation = target_data[0]
                 # tracker = cv2.TrackerKCF_create()
                 # tracker.init(inimg, closest_target.bounding_rectangle)
-                if rotation[0] < self.min_x_ang or rotation[0] > self.max_x_ang:
+                if self.does_target_fit_angle_range(closest_target) is False:
                     return
                 closest_box = closest_target.bounding_rectangle
                 self.current_target = np.array([[closest_target, rotation, translation], closest_box])
@@ -517,13 +565,14 @@ class FirstPython:
             return False, None
         targets.sort(key=lambda target: distance_2d(self.current_target[1], target.bounding_rectangle))
         most_likely_target = targets[0]
-        most_likely_x_ang = self.estimate_pose(most_likely_target)[0][0]
-        if most_likely_x_ang < self.min_x_ang or most_likely_x_ang > self.max_x_ang:
-            return False, None
         if distance_2d(most_likely_target.bounding_rectangle, self.current_target[1]) > \
                 most_likely_target.bounding_rectangle[3] * self.target_lost_factor:
             return False, None
         return True, targets[0]
+
+    def does_target_fit_angle_range(self, target):
+        rotation = self.estimate_pose(target)[0]
+        return self.max_x_ang >= rotation[0] >= self.min_x_ang and self.max_z_ang >= rotation[2] >= self.min_z_ang
 
 
 class Target:
@@ -546,6 +595,11 @@ class Target:
 
     @property
     def bounding_quadrilateral(self):
+        """
+        Returns points corresponding to the smallest area quadrilateral surrounding a target
+        :return:
+        """
+        # TODO make this better
         bl = np.array([math.inf, -math.inf])
         tl = np.array([math.inf, math.inf])
         for point in self.left_tape.box_points:
@@ -565,12 +619,23 @@ class Target:
 
     @property
     def bounding_rectangle(self):
+        """
+        Returns the values corresponding to the bounding rectangle of the target
+        :return: x - the x value of the top left corner, y - the y value of the top left corner, w - the width,
+        h - the height
+        """
         (x, y), tr, br, bl = self.bounding_quadrilateral
         w = max(br[0], tr[0]) - x
         h = max(br[1], bl[1]) - y
         return x, y, w, h
 
     def draw_quadrilateral(self, outimg, color=jevois.YUYV.LightPurple):
+        """
+        Draws the bounding_quadrilateral onto outimg
+        :param outimg:
+        :param color:
+        :return:
+        """
         if self.left_tape is not None and self.right_tape is not None:
             bbox = self.bounding_quadrilateral
             point0 = bbox[-1]
@@ -594,13 +659,10 @@ class TapePiece:
 
     @property
     def parity(self):
-        # corners = self.corners
-        # if corners[0][0] > corners[3][0] or corners[1][0] > corners[2][0]:
         if self.angle == -90 or self.angle == 0:
             return ''
         elif self.angle < -45:
             return 'left'
-        # elif corners[0][0] < corners[3][0] or corners[1][0] < corners[2][0]:
         elif self.angle > -45:
             return 'right'
         return ''
@@ -611,9 +673,17 @@ class TapePiece:
 
     @property
     def corners(self):
+        """
+        :return: box_points as top left, top right, bottom right, bottom left
+        """
         return order_corners_clockwise(self)
 
     def draw(self, outimg):
+        """
+        Draws the minimum area rectangle of the tape onto outimg
+        :param outimg:
+        :return:
+        """
         if self.contour.size > 0:
             if self.parity is 'left':
                 color = jevois.YUYV.LightPurple
