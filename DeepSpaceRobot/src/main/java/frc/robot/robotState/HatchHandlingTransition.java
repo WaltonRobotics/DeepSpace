@@ -12,6 +12,7 @@ public class HatchHandlingTransition implements State {
         Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.HATCH_HANDLING);
         Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.SAFE);
         Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.DEPLOY);
+        Robot.godSubsystem.getHatch().setLimits(HatchPosition.DEPLOY);
     }
 
     @Override
