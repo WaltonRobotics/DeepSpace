@@ -16,8 +16,6 @@ import frc.robot.robotState.Disabled;
 import frc.robot.state.StateBuilder;
 import frc.robot.util.Logger;
 
-import javax.naming.ldap.Control;
-
 public class ElevatorCargoHatchSubsystem extends Subsystem {
 
   private Elevator elevator = new Elevator();
@@ -186,8 +184,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     @Override
     public void outputData() {
       String logOutput = String
-              .format("[%s]: Encoder height: %d, Current height target: %f, Current power: %f", elevatorRuntime.get(),
-                      getElevatorHeight(), elevatorCurrentTarget, getElevatorPower());
+          .format("[%s]: Encoder height: %d, Current height target: %f, Current power: %f", elevatorRuntime.get(),
+              getElevatorHeight(), elevatorCurrentTarget, getElevatorPower());
       elevatorLogger.logInfo(logOutput);
 
       switch (elevatorControlMode) {
@@ -311,25 +309,64 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public void intakeCargo() {
+      intakePower = 1;
+    }
 
-      RobotMap.leftIntakeMotor.set(1);
-      RobotMap.rightIntakeMotor.set(1);
+    public void outtakeCargo() {
+      intakePower = -1;
+    }
+
+    public void holdCargo() {
+      intakePower = 0;
+    }
+
+    public ClawControlMode getClawControlMode() {
+      return clawControlMode;
+    }
+
+    public void setClawControlMode(ClawControlMode clawControlMode) {
+      this.clawControlMode = clawControlMode;
+    }
+
+    public double getClawRotationPower() {
+      return clawRotationPower;
+    }
+
+    public void setClawRotationPower(double clawRotationPower) {
+      this.clawRotationPower = clawRotationPower;
+    }
+
+    public double getClawTarget() {
+      return clawTarget;
+    }
+
+    public void setClawTarget(double clawTarget) {
+      this.clawTarget = clawTarget;
+    }
+
+    public boolean inButtonPressed() {
+      return currentInButtonPressed;
+    }
+
+    public boolean outButttonPressed() {
+      return currentOutButtonPressed;
+    }
+
+    public boolean inButtonRising() {
+      return currentInButtonPressed && !lastInButtonPressed;
 
     }
 
-    public void outTakeCargo() {
-
-      RobotMap.leftIntakeMotor.set(-1);
-      RobotMap.rightIntakeMotor.set(-1);
-
+    public boolean outButtonRising() {
+      return currentOutButtonPressed && !lastOutButtonPressed;
     }
 
-    public void flipOutClawSystem() {
-      RobotMap.clawRotationMotor.set(ControlMode.MotionMagic, 1);
+    public boolean flipButtonPressed() {
+      return currentFlipButtonPressed;
     }
 
-    public void flipInClawSystem() {
-      RobotMap.clawRotationMotor.set(ControlMode.MotionMagic, -1);
+    public boolean flipButtonRising() {
+      return currentFlipButtonPressed && !lastFlipButtonPressed;
     }
 
     @Override
@@ -337,12 +374,18 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
       switch (clawControlMode) {
         case AUTO:
-
+          clawRotationMotor.set(ControlMode.MotionMagic, clawTarget);
         case MANUAL:
-
+          clawRotationMotor.set(ControlMode.PercentOutput, clawRotationPower);
         case DISABLED:
+          clawRotationMotor.set(ControlMode.Disabled, 0);
       }
+
+      RobotMap.leftIntakeMotor.set(intakePower);
+      RobotMap.rightIntakeMotor.set(intakePower);
+
     }
+
 
     @Override
     public void intialize() {
@@ -380,7 +423,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   }
 
 
-
   public class Hatch implements SubSubsystem {
     // Output
 
@@ -407,6 +449,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     public double getAngle() {
       return angle;
     }
+
     public boolean getIntakePower() {
       return intakePower;
     }
