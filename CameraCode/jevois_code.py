@@ -1,6 +1,7 @@
 import itertools as it
 import math  # for cos, sin, etc
 from datetime import datetime as date
+from random import randint
 
 import cv2
 import libjevois as jevois
@@ -93,6 +94,8 @@ class FirstPython:
         self.min_h_w_ratio = 1.0
         self.max_contour_y = 0
 
+        self.targets = []
+
         self.object_points = np.array(
             [[-5.936, 31.5, 0.0], [-4.0, 31, 0.0], [-5.375, 25.675, 0.0], [-7.316, 26.175, 0.0],  # Left points
              [4.0, 31, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0], [5.375, 25.675, 0.0]],
@@ -108,7 +111,9 @@ class FirstPython:
         self.target_lost_time = -1
         self.target_lost_timeout = 2
 
-        self.isEnabled = False
+        self.enabled = False
+        self.save_frame = False
+        self.current_time = []
 
     def load_camera_calibration(self, w, h):
         """
@@ -259,10 +264,9 @@ class FirstPython:
         rotation, translation = self.estimate_poses([target])
         return rotation[0], translation[0]
 
-    def send_all_serial(self, targets):
+    def send_all_serial(self):
         """
         Sends a message over the SerialPort to the RoboRIO
-        :param targets:
         :return:
         """
         if self.current_target[0] is not None and len(self.current_target[0]) is 3:
@@ -288,9 +292,9 @@ class FirstPython:
 
             jevois.sendSerial(
                 "{0:s}{1:03d}{2:s}{3:03d}{4:s}{5:03d}{6:s}{7:03d}N{8:1d}".format(x_key, x, y_key, y, z_key, z,
-                                                                             angle_key, angle, len(targets)))
+                                                                                 angle_key, angle, len(self.targets)))
         else:
-            jevois.sendSerial("FN{}".format(min(len(targets), 9)))
+            jevois.sendSerial("FN{}".format(min(len(self.targets), 9)))
 
     def processNoUSB(self, inframe):
         """
@@ -298,28 +302,30 @@ class FirstPython:
         :param inframe:
         :return:
         """
-        # Get the next camera image (may block until it is captured). To avoid wasting much time assembling a composite
-        # output image with multiple panels by concatenating numpy arrays, in this module we use raw YUYV images and
-        # fast paste and draw operations provided by JeVois on those images:
+        # We draw onto inimg for the purpose of saving images
         inimg = inframe.get()
-
-        # target_tracker = TargetTracker()
 
         imgbgr = jevois.convertToCvBGR(inimg)
         inframe.done()
 
         # Get a list of quadrilateral convex hulls for all good objects:
         imgth, tapes = self.detect(imgbgr)
+        self.draw_tapes(inimg, tapes)
 
-        targets = self.define_targets(tapes)
+        self.targets = self.define_targets(tapes)
+        self.draw_targets(inimg, self.targets)
 
         if self.current_target[1] is None:
-            self.choose_target(targets)
+            self.choose_target(inimg)
 
         if self.current_target[1] is not None:
-            self.track(targets)
+            self.track(inimg)
 
-        self.send_all_serial(targets)
+        if self.enabled:
+            self.send_all_serial()
+
+        if self.save_frame:
+            self.save_image(jevois.convertToCvBGR(inimg))
 
     def process(self, inframe, outframe):
         """
@@ -328,9 +334,6 @@ class FirstPython:
         :param outframe:
         :return:
         """
-        # Get the next camera image (may block until it is captured). To avoid wasting much time assembling a composite
-        # output image with multiple panels by concatenating numpy arrays, in this module we use raw YUYV images and
-        # fast paste and draw operations provided by JeVois on those images:
         inimg = inframe.get()
         outimg = outframe.get()
         outimg.require("output", 640, 480, jevois.V4L2_PIX_FMT_YUYV)
@@ -343,18 +346,53 @@ class FirstPython:
         imgth, tapes = self.detect(imgbgr)
         self.draw_tapes(outimg, tapes)
 
-        targets = self.define_targets(tapes)
-        self.draw_targets(outimg, targets)
+        self.targets = self.define_targets(tapes)
+        self.draw_targets(outimg, self.targets)
 
         if self.current_target[1] is None:
-            self.choose_target(targets, outimg)
+            self.choose_target(outimg)
 
         if self.current_target[1] is not None:
-            self.track(targets, outimg)
+            self.track(outimg)
 
-        self.send_all_serial(targets)
+        if self.enabled:
+            self.send_all_serial()
+
+        if self.save_frame:
+            self.save_image(jevois.convertToCvBGR(outimg))
 
         outframe.send()
+
+    def parseSerial(self, string):
+        if string[0] == 'S':
+            return self.start_sending(string[1:])
+        if string == 'E':
+            return self.end_sending()
+        if string == 's':
+            self.send_all_serial()
+            return ''
+        return ""
+
+    def start_sending(self, string):
+        self.send_all_serial()
+        self.save_frame = True
+        self.enabled = True
+        if string is not "":
+            self.current_time = string.split('.')
+        return "Started Sending"
+
+    def end_sending(self):
+        self.enabled = False
+        return "Stopped Sending"
+
+    def save_image(self, img):
+        if self.current_time is []:
+            self.current_time = ["oof", randint(0, 100)]
+        file_name = 'data/ImageCapture {}.png'.format("-".join(map(str, self.current_time)))
+        self.current_time = []
+        jevois.LINFO("Saving current image to {}".format(file_name))
+        cv2.imwrite(file_name, img)
+        self.save_frame = False
 
     @staticmethod
     def percent_difference(value1, value2):
@@ -409,13 +447,13 @@ class FirstPython:
             #     i += 1
         return targets
 
-    def choose_target(self, targets, outimg=None):
+    def choose_target(self, outimg=None):
         """
         Chooses a target closest to the camera. If multiple targets are almost the same distance from the camera, return None
-        :param targets:
         :param outimg:
         :return:
         """
+        targets = self.targets
         target_data = []
         if len(targets) > 0:
             rotations, translations = self.estimate_poses(targets)
@@ -440,14 +478,13 @@ class FirstPython:
                 self.current_target = np.array([[closest_target, rotation, translation], closest_box])
                 jevois.LINFO("Target found")
 
-    def track(self, targets, outimg=None):
+    def track(self, outimg=None):
         """
         Updates tracking on the currently selected target
-        :param targets:
         :param outimg:
         :return:
         """
-        success, target = self.find_target_closest_to_current(targets)
+        success, target = self.find_target_closest_to_current()
         if success:
             self.target_lost_time = -1
             rotation, translation = self.estimate_pose(target)
@@ -463,7 +500,7 @@ class FirstPython:
                                                                                 float(translation[2]))
                 jevois.writeText(outimg, tstring, 3, 15, jevois.YUYV.White, jevois.Font.Font6x10)
         else:
-            if self.target_lost_time != -1 and self.target_lost_timeout - date.now().second + self.target_lost_time >\
+            if self.target_lost_time != -1 and self.target_lost_timeout - date.now().second + self.target_lost_time > \
                     self.target_lost_timeout:
                 self.target_lost_time = -1
             self.current_target[0] = None
@@ -484,12 +521,12 @@ class FirstPython:
                                  jevois.Font.Font6x10)
                 jevois.LINFO("Lost target has been timed out")
 
-    def find_target_closest_to_current(self, targets):
+    def find_target_closest_to_current(self):
         """
         Finds the target in targets closest to fitting inside of rectangle
-        :param targets:
         :return:
         """
+        targets = self.targets
         if len(targets) is 0:
             return False, None
         targets.sort(key=lambda target: distance_2d(self.current_target[1], target.bounding_rectangle))
