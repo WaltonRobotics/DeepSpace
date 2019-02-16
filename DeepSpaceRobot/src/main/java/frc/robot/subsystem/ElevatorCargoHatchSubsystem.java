@@ -6,9 +6,7 @@ import static frc.robot.OI.elevatorUpButton;
 import static frc.robot.OI.flipCargoIntakeButton;
 import static frc.robot.OI.intakeCargoButton;
 import static frc.robot.OI.outtakeCargoButton;
-import static frc.robot.RobotMap.elevatorMotor;
-import static frc.robot.RobotMap.hatchIntake;
-import static frc.robot.RobotMap.hatchRotationMotor;
+import static frc.robot.RobotMap.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Timer;
@@ -17,6 +15,8 @@ import frc.robot.RobotMap;
 import frc.robot.robotState.Disabled;
 import frc.robot.state.StateBuilder;
 import frc.robot.util.Logger;
+
+import javax.naming.ldap.Control;
 
 public class ElevatorCargoHatchSubsystem extends Subsystem {
 
@@ -63,27 +63,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     this.currentActiveState = currentActiveState;
   }
 
-  public void intakeCargo() {
-
-    RobotMap.leftIntakeMotor.set(1);
-    RobotMap.rightIntakeMotor.set(1);
-
-  }
-
-  public void outTakeCargo() {
-
-    RobotMap.leftIntakeMotor.set(-1);
-    RobotMap.rightIntakeMotor.set(-1);
-
-  }
-
-  public void flipOutClawSystem() {
-    RobotMap.clawRotationMotor.set(ControlMode.MotionMagic, 1);
-  }
-
-  public void flipInClawSystem() {
-    RobotMap.clawRotationMotor.set(ControlMode.MotionMagic, -1);
-  }
 
   public void openHatchIntake() {
     if (!hatchIntake.get()) {
@@ -154,6 +133,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     DISABLED, ZEROING, AUTO, MANUAL
   }
 
+  public enum ClawControlMode {
+    DISABLED, AUTO, MANUAL
+  }
+
   public enum ActiveState {
     ROBOT_SWITCHED_ON,
     CARGO_HANDLING,
@@ -200,8 +183,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     @Override
     public void outputData() {
       String logOutput = String
-          .format("[%s]: Encoder height: %d, Current height target: %f, Current power: %f", elevatorRuntime.get(),
-              getElevatorHeight(), elevatorCurrentTarget, getElevatorPower());
+              .format("[%s]: Encoder height: %d, Current height target: %f, Current power: %f", elevatorRuntime.get(),
+                      getElevatorHeight(), elevatorCurrentTarget, getElevatorPower());
       elevatorLogger.logInfo(logOutput);
 
       switch (elevatorControlMode) {
@@ -295,28 +278,95 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   public class Cargo implements SubSubsystem {
 
     // Inputs
-    private boolean cargoLastOutButtonPressed;
-    private boolean cargoLastInButtonPressed;
-    private boolean cargoLastFlipButtonPressed;
-    private boolean cargoCurrentOutButtonPressed;
-    private boolean cargoCurrentInButtonPressed;
-    private boolean cargoCurrentFlipButtonPressed;
+    private boolean lastOutButtonPressed;
+    private boolean lastInButtonPressed;
+    private boolean lastFlipButtonPressed;
+    private boolean currentOutButtonPressed;
+    private boolean currentInButtonPressed;
+    private boolean currentFlipButtonPressed;
+    private int angle;
+    // Outputs
+    private double intakePower;
+    private double clawRotationPower;
+    private double clawTarget;
+    private ClawControlMode clawControlMode;
 
     @Override
     public void collectData() {
-      cargoLastInButtonPressed = cargoCurrentInButtonPressed;
-      cargoCurrentInButtonPressed = intakeCargoButton.get();
-      cargoLastOutButtonPressed = cargoCurrentOutButtonPressed;
-      cargoCurrentOutButtonPressed = outtakeCargoButton.get();
-      cargoLastFlipButtonPressed = cargoCurrentFlipButtonPressed;
-      cargoCurrentFlipButtonPressed = flipCargoIntakeButton.get();
+      lastInButtonPressed = currentInButtonPressed;
+      currentInButtonPressed = intakeCargoButton.get();
+      lastOutButtonPressed = currentOutButtonPressed;
+      currentOutButtonPressed = outtakeCargoButton.get();
+      lastFlipButtonPressed = currentFlipButtonPressed;
+      currentFlipButtonPressed = flipCargoIntakeButton.get();
+      angle = clawRotationMotor.getSelectedSensorPosition();
+    }
+
+    public void intakeCargo() {
+
+      RobotMap.leftIntakeMotor.set(1);
+      RobotMap.rightIntakeMotor.set(1);
+
+    }
+
+    public void outTakeCargo() {
+
+      RobotMap.leftIntakeMotor.set(-1);
+      RobotMap.rightIntakeMotor.set(-1);
+
+    }
+
+    public void flipOutClawSystem() {
+      RobotMap.clawRotationMotor.set(ControlMode.MotionMagic, 1);
+    }
+
+    public void flipInClawSystem() {
+      RobotMap.clawRotationMotor.set(ControlMode.MotionMagic, -1);
     }
 
     @Override
     public void outputData() {
 
+      switch (clawControlMode) {
+        case AUTO:
+
+        case MANUAL:
+
+        case DISABLED:
+      }
     }
   }
+
+  public enum CargoPosition {
+
+    DEPLOY(0, 40),
+    SAFE(0, 90),
+    HATCH_START(100, 140),
+    CARGO_START(180, 200);
+
+    private int angle;
+    private int upperBound;
+
+    CargoPosition(int angle, int upperBound) {
+      this.angle = angle;
+      this.upperBound = upperBound;
+
+    }
+
+    public int getAngle() {
+      return angle;
+    }
+
+    public boolean inRange(double angle) {
+      return angle < upperBound;
+    }
+
+    public boolean isClose(double angle) {
+      return Math.abs(angle - this.angle) < 10;
+    }
+  }
+
+
 
   public class Hatch implements SubSubsystem {
     // Output
