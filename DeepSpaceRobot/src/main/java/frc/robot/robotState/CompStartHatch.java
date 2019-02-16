@@ -2,12 +2,11 @@ package frc.robot.robotState;
 
 import frc.robot.Robot;
 import frc.robot.state.State;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 
 public class CompStartHatch implements State
 {
-    private double angle = Robot.godSubsystem.getHatch().getAngle();
-
     @Override
     public void initialize() {
 
@@ -15,13 +14,15 @@ public class CompStartHatch implements State
 
     @Override
     public State periodic() {
+        int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
+        int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
 
-        if (HatchPosition.DEPLOY.isClose(angle)){
-            Robot.godSubsystem.getHatch().setIntakePower(true);
+
+        if (HatchPosition.DEPLOY.isClose(hatchAngle) && CargoPosition.SAFE.isClose(cargoAngle)){
+            return new HatchHandlingTransition();
         }
-        else if(HatchPosition.DEPLOY.inRange(angle))
+        else if(HatchPosition.DEPLOY.inRange(hatchAngle) && CargoPosition.SAFE.inRange(cargoAngle))
         {
-            Robot.godSubsystem.getHatch().setIntakePower(false);
             return new HatchHandling();
         }
 

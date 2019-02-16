@@ -429,7 +429,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   public class Hatch implements SubSubsystem {
     // Output
 
-    private double angle;
+    private int angle;
     private boolean intakePower;
     private double clawPower;
     private double clawTarget;
@@ -449,7 +449,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     }
 
-    public double getAngle() {
+    public int getAngle() {
       return angle;
     }
 
