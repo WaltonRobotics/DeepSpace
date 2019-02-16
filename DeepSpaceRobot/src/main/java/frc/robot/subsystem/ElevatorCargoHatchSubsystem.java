@@ -48,6 +48,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   public ElevatorCargoHatchSubsystem() {
     stateMachine = new StateBuilder(new Disabled());
 
+    elevator.intialize();
+    hatch.intialize();
+    cargo.intialize();
     // Set sense of encoder
     // Set sense of motors
     // Set soft targets on
@@ -219,6 +222,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       }
     }
 
+    @Override
+    public void intialize() {
+
+    }
+
     public void resetElevator() {
       elevatorRuntime.reset();
 
@@ -316,6 +324,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     public void outputData() {
 
     }
+
+    @Override
+    public void intialize() {
+
+    }
   }
 
   public class Hatch implements SubSubsystem {
@@ -330,6 +343,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void outputData() {
+
+    }
+
+    @Override
+    public void intialize() {
 
     }
 
