@@ -61,13 +61,11 @@ public class HatchHandling implements State {
         }
 
 
-        return null;
+        return this;
     }
 
 
     @Override
     public void finish() {
-        Robot.godSubsystem.closeHatchIntake();
-        Robot.godSubsystem.flipInHatchIntake();
     }
 }

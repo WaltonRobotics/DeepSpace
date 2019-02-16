@@ -13,7 +13,7 @@ public class HatchHandlingTransition implements State {
 
     @Override
     public State periodic() {
-        return null;
+        return this;
     }
 
     @Override
