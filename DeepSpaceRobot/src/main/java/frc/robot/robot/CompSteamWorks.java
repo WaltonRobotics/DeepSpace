@@ -1,6 +1,7 @@
 package frc.robot.robot;
 
 import frc.robot.subsystem.SubsystemLimits;
+import frc.robot.subsystem.SusystemTargets;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
 import org.waltonrobotics.util.RobotConfig;
@@ -154,7 +155,22 @@ public class CompSteamWorks extends LimitedRobot {
   }
 
   @Override
-  SubsystemLimits getSubsystemLimits() {
+  SubsystemLimits getCargoSubsystemLimits() {
+    return null;
+  }
+
+  @Override
+  SubsystemLimits getHatchSubsystemLimits() {
+    return null;
+  }
+
+  @Override
+  SubsystemLimits getElevatorSubsystemLimits() {
+    return null;
+  }
+
+  @Override
+  SusystemTargets getTargets() {
     return null;
   }
 }
