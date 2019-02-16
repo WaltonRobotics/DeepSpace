@@ -294,7 +294,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     // Outputs
     private double intakePower;
     private double clawRotationPower;
-    private double clawTarget;
+    private CargoPosition clawTarget;
     private ClawControlMode clawControlMode;
 
     @Override
@@ -336,11 +336,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       this.clawRotationPower = clawRotationPower;
     }
 
-    public double getClawTarget() {
+    public CargoPosition getClawTarget() {
       return clawTarget;
     }
 
-    public void setClawTarget(double clawTarget) {
+    public void setClawTarget(CargoPosition clawTarget) {
       this.clawTarget = clawTarget;
     }
 
@@ -377,7 +377,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
       switch (clawControlMode) {
         case AUTO:
-          clawRotationMotor.set(ControlMode.MotionMagic, clawTarget);
+          clawRotationMotor.set(ControlMode.MotionMagic, clawTarget.getAngle());
         case MANUAL:
           clawRotationMotor.set(ControlMode.PercentOutput, clawRotationPower);
         case DISABLED:
@@ -416,11 +416,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       return angle;
     }
 
-    public boolean inRange(double angle) {
+    public boolean inRange(int angle) {
       return angle < upperBound;
     }
 
-    public boolean isClose(double angle) {
+    public boolean isClose(int angle) {
       return Math.abs(angle - this.angle) < 10;
     }
   }
