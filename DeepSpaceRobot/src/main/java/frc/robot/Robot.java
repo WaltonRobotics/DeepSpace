@@ -16,7 +16,7 @@ import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_Y;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_OFFSET;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_PERCENTAGE;
 import static frc.robot.OI.elevatorZeroButton;
-import static frc.robot.OI.rightJoystick;
+import static frc.robot.OI.gamepad;
 import static frc.robot.RobotMap.clawRotationMotor;
 import static frc.robot.RobotMap.elevatorMotor;
 import static frc.robot.RobotMap.encoderLeft;
@@ -288,9 +288,6 @@ public class Robot extends TimedRobot {
 
     godSubsystem.getElevator().setElevatorPower(godSubsystem.getElevator().getElevatorJoystick());
 
-    if (elevatorZeroButton.get()) {
-      isHatch = !isHatch;
-    }
     if (Robot.godSubsystem.getElevator().isElevatorLevel1ButtonPressed()) { //2
       catchHatch = !catchHatch;
     }
@@ -302,11 +299,8 @@ public class Robot extends TimedRobot {
       outtake = !outtake;
     }
 
-    if (isHatch) {
-      godSubsystem.getHatch().setHatchRotationPower(godSubsystem.getCargo().getCargoJoystick());
-    } else {
-      godSubsystem.getCargo().setClawRotationPower(godSubsystem.getCargo().getCargoJoystick());
-    }
+    godSubsystem.getHatch().setHatchRotationPower(godSubsystem.getCargo().getCargoJoystick());
+    godSubsystem.getCargo().setClawRotationPower(gamepad.getLeftX());
 
     SmartDashboard.putBoolean("hatch", catchHatch);
     if (catchHatch) {
@@ -324,12 +318,12 @@ public class Robot extends TimedRobot {
     if (intake) {
       intake = false;
       godSubsystem.getCargo().intakeCargo(700);
-    } 
+    }
     if (outtake) {
       outtake = false;
       godSubsystem.getCargo().outtakeCargoFast(1000);
     }
-    if (!outtake && !intake){
+    if (!outtake && !intake) {
       leftIntakeMotor.set(0);
       rightIntakeMotor.set(0);
     }
