@@ -61,4 +61,9 @@ public class RobotMap {
 //      new DigitalInput(1),
 //      new DigitalInput(1)
 //  );
+
+  static {
+    leftIntakeMotor.setInverted(false);
+    rightIntakeMotor.setInverted(true);
+  }
 }
