@@ -26,12 +26,13 @@ public class CargoHandling implements State {
     if(Robot.godSubsystem.defenceModeRising())
       return new DefenseTransition();
 
+
     return this;
   }
 
   @Override
   public void finish() {
-    Robot.godSubsystem.getCargo().outtakeCargo(1000);
+    Robot.godSubsystem.getCargo().outtakeCargoSlow(1000);
     Robot.godSubsystem.getCurrentCommand().cancel();
   }
 }
