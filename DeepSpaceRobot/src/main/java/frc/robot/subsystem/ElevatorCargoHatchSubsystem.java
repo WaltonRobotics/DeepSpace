@@ -13,7 +13,6 @@ import static frc.robot.RobotMap.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.Gamepad;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -66,9 +65,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   // ???
 
   public ElevatorCargoHatchSubsystem() {
-    elevator.intialize();
-    cargo.intialize();
-    hatch.intialize();
+    elevator.initialize();
+    cargo.initialize();
+    hatch.initialize();
     // Set sense of encoder
     // Set sense of motors
     // Set soft targets on
@@ -239,7 +238,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       elevatorLogger.logInfo(logOutput);
 
       if(resetLimits) {
-        Robot.currentRobot.setElevator(elevatorMotor, limits);
+        Robot.currentRobot.setElevatorLimit(elevatorMotor, limits);
         resetLimits = false;
       }
 
@@ -267,7 +266,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     @Override
-    public void intialize() {
+    public void initialize() {
 
     }
 
@@ -415,7 +414,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       return currentInButtonPressed;
     }
 
-    public boolean outButttonPressed() {
+    public boolean outButtonPressed() {
       return currentOutButtonPressed;
     }
 
@@ -478,7 +477,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       resetLimits = true;
     }
     @Override
-    public void intialize() {
+    public void initialize() {
 
     }
   }
@@ -562,7 +561,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     @Override
-    public void intialize() {
+    public void initialize() {
 
     }
 

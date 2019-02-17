@@ -2,7 +2,7 @@ package frc.robot.robot;
 
 
 import frc.robot.subsystem.TalonSRXConfig;
-import frc.robot.subsystem.SusystemTargets;
+import frc.robot.subsystem.SubsystemTargets;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
 import org.waltonrobotics.util.TalonConfig;
@@ -175,7 +175,7 @@ public class CompPowerUp extends LimitedRobot {
   }
 
   @Override
-  public SusystemTargets getTargets() {
+  public SubsystemTargets getTargets() {
     return null;
   }
 

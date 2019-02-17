@@ -4,7 +4,7 @@ package frc.robot.robot;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import frc.robot.subsystem.SusystemTargets;
+import frc.robot.subsystem.SubsystemTargets;
 import frc.robot.subsystem.TalonSRXConfig;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
@@ -508,7 +508,7 @@ public class CompDeepSpace extends LimitedRobot {
   }
 
   @Override
-  public SusystemTargets getTargets() {
+  public SubsystemTargets getTargets() {
     return null;
   }
 

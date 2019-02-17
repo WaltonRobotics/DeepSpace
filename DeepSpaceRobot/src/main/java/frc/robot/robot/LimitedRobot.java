@@ -1,7 +1,7 @@
 package frc.robot.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import frc.robot.subsystem.SusystemTargets;
+import frc.robot.subsystem.SubsystemTargets;
 import frc.robot.subsystem.TalonSRXConfig;
 import java.util.HashMap;
 import org.waltonrobotics.util.RobotConfig;
@@ -24,7 +24,7 @@ public abstract class LimitedRobot extends RobotConfig {
 
   public abstract TalonSRXConfig getElevatorSubsystemLimits();
 
-  public abstract SusystemTargets getTargets();
+  public abstract SubsystemTargets getTargets();
 
   public abstract void initLimits();
 
@@ -38,7 +38,7 @@ public abstract class LimitedRobot extends RobotConfig {
   }
 
 
-  public void setElevator(TalonSRX talonSRX,Enum cargoType){
+  public void setElevatorLimit(TalonSRX talonSRX,Enum cargoType){
     getElevatorSubsystemLimits().setLimits(talonSRX, limits.get(cargoType));
   }
 

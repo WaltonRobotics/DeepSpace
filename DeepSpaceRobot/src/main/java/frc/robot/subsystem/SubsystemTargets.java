@@ -2,7 +2,7 @@ package frc.robot.subsystem;
 
 import java.util.HashMap;
 
-public abstract class SusystemTargets {
+public abstract class SubsystemTargets {
     private HashMap<String, Integer> targets = new HashMap<>();
     abstract void defineTargets();
 
