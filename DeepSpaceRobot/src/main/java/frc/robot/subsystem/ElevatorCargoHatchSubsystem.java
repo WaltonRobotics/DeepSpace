@@ -10,7 +10,11 @@ import static frc.robot.OI.hatchIntakeButton;
 import static frc.robot.OI.intakeCargoButton;
 import static frc.robot.OI.outtakeCargoButtonFast;
 import static frc.robot.OI.outtakeCargoButtonSlow;
-import static frc.robot.RobotMap.*;
+import static frc.robot.RobotMap.clawRotationMotor;
+import static frc.robot.RobotMap.elevatorLowerLimit;
+import static frc.robot.RobotMap.elevatorMotor;
+import static frc.robot.RobotMap.hatchIntake;
+import static frc.robot.RobotMap.hatchRotationMotor;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -34,7 +38,18 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private boolean lastHatchModePressed;
   private boolean currentHatchModePressed;
   private boolean isEnabled = false;
+  private StateBuilder stateMachine;
 
+  public ElevatorCargoHatchSubsystem() {
+    elevator.initialize();
+    cargo.initialize();
+    hatch.initialize();
+    // Set sense of encoder
+    // Set sense of motors
+    // Set soft targets on
+    // Configure elevator encoder
+
+  }
 
   public boolean isEnabled() {
     return isEnabled;
@@ -52,27 +67,14 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     return cargo;
   }
 
-  public Hatch getHatch() {
-    return hatch;
-  }
-
-  private StateBuilder stateMachine;
-
   // Inputs
 
   // Output
 
   // ???
 
-  public ElevatorCargoHatchSubsystem() {
-    elevator.initialize();
-    cargo.initialize();
-    hatch.initialize();
-    // Set sense of encoder
-    // Set sense of motors
-    // Set soft targets on
-    // Configure elevator encoder
-
+  public Hatch getHatch() {
+    return hatch;
   }
 
   public ActiveState getCurrentActiveState() {
@@ -85,7 +87,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
   @Override
   public void periodic() {
-    if (stateMachine == null){
+    if (stateMachine == null) {
       stateMachine = new StateBuilder(new Disabled());
     }
 
@@ -139,6 +141,22 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
   }
 
+  /**
+   * @return if the getAngle() value is in the enumerated range above the hatch position will be returned
+   */
+
+  public HatchPosition findHatchClosestPosition(HatchPosition hatchPosition, int angle) {
+    if (HatchPosition.DEPLOY.inRange(angle)) {
+      return HatchPosition.DEPLOY;
+    } else if (HatchPosition.SAFE.inRange(angle)) {
+      return HatchPosition.SAFE;
+    } else if (HatchPosition.HATCH_START.inRange(angle)) {
+      return HatchPosition.HATCH_START;
+    } else {
+      return HatchPosition.CARGO_START;
+    }
+  }
+
   public enum ElevatorLevel {
     UNKNOWN(0), BASE(100), CARGO1(200), HATCH1(250), CARGO2(300), HATCH2(350), CARGO3(400), HATCH3(450);
 
@@ -172,6 +190,63 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     HATCH_HANDLING
   }
 
+  public enum CargoPosition {
+
+    DEPLOY(0, 40),
+    SAFE(0, 90),
+    HATCH_START(100, 140),
+    CARGO_START(180, 200),
+    ANGLED(0, 10);
+
+    private int angle;
+    private int upperBound;
+
+    CargoPosition(int angle, int upperBound) {
+      this.angle = angle;
+      this.upperBound = upperBound;
+
+    }
+
+    public int getAngle() {
+      return angle;
+    }
+
+    public boolean inRange(int angle) {
+      return angle < upperBound;
+    }
+
+    public boolean isClose(int angle) {
+      return Math.abs(angle - this.angle) < 10;
+    }
+  }
+
+  public enum HatchPosition {
+    DEPLOY(0, 40),
+    SAFE(80, 90),
+    HATCH_START(100, 140),
+    CARGO_START(180, 200);
+
+    private int angle;
+    private int upperBound;  // halfway between two different positions
+
+    HatchPosition(int angle, int upperBound) {
+      this.angle = angle;
+      this.upperBound = upperBound;
+    }
+
+    public int getAngle() {
+      return angle;
+    }
+
+    public boolean inRange(int angle) {
+      return angle < upperBound;
+    }
+
+    public boolean isClose(int angle) {
+      return Math.abs(angle - this.angle) < 10;
+    }
+  }
+
   public class Elevator implements SubSubsystem {
 
     // Inputs
@@ -189,6 +264,14 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private boolean baseIsPressed;
     private int currentEncoderPosition;
     private ElevatorLevel limits = ElevatorLevel.BASE;
+    // Output
+    private double elevatorCurrentPower;
+    private double elevatorCurrentTarget;
+    private ElevatorControlMode elevatorControlMode;
+    private Logger elevatorLogger;
+    public Elevator() {
+      elevatorLogger = new Logger();
+    }
 
     public boolean isZeroed() {
       return isZeroed;
@@ -200,17 +283,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     public boolean isLowerLimit() {
       return lowerLimit;
-    }
-
-    // Output
-    private double elevatorCurrentPower;
-    private double elevatorCurrentTarget;
-
-    private ElevatorControlMode elevatorControlMode;
-    private Logger elevatorLogger;
-
-    public Elevator() {
-      elevatorLogger = new Logger();
     }
 
     @Override
@@ -238,12 +310,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
               getElevatorHeight(), elevatorCurrentTarget, getElevatorPower());
       elevatorLogger.logInfo(logOutput);
 
-      if(resetLimits) {
+      if (resetLimits) {
         Robot.currentRobot.setElevatorLimit(elevatorMotor, limits);
         resetLimits = false;
       }
 
-      if(releaseLower) {
+      if (releaseLower) {
         elevatorMotor.configReverseSoftLimitEnable(false);
       }
 
@@ -363,15 +435,14 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private CargoPosition limits = CargoPosition.SAFE;
 
     private Logger cargoLogger;
-    public Cargo() {
-      cargoLogger  = new Logger();
-    }
-
     // Outputs
     private double intakePower;
     private double clawRotationPower;
     private int clawTarget;
     private ClawControlMode clawControlMode;
+    public Cargo() {
+      cargoLogger = new Logger();
+    }
 
     @Override
     public void collectData() {
@@ -469,7 +540,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
               getAngle(), clawTarget, getCargoJoystick());
       cargoLogger.logInfo(logOutput);
 
-      if(resetLimits) {
+      if (resetLimits) {
         Robot.currentRobot.setCargoLimit(clawRotationMotor, limits);
         resetLimits = false;
       }
@@ -499,39 +570,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       this.limits = limits;
       resetLimits = true;
     }
+
     @Override
     public void initialize() {
 
-    }
-  }
-
-  public enum CargoPosition {
-
-    DEPLOY(0, 40),
-    SAFE(0, 90),
-    HATCH_START(100, 140),
-    CARGO_START(180, 200),
-    ANGLED(0, 10);
-
-    private int angle;
-    private int upperBound;
-
-    CargoPosition(int angle, int upperBound) {
-      this.angle = angle;
-      this.upperBound = upperBound;
-
-    }
-
-    public int getAngle() {
-      return angle;
-    }
-
-    public boolean inRange(int angle) {
-      return angle < upperBound;
-    }
-
-    public boolean isClose(int angle) {
-      return Math.abs(angle - this.angle) < 10;
     }
   }
 
@@ -573,7 +615,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
               getAngle(), hatchTarget, hatchRotationPower);
       hatchLogger.logInfo(logOutput);
 
-      if(resetLimits) {
+      if (resetLimits) {
         Robot.currentRobot.setHatchLimit(hatchRotationMotor, limits);
         resetLimits = false;
       }
@@ -590,8 +632,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
           hatchRotationMotor.set(ControlMode.Disabled, 0);
           break;
       }
-
-
 
       hatchIntake.set(intakeIsSet);
 
@@ -643,49 +683,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     public void setLimits(HatchPosition limits) {
       this.limits = limits;
       resetLimits = true;
-    }
-  }
-
-  public enum HatchPosition {
-    DEPLOY(0, 40),
-    SAFE(80, 90),
-    HATCH_START(100, 140),
-    CARGO_START(180, 200);
-
-    private int angle;
-    private int upperBound;  // halfway between two different positions
-
-    HatchPosition(int angle, int upperBound) {
-      this.angle = angle;
-      this.upperBound = upperBound;
-    }
-
-    public int getAngle() {
-      return angle;
-    }
-
-    public boolean inRange(int angle) {
-      return angle < upperBound;
-    }
-
-    public boolean isClose(int angle) {
-      return Math.abs(angle - this.angle) < 10;
-    }
-  }
-
-  /**
-   * @return if the getAngle() value is in the enumerated range above the hatch position will be returned
-   */
-
-  public HatchPosition findHatchClosestPosition(HatchPosition hatchPosition, int angle) {
-    if (HatchPosition.DEPLOY.inRange(angle)) {
-      return HatchPosition.DEPLOY;
-    } else if (HatchPosition.SAFE.inRange(angle)) {
-      return HatchPosition.SAFE;
-    } else if (HatchPosition.HATCH_START.inRange(angle)) {
-      return HatchPosition.HATCH_START;
-    } else {
-      return HatchPosition.CARGO_START;
     }
   }
 }
