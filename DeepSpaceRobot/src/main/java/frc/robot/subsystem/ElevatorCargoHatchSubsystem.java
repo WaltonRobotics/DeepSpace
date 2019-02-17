@@ -66,8 +66,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   // ???
 
   public ElevatorCargoHatchSubsystem() {
-    stateMachine = new StateBuilder(new Disabled());
-
     elevator.intialize();
     cargo.intialize();
     hatch.intialize();
@@ -88,6 +86,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
   @Override
   public void periodic() {
+    if (stateMachine == null){
+      stateMachine = new StateBuilder(new Disabled());
+    }
 
     collectSensorData();
     processSensorData();
