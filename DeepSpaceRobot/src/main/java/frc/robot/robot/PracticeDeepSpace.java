@@ -76,7 +76,7 @@ public class PracticeDeepSpace extends LimitedRobot {
     return new TalonConfig() {
       @Override
       public int getChanell() {
-        return 0;
+        return 3;
       }
 
       @Override
@@ -96,7 +96,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isInverted() {
-        return false;
+        return true;
       }
     };
   }
