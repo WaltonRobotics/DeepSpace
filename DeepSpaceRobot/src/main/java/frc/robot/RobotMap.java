@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import static frc.robot.Config.Hardware.ELEVATOR_LOWER_LIMIT_CHANNEL;
+import static frc.robot.Config.Hardware.HATCH_INTAKE_CHANNEL;
 import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
 import static frc.robot.Robot.currentRobot;
 
@@ -47,9 +49,8 @@ public class RobotMap {
 
 
   public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
-  public static final Solenoid hatchIntake = new Solenoid(1);
-
-  public static final DigitalInput elevatorLowerLimit = new DigitalInput(4);
+  public static final Solenoid hatchIntake = new Solenoid(HATCH_INTAKE_CHANNEL);
+  public static final DigitalInput elevatorLowerLimit = new DigitalInput(ELEVATOR_LOWER_LIMIT_CHANNEL);
 
   public static final Encoder encoderRight = new Encoder(
       new DigitalInput(currentRobot.getRightEncoderConfig().getChannell1()),
