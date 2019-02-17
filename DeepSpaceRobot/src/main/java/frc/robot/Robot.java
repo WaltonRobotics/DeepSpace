@@ -59,7 +59,8 @@ public class Robot extends TimedRobot {
   private static final RobotBuilder<LimitedRobot> robotBuilder;
 
   static {
-    robotBuilder = new RobotBuilder<>(new CompPowerUp(), new CompSteamWorks(), new PracticeDeepSpace(), new CompDeepSpace());
+    robotBuilder = new RobotBuilder<>(new CompPowerUp(), new CompSteamWorks(), new PracticeDeepSpace(),
+        new CompDeepSpace());
     currentRobot = robotBuilder.getCurrentRobotConfig();
     drivetrain = new Drivetrain();
     godSubsystem = new ElevatorCargoHatchSubsystem();
