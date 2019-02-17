@@ -322,8 +322,8 @@ public class Robot extends TimedRobot {
     }
 
     if (intake) {
-      godSubsystem.getCargo().intakeCargo();
-    }
+      godSubsystem.getCargo().intakeCargo(0);
+    } 
     if (outtake) {
       godSubsystem.getCargo().outtakeCargoSlow(0);
     }
