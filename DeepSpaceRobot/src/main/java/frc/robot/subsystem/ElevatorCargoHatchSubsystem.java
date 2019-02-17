@@ -8,7 +8,7 @@ import static frc.robot.OI.flipCargoIntakeButton;
 import static frc.robot.OI.gamepad;
 import static frc.robot.OI.hatchIntakeButton;
 import static frc.robot.OI.intakeCargoButton;
-import static frc.robot.OI.outtakeCargoButton;
+import static frc.robot.OI.outtakeCargoButtonFast;
 import static frc.robot.RobotMap.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -369,7 +369,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       lastInButtonPressed = currentInButtonPressed;
       currentInButtonPressed = intakeCargoButton.get();
       lastOutButtonPressed = currentOutButtonPressed;
-      currentOutButtonPressed = outtakeCargoButton.get();
+      currentOutButtonPressed = outtakeCargoButtonFast.get();
       lastFlipButtonPressed = currentFlipButtonPressed;
       currentFlipButtonPressed = flipCargoIntakeButton.get();
       angle = clawRotationMotor.getSelectedSensorPosition();
