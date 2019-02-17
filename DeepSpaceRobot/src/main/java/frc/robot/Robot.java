@@ -15,8 +15,11 @@ import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_X;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_Y;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_OFFSET;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_PERCENTAGE;
+import static frc.robot.RobotMap.clawRotationMotor;
+import static frc.robot.RobotMap.elevatorMotor;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
+import static frc.robot.RobotMap.hatchRotationMotor;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
@@ -24,6 +27,7 @@ import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -83,6 +87,29 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("dx", 2);
     SmartDashboard.putNumber("dy", .5);
     SmartDashboard.putNumber("angle", 30);
+
+    SmartDashboard.putNumber("Elevator", 0);
+    SmartDashboard.putNumber("Hatch Angle", 0);
+    SmartDashboard.putNumber("Cargo Angle", 0);
+
+    SmartDashboard.putData("Elevator Reset", new InstantCommand() {
+      @Override
+      protected void initialize() {
+        elevatorMotor.setSelectedSensorPosition(0);
+      }
+    });
+    SmartDashboard.putData("Cargo Rest", new InstantCommand() {
+      @Override
+      protected void initialize() {
+        clawRotationMotor.setSelectedSensorPosition(0);
+      }
+    });
+    SmartDashboard.putData("Cargo Rest", new InstantCommand() {
+      @Override
+      protected void initialize() {
+        hatchRotationMotor.setSelectedSensorPosition(0);
+      }
+    });
   }
 
   private void initCamera() {
@@ -142,6 +169,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Encoder Left", encoderLeft.getDistance());
     SmartDashboard.putNumber("Encoder Right", encoderRight.getDistance());
     SmartDashboard.putString("Position", String.valueOf(drivetrain.getActualPosition()));
+
+    SmartDashboard.putNumber("Elevator", godSubsystem.getElevator().getElevatorHeight());
+    SmartDashboard.putNumber("Hatch Angle", godSubsystem.getHatch().getAngle());
+    SmartDashboard.putNumber("Cargo Angle", godSubsystem.getCargo().getAngle());
     // System.out.println("robot Periodic");
   }
 
