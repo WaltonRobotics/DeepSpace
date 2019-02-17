@@ -2,40 +2,26 @@ package frc.robot.command.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
+import org.waltonrobotics.command.SimpleCameraPositioning;
 import org.waltonrobotics.command.SimpleMotion;
-import org.waltonrobotics.controller.Pose;
-import org.waltonrobotics.motion.Path;
+import org.waltonrobotics.controller.CameraData;
 
 public class AutoAssist extends Command {
-
-  public static boolean isValidRobotPosition(Pose robotPosition) {
-    double x = robotPosition.getX();
-    double y = robotPosition.getY();
-
-    double r = Path.getRobotWidth();
-
-    double result;
-    if (x <= r) {
-      result = Math.sqrt(Math.pow(r, 2) - Math.pow(x - r, 2));
-    } else {
-      result = r;
-    }
-    return result >= y;
-  }
-
+  private boolean foundTarget = false;
   @Override
   protected void execute() {
-    boolean isValidPosition = isValidRobotPosition(SimpleMotion.getDrivetrain().getActualPosition());
+    CameraData currentCameraData = SimpleMotion.getDrivetrain().getCurrentCameraData();
 
-    if (isValidPosition) {
+    if (currentCameraData.getNumberOfTargets() > 0) {
       if (OI.rightJoystick.getTrigger()) {
-
+        SimpleCameraPositioning.toCameraTarget(currentCameraData).start();
+        foundTarget = true;
       }
     }
   }
 
   @Override
   protected boolean isFinished() {
-    return false;
+    return foundTarget;
   }
 }
