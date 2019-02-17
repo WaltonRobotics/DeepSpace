@@ -156,7 +156,7 @@ public class CompPowerUp extends LimitedRobot {
 
   @Override
   public boolean isCurrentRobot() {
-    return true;
+    return false;
   }
 
   @Override
