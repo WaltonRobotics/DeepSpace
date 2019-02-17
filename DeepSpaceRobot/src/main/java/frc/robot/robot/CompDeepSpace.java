@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import frc.robot.subsystem.SubsystemTargets;
-import frc.robot.subsystem.TalonSRXConfig;
+import frc.robot.subsystem.BaseMotorControllerConfig;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
 import org.waltonrobotics.util.TalonConfig;
@@ -163,8 +163,8 @@ public class CompDeepSpace extends LimitedRobot {
   }
 
   @Override
-  public TalonSRXConfig getCargoSubsystemLimits() {
-    return new TalonSRXConfig() {
+  public BaseMotorControllerConfig getCargoSubsystemLimits() {
+    return new BaseMotorControllerConfig() {
       @Override
       public int getDeviceID() {
         return 7;
@@ -278,8 +278,8 @@ public class CompDeepSpace extends LimitedRobot {
   }
 
   @Override
-  public TalonSRXConfig getHatchSubsystemLimits() {
-    return new TalonSRXConfig() {
+  public BaseMotorControllerConfig getHatchSubsystemLimits() {
+    return new BaseMotorControllerConfig() {
       @Override
       public int getDeviceID() {
         return 6;
@@ -393,8 +393,8 @@ public class CompDeepSpace extends LimitedRobot {
   }
 
   @Override
-  public TalonSRXConfig getElevatorSubsystemLimits() {
-    return new TalonSRXConfig() {
+  public BaseMotorControllerConfig getElevatorSubsystemLimits() {
+    return new BaseMotorControllerConfig() {
       @Override
       public int getDeviceID() {
         return 5;

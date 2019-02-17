@@ -1,6 +1,6 @@
 package frc.robot.robot;
 
-import frc.robot.subsystem.TalonSRXConfig;
+import frc.robot.subsystem.BaseMotorControllerConfig;
 import frc.robot.subsystem.SubsystemTargets;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
@@ -155,17 +155,17 @@ public class CompSteamWorks extends LimitedRobot {
 
 
   @Override
-  public TalonSRXConfig getCargoSubsystemLimits() {
+  public BaseMotorControllerConfig getCargoSubsystemLimits() {
     return null;
   }
 
   @Override
-  public TalonSRXConfig getHatchSubsystemLimits() {
+  public BaseMotorControllerConfig getHatchSubsystemLimits() {
     return null;
   }
 
   @Override
-  public TalonSRXConfig getElevatorSubsystemLimits() {
+  public BaseMotorControllerConfig getElevatorSubsystemLimits() {
     return null;
   }
 

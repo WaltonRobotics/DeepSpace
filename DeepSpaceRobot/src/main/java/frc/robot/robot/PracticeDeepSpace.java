@@ -4,12 +4,10 @@ package frc.robot.robot;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import frc.robot.command.teleop.ElevatorCargo;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
-import frc.robot.subsystem.TalonSRXConfig;
+import frc.robot.subsystem.BaseMotorControllerConfig;
 import frc.robot.subsystem.SubsystemTargets;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
@@ -168,8 +166,8 @@ public class PracticeDeepSpace extends LimitedRobot {
   }
 
   @Override
-  public TalonSRXConfig getCargoSubsystemLimits() {
-    return new TalonSRXConfig() {
+  public BaseMotorControllerConfig getCargoSubsystemLimits() {
+    return new BaseMotorControllerConfig() {
       @Override
       public int getDeviceID() {
         return 7;
@@ -283,8 +281,8 @@ public class PracticeDeepSpace extends LimitedRobot {
   }
 
   @Override
-  public TalonSRXConfig getHatchSubsystemLimits() {
-    return new TalonSRXConfig() {
+  public BaseMotorControllerConfig getHatchSubsystemLimits() {
+    return new BaseMotorControllerConfig() {
       @Override
       public int getDeviceID() {
         return 6;
@@ -398,8 +396,8 @@ public class PracticeDeepSpace extends LimitedRobot {
   }
 
   @Override
-  public TalonSRXConfig getElevatorSubsystemLimits() {
-    return new TalonSRXConfig() {
+  public BaseMotorControllerConfig getElevatorSubsystemLimits() {
+    return new BaseMotorControllerConfig() {
       @Override
       public int getDeviceID() {
         return 5;

@@ -1,8 +1,9 @@
 package frc.robot.robot;
 
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.subsystem.SubsystemTargets;
-import frc.robot.subsystem.TalonSRXConfig;
+import frc.robot.subsystem.BaseMotorControllerConfig;
 import java.util.HashMap;
 import org.waltonrobotics.util.RobotConfig;
 
@@ -18,11 +19,11 @@ public abstract class LimitedRobot extends RobotConfig {
     return limits;
   }
 
-  public abstract TalonSRXConfig getCargoSubsystemLimits();
+  public abstract BaseMotorControllerConfig getCargoSubsystemLimits();
 
-  public abstract TalonSRXConfig getHatchSubsystemLimits();
+  public abstract BaseMotorControllerConfig getHatchSubsystemLimits();
 
-  public abstract TalonSRXConfig getElevatorSubsystemLimits();
+  public abstract BaseMotorControllerConfig getElevatorSubsystemLimits();
 
   public abstract SubsystemTargets getTargets();
 

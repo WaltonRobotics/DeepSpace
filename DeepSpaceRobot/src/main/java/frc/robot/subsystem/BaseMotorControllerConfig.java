@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.robot.LimitPair;
 
-public abstract class TalonSRXConfig {
+public abstract class BaseMotorControllerConfig {
   public abstract int getDeviceID();
 
   public abstract NeutralMode getNeutralMode();
