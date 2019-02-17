@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
+import frc.robot.util.VictorPair;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides
@@ -33,10 +34,8 @@ public class RobotMap {
   // public static int rangefinderModule = 1;
 
 
-  public static final VictorSPX rightWheel1 = new VictorSPX(currentRobot.getRightTalonConfig().getChanell());
-  public static final VictorSPX rightWheel2 = new VictorSPX(currentRobot.getRightTalonConfig().getChanell() + 1);
-  public static final VictorSPX leftWheel1 = new VictorSPX(currentRobot.getLeftTalonConfig().getChanell());
-  public static final VictorSPX leftWheel2 = new VictorSPX(currentRobot.getLeftTalonConfig().getChanell() + 1);
+  public static final VictorPair rightWheels = new VictorPair(currentRobot.getRightTalonConfig().getChanell(), currentRobot.getRightTalonConfig().getChanell() + 1);
+  public static final VictorPair leftWheels = new VictorPair(currentRobot.getLeftTalonConfig().getChanell(), currentRobot.getLeftTalonConfig().getChanell() + 1);
 
   public static final Talon leftIntakeMotor = new Talon(2);
   public static final Talon rightIntakeMotor = new Talon(3);
