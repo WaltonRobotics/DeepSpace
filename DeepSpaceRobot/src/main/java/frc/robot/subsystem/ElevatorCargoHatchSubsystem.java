@@ -1,19 +1,18 @@
 package frc.robot.subsystem;
 
 
-import static frc.robot.OI.elevatorDownButton;
-import static frc.robot.OI.elevatorUpButton;
+import static frc.robot.OI.elevatorLevel1Button;
+import static frc.robot.OI.elevatorLevel2Button;
+import static frc.robot.OI.elevatorLevel3Button;
 import static frc.robot.OI.elevatorZeroButton;
-import static frc.robot.OI.flipCargoIntakeButton;
 import static frc.robot.OI.gamepad;
 import static frc.robot.OI.hatchIntakeButton;
 import static frc.robot.OI.intakeCargoButton;
-import static frc.robot.OI.outtakeCargoButton;
+import static frc.robot.OI.outtakeCargoButtonFast;
 import static frc.robot.RobotMap.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.robotState.Disabled;
@@ -175,20 +174,19 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   public class Elevator implements SubSubsystem {
 
     // Inputs
-    private boolean lastUpButtonPressed;
-    private boolean lastDownButtonPressed;
-    private boolean currentUpButtonPressed;
-    private boolean currentDownButtonPressed;
-    private int currentEncoderPosition;
-    private boolean intakeButtonPressed;
-    private boolean outtakeButtonPressed;
+    private boolean lastLevel3ButtonPressed;
+    private boolean currentLevel3ButtonPressed;
+    private boolean lastLevel2ButtonPressed;
+    private boolean currentLevel2ButtonPressed;
+    private boolean lastLevel1ButtonPressed;
+    private boolean currentLevel1ButtonPressed;
     private boolean lowerLimit;
     private boolean isZeroed;
     private boolean resetLimits = false;
     private boolean releaseLower = false;
     private double elevatorJoystick;
     private boolean baseIsPressed;
-
+    private int currentEncoderPosition;
     private ElevatorLevel limits = ElevatorLevel.BASE;
 
     public boolean isZeroed() {
@@ -216,14 +214,16 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void collectData() {
-      lastUpButtonPressed = currentUpButtonPressed;
-      currentUpButtonPressed = elevatorUpButton.get();
+      lastLevel3ButtonPressed = currentLevel3ButtonPressed;
+      currentLevel3ButtonPressed = elevatorLevel3Button.get();
 
-      elevatorJoystick = OI.gamepad.getRightY();
+      lastLevel2ButtonPressed = currentLevel2ButtonPressed;
+      currentLevel2ButtonPressed = elevatorLevel2Button.get();
 
-      lastDownButtonPressed = currentDownButtonPressed;
-      currentDownButtonPressed = elevatorDownButton.get();
+      lastLevel1ButtonPressed = currentLevel1ButtonPressed;
+      currentLevel1ButtonPressed = elevatorLevel1Button.get();
 
+      elevatorJoystick = gamepad.getRightY();
       currentEncoderPosition = elevatorMotor.getSelectedSensorPosition(0);
 
       lowerLimit = elevatorLowerLimit.get();
@@ -278,20 +278,28 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       return elevatorJoystick;
     }
 
-    public boolean isElevatorUpButtonPressed() {
-      return currentUpButtonPressed;
+    public boolean isElevatorLevel3ButtonPressed() {
+      return currentLevel3ButtonPressed;
     }
 
-    public boolean isElevatorDownButtonPressed() {
-      return currentDownButtonPressed;
+    public boolean isElevatorLevel2ButtonPressed() {
+      return currentLevel2ButtonPressed;
     }
 
-    public boolean wasElevatorUpButtonPressed() {
-      return (currentUpButtonPressed != lastUpButtonPressed) && currentUpButtonPressed;
+    public boolean isElevatorLevel1ButtonPressed() {
+      return currentLevel1ButtonPressed;
     }
 
-    public boolean wasElevatorDownButtonPressed() {
-      return (currentDownButtonPressed != lastDownButtonPressed) && currentDownButtonPressed;
+    public boolean wasElevatorLevel3ButtonPressed() {
+      return (currentLevel3ButtonPressed != lastLevel3ButtonPressed) && currentLevel3ButtonPressed;
+    }
+
+    public boolean wasElevatorlevel2ButtonPressed() {
+      return (currentLevel2ButtonPressed != lastLevel2ButtonPressed) && currentLevel2ButtonPressed;
+    }
+
+    public boolean wasElevatorLevel1ButtonPressed() {
+      return (currentLevel1ButtonPressed != lastLevel1ButtonPressed && currentLevel1ButtonPressed);
     }
 
     /* Get raw height of elevator from encoder ticks. */
@@ -369,9 +377,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       lastInButtonPressed = currentInButtonPressed;
       currentInButtonPressed = intakeCargoButton.get();
       lastOutButtonPressed = currentOutButtonPressed;
-      currentOutButtonPressed = outtakeCargoButton.get();
+      currentOutButtonPressed = outtakeCargoButtonFast.get();
       lastFlipButtonPressed = currentFlipButtonPressed;
-      currentFlipButtonPressed = flipCargoIntakeButton.get();
       angle = clawRotationMotor.getSelectedSensorPosition();
       cargoJoystick = gamepad.getLeftY();
     }
