@@ -9,32 +9,33 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 public class DefenseTransition implements State {
 
 
-    @Override
-    public void initialize() {
-        Robot.godSubsystem.setCurrentActiveState(ActiveState.DEFENSE);
-        Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
-        Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.SAFE);
+  @Override
+  public void initialize() {
+    Robot.godSubsystem.setCurrentActiveState(ActiveState.DEFENSE);
+    Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
+    Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.SAFE);
 
+  }
+
+  @Override
+  public State periodic() {
+
+    if (!Robot.godSubsystem.isEnabled()) {
+      return new Disabled();
     }
 
-    @Override
-    public State periodic() {
+    int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
+    int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
 
-        if(!Robot.godSubsystem.isEnabled()){
-            return new Disabled();
-        }
-
-        int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
-        int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
-
-        if(CargoPosition.SAFE.isClose(cargoAngle) && HatchPosition.SAFE.isClose(hatchAngle))
-            return new Defense();
-        else
-            return this;
+    if (CargoPosition.SAFE.isClose(cargoAngle) && HatchPosition.SAFE.isClose(hatchAngle)) {
+      return new Defense();
+    } else {
+      return this;
     }
+  }
 
-    @Override
-    public void finish() {
+  @Override
+  public void finish() {
 
-    }
+  }
 }

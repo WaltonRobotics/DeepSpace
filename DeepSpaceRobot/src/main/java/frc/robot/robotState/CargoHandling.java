@@ -1,7 +1,6 @@
 package frc.robot.robotState;
 
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.command.teleop.ElevatorCargo;
 import frc.robot.state.State;
@@ -19,13 +18,13 @@ public class CargoHandling implements State {
   @Override
   public State periodic() {
 
-    if(!Robot.godSubsystem.isEnabled()){
+    if (!Robot.godSubsystem.isEnabled()) {
       return new Disabled();
     }
 
-    if(Robot.godSubsystem.defenceModeRising())
+    if (Robot.godSubsystem.defenceModeRising()) {
       return new DefenseTransition();
-
+    }
 
     return this;
   }

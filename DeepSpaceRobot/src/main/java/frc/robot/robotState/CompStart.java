@@ -6,31 +6,32 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 
 public class CompStart implements State {
 
-    @Override
-    public void initialize() {
-        Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.ROBOT_SWITCHED_ON);
+  @Override
+  public void initialize() {
+    Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.ROBOT_SWITCHED_ON);
 
 
+  }
+
+  @Override
+  public State periodic() {
+    if (!Robot.godSubsystem.isEnabled()) {
+      return new Disabled();
     }
 
-    @Override
-    public State periodic() {
-        if(!Robot.godSubsystem.isEnabled()){
-            return new Disabled();
-        }
+    ElevatorCargoHatchSubsystem.ActiveState currentActiveState = Robot.godSubsystem.getCurrentActiveState();
 
-        ElevatorCargoHatchSubsystem.ActiveState currentActiveState = Robot.godSubsystem.getCurrentActiveState();
-
-        if (currentActiveState == ElevatorCargoHatchSubsystem.ActiveState.CARGO_HANDLING)
-            return new CargoHandlingTransition();
-        else if ((currentActiveState == ElevatorCargoHatchSubsystem.ActiveState.DEFENSE))
-            return new DefenseTransition();
-        else
-            return new HatchHandlingTransition();
+    if (currentActiveState == ElevatorCargoHatchSubsystem.ActiveState.CARGO_HANDLING) {
+      return new CargoHandlingTransition();
+    } else if (currentActiveState == ElevatorCargoHatchSubsystem.ActiveState.DEFENSE) {
+      return new DefenseTransition();
+    } else {
+      return new HatchHandlingTransition();
     }
+  }
 
-    @Override
-    public void finish() {
+  @Override
+  public void finish() {
 
-    }
+  }
 }

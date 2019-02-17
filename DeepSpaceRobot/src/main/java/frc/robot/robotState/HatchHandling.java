@@ -1,12 +1,8 @@
 package frc.robot.robotState;
 
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
-
-import static frc.robot.OI.*;
-import static frc.robot.RobotMap.*;
 
 public class HatchHandling implements State {
 
@@ -19,7 +15,7 @@ public class HatchHandling implements State {
 
   @Override
   public State periodic() {
-    if(!Robot.godSubsystem.isEnabled()){
+    if (!Robot.godSubsystem.isEnabled()) {
       return new Disabled();
     }
 

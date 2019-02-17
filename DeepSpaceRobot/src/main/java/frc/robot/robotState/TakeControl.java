@@ -7,7 +7,6 @@ import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Elevator;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
@@ -43,7 +42,7 @@ public class TakeControl implements State {
       return new Disabled();
     }
 
-    if(Robot.godSubsystem.getElevator().isZeroed()) {
+    if (Robot.godSubsystem.getElevator().isZeroed()) {
       //TODO:move to comp start mode
       switch (Robot.godSubsystem.getCurrentActiveState()) {
         case DEFENSE:

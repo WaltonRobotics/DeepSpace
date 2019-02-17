@@ -1,5 +1,7 @@
 package frc.robot.robot;
-public class LimitPair{
+
+public class LimitPair {
+
   private final int forwardsSoftLimitThreshold;
   private final int reverseSoftLimitThreshold;
 

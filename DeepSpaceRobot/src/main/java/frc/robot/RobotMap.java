@@ -10,11 +10,11 @@ package frc.robot;
 import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
 import static frc.robot.Robot.currentRobot;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.interfaces.Potentiometer;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Talon;
 import frc.robot.util.VictorPair;
 
 /**
@@ -34,8 +34,10 @@ public class RobotMap {
   // public static int rangefinderModule = 1;
 
 
-  public static final VictorPair rightWheels = new VictorPair(currentRobot.getRightTalonConfig().getChanell(), currentRobot.getRightTalonConfig().getChanell() + 1);
-  public static final VictorPair leftWheels = new VictorPair(currentRobot.getLeftTalonConfig().getChanell(), currentRobot.getLeftTalonConfig().getChanell() + 1);
+  public static final VictorPair rightWheels = new VictorPair(currentRobot.getRightTalonConfig().getChanell(),
+      currentRobot.getRightTalonConfig().getChanell() + 1);
+  public static final VictorPair leftWheels = new VictorPair(currentRobot.getLeftTalonConfig().getChanell(),
+      currentRobot.getLeftTalonConfig().getChanell() + 1);
 
   public static final Talon leftIntakeMotor = new Talon(2);
   public static final Talon rightIntakeMotor = new Talon(3);

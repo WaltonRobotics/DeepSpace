@@ -4,10 +4,10 @@ package frc.robot.robot;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import frc.robot.subsystem.BaseMotorControllerConfig;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
-import frc.robot.subsystem.BaseMotorControllerConfig;
 import frc.robot.subsystem.SubsystemTargets;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
@@ -518,7 +518,7 @@ public class PracticeDeepSpace extends LimitedRobot {
   @Override
   public void initLimits() {
     this.getLimits().put(HatchPosition.SAFE, new LimitPair(70, 90));
-    this.getLimits().put(HatchPosition.DEPLOY, new LimitPair( 0, 90));
+    this.getLimits().put(HatchPosition.DEPLOY, new LimitPair(0, 90));
     this.getLimits().put(HatchPosition.CARGO_START, new LimitPair(90, 100));
     this.getLimits().put(HatchPosition.HATCH_START, new LimitPair(100, 110));
     this.getLimits().put(CargoPosition.SAFE, new LimitPair(70, 90));

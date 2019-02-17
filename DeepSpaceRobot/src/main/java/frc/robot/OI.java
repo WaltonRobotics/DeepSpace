@@ -12,7 +12,14 @@ import static frc.robot.Config.Inputs.LEFT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.SHIFT_DOWN_PORT;
 import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
-import static frc.robot.Gamepad.Button.*;
+import static frc.robot.Gamepad.Button.LEFT_BUMPER;
+import static frc.robot.Gamepad.Button.LEFT_TRIGGER;
+import static frc.robot.Gamepad.Button.RIGHT_BUMPER;
+import static frc.robot.Gamepad.Button.RIGHT_TRIGGER;
+import static frc.robot.Gamepad.Button._1;
+import static frc.robot.Gamepad.Button._2;
+import static frc.robot.Gamepad.Button._3;
+import static frc.robot.Gamepad.Button._4;
 import static frc.robot.Robot.drivetrain;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -51,7 +58,8 @@ public class OI {
 
   public static final JoystickButton shiftUp = new JoystickButton(leftJoystick, SHIFT_UP_PORT);
   public static final JoystickButton shiftDown = new JoystickButton(leftJoystick, SHIFT_DOWN_PORT);
-  public static final JoystickButton elevatorLevel3Button = new JoystickButton(gamepad, _4.index()); // All elevator joystick button ports are makeshift for now.
+  public static final JoystickButton elevatorLevel3Button = new JoystickButton(gamepad,
+      _4.index()); // All elevator joystick button ports are makeshift for now.
   public static final JoystickButton elevatorLevel2Button = new JoystickButton(gamepad, _3.index());
   public static final JoystickButton elevatorLevel1Button = new JoystickButton(gamepad, _2.index());
   public static final JoystickButton elevatorZeroButton = new JoystickButton(gamepad, _1.index());

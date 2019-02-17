@@ -66,7 +66,7 @@ public class Drivetrain extends AbstractDrivetrain {
     SmartDashboard.putNumber("rightSpeed", rightYJoystick);
     SmartDashboard.putNumber("rightMotor", rightWheels.getMotorOutputPercent());
 
-    leftWheels.set(ControlMode.PercentOutput ,leftYJoystick);
+    leftWheels.set(ControlMode.PercentOutput, leftYJoystick);
     rightWheels.set(ControlMode.PercentOutput, rightYJoystick);
   }
 

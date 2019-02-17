@@ -269,6 +269,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private double elevatorCurrentTarget;
     private ElevatorControlMode elevatorControlMode;
     private Logger elevatorLogger;
+
     public Elevator() {
       elevatorLogger = new Logger();
     }
@@ -440,6 +441,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private double clawRotationPower;
     private int clawTarget;
     private ClawControlMode clawControlMode;
+
     public Cargo() {
       cargoLogger = new Logger();
     }

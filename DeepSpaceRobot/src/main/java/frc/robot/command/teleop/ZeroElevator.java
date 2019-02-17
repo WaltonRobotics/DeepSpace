@@ -2,18 +2,17 @@ package frc.robot.command.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.command.teleop.util.Transform;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorControlMode;
 
 
 public class ZeroElevator extends Command {
 
-    private ElevatorCargoHatchSubsystem.Elevator elevator;
+  private ElevatorCargoHatchSubsystem.Elevator elevator;
 
-    public ZeroElevator() {
-      requires(Robot.godSubsystem);
-      elevator = Robot.godSubsystem.getElevator();
+  public ZeroElevator() {
+    requires(Robot.godSubsystem);
+    elevator = Robot.godSubsystem.getElevator();
   }
 
   // Called just before this Command runs the first time
@@ -27,7 +26,6 @@ public class ZeroElevator extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
 
   }
 

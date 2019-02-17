@@ -7,23 +7,24 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchControlMode;
 
 public class Disabled implements State {
-    @Override
-    public void initialize() {
-        Robot.godSubsystem.getHatch().setHatchControlMode(HatchControlMode.DISABLED);
-        Robot.godSubsystem.getCargo().setClawControlMode(ClawControlMode.DISABLED);
-        Robot.godSubsystem.getElevator().setElevatorControlMode(ElevatorControlMode.DISABLED);
+
+  @Override
+  public void initialize() {
+    Robot.godSubsystem.getHatch().setHatchControlMode(HatchControlMode.DISABLED);
+    Robot.godSubsystem.getCargo().setClawControlMode(ClawControlMode.DISABLED);
+    Robot.godSubsystem.getElevator().setElevatorControlMode(ElevatorControlMode.DISABLED);
+  }
+
+  @Override
+  public State periodic() {
+    if (Robot.godSubsystem.isEnabled()) {
+      return new TakeControl();
     }
 
-    @Override
-    public State periodic() {
-        if(Robot.godSubsystem.isEnabled()){
-            return new TakeControl();
-        }
+    return this;
+  }
 
-        return this;
-    }
-
-    @Override
-    public void finish() {
-    }
+  @Override
+  public void finish() {
+  }
 }

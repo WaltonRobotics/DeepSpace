@@ -1,67 +1,64 @@
 package frc.robot;
 
+import static junit.framework.TestCase.assertTrue;
+
+import frc.robot.util.Logger;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-
-import frc.robot.util.Logger;
-
 import org.junit.Test;
-
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
 
 public class LoggerTest {
 
-    @Test
-    public void loggingInfoTest() {
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
+  @Test
+  public void loggingInfoTest() {
+    ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        ArrayList<OutputStream> writeables = new ArrayList<>();
+    ArrayList<OutputStream> writeables = new ArrayList<>();
 
-        writeables.add(os);
+    writeables.add(os);
 
-        Logger logger = new Logger(writeables);
+    Logger logger = new Logger(writeables);
 
-        String testLogString = "Logging info test.";
+    String testLogString = "Logging info test.";
 
-        logger.logInfo(testLogString);
+    logger.logInfo(testLogString);
 
-        assertTrue(os.toString().contains(testLogString));
-    }
+    assertTrue(os.toString().contains(testLogString));
+  }
 
-    @Test
-    public void loggingWarningTest() {
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
+  @Test
+  public void loggingWarningTest() {
+    ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        ArrayList<OutputStream> writeables = new ArrayList<>();
+    ArrayList<OutputStream> writeables = new ArrayList<>();
 
-        writeables.add(os);
+    writeables.add(os);
 
-        Logger logger = new Logger(writeables);
+    Logger logger = new Logger(writeables);
 
-        String testLogString = "Logging warning test.";
+    String testLogString = "Logging warning test.";
 
-        logger.logWarning(testLogString);
+    logger.logWarning(testLogString);
 
-        assertTrue(os.toString().contains(testLogString));
-    }
+    assertTrue(os.toString().contains(testLogString));
+  }
 
-    @Test
-    public void loggingErrorTest() {
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
+  @Test
+  public void loggingErrorTest() {
+    ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        ArrayList<OutputStream> writeables = new ArrayList<>();
+    ArrayList<OutputStream> writeables = new ArrayList<>();
 
-        writeables.add(os);
+    writeables.add(os);
 
-        Logger logger = new Logger(writeables);
+    Logger logger = new Logger(writeables);
 
-        String testLogString = "Logging error test.";
+    String testLogString = "Logging error test.";
 
-        logger.logError(testLogString);
+    logger.logError(testLogString);
 
-        assertTrue(os.toString().contains(testLogString));
-    }
+    assertTrue(os.toString().contains(testLogString));
+  }
 
 }

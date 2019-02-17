@@ -42,11 +42,10 @@ public class ElevatorHatch extends Command {
     if (elevatorManual) {
       hatch.setHatchControlMode(HatchControlMode.AUTO);
 
-      if(hatch.isCurrentIntakeButtonPressed()) {
-        if(hatchIntake.get()) {
+      if (hatch.isCurrentIntakeButtonPressed()) {
+        if (hatchIntake.get()) {
           hatchIntake.set(false);
-        }
-        else {
+        } else {
           hatchIntake.set(true);
         }
       }
@@ -54,9 +53,7 @@ public class ElevatorHatch extends Command {
       elevator.setElevatorControlMode(ElevatorControlMode.MANUAL);
       elevator.setElevatorPower(elevator.getElevatorJoystick());
 
-    }
-
-    else {
+    } else {
       elevator.setElevatorControlMode(ElevatorControlMode.AUTO);
 
       if (elevator.isBasePressed()) {
@@ -69,11 +66,10 @@ public class ElevatorHatch extends Command {
         elevator.setElevatorLevel(ElevatorLevel.HATCH3);
       }
 
-      if(hatch.isCurrentIntakeButtonPressed()) {
-        if(hatchIntake.get()) {
+      if (hatch.isCurrentIntakeButtonPressed()) {
+        if (hatchIntake.get()) {
           hatchIntake.set(false);
-        }
-        else {
+        } else {
           hatchIntake.set(true);
         }
       }

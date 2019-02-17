@@ -2,8 +2,8 @@ package frc.robot.robot;
 
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import frc.robot.subsystem.SubsystemTargets;
 import frc.robot.subsystem.BaseMotorControllerConfig;
+import frc.robot.subsystem.SubsystemTargets;
 import java.util.HashMap;
 import org.waltonrobotics.util.RobotConfig;
 
@@ -48,7 +48,8 @@ public abstract class LimitedRobot extends RobotConfig {
     return getTargets().getTargets().get(target);
   }
 
-  public void setupController(BaseMotorController motorController, BaseMotorControllerConfig talonSRXConfig, Enum limitType) {
+  public void setupController(BaseMotorController motorController, BaseMotorControllerConfig talonSRXConfig,
+      Enum limitType) {
     motorController.setNeutralMode(talonSRXConfig.getNeutralMode());
     motorController.configSelectedFeedbackSensor(talonSRXConfig.getFeedbackSensor(), talonSRXConfig.getPIDIdx(),
         talonSRXConfig.getTimeout());
@@ -75,8 +76,10 @@ public abstract class LimitedRobot extends RobotConfig {
 
     if (limitType != null) {
       LimitPair limitPair = getLimits().get(limitType);
-      motorController.configForwardSoftLimitThreshold(limitPair.getForwardsSoftLimitThreshold(), talonSRXConfig.getTimeout());
-      motorController.configReverseSoftLimitThreshold(limitPair.getReverseSoftLimitThreshold(), talonSRXConfig.getTimeout());
+      motorController
+          .configForwardSoftLimitThreshold(limitPair.getForwardsSoftLimitThreshold(), talonSRXConfig.getTimeout());
+      motorController
+          .configReverseSoftLimitThreshold(limitPair.getReverseSoftLimitThreshold(), talonSRXConfig.getTimeout());
 
       motorController.configForwardSoftLimitEnable(talonSRXConfig.isForwardsSoftLimitEnabled(), 10);
       motorController.configReverseSoftLimitEnable(talonSRXConfig.isReverseSoftLimitEnabled(), 10);
