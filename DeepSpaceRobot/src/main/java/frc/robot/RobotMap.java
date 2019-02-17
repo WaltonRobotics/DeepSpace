@@ -10,6 +10,7 @@ package frc.robot;
 import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
 import static frc.robot.Robot.currentRobot;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.*;
@@ -34,8 +35,8 @@ public class RobotMap {
 
   public static final VictorSPX rightWheel = new VictorSPX(currentRobot.getRightTalonConfig().getChanell());// FIXME: 2019-02-13
   public static final VictorSPX leftWheel = new VictorSPX(currentRobot.getLeftTalonConfig().getChanell());// FIXME: 2019-02-13
-  public static final Talon leftIntakeMotor = new Talon(1);
-  public static final Talon rightIntakeMotor = new Talon(1);
+  public static final Talon leftIntakeMotor = new Talon(2);
+  public static final Talon rightIntakeMotor = new Talon(3);
   public static final TalonSRX clawRotationMotor = new TalonSRX(currentRobot.getCargoSubsystemLimits().getDeviceID());
   public static final TalonSRX hatchRotationMotor = new TalonSRX(currentRobot.getHatchSubsystemLimits().getDeviceID());
   public static final TalonSRX elevatorMotor = new TalonSRX(currentRobot.getElevatorSubsystemLimits().getDeviceID());
@@ -54,10 +55,10 @@ public class RobotMap {
       new DigitalInput(currentRobot.getLeftEncoderConfig().getChannell1()),
       new DigitalInput(currentRobot.getLeftEncoderConfig().getChannell2()));
 
-  public static final DigitalInput hatchSensor = new DigitalInput(1); //makeshift number
+//  public static final DigitalInput hatchSensor = new DigitalInput(1); //makeshift number
 
-  public static final Encoder cargoEncoder = new Encoder(
-      new DigitalInput(1),
-      new DigitalInput(1)
-  );
+//  public static final Encoder cargoEncoder = new Encoder(
+//      new DigitalInput(1),
+//      new DigitalInput(1)
+//  );
 }
