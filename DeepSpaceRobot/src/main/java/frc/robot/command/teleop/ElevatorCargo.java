@@ -55,11 +55,11 @@ public class ElevatorCargo extends Command {
       if (elevator.isBasePressed()) {
         elevator.setElevatorLevel(ElevatorLevel.BASE);
       } else if (elevator.isElevatorLevel1ButtonPressed()) {
-        //TODO: Choose level 1
+        elevator.setElevatorLevel(ElevatorLevel.CARGO1);
       } else if (elevator.isElevatorLevel2ButtonPressed()) {
-        //TODO: Choose level 2
+        elevator.setElevatorLevel(ElevatorLevel.CARGO2);
       } else if (elevator.isElevatorLevel3ButtonPressed()) {
-        //TODO: Choose level 3
+        elevator.setElevatorLevel(ElevatorLevel.CARGO3);
       }
     }
     //TODO: 2 button for diff speeds
