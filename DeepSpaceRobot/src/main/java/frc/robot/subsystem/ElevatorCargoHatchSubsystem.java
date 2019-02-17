@@ -550,6 +550,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       angle = hatchRotationMotor.getSelectedSensorPosition();
     }
 
+    public boolean isCurrentIntakeButtonPressed() {
+      return currentIntakeButtonPressed;
+    }
+
     @Override
     public void outputData() {
       String logOutput = String
@@ -576,6 +580,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       }
 
       hatchIntake.set(intakeIsSet);
+    }
+
+    public void setHatchRotationPower(double hatchRotationPower) {
+      this.hatchRotationPower = hatchRotationPower;
     }
 
     @Override
