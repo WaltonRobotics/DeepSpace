@@ -6,6 +6,7 @@ import frc.robot.subsystem.BaseMotorControllerConfig;
 import frc.robot.subsystem.SubsystemTargets;
 import java.util.HashMap;
 import org.waltonrobotics.util.RobotConfig;
+import org.waltonrobotics.util.TalonConfig;
 
 public abstract class LimitedRobot extends RobotConfig {
 
@@ -26,6 +27,10 @@ public abstract class LimitedRobot extends RobotConfig {
   public abstract BaseMotorControllerConfig getElevatorSubsystemLimits();
 
   public abstract SubsystemTargets getTargets();
+
+  public abstract TalonConfig getLeftIntakeMotorConfig();
+
+  public abstract TalonConfig getRightIntakeMotorConfig();
 
   public abstract void initLimits();
 

@@ -180,6 +180,16 @@ public class CompPowerUp extends LimitedRobot {
   }
 
   @Override
+  public TalonConfig getLeftIntakeMotorConfig() {
+    return null;
+  }
+
+  @Override
+  public TalonConfig getRightIntakeMotorConfig() {
+    return null;
+  }
+
+  @Override
   public void initLimits() {
 
   }

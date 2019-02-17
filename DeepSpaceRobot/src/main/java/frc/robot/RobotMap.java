@@ -39,8 +39,8 @@ public class RobotMap {
   public static final VictorPair leftWheels = new VictorPair(currentRobot.getLeftTalonConfig().getChanell(),
       currentRobot.getLeftTalonConfig().getChanell() + 1);
 
-  public static final Talon leftIntakeMotor = new Talon(2);
-  public static final Talon rightIntakeMotor = new Talon(3);
+  public static final Talon leftIntakeMotor = new Talon(currentRobot.getLeftIntakeMotorConfig().getChanell());
+  public static final Talon rightIntakeMotor = new Talon(currentRobot.getRightIntakeMotorConfig().getChanell());
   public static final TalonSRX clawRotationMotor = new TalonSRX(currentRobot.getCargoSubsystemLimits().getDeviceID());
   public static final TalonSRX hatchRotationMotor = new TalonSRX(currentRobot.getHatchSubsystemLimits().getDeviceID());
   public static final TalonSRX elevatorMotor = new TalonSRX(currentRobot.getElevatorSubsystemLimits().getDeviceID());
@@ -67,7 +67,7 @@ public class RobotMap {
 //  );
 
   static {
-    leftIntakeMotor.setInverted(false);
-    rightIntakeMotor.setInverted(true);
+    leftIntakeMotor.setInverted(currentRobot.getLeftIntakeMotorConfig().isInverted());
+    rightIntakeMotor.setInverted(currentRobot.getRightIntakeMotorConfig().isInverted());
   }
 }

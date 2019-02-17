@@ -516,6 +516,36 @@ public class PracticeDeepSpace extends LimitedRobot {
   }
 
   @Override
+  public TalonConfig getLeftIntakeMotorConfig() {
+    return new TalonConfig() {
+      @Override
+      public int getChanell() {
+        return 2;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return false;
+      }
+    };
+  }
+
+  @Override
+  public TalonConfig getRightIntakeMotorConfig() {
+    return new TalonConfig() {
+      @Override
+      public int getChanell() {
+        return 3;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return true;
+      }
+    };
+  }
+
+  @Override
   public void initLimits() {
     this.getLimits().put(HatchPosition.SAFE, new LimitPair(70, 90));
     this.getLimits().put(HatchPosition.DEPLOY, new LimitPair(0, 90));
