@@ -109,6 +109,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
         elevatorCurrentTarget = elevatorMotor.getSelectedSensorPosition(0);
 
         elevatorControlMode = ElevatorControlMode.AUTO;
+
+        // Reset soft limits to conservative values
     }
 
     public boolean isElevatorUpButtonPressed() {

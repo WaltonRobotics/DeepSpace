@@ -1,14 +1,15 @@
 package frc.robot.robotState;
 
+import frc.robot.Robot;
 import frc.robot.state.State;
 
 public class TakeControl implements State {
 
-    public enum
-
     @Override
     public void initialize() {
+        Robot.godSubsystem.resetElevator();
 
+        /* Reset other components as well. */
     }
 
     @Override
@@ -20,4 +21,5 @@ public class TakeControl implements State {
     public void finish() {
 
     }
+
 }
