@@ -323,11 +323,11 @@ public class Robot extends TimedRobot {
 
     if (intake) {
       intake = false;
-      godSubsystem.getCargo().intakeCargo(1000);
+      godSubsystem.getCargo().intakeCargo(700);
     } 
     if (outtake) {
       outtake = false;
-      godSubsystem.getCargo().outtakeCargoSlow(1000);
+      godSubsystem.getCargo().outtakeCargoFast(1000);
     }
     if (!outtake && !intake){
       leftIntakeMotor.set(0);
