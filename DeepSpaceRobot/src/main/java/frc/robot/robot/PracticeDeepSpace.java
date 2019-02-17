@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import frc.robot.command.teleop.ElevatorCargo;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
@@ -524,6 +525,7 @@ public class PracticeDeepSpace extends LimitedRobot {
     this.getLimits().put(HatchPosition.HATCH_START, new LimitPair(100, 110));
     this.getLimits().put(CargoPosition.SAFE, new LimitPair(70, 90));
     this.getLimits().put(CargoPosition.DEPLOY, new LimitPair(0, 90));
+    this.getLimits().put(CargoPosition.ANGLED, new LimitPair(0, 10));
     this.getLimits().put(ElevatorLevel.BASE, new LimitPair(0, 100));
     this.getLimits().put(ElevatorLevel.CARGO1, new LimitPair(100, 200));
     this.getLimits().put(ElevatorLevel.CARGO2, new LimitPair(200, 300));
