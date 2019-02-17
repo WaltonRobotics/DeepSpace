@@ -63,9 +63,15 @@ public class ElevatorCargo extends Command {
       }
     }
     //TODO: 2 button for diff speeds
-    if (cargo.outButtonPressed()) {
-      cargo.outtakeCargo(0);
-    } else if (cargo.inButtonPressed()) {
+    if (cargo.outSlowButtonPressed()) {
+      cargo.outtakeCargoSlow(0);
+    }
+
+    else if(cargo.outFastButtonPressed()) {
+      cargo.outtakeCargoFast(0);
+    }
+
+    else if (cargo.inButtonPressed()) {
       cargo.intakeCargo(0);
     }
   }
