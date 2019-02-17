@@ -353,6 +353,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     private CargoPosition limits = CargoPosition.SAFE;
 
+    private Logger cargoLogger;
+    public Cargo() {
+      cargoLogger  = new Logger();
+    }
 
     // Outputs
     private double intakePower;
@@ -444,6 +448,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void outputData() {
+      String logOutput = String
+          .format("[%s]: Cargo height  : %d, Current height target: %d, Current power: %f", currentTime,
+              getAngle(), clawTarget, getCargoJoystick());
+      cargoLogger.logInfo(logOutput);
 
       if(resetLimits) {
         Robot.currentRobot.setCargoLimit(clawRotationMotor, limits);
@@ -527,6 +535,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private int hatchTarget;
     private HatchControlMode hatchControlMode;
 
+    private Logger hatchLogger;
+
+    public Hatch() {
+      hatchLogger = new Logger();
+    }
+
     @Override
     public void collectData() {
       lastIntakeButtonPressed = currentIntakeButtonPressed;
@@ -538,6 +552,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void outputData() {
+      String logOutput = String
+          .format("[%s]: Hatch height  : %d, Current height target: %d, Current power: %f", currentTime,
+              getAngle(), hatchTarget, hatchRotationPower);
+      hatchLogger.logInfo(logOutput);
 
       if(resetLimits) {
         Robot.currentRobot.setHatchLimit(hatchRotationMotor, limits);
