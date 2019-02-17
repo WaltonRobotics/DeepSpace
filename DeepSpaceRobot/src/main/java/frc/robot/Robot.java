@@ -64,6 +64,7 @@ public class Robot extends TimedRobot {
   public static final Drivetrain drivetrain;
   public static final ElevatorCargoHatchSubsystem godSubsystem;
   private static final RobotBuilder<LimitedRobot> robotBuilder;
+  public static final SendableChooser<Transform> transformSendableChooser = new SendableChooser<>();
 
   static {
     robotBuilder = new RobotBuilder<>(new CompPowerUp(), new CompSteamWorks(), new PracticeDeepSpace(),
@@ -101,12 +102,12 @@ public class Robot extends TimedRobot {
   }
 
   private void initShuffleBoard() {
-    SendableChooser<Transform> sendableChooser = new SendableChooser<>();
-    sendableChooser.setDefaultOption("Normal", new NormalSpeed());
-    sendableChooser.addOption("Sigmoid", new Sigmoid());
-    sendableChooser.addOption("Sqrt", new Sqrt());
 
-    SmartDashboard.putData("Transform Select", sendableChooser);
+    transformSendableChooser.setDefaultOption("Normal", new NormalSpeed());
+    transformSendableChooser.addOption("Sigmoid", new Sigmoid());
+    transformSendableChooser.addOption("Sqrt", new Sqrt());
+
+    SmartDashboard.putData("Transform Select", transformSendableChooser);
 
     SmartDashboard.putNumber("dx", 2);
     SmartDashboard.putNumber("dy", .5);

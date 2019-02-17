@@ -26,7 +26,7 @@ public class Drive extends Command {
   }
 
   public Transform getTransform() {
-    return ((SendableChooser<Transform>) SmartDashboard.getData("Transform Select")).getSelected();
+    return Robot.transformSendableChooser.getSelected();
   }
 
   // Called just before this Command runs the first time
