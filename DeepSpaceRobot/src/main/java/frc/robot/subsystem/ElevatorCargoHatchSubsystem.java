@@ -385,19 +385,42 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       cargoJoystick = gamepad.getLeftY();
     }
 
+    public void addTiming() {
+      if (currentTime <= intakeTimeout) {
+        RobotMap.leftIntakeMotor.set(intakePower);
+        RobotMap.rightIntakeMotor.set(intakePower);
+      } else {
+        RobotMap.leftIntakeMotor.set(0);
+        RobotMap.rightIntakeMotor.set(0);
+      }
+    }
+
     public void intakeCargo(int timeout) {
       intakeTimeout = currentTime + timeout;
       intakePower = 1;
+      addTiming();
+    }
+
+    public void intakeCargo() {
+      rightIntakeMotor.set(1);
+      leftIntakeMotor.set(0.8);
+    }
+
+    public void outTakeCargo() {
+      rightIntakeMotor.set(-1);
+      leftIntakeMotor.set(-0.8);
     }
 
     public void outtakeCargoSlow(int timeout) {
       intakeTimeout = currentTime + timeout;
       intakePower = -0.5;
+      addTiming();
     }
 
     public void outtakeCargoFast(int timeout) {
       intakeTimeout = currentTime + timeout;
       intakePower = -1;
+      addTiming();
     }
 
     public void holdCargo() {
@@ -485,13 +508,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
           break;
       }
 
-      if (currentTime <= intakeTimeout) {
-        RobotMap.leftIntakeMotor.set(intakePower);
-        RobotMap.rightIntakeMotor.set(intakePower);
-      } else {
-        RobotMap.leftIntakeMotor.set(0);
-        RobotMap.rightIntakeMotor.set(0);
-      }
+
     }
 
     public void setLimits(CargoPosition limits) {
@@ -642,7 +659,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       this.limits = limits;
       resetLimits = true;
     }
-
   }
 
   public enum HatchPosition {
