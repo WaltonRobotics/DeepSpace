@@ -35,9 +35,11 @@ import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
 import frc.robot.command.teleop.util.Transform;
+import frc.robot.robot.CompDeepSpace;
 import frc.robot.robot.CompPowerUp;
 import frc.robot.robot.CompSteamWorks;
 import frc.robot.robot.LimitedRobot;
+import frc.robot.robot.PracticeDeepSpace;
 import frc.robot.subsystem.Drivetrain;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 import frc.robot.util.ParkingLines;
@@ -57,7 +59,7 @@ public class Robot extends TimedRobot {
   private static final RobotBuilder<LimitedRobot> robotBuilder;
 
   static {
-    robotBuilder = new RobotBuilder<>(new CompPowerUp(), new CompSteamWorks());
+    robotBuilder = new RobotBuilder<>(new CompPowerUp(), new CompSteamWorks(), new PracticeDeepSpace(), new CompDeepSpace());
     currentRobot = robotBuilder.getCurrentRobotConfig();
     drivetrain = new Drivetrain();
     godSubsystem = new ElevatorCargoHatchSubsystem();
