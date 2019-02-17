@@ -291,14 +291,14 @@ public class Robot extends TimedRobot {
     if (elevatorZeroButton.get()) {
       isHatch = !isHatch;
     }
-    if (Robot.godSubsystem.getElevator().isElevatorLevel1ButtonPressed()) {
+    if (Robot.godSubsystem.getElevator().isElevatorLevel1ButtonPressed()) { //2
       catchHatch = !catchHatch;
     }
-    if (Robot.godSubsystem.getElevator().isElevatorLevel2ButtonPressed()) {
+    if (Robot.godSubsystem.getElevator().isElevatorLevel2ButtonPressed()) { //3
       intake = !intake;
     }
 
-    if (Robot.godSubsystem.getElevator().isElevatorLevel3ButtonPressed()) {
+    if (Robot.godSubsystem.getElevator().isElevatorLevel3ButtonPressed()) { //4
       outtake = !outtake;
     }
 
@@ -322,10 +322,12 @@ public class Robot extends TimedRobot {
     }
 
     if (intake) {
-      godSubsystem.getCargo().intakeCargo(0);
+      intake = false;
+      godSubsystem.getCargo().intakeCargo(1000);
     } 
     if (outtake) {
-      godSubsystem.getCargo().outtakeCargoSlow(0);
+      outtake = false;
+      godSubsystem.getCargo().outtakeCargoSlow(1000);
     }
     if (!outtake && !intake){
       leftIntakeMotor.set(0);
