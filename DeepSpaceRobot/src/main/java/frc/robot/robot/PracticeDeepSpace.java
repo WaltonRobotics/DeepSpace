@@ -4,6 +4,7 @@ package frc.robot.robot;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import frc.robot.command.teleop.ElevatorCargo;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
@@ -524,9 +525,12 @@ public class PracticeDeepSpace extends LimitedRobot {
     this.getLimits().put(CargoPosition.SAFE, new LimitPair(70, 90));
     this.getLimits().put(CargoPosition.DEPLOY, new LimitPair(0, 90));
     this.getLimits().put(ElevatorLevel.BASE, new LimitPair(0, 100));
-    this.getLimits().put(ElevatorLevel.LEVEL1, new LimitPair(100, 200));
-    this.getLimits().put(ElevatorLevel.LEVEL2, new LimitPair(200, 300));
-    this.getLimits().put(ElevatorLevel.LEVEL3, new LimitPair(300, 400));
+    this.getLimits().put(ElevatorLevel.CARGO1, new LimitPair(100, 200));
+    this.getLimits().put(ElevatorLevel.CARGO2, new LimitPair(200, 300));
+    this.getLimits().put(ElevatorLevel.CARGO3, new LimitPair(300, 400));
+    this.getLimits().put(ElevatorLevel.HATCH1, new LimitPair(300, 400));
+    this.getLimits().put(ElevatorLevel.HATCH2, new LimitPair(300, 400));
+    this.getLimits().put(ElevatorLevel.HATCH3, new LimitPair(300, 400));
 
   }
 }
