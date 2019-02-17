@@ -10,12 +10,12 @@ public abstract class LimitedRobot extends RobotConfig {
 
   private HashMap<Enum, LimitPair> limits = new HashMap<>();
 
-  public HashMap<Enum, LimitPair> getLimits() {
-    return limits;
-  }
-
   public LimitedRobot(String robotName) {
     super(robotName);
+  }
+
+  public HashMap<Enum, LimitPair> getLimits() {
+    return limits;
   }
 
   public abstract TalonSRXConfig getCargoSubsystemLimits();
@@ -28,17 +28,17 @@ public abstract class LimitedRobot extends RobotConfig {
 
   public abstract void initLimits();
 
-  public void setCargoLimit(TalonSRX talonSRX,Enum cargoType){
+  public void setCargoLimit(TalonSRX talonSRX, Enum cargoType) {
     getCargoSubsystemLimits().setLimits(talonSRX, limits.get(cargoType));
   }
 
 
-  public void setHatchLimit(TalonSRX talonSRX,Enum cargoType){
+  public void setHatchLimit(TalonSRX talonSRX, Enum cargoType) {
     getHatchSubsystemLimits().setLimits(talonSRX, limits.get(cargoType));
   }
 
 
-  public void setElevatorLimit(TalonSRX talonSRX,Enum cargoType){
+  public void setElevatorLimit(TalonSRX talonSRX, Enum cargoType) {
     getElevatorSubsystemLimits().setLimits(talonSRX, limits.get(cargoType));
   }
 
@@ -47,9 +47,10 @@ public abstract class LimitedRobot extends RobotConfig {
     return getTargets().getTargets().get(target);
   }
 
-  public void setupTalon(TalonSRX talonSRX, TalonSRXConfig talonSRXConfig, Enum limitType ){
+  public void setupTalon(TalonSRX talonSRX, TalonSRXConfig talonSRXConfig, Enum limitType) {
     talonSRX.setNeutralMode(talonSRXConfig.getNeutralMode());
-    talonSRX.configSelectedFeedbackSensor(talonSRXConfig.getFeedbackSensor(), talonSRXConfig.getPIDIdx(), talonSRXConfig.getTimeout());
+    talonSRX.configSelectedFeedbackSensor(talonSRXConfig.getFeedbackSensor(), talonSRXConfig.getPIDIdx(),
+        talonSRXConfig.getTimeout());
     talonSRX.setSensorPhase(talonSRXConfig.getSensorPhase()); // true for comp bot; false for practice
     talonSRX.setInverted(talonSRXConfig.isInverted());
 
@@ -61,7 +62,7 @@ public abstract class LimitedRobot extends RobotConfig {
     talonSRX.configPeakOutputForward(talonSRXConfig.getPeakOutputForward(), talonSRXConfig.getTimeout());
     talonSRX.configPeakOutputReverse(talonSRXConfig.getPeakOutputReverse(), talonSRXConfig.getTimeout());
 
-    talonSRX.selectProfileSlot(talonSRXConfig.getProfileSlot(),talonSRXConfig. getPIDIdx());
+    talonSRX.selectProfileSlot(talonSRXConfig.getProfileSlot(), talonSRXConfig.getPIDIdx());
 
     talonSRX.config_kP(talonSRXConfig.getProfileSlot(), talonSRXConfig.getKP(), talonSRXConfig.getTimeout());
     talonSRX.config_kI(talonSRXConfig.getProfileSlot(), talonSRXConfig.getKI(), talonSRXConfig.getTimeout());
@@ -69,17 +70,18 @@ public abstract class LimitedRobot extends RobotConfig {
     talonSRX.config_kF(talonSRXConfig.getProfileSlot(), talonSRXConfig.getKF(), talonSRXConfig.getTimeout());
 
     talonSRX.configMotionCruiseVelocity(talonSRXConfig.getMotionCruiseVelocity(), talonSRXConfig.getTimeout());
-    talonSRX.configMotionAcceleration(talonSRXConfig.getMotionAcceleration(),talonSRXConfig. getTimeout());
+    talonSRX.configMotionAcceleration(talonSRXConfig.getMotionAcceleration(), talonSRXConfig.getTimeout());
 
+    if (limitType != null) {
+      LimitPair limitPair = getLimits().get(limitType);
+      talonSRX.configForwardSoftLimitThreshold(limitPair.getForwardsSoftLimitThreshold(), talonSRXConfig.getTimeout());
+      talonSRX.configReverseSoftLimitThreshold(limitPair.getReverseSoftLimitThreshold(), talonSRXConfig.getTimeout());
 
-    LimitPair limitPair = getLimits().get(limitType);
-    talonSRX.configForwardSoftLimitThreshold(limitPair.getForwardsSoftLimitThreshold(), talonSRXConfig.getTimeout());
-    talonSRX.configReverseSoftLimitThreshold(limitPair.getReverseSoftLimitThreshold(), talonSRXConfig.getTimeout());
+      talonSRX.configForwardSoftLimitEnable(talonSRXConfig.isForwardsSoftLimitEnabled(), 10);
+      talonSRX.configReverseSoftLimitEnable(talonSRXConfig.isReverseSoftLimitEnabled(), 10);
 
-    talonSRX.configForwardSoftLimitEnable(talonSRXConfig.isForwardsSoftLimitEnabled(), 10);
-    talonSRX.configReverseSoftLimitEnable(talonSRXConfig.isReverseSoftLimitEnabled(), 10);
-
-    /* pass false to FORCE OFF the feature.  Otherwise the enable flags above are honored */
-    talonSRX.overrideLimitSwitchesEnable(talonSRXConfig.isOverrideLimitSwitchesEnabled());
+      /* pass false to FORCE OFF the feature.  Otherwise the enable flags above are honored */
+      talonSRX.overrideLimitSwitchesEnable(talonSRXConfig.isOverrideLimitSwitchesEnabled());
+    }
   }
 }
