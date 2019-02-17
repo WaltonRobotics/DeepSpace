@@ -355,7 +355,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private boolean lastInButtonPressed;
     private boolean currentInButtonPressed;
     private boolean lastFastOutButtonPressed;
-    private boolean currentFastOutButtonPresed;
+    private boolean currentFastOutButtonPressed;
     private int angle;
     private boolean resetLimits = false;
     private double cargoJoystick;
@@ -379,8 +379,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       currentInButtonPressed = intakeCargoButton.get();
       lastSlowOutButtonPressed = currentSlowOuttakePressed;
       currentSlowOuttakePressed = outtakeCargoButtonSlow.get();
-      lastFastOutButtonPressed = currentFastOutButtonPresed;
-      currentFastOutButtonPresed = outtakeCargoButtonFast.get();
+      lastFastOutButtonPressed = currentFastOutButtonPressed;
+      currentFastOutButtonPressed = outtakeCargoButtonFast.get();
       angle = clawRotationMotor.getSelectedSensorPosition();
       cargoJoystick = gamepad.getLeftY();
     }
@@ -440,11 +440,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public boolean outFastButtonPressed() {
-      return currentFastOutButtonPresed;
+      return currentFastOutButtonPressed;
     }
 
     public boolean outFastButtonRising() {
-      return currentFastOutButtonPresed && !lastFastOutButtonPressed;
+      return currentFastOutButtonPressed && !lastFastOutButtonPressed;
     }
 
     public double getCargoJoystick() {
