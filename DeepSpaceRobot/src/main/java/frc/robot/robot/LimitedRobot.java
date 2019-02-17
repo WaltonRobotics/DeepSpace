@@ -48,41 +48,41 @@ public abstract class LimitedRobot extends RobotConfig {
     return getTargets().getTargets().get(target);
   }
 
-  public void setupTalon(TalonSRX talonSRX, TalonSRXConfig talonSRXConfig, Enum limitType) {
-    talonSRX.setNeutralMode(talonSRXConfig.getNeutralMode());
-    talonSRX.configSelectedFeedbackSensor(talonSRXConfig.getFeedbackSensor(), talonSRXConfig.getPIDIdx(),
+  public void setupController(BaseMotorController motorController, BaseMotorControllerConfig talonSRXConfig, Enum limitType) {
+    motorController.setNeutralMode(talonSRXConfig.getNeutralMode());
+    motorController.configSelectedFeedbackSensor(talonSRXConfig.getFeedbackSensor(), talonSRXConfig.getPIDIdx(),
         talonSRXConfig.getTimeout());
-    talonSRX.setSensorPhase(talonSRXConfig.getSensorPhase()); // true for comp bot; false for practice
-    talonSRX.setInverted(talonSRXConfig.isInverted());
+    motorController.setSensorPhase(talonSRXConfig.getSensorPhase()); // true for comp bot; false for practice
+    motorController.setInverted(talonSRXConfig.isInverted());
 
-    talonSRX.setStatusFramePeriod(talonSRXConfig.getStatusFramePeriod(), 10, talonSRXConfig.getTimeout());
+    motorController.setStatusFramePeriod(talonSRXConfig.getStatusFramePeriod().value, 10, talonSRXConfig.getTimeout());
 //    talonSRX.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT);
 
-    talonSRX.configNominalOutputForward(talonSRXConfig.getNominalOutputForward(), talonSRXConfig.getTimeout());
-    talonSRX.configNominalOutputReverse(talonSRXConfig.getNominalOutputReverse(), talonSRXConfig.getTimeout());
-    talonSRX.configPeakOutputForward(talonSRXConfig.getPeakOutputForward(), talonSRXConfig.getTimeout());
-    talonSRX.configPeakOutputReverse(talonSRXConfig.getPeakOutputReverse(), talonSRXConfig.getTimeout());
+    motorController.configNominalOutputForward(talonSRXConfig.getNominalOutputForward(), talonSRXConfig.getTimeout());
+    motorController.configNominalOutputReverse(talonSRXConfig.getNominalOutputReverse(), talonSRXConfig.getTimeout());
+    motorController.configPeakOutputForward(talonSRXConfig.getPeakOutputForward(), talonSRXConfig.getTimeout());
+    motorController.configPeakOutputReverse(talonSRXConfig.getPeakOutputReverse(), talonSRXConfig.getTimeout());
 
-    talonSRX.selectProfileSlot(talonSRXConfig.getProfileSlot(), talonSRXConfig.getPIDIdx());
+    motorController.selectProfileSlot(talonSRXConfig.getProfileSlot(), talonSRXConfig.getPIDIdx());
 
-    talonSRX.config_kP(talonSRXConfig.getProfileSlot(), talonSRXConfig.getKP(), talonSRXConfig.getTimeout());
-    talonSRX.config_kI(talonSRXConfig.getProfileSlot(), talonSRXConfig.getKI(), talonSRXConfig.getTimeout());
-    talonSRX.config_kD(talonSRXConfig.getProfileSlot(), talonSRXConfig.getKD(), talonSRXConfig.getTimeout());
-    talonSRX.config_kF(talonSRXConfig.getProfileSlot(), talonSRXConfig.getKF(), talonSRXConfig.getTimeout());
+    motorController.config_kP(talonSRXConfig.getProfileSlot(), talonSRXConfig.getKP(), talonSRXConfig.getTimeout());
+    motorController.config_kI(talonSRXConfig.getProfileSlot(), talonSRXConfig.getKI(), talonSRXConfig.getTimeout());
+    motorController.config_kD(talonSRXConfig.getProfileSlot(), talonSRXConfig.getKD(), talonSRXConfig.getTimeout());
+    motorController.config_kF(talonSRXConfig.getProfileSlot(), talonSRXConfig.getKF(), talonSRXConfig.getTimeout());
 
-    talonSRX.configMotionCruiseVelocity(talonSRXConfig.getMotionCruiseVelocity(), talonSRXConfig.getTimeout());
-    talonSRX.configMotionAcceleration(talonSRXConfig.getMotionAcceleration(), talonSRXConfig.getTimeout());
+    motorController.configMotionCruiseVelocity(talonSRXConfig.getMotionCruiseVelocity(), talonSRXConfig.getTimeout());
+    motorController.configMotionAcceleration(talonSRXConfig.getMotionAcceleration(), talonSRXConfig.getTimeout());
 
     if (limitType != null) {
       LimitPair limitPair = getLimits().get(limitType);
-      talonSRX.configForwardSoftLimitThreshold(limitPair.getForwardsSoftLimitThreshold(), talonSRXConfig.getTimeout());
-      talonSRX.configReverseSoftLimitThreshold(limitPair.getReverseSoftLimitThreshold(), talonSRXConfig.getTimeout());
+      motorController.configForwardSoftLimitThreshold(limitPair.getForwardsSoftLimitThreshold(), talonSRXConfig.getTimeout());
+      motorController.configReverseSoftLimitThreshold(limitPair.getReverseSoftLimitThreshold(), talonSRXConfig.getTimeout());
 
-      talonSRX.configForwardSoftLimitEnable(talonSRXConfig.isForwardsSoftLimitEnabled(), 10);
-      talonSRX.configReverseSoftLimitEnable(talonSRXConfig.isReverseSoftLimitEnabled(), 10);
+      motorController.configForwardSoftLimitEnable(talonSRXConfig.isForwardsSoftLimitEnabled(), 10);
+      motorController.configReverseSoftLimitEnable(talonSRXConfig.isReverseSoftLimitEnabled(), 10);
 
       /* pass false to FORCE OFF the feature.  Otherwise the enable flags above are honored */
-      talonSRX.overrideLimitSwitchesEnable(talonSRXConfig.isOverrideLimitSwitchesEnabled());
+      motorController.overrideLimitSwitchesEnable(talonSRXConfig.isOverrideLimitSwitchesEnabled());
     }
   }
 }

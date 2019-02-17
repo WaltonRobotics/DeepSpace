@@ -15,7 +15,6 @@ import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_X;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_Y;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_OFFSET;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_PERCENTAGE;
-import static frc.robot.OI.elevatorZeroButton;
 import static frc.robot.OI.gamepad;
 import static frc.robot.RobotMap.clawRotationMotor;
 import static frc.robot.RobotMap.elevatorMotor;
@@ -96,9 +95,9 @@ public class Robot extends TimedRobot {
   }
 
   private void initHardware() {
-    currentRobot.setupTalon(clawRotationMotor, currentRobot.getCargoSubsystemLimits(), null);
-    currentRobot.setupTalon(elevatorMotor, currentRobot.getElevatorSubsystemLimits(), null);
-    currentRobot.setupTalon(hatchRotationMotor, currentRobot.getHatchSubsystemLimits(), null);
+    currentRobot.setupController(clawRotationMotor, currentRobot.getCargoSubsystemLimits(), null);
+    currentRobot.setupController(elevatorMotor, currentRobot.getElevatorSubsystemLimits(), null);
+    currentRobot.setupController(hatchRotationMotor, currentRobot.getHatchSubsystemLimits(), null);
   }
 
   private void initShuffleBoard() {
