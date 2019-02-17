@@ -18,8 +18,10 @@ import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_VELOCITY;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
-import static frc.robot.RobotMap.leftWheel;
-import static frc.robot.RobotMap.rightWheel;
+import static frc.robot.RobotMap.leftWheel1;
+import static frc.robot.RobotMap.leftWheel2;
+import static frc.robot.RobotMap.rightWheel1;
+import static frc.robot.RobotMap.rightWheel2;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Timer;
@@ -62,17 +64,34 @@ public class Drivetrain extends AbstractDrivetrain {
   @Override
   public void setSpeeds(double leftYJoystick, double rightYJoystick) {
     SmartDashboard.putNumber("leftSpeed", leftYJoystick);
-    SmartDashboard.putNumber("leftMotor", leftWheel.getMotorOutputPercent());
+    SmartDashboard.putNumber("leftMotor1", leftWheel1.getMotorOutputPercent());
+    SmartDashboard.putNumber("leftMotor2", leftWheel2.getMotorOutputPercent());
     SmartDashboard.putNumber("rightSpeed", rightYJoystick);
-    SmartDashboard.putNumber("rightMotor", rightWheel.getMotorOutputPercent());
-    leftWheel.set(ControlMode.MotionMagic ,leftYJoystick);
-    rightWheel.set(ControlMode.MotionMagic, rightYJoystick);
+    SmartDashboard.putNumber("rightMotor1", rightWheel1.getMotorOutputPercent());
+    SmartDashboard.putNumber("rightMotor2", rightWheel2.getMotorOutputPercent());
+    leftWheel1.set(ControlMode.PercentOutput ,leftYJoystick);
+    leftWheel2.set(ControlMode.PercentOutput ,leftYJoystick);
+    rightWheel1.set(ControlMode.PercentOutput, rightYJoystick);
+    rightWheel2.set(ControlMode.PercentOutput, rightYJoystick);
   }
 
   @Override
   public void setEncoderDistancePerPulse() {
-    leftWheel.setInverted(currentRobot.getLeftTalonConfig().isInverted());
-    rightWheel.setInverted(currentRobot.getRightTalonConfig().isInverted());
+    leftWheel1.setInverted(currentRobot.getLeftTalonConfig().isInverted());
+    leftWheel2.setInverted(currentRobot.getLeftTalonConfig().isInverted());
+    rightWheel1.setInverted(currentRobot.getRightTalonConfig().isInverted());
+    rightWheel2.setInverted(currentRobot.getRightTalonConfig().isInverted());
+
+    leftWheel1.configPeakOutputForward(1);
+    leftWheel2.configPeakOutputForward(1);
+    leftWheel1.configPeakOutputReverse(-1);
+    leftWheel2.configPeakOutputReverse(-1);
+
+    rightWheel1.configPeakOutputForward(1);
+    rightWheel2.configPeakOutputForward(1);
+    rightWheel1.configPeakOutputReverse(-1);
+    rightWheel2.configPeakOutputReverse(-1);
+
     encoderLeft.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
     encoderRight.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
     encoderLeft.setReverseDirection(currentRobot.getLeftEncoderConfig().isInverted());

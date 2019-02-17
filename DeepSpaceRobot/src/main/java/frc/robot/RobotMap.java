@@ -33,8 +33,11 @@ public class RobotMap {
   // public static int rangefinderModule = 1;
 
 
-  public static final VictorSPX rightWheel = new VictorSPX(currentRobot.getRightTalonConfig().getChanell());// FIXME: 2019-02-13
-  public static final VictorSPX leftWheel = new VictorSPX(currentRobot.getLeftTalonConfig().getChanell());// FIXME: 2019-02-13
+  public static final VictorSPX rightWheel1 = new VictorSPX(currentRobot.getRightTalonConfig().getChanell());
+  public static final VictorSPX rightWheel2 = new VictorSPX(currentRobot.getRightTalonConfig().getChanell() + 1);
+  public static final VictorSPX leftWheel1 = new VictorSPX(currentRobot.getLeftTalonConfig().getChanell());
+  public static final VictorSPX leftWheel2 = new VictorSPX(currentRobot.getLeftTalonConfig().getChanell() + 1);
+
   public static final Talon leftIntakeMotor = new Talon(2);
   public static final Talon rightIntakeMotor = new Talon(3);
   public static final TalonSRX clawRotationMotor = new TalonSRX(currentRobot.getCargoSubsystemLimits().getDeviceID());
