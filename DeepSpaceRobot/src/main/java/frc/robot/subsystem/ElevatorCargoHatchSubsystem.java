@@ -390,7 +390,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       intakePower = 1;
     }
 
-    public void outtakeCargo(int timeout) {
+    public void outtakeCargoSlow(int timeout) {
+      intakeTimeout = currentTime + timeout;
+      intakePower = -0.5;
+    }
+
+    public void outtakeCargoFast(int timeout) {
       intakeTimeout = currentTime + timeout;
       intakePower = -1;
     }
