@@ -51,14 +51,14 @@ public class OI {
 
   public static final JoystickButton shiftUp = new JoystickButton(leftJoystick, SHIFT_UP_PORT);
   public static final JoystickButton shiftDown = new JoystickButton(leftJoystick, SHIFT_DOWN_PORT);
-  public static final JoystickButton elevatorUpButton = new JoystickButton(gamepad, RIGHT_TRIGGER.index()); // All elevator joystick button ports are makeshift for now.
-  public static final JoystickButton elevatorDownButton = new JoystickButton(gamepad, LEFT_TRIGGER.index());
+  public static final JoystickButton elevatorLevel3 = new JoystickButton(gamepad, _4.index()); // All elevator joystick button ports are makeshift for now.
+  public static final JoystickButton elevatorLevel2 = new JoystickButton(gamepad, _3.index());
+  public static final JoystickButton elevatorLevel1 = new JoystickButton(gamepad, _2.index());
   public static final JoystickButton elevatorZeroButton = new JoystickButton(gamepad, _1.index());
-  public static final JoystickButton hatchIntakeButton = new JoystickButton(gamepad, _2.index());
-  public static final JoystickButton hatchFlipOutButton = new JoystickButton(gamepad, _4.index());
+  public static final JoystickButton hatchIntakeButton = new JoystickButton(gamepad, RIGHT_TRIGGER.index());
   public static final JoystickButton intakeCargoButton = new JoystickButton(gamepad, RIGHT_BUMPER.index());
-  public static final JoystickButton outtakeCargoButton = new JoystickButton(gamepad, LEFT_BUMPER.index());
-  public static final JoystickButton flipCargoIntakeButton = new JoystickButton(gamepad, _3.index());
+  public static final JoystickButton outtakeCargoButtonFast = new JoystickButton(gamepad, LEFT_BUMPER.index());
+  public static final JoystickButton outtakeCargoButtonSlow = new JoystickButton(gamepad, LEFT_TRIGGER.index());
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.
