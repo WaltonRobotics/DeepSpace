@@ -9,6 +9,7 @@ import static frc.robot.OI.gamepad;
 import static frc.robot.OI.hatchIntakeButton;
 import static frc.robot.OI.intakeCargoButton;
 import static frc.robot.OI.outtakeCargoButtonFast;
+import static frc.robot.OI.outtakeCargoButtonSlow;
 import static frc.robot.RobotMap.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -349,12 +350,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
 
     // Inputs
-    private boolean lastOutButtonPressed;
+    private boolean lastSlowOutButtonPressed;
+    private boolean currentSlowOuttakePressed;
     private boolean lastInButtonPressed;
-    private boolean lastFlipButtonPressed;
-    private boolean currentOutButtonPressed;
     private boolean currentInButtonPressed;
-    private boolean currentFlipButtonPressed;
+    private boolean lastFastOutButtonPressed;
+    private boolean currentFastOutButtonPresed;
     private int angle;
     private boolean resetLimits = false;
     private double cargoJoystick;
@@ -376,9 +377,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     public void collectData() {
       lastInButtonPressed = currentInButtonPressed;
       currentInButtonPressed = intakeCargoButton.get();
-      lastOutButtonPressed = currentOutButtonPressed;
-      currentOutButtonPressed = outtakeCargoButtonFast.get();
-      lastFlipButtonPressed = currentFlipButtonPressed;
+      lastSlowOutButtonPressed = currentSlowOuttakePressed;
+      currentSlowOuttakePressed = outtakeCargoButtonSlow.get();
+      lastFastOutButtonPressed = currentFastOutButtonPresed;
+      currentFastOutButtonPresed = outtakeCargoButtonFast.get();
       angle = clawRotationMotor.getSelectedSensorPosition();
       cargoJoystick = gamepad.getLeftY();
     }
@@ -425,24 +427,24 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       return currentInButtonPressed;
     }
 
-    public boolean outButtonPressed() {
-      return currentOutButtonPressed;
-    }
-
     public boolean inButtonRising() {
       return currentInButtonPressed && !lastInButtonPressed;
     }
 
-    public boolean outButtonRising() {
-      return currentOutButtonPressed && !lastOutButtonPressed;
+    public boolean outSlowButtonPressed() {
+      return currentSlowOuttakePressed;
     }
 
-    public boolean flipButtonPressed() {
-      return currentFlipButtonPressed;
+    public boolean outSlowButtonRising() {
+      return currentSlowOuttakePressed && !lastSlowOutButtonPressed;
     }
 
-    public boolean flipButtonRising() {
-      return currentFlipButtonPressed && !lastFlipButtonPressed;
+    public boolean outFastButtonPressed() {
+      return currentFastOutButtonPresed;
+    }
+
+    public boolean outFastButtonRising() {
+      return currentFastOutButtonPresed && !lastFastOutButtonPressed;
     }
 
     public double getCargoJoystick() {
