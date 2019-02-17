@@ -5,15 +5,28 @@ import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 
 public class CompStart implements State {
+
     @Override
     public void initialize() {
         Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.ROBOT_SWITCHED_ON);
+
 
     }
 
     @Override
     public State periodic() {
-        return null;
+        if(!Robot.godSubsystem.isEnabled()){
+            return new Disabled();
+        }
+
+        ElevatorCargoHatchSubsystem.ActiveState currentActiveState = Robot.godSubsystem.getCurrentActiveState();
+
+        if (currentActiveState == ElevatorCargoHatchSubsystem.ActiveState.CARGO_HANDLING)
+            return new CargoHandlingTransition();
+        else if ((currentActiveState == ElevatorCargoHatchSubsystem.ActiveState.DEFENSE))
+            return new DefenseTransition();
+        else
+            return new HatchHandlingTransition();
     }
 
     @Override

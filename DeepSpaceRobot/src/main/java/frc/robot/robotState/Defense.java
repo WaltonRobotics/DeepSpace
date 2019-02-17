@@ -12,7 +12,17 @@ public class Defense implements State {
 
     @Override
     public State periodic() {
-        return null;
+
+        if(!Robot.godSubsystem.isEnabled()){
+            return new Disabled();
+        }
+        if(Robot.godSubsystem.cargoModeRising()){
+            return new CargoHandlingTransition();
+        }
+        if(Robot.godSubsystem.hatchModeRising()){
+            return new HatchHandlingTransition();
+        }
+        return this;
     }
 
     @Override

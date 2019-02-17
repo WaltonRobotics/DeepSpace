@@ -1,10 +1,10 @@
 package frc.robot.robot;
 
 
-import frc.robot.subsystem.SubsystemLimits;
+import frc.robot.subsystem.TalonSRXConfig;
+import frc.robot.subsystem.SusystemTargets;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
-import org.waltonrobotics.util.RobotConfig;
 import org.waltonrobotics.util.TalonConfig;
 
 public class CompPowerUp extends LimitedRobot {
@@ -160,7 +160,27 @@ public class CompPowerUp extends LimitedRobot {
   }
 
   @Override
-  SubsystemLimits getSubsystemLimits() {
+  public TalonSRXConfig getCargoSubsystemLimits() {
     return null;
+  }
+
+  @Override
+  public TalonSRXConfig getHatchSubsystemLimits() {
+    return null;
+  }
+
+  @Override
+  public TalonSRXConfig getElevatorSubsystemLimits() {
+    return null;
+  }
+
+  @Override
+  public SusystemTargets getTargets() {
+    return null;
+  }
+
+  @Override
+  public void initLimits() {
+
   }
 }

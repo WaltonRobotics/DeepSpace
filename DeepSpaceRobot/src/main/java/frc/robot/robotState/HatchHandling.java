@@ -10,64 +10,30 @@ import static frc.robot.RobotMap.*;
 
 public class HatchHandling implements State {
 
-    private double hatchUprightPosition = 100;
-    private boolean looseState = false;
-    private double looseStateDuration = 2;
-    private double speedCapMultiplier = 0.1;
 
-    private boolean lastHatchButtonPressed;
-    private boolean lastHatchIntakeButtonPressed;
-    private boolean currentButtonPressed;
+  @Override
+  public void initialize() {
+    Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.HATCH_HANDLING);
+  }
 
-    Timer timer = new Timer();
 
-    @Override
-    public void initialize() {
-        Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.HATCH_HANDLING);
-        Robot.godSubsystem.closeHatchIntake();
+  @Override
+  public State periodic() {
+    if(!Robot.godSubsystem.isEnabled()){
+      return new Disabled();
     }
 
-
-
-    @Override
-    public State periodic() {
-
-        currentButtonPressed = hatchFlipOutButton.get();
-        lastHatchIntakeButtonPressed = hatchIntakeButton.get();
-        lastHatchButtonPressed = currentButtonPressed;
-
-        if (!hatchSensor.get()) {
-            looseState = true;
-            while (looseState && timer.get() <= looseStateDuration) {
-                Robot.drivetrain.setSpeeds(leftJoystick.getY() * speedCapMultiplier, rightJoystick.getY() * speedCapMultiplier);
-                if (timer.get() == looseStateDuration) {
-                    looseState = false;
-                    Robot.drivetrain.setSpeeds(leftJoystick.getY(), rightJoystick.getY());
-                }
-            }
-        }
-
-
-        if (hatchFlipOutButton.get() && !lastHatchButtonPressed) {
-            Robot.godSubsystem.flipInHatchIntake();
-        } else if (hatchFlipOutButton.get() && lastHatchButtonPressed) {
-            Robot.godSubsystem.flipOutHatchIntake();
-        }
-
-        if (hatchIntakeButton.get() && !lastHatchIntakeButtonPressed) {
-            Robot.godSubsystem.openHatchIntake();
-        } else if (hatchIntakeButton.get() && lastHatchIntakeButtonPressed) {
-            Robot.godSubsystem.closeHatchIntake();
-        }
-
-
-        return null;
+    if (Robot.godSubsystem.defenceModeRising()) {
+      return new DefenseTransition();
     }
 
+    return this;
+  }
 
-    @Override
-    public void finish() {
-        Robot.godSubsystem.closeHatchIntake();
-        Robot.godSubsystem.flipInHatchIntake();
-    }
+
+  @Override
+  public void finish() {
+    Robot.godSubsystem.getHatch().setIntake(false);
+    Robot.godSubsystem.getCurrentCommand().cancel();
+  }
 }

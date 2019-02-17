@@ -1,10 +1,16 @@
 package frc.robot.robot;
 
 
-import frc.robot.subsystem.SubsystemLimits;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Elevator;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Hatch;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
+import frc.robot.subsystem.TalonSRXConfig;
+import frc.robot.subsystem.SusystemTargets;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
-import org.waltonrobotics.util.RobotConfig;
 import org.waltonrobotics.util.TalonConfig;
 
 public class PracticeDeepSpace extends LimitedRobot {
@@ -160,7 +166,37 @@ public class PracticeDeepSpace extends LimitedRobot {
   }
 
   @Override
-  SubsystemLimits getSubsystemLimits() {
+  public TalonSRXConfig getCargoSubsystemLimits() {
     return null;
+  }
+
+  @Override
+  public TalonSRXConfig getHatchSubsystemLimits() {
+    return null;
+  }
+
+  @Override
+  public TalonSRXConfig getElevatorSubsystemLimits() {
+    return null;
+  }
+
+  @Override
+  public SusystemTargets getTargets() {
+    return null;
+  }
+
+  @Override
+  public void initLimits() {
+    this.getLimits().put(HatchPosition.SAFE, new LimitPair(70, 90));
+    this.getLimits().put(HatchPosition.DEPLOY, new LimitPair( 0, 90));
+    this.getLimits().put(HatchPosition.CARGO_START, new LimitPair(90, 100));
+    this.getLimits().put(HatchPosition.HATCH_START, new LimitPair(100, 110));
+    this.getLimits().put(CargoPosition.SAFE, new LimitPair(70, 90));
+    this.getLimits().put(CargoPosition.DEPLOY, new LimitPair(0, 90));
+    this.getLimits().put(ElevatorLevel.BASE, new LimitPair(0, 100));
+    this.getLimits().put(ElevatorLevel.LEVEL1, new LimitPair(100, 200));
+    this.getLimits().put(ElevatorLevel.LEVEL2, new LimitPair(200, 300));
+    this.getLimits().put(ElevatorLevel.LEVEL3, new LimitPair(300, 400));
+
   }
 }

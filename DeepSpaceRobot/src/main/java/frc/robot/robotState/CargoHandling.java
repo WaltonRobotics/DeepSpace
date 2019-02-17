@@ -1,50 +1,37 @@
 package frc.robot.robotState;
 
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
+import frc.robot.command.teleop.ElevatorCargo;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 
-import static frc.robot.OI.*;
-
-
 public class CargoHandling implements State {
 
-    public boolean isFlipped() {
-        return RobotMap.clawRotationMotor.getActiveTrajectoryPosition() > 90;
+
+  @Override
+  public void initialize() {
+    Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.CARGO_HANDLING);
+    Scheduler.getInstance().add(new ElevatorCargo());
+  }
+
+  @Override
+  public State periodic() {
+
+    if(!Robot.godSubsystem.isEnabled()){
+      return new Disabled();
     }
 
-    @Override
-    public void initialize() {
-        Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.CARGO_HANDLING);
+    if(Robot.godSubsystem.defenceModeRising())
+      return new DefenseTransition();
 
-    }
+    return this;
+  }
 
-    @Override
-    public State periodic() {
-
-    if(intakeCargoButton.get()) {
-        Robot.godSubsystem.intakeCargo();
-    }
-
-    else if(outtakeCargoButton.get()) {
-        Robot.godSubsystem.outTakeCargo();
-    }
-
-    else if(flipCargoIntakeButton.get()) {
-
-        if(isFlipped())
-            Robot.godSubsystem.flipInClawSystem();
-
-        else
-            Robot.godSubsystem.flipOutClawSystem();
-    }
-
-    return null;
-}
-
-    @Override
-    public void finish() {
-        Robot.godSubsystem.outTakeCargo();
-    }
+  @Override
+  public void finish() {
+    Robot.godSubsystem.getCargo().outtakeCargo(1000);
+    Robot.godSubsystem.getCurrentCommand().cancel();
+  }
 }

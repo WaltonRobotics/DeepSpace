@@ -24,6 +24,25 @@ import org.waltonrobotics.controller.Pose;
  * This class is the glue that binds the controls on the physical operator interface to the commands and command groups
  * that allow control of the robot.
  */
+
+/*
+
+Alex is a demanding person
+
+1. make 9 and 10 cargo and hatch
+2. make dpad the defense
+3. .
+4. slow and fast outtake - 5 and 7
+5. fast intake - 8
+6. hatch - 6
+7. elevator modes = bottom = 2,middle = 1 and 3, top position = 4
+8. hold elevator is click down
+9. right joystick is elevator
+10. left joystick is cargo pivot
+
+ */
+
+
 public class OI {
 
   public static final Joystick leftJoystick = new Joystick(LEFT_JOYSTICK_PORT);
@@ -40,7 +59,6 @@ public class OI {
   public static final JoystickButton intakeCargoButton = new JoystickButton(gamepad, RIGHT_BUMPER.index());
   public static final JoystickButton outtakeCargoButton = new JoystickButton(gamepad, LEFT_BUMPER.index());
   public static final JoystickButton flipCargoIntakeButton = new JoystickButton(gamepad, _3.index());
-
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.

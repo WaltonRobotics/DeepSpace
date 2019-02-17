@@ -1,14 +1,16 @@
 package frc.robot.robot;
 
 
-import frc.robot.subsystem.SubsystemLimits;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import frc.robot.subsystem.SusystemTargets;
+import frc.robot.subsystem.TalonSRXConfig;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
-import org.waltonrobotics.util.RobotConfig;
 import org.waltonrobotics.util.TalonConfig;
 
-public class CompDeepSpace extends LimitedRobot
-{
+public class CompDeepSpace extends LimitedRobot {
 
   public CompDeepSpace() {
     super("Practice DeepSpace");
@@ -161,7 +163,356 @@ public class CompDeepSpace extends LimitedRobot
   }
 
   @Override
-  SubsystemLimits getSubsystemLimits() {
+  public TalonSRXConfig getCargoSubsystemLimits() {
+    return new TalonSRXConfig() {
+      @Override
+      public int getDeviceID() {
+        return 7;
+      }
+
+      @Override
+      public NeutralMode getNeutralMode() {
+        return null;
+      }
+
+      @Override
+      public FeedbackDevice getFeedbackSensor() {
+        return FeedbackDevice.Analog;
+      }
+
+      @Override
+      public boolean getSensorPhase() {
+        return false;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return false;
+      }
+
+      @Override
+      public StatusFrameEnhanced getStatusFramePeriod() {
+        return null;
+      }
+
+      @Override
+      public double getNominalOutputForward() {
+        return 0;
+      }
+
+      @Override
+      public double getNominalOutputReverse() {
+        return 0;
+      }
+
+      @Override
+      public double getPeakOutputForward() {
+        return 0;
+      }
+
+      @Override
+      public double getPeakOutputReverse() {
+        return 0;
+      }
+
+      @Override
+      public int getProfileSlot() {
+        return 0;
+      }
+
+      @Override
+      public double getKP() {
+        return 0;
+      }
+
+      @Override
+      public double getKI() {
+        return 0;
+      }
+
+      @Override
+      public double getKD() {
+        return 0;
+      }
+
+      @Override
+      public double getKF() {
+        return 0;
+      }
+
+      @Override
+      public int getTimeout() {
+        return 0;
+      }
+
+      @Override
+      public int getPIDIdx() {
+        return 0;
+      }
+
+      @Override
+      public int getMotionCruiseVelocity() {
+        return 0;
+      }
+
+      @Override
+      public int getMotionAcceleration() {
+        return 0;
+      }
+
+      @Override
+      public boolean isReverseSoftLimitEnabled() {
+        return false;
+      }
+
+      @Override
+      public boolean isForwardsSoftLimitEnabled() {
+        return false;
+      }
+
+      @Override
+      public boolean isOverrideLimitSwitchesEnabled() {
+        return false;
+      }
+    };
+  }
+
+  @Override
+  public TalonSRXConfig getHatchSubsystemLimits() {
+    return new TalonSRXConfig() {
+      @Override
+      public int getDeviceID() {
+        return 6;
+      }
+
+      @Override
+      public NeutralMode getNeutralMode() {
+        return null;
+      }
+
+      @Override
+      public FeedbackDevice getFeedbackSensor() {
+        return FeedbackDevice.Analog;
+      }
+
+      @Override
+      public boolean getSensorPhase() {
+        return false;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return false;
+      }
+
+      @Override
+      public StatusFrameEnhanced getStatusFramePeriod() {
+        return null;
+      }
+
+      @Override
+      public double getNominalOutputForward() {
+        return 0;
+      }
+
+      @Override
+      public double getNominalOutputReverse() {
+        return 0;
+      }
+
+      @Override
+      public double getPeakOutputForward() {
+        return 0;
+      }
+
+      @Override
+      public double getPeakOutputReverse() {
+        return 0;
+      }
+
+      @Override
+      public int getProfileSlot() {
+        return 0;
+      }
+
+      @Override
+      public double getKP() {
+        return 0;
+      }
+
+      @Override
+      public double getKI() {
+        return 0;
+      }
+
+      @Override
+      public double getKD() {
+        return 0;
+      }
+
+      @Override
+      public double getKF() {
+        return 0;
+      }
+
+      @Override
+      public int getTimeout() {
+        return 0;
+      }
+
+      @Override
+      public int getPIDIdx() {
+        return 0;
+      }
+
+      @Override
+      public int getMotionCruiseVelocity() {
+        return 0;
+      }
+
+      @Override
+      public int getMotionAcceleration() {
+        return 0;
+      }
+
+      @Override
+      public boolean isReverseSoftLimitEnabled() {
+        return false;
+      }
+
+      @Override
+      public boolean isForwardsSoftLimitEnabled() {
+        return false;
+      }
+
+      @Override
+      public boolean isOverrideLimitSwitchesEnabled() {
+        return false;
+      }
+    };
+  }
+
+  @Override
+  public TalonSRXConfig getElevatorSubsystemLimits() {
+    return new TalonSRXConfig() {
+      @Override
+      public int getDeviceID() {
+        return 5;
+      }
+
+      @Override
+      public NeutralMode getNeutralMode() {
+        return null;
+      }
+
+      @Override
+      public FeedbackDevice getFeedbackSensor() {
+        return FeedbackDevice.QuadEncoder;
+      }
+
+      @Override
+      public boolean getSensorPhase() {
+        return false;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return false;
+      }
+
+      @Override
+      public StatusFrameEnhanced getStatusFramePeriod() {
+        return null;
+      }
+
+      @Override
+      public double getNominalOutputForward() {
+        return 0;
+      }
+
+      @Override
+      public double getNominalOutputReverse() {
+        return 0;
+      }
+
+      @Override
+      public double getPeakOutputForward() {
+        return 0;
+      }
+
+      @Override
+      public double getPeakOutputReverse() {
+        return 0;
+      }
+
+      @Override
+      public int getProfileSlot() {
+        return 0;
+      }
+
+      @Override
+      public double getKP() {
+        return 0;
+      }
+
+      @Override
+      public double getKI() {
+        return 0;
+      }
+
+      @Override
+      public double getKD() {
+        return 0;
+      }
+
+      @Override
+      public double getKF() {
+        return 0;
+      }
+
+      @Override
+      public int getTimeout() {
+        return 0;
+      }
+
+      @Override
+      public int getPIDIdx() {
+        return 0;
+      }
+
+      @Override
+      public int getMotionCruiseVelocity() {
+        return 0;
+      }
+
+      @Override
+      public int getMotionAcceleration() {
+        return 0;
+      }
+
+      @Override
+      public boolean isReverseSoftLimitEnabled() {
+        return false;
+      }
+
+      @Override
+      public boolean isForwardsSoftLimitEnabled() {
+        return false;
+      }
+
+      @Override
+      public boolean isOverrideLimitSwitchesEnabled() {
+        return false;
+      }
+    };
+  }
+
+  @Override
+  public SusystemTargets getTargets() {
     return null;
+  }
+
+  @Override
+  public void initLimits() {
   }
 }

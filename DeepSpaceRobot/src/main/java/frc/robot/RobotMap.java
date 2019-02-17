@@ -36,16 +36,15 @@ public class RobotMap {
   public static final VictorSPX leftWheel = new VictorSPX(currentRobot.getLeftTalonConfig().getChanell());// FIXME: 2019-02-13
   public static final Talon leftIntakeMotor = new Talon(1);
   public static final Talon rightIntakeMotor = new Talon(1);
-  public static final TalonSRX clawRotationMotor = new TalonSRX(1);
-  public static final TalonSRX hatchRotationMotor = new TalonSRX(1);
-  public static final TalonSRX elevatorMotor = new TalonSRX(1);
+  public static final TalonSRX clawRotationMotor = new TalonSRX(currentRobot.getCargoSubsystemLimits().getDeviceID());
+  public static final TalonSRX hatchRotationMotor = new TalonSRX(currentRobot.getHatchSubsystemLimits().getDeviceID());
+  public static final TalonSRX elevatorMotor = new TalonSRX(currentRobot.getElevatorSubsystemLimits().getDeviceID());
 
 
   public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
   public static final Solenoid hatchIntake = new Solenoid(1);
 
-  public static final AnalogPotentiometer cargoPotentiometer = new AnalogPotentiometer(0, 360, 30);// FIXME: 2019-02-14 
-  public static final Potentiometer hatchPotentiometer = new AnalogPotentiometer(0, 360, 0);
+  public static final DigitalInput elevatorLowerLimit = new DigitalInput(4);
 
   public static final Encoder encoderRight = new Encoder(
       new DigitalInput(currentRobot.getRightEncoderConfig().getChannell1()),
