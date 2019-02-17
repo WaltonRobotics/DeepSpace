@@ -487,14 +487,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
           break;
       }
 
-      if (currentTime <= intakeTimeout) {
-        RobotMap.leftIntakeMotor.set(intakePower);
-        RobotMap.rightIntakeMotor.set(intakePower);
-      } else {
-        RobotMap.leftIntakeMotor.set(0);
-        RobotMap.rightIntakeMotor.set(0);
+      if (currentTime > intakeTimeout) {
+        intakePower = 0;
       }
 
+      RobotMap.leftIntakeMotor.set(intakePower);
+      RobotMap.rightIntakeMotor.set(intakePower);
     }
 
     public void setLimits(CargoPosition limits) {
