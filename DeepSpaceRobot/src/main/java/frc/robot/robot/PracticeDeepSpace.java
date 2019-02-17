@@ -212,12 +212,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getPeakOutputForward() {
-        return 0;
+        return 1;
       }
 
       @Override
       public double getPeakOutputReverse() {
-        return 0;
+        return -1;
       }
 
       @Override
@@ -257,12 +257,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public int getMotionCruiseVelocity() {
-        return 0;
+        return 2500;
       }
 
       @Override
       public int getMotionAcceleration() {
-        return 0;
+        return 2000;
       }
 
       @Override
@@ -307,7 +307,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isInverted() {
-        return true;
+        return false;
       }
 
       @Override
@@ -327,12 +327,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getPeakOutputForward() {
-        return 0;
+        return 1;
       }
 
       @Override
       public double getPeakOutputReverse() {
-        return 0;
+        return -1;
       }
 
       @Override
@@ -372,12 +372,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public int getMotionCruiseVelocity() {
-        return 0;
+        return 2500;
       }
 
       @Override
       public int getMotionAcceleration() {
-        return 0;
+        return 2000;
       }
 
       @Override
@@ -417,7 +417,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public boolean getSensorPhase() {
-        return true;
+        return false;
       }
 
       @Override
@@ -442,12 +442,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getPeakOutputForward() {
-        return 0;
+        return 1;
       }
 
       @Override
       public double getPeakOutputReverse() {
-        return 0;
+        return -1;
       }
 
       @Override
@@ -487,12 +487,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public int getMotionCruiseVelocity() {
-        return 0;
+        return 2500;
       }
 
       @Override
       public int getMotionAcceleration() {
-        return 0;
+        return 2000;
       }
 
       @Override
