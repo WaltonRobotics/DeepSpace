@@ -542,8 +542,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     private boolean lastIntakeButtonPressed;
     private boolean currentIntakeButtonPressed;
-    private boolean lastFlipButtonPressed;
-    private boolean currentFlipButtonPressed;
     private boolean resetLimits = false;
 
     private HatchPosition limits = HatchPosition.SAFE;
@@ -562,8 +560,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     @Override
     public void collectData() {
       lastIntakeButtonPressed = currentIntakeButtonPressed;
-      currentIntakeButtonPressed = hatchIntakeButton.get();
-      lastFlipButtonPressed = currentFlipButtonPressed;
       currentIntakeButtonPressed = hatchIntakeButton.get();
       angle = hatchRotationMotor.getSelectedSensorPosition();
     }
