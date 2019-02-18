@@ -296,14 +296,12 @@ public class Robot extends TimedRobot {
     godSubsystem.getCargo().setClawRotationPower(gamepad.getLeftX());
 
     if (catchHatch) {
-      if (hatchIntake.get()) {
-        godSubsystem.getHatch().setIntake(false);
-//        hatchIntake.set(false);
-      }
-    } else {
       if (!hatchIntake.get()) {
         godSubsystem.getHatch().setIntake(true);
-//        hatchIntake.set(true);
+      }
+    } else {
+      if (hatchIntake.get()) {
+        godSubsystem.getHatch().setIntake(false);
       }
     }
 
