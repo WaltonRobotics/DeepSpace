@@ -7,20 +7,15 @@
 
 package frc.robot.subsystem;
 
-import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KACC;
-import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KANGLE;
-import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KK;
-import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KL;
-import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KS;
-import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KV;
-import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_ACCELERATION;
-import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_VELOCITY;
+import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT;
+import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
-import static frc.robot.RobotMap.leftWheel;
-import static frc.robot.RobotMap.rightWheel;
+import static frc.robot.RobotMap.leftWheels;
+import static frc.robot.RobotMap.rightWheels;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -34,18 +29,9 @@ import org.waltonrobotics.controller.RobotPair;
  */
 public class Drivetrain extends AbstractDrivetrain {
 
-
+  
   public Drivetrain() {
     super(currentRobot);
-
-    SmartDashboard.putNumber(CONSTANTS_KV, currentRobot.getKV());
-    SmartDashboard.putNumber(CONSTANTS_KACC, currentRobot.getKAcc());
-    SmartDashboard.putNumber(CONSTANTS_KK, currentRobot.getKK());
-    SmartDashboard.putNumber(CONSTANTS_KS, currentRobot.getKS());
-    SmartDashboard.putNumber(CONSTANTS_KANGLE, currentRobot.getKAng());
-    SmartDashboard.putNumber(CONSTANTS_MAX_VELOCITY, currentRobot.getMaxVelocity());
-    SmartDashboard.putNumber(CONSTANTS_MAX_ACCELERATION, currentRobot.getMaxAcceleration());
-    SmartDashboard.putNumber(CONSTANTS_KL, currentRobot.getKL());
   }
 
   @Override
@@ -61,21 +47,27 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public void setSpeeds(double leftYJoystick, double rightYJoystick) {
-    SmartDashboard.putNumber("leftSpeed", leftYJoystick);
-    SmartDashboard.putNumber("leftMotor", leftWheel.get());
-    SmartDashboard.putNumber("rightSpeed", rightYJoystick);
-    SmartDashboard.putNumber("rightMotor", rightWheel.get());
+    SmartDashboard.putNumber(DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT, leftWheels.getMotorOutputPercent());
+    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT, rightWheels.getMotorOutputPercent());
 
-    leftWheel.set(leftYJoystick);
-    rightWheel.set(rightYJoystick);
+    leftWheels.set(ControlMode.PercentOutput, leftYJoystick);
+    rightWheels.set(ControlMode.PercentOutput, rightYJoystick);
   }
 
   @Override
   public void setEncoderDistancePerPulse() {
-    leftWheel.setInverted(currentRobot.getLeftTalonConfig().isInverted());
-    rightWheel.setInverted(currentRobot.getRightTalonConfig().isInverted());
+    leftWheels.setInverted(currentRobot.getLeftTalonConfig().isInverted());
+    rightWheels.setInverted(currentRobot.getRightTalonConfig().isInverted());
+
+    leftWheels.configPeakOutputForward(1);
+    leftWheels.configPeakOutputReverse(-1);
+
+    rightWheels.configPeakOutputForward(1);
+    rightWheels.configPeakOutputReverse(-1);
+
     encoderLeft.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
     encoderRight.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
+
     encoderLeft.setReverseDirection(currentRobot.getLeftEncoderConfig().isInverted());
     encoderRight.setReverseDirection(currentRobot.getRightEncoderConfig().isInverted());
 
