@@ -45,10 +45,26 @@ public class Config {
     public static final String CONSTANTS_KACC = "Constants/KAcc";
     public static final String CONSTANTS_KK = "Constants/KK";
     public static final String CONSTANTS_KS = "Constants/KS";
+
     public static final String PARKING_LINE_OFFSET = "Parking Line/Offset";
     public static final String PARKING_LINE_FOCUS_X = "Parking Line/Focus X";
     public static final String PARKING_LINE_FOCUS_Y = "Parking Line/Focus Y";
     public static final String PARKING_LINE_PERCENTAGE = "Parking Line/Percentage";
+
+    public static final String DRIVETRAIN_ACTUAL_POSITION = "Drivetrain/Position";
+    public static final String DRIVETRAIN_RIGHT_ENCODER = "Drivetrain/Encoder Right";
+    public static final String DRIVETRAIN_LEFT_ENCODER = "Drivetrain/Encoder Left";
+    public static final String DRIVETRAIN_LEFT_JOYSTICK_Y = "Drivetrain/leftSpeed";
+    public static final String DRIVETRAIN_RIGHT_JOYSTICK_Y = "Drivetrain/rightSpeed";
+    public static final String DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT = "Drivetrain/leftMotor";
+    public static final String DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT = "Drivetrain/rightMotor";
+
+    public static final String MOTORS_ELEVATOR_HEIGHT = "Motors/Elevator Height";
+    public static final String MOTORS_HATCH_ANGLE = "Motors/Hatch Angle";
+    public static final String MOTORS_CARGO_ANGLE = "Motors/Cargo Angle";
+
+    public static final String DRIVETEAM_FISHEYE_CAMERA = "Driveteam/Fisheye Camera";
+    public static final String DRIVETEAM_TRANSFORM_SELECT = "Driveteam/Transform Select";
 
     private SmartDashboardKeys() {
     }

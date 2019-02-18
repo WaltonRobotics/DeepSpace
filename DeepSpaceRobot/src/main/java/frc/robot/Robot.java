@@ -11,6 +11,26 @@ import static frc.robot.Config.Camera.DEFAULT_CAMERA_COMPRESSION_QUALITY;
 import static frc.robot.Config.Camera.FPS;
 import static frc.robot.Config.Camera.HEIGHT;
 import static frc.robot.Config.Camera.WIDTH;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KACC;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KANGLE;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KK;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KL;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KS;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KV;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_ACCELERATION;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_VELOCITY;
+import static frc.robot.Config.SmartDashboardKeys.DRIVETEAM_FISHEYE_CAMERA;
+import static frc.robot.Config.SmartDashboardKeys.DRIVETEAM_TRANSFORM_SELECT;
+import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_ACTUAL_POSITION;
+import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_ENCODER;
+import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_JOYSTICK_Y;
+import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT;
+import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_ENCODER;
+import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_JOYSTICK_Y;
+import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_ANGLE;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_HEIGHT;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ANGLE;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_X;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_Y;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_OFFSET;
@@ -22,8 +42,6 @@ import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.hatchIntake;
 import static frc.robot.RobotMap.hatchRotationMotor;
-import static frc.robot.RobotMap.leftIntakeMotor;
-import static frc.robot.RobotMap.rightIntakeMotor;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
@@ -31,7 +49,6 @@ import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -65,6 +82,7 @@ public class Robot extends TimedRobot {
   public static final ElevatorCargoHatchSubsystem godSubsystem;
   public static final SendableChooser<Transform> transformSendableChooser = new SendableChooser<>();
   private static final RobotBuilder<LimitedRobot> robotBuilder;
+
 
   static {
     robotBuilder = new RobotBuilder<>(new CompPowerUp(), new CompSteamWorks(), new PracticeDeepSpace(),
@@ -106,32 +124,44 @@ public class Robot extends TimedRobot {
     transformSendableChooser.addOption("Sigmoid", new Sigmoid());
     transformSendableChooser.addOption("Sqrt", new Sqrt());
 
-    SmartDashboard.putData("Transform Select", transformSendableChooser);
+    SmartDashboard.putData(DRIVETEAM_TRANSFORM_SELECT, transformSendableChooser);
 
-    SmartDashboard.putNumber("dx", 2);
-    SmartDashboard.putNumber("dy", 0.5);
-    SmartDashboard.putNumber("angle", 30);
+    SmartDashboard.putNumber(CONSTANTS_KV, currentRobot.getKV());
+    SmartDashboard.putNumber(CONSTANTS_KACC, currentRobot.getKAcc());
+    SmartDashboard.putNumber(CONSTANTS_KK, currentRobot.getKK());
+    SmartDashboard.putNumber(CONSTANTS_KS, currentRobot.getKS());
+    SmartDashboard.putNumber(CONSTANTS_KANGLE, currentRobot.getKAng());
+    SmartDashboard.putNumber(CONSTANTS_MAX_VELOCITY, currentRobot.getMaxVelocity());
+    SmartDashboard.putNumber(CONSTANTS_MAX_ACCELERATION, currentRobot.getMaxAcceleration());
+    SmartDashboard.putNumber(CONSTANTS_KL, currentRobot.getKL());
 
-    SmartDashboard.putNumber("Elevator", 0);
-    SmartDashboard.putNumber("Hatch Angle", 0);
-    SmartDashboard.putNumber("Cargo Angle", 0);
-    SmartDashboard.putBoolean("hatch", catchHatch);
+    SmartDashboard.putNumber(MOTORS_ELEVATOR_HEIGHT, 0);
+    SmartDashboard.putNumber(MOTORS_HATCH_ANGLE, 0);
+    SmartDashboard.putNumber(MOTORS_CARGO_ANGLE, 0);
+
+    SmartDashboard.putNumber(PARKING_LINE_OFFSET, 0);
+    SmartDashboard.putNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0);
+    SmartDashboard.putNumber(PARKING_LINE_FOCUS_Y, HEIGHT / 2.0);
+    SmartDashboard.putNumber(PARKING_LINE_PERCENTAGE, 1.0);
+
+    SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, "No position has been reported");
+    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, 0);
+    SmartDashboard.putNumber(DRIVETRAIN_LEFT_ENCODER, 0);
+    SmartDashboard.putNumber(DRIVETRAIN_LEFT_JOYSTICK_Y, 0);
+    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, 0);
+    SmartDashboard.putNumber(DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT, 0);
+    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT, 0);
   }
 
   private void initCamera() {
     new Thread(() -> {
-      SmartDashboard.putNumber(PARKING_LINE_OFFSET, 0);
-      SmartDashboard.putNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0);
-      SmartDashboard.putNumber(PARKING_LINE_FOCUS_Y, HEIGHT / 2.0);
-      SmartDashboard.putNumber(PARKING_LINE_PERCENTAGE, 1.0);
-
       CameraServer cameraServer = CameraServer.getInstance();
 
       UsbCamera fishEyeCamera = cameraServer.startAutomaticCapture();
       fishEyeCamera.setResolution(WIDTH, HEIGHT);
 
       CvSink cvSink = cameraServer.getVideo();
-      CvSource outputStream = cameraServer.putVideo("Fisheye Camera", WIDTH, HEIGHT);
+      CvSource outputStream = cameraServer.putVideo(DRIVETEAM_FISHEYE_CAMERA, WIDTH, HEIGHT);
       outputStream.setFPS(FPS);
 
       MjpegServer fisheyeServer = cameraServer.addServer("Fisheye Camera Server");
@@ -154,7 +184,7 @@ public class Robot extends TimedRobot {
             SmartDashboard.getNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0),
             SmartDashboard.getNumber(PARKING_LINE_FOCUS_Y, HEIGHT / 2.0)
         );
-        ParkingLines.setPercentage(SmartDashboard.getNumber(PARKING_LINE_PERCENTAGE, 1));
+        ParkingLines.setPercentage(SmartDashboard.getNumber(PARKING_LINE_PERCENTAGE, 1.0));
         ParkingLines.setXOffset(SmartDashboard.getNumber(PARKING_LINE_OFFSET, 0));
 
         ParkingLines.drawParkingLines(source);
@@ -172,13 +202,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Encoder Left", encoderLeft.getDistance());
-    SmartDashboard.putNumber("Encoder Right", encoderRight.getDistance());
-    SmartDashboard.putString("Position", String.valueOf(drivetrain.getActualPosition()));
+    SmartDashboard.putNumber(DRIVETRAIN_LEFT_ENCODER, encoderLeft.getDistance());
+    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, encoderRight.getDistance());
+    SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, String.valueOf(drivetrain.getActualPosition()));
 
-    SmartDashboard.putNumber("Elevator", godSubsystem.getElevator().getElevatorHeight());
-    SmartDashboard.putNumber("Hatch Angle", godSubsystem.getHatch().getAngle());
-    SmartDashboard.putNumber("Cargo Angle", godSubsystem.getCargo().getAngle());
+    SmartDashboard.putNumber(MOTORS_ELEVATOR_HEIGHT, godSubsystem.getElevator().getElevatorHeight());
+    SmartDashboard.putNumber(MOTORS_HATCH_ANGLE, godSubsystem.getHatch().getAngle());
+    SmartDashboard.putNumber(MOTORS_CARGO_ANGLE, godSubsystem.getCargo().getAngle());
     // System.out.println("robot Periodic");
   }
 
@@ -265,7 +295,6 @@ public class Robot extends TimedRobot {
     godSubsystem.getHatch().setHatchRotationPower(godSubsystem.getCargo().getCargoJoystick());
     godSubsystem.getCargo().setClawRotationPower(gamepad.getLeftX());
 
-    SmartDashboard.putBoolean("hatch", catchHatch);
     if (catchHatch) {
       if (hatchIntake.get()) {
         godSubsystem.getHatch().setIntake(false);
