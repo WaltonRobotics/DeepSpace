@@ -42,8 +42,6 @@ public class TestRunner extends CommandGroup {
   @Override
   protected void end() {
     super.end();
-    System.out.println("hello i am ending");
-
     for (TestCommand testCommand : testCommands) {
       System.out.println(testCommand.getTestName());
       if (testCommand.isCompleted()) {

@@ -123,6 +123,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     drivetrain.cancelControllerMotion();
     drivetrain.getMotionLogger().writeMotionDataCSV(true);
+    System.out.println("shfksh");
   }
 
   @Override
@@ -165,7 +166,7 @@ public class Robot extends TimedRobot {
     motorTestCommand.addSequential(new CargoIntakerTestCommand());
     motorTestCommand.addSequential(new HatchIntakerTestCommand());
     motorTestCommand.addSequential(new ElevatorTestCommand());
-    motorTestCommand.start();
+    //motorTestCommand.start();
     SmartDashboard.putData("Test commands", motorTestCommand);
   }
 
