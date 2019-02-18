@@ -630,8 +630,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       }
 
       hatchIntake.set(intakeIsSet);
-
-
     }
 
 

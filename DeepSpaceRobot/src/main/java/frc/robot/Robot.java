@@ -116,42 +116,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Hatch Angle", 0);
     SmartDashboard.putNumber("Cargo Angle", 0);
     SmartDashboard.putBoolean("hatch", catchHatch);
-
-    SmartDashboard.putData("Elevator Reset", new Command() {
-      @Override
-      protected void initialize() {
-        elevatorMotor.setSelectedSensorPosition(0, 0, 100);
-      }
-
-      @Override
-      protected boolean isFinished() {
-        return true;
-      }
-    });
-    SmartDashboard.putData("Cargo Rest", new Command() {
-      @Override
-      protected void initialize() {
-        clawRotationMotor.setSelectedSensorPosition(0, 0, 100);
-      }
-
-      @Override
-      protected boolean isFinished() {
-        return true;
-      }
-    });
-
-    SmartDashboard.putData("Hatch Rest", new Command() {
-      @Override
-      protected void initialize() {
-        hatchRotationMotor.setSelectedSensorPosition(0, 0, 100);
-      }
-
-      @Override
-      protected boolean isFinished() {
-        return true;
-      }
-    });
-
   }
 
   private void initCamera() {
