@@ -123,7 +123,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     drivetrain.cancelControllerMotion();
     drivetrain.getMotionLogger().writeMotionDataCSV(true);
-    System.out.println("shfksh");
+    System.out.println("am disabled ");
   }
 
   @Override
