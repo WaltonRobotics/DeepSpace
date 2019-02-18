@@ -20,7 +20,10 @@ import static frc.robot.Gamepad.Button._1;
 import static frc.robot.Gamepad.Button._2;
 import static frc.robot.Gamepad.Button._3;
 import static frc.robot.Gamepad.Button._4;
+import static frc.robot.Robot.catchHatch;
 import static frc.robot.Robot.drivetrain;
+import static frc.robot.Robot.intake;
+import static frc.robot.Robot.outtake;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -104,6 +107,10 @@ public class OI {
         drivetrain.setStartingPosition(Pose.ZERO);
       }
     });
+
+    elevatorLevel1Button.whenPressed(new InstantCommand(() -> catchHatch = !catchHatch));
+    elevatorLevel2Button.whenPressed(new InstantCommand(() -> intake = !intake));
+    elevatorLevel3Button.whenPressed(new InstantCommand(() -> outtake = !outtake));
   }
 
   private OI() {

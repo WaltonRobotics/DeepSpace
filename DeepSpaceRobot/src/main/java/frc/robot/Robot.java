@@ -93,9 +93,9 @@ public class Robot extends TimedRobot {
     godSubsystem = new ElevatorCargoHatchSubsystem();
   }
 
-  private boolean catchHatch;
-  private boolean outtake;
-  private boolean intake;
+  public static boolean catchHatch;
+  public static boolean outtake;
+  public static boolean intake;
 
   /**
    * This function is run when the robot is first started up and should be used for any initialization code.
@@ -280,18 +280,6 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
 
     godSubsystem.getElevator().setElevatorPower(godSubsystem.getElevator().getElevatorJoystick());
-
-    if (godSubsystem.getElevator().isElevatorLevel1ButtonPressed()) { //2
-      catchHatch = !catchHatch;
-    }
-    if (godSubsystem.getElevator().isElevatorLevel2ButtonPressed()) { //3
-      intake = !intake;
-    }
-
-    if (godSubsystem.getElevator().isElevatorLevel3ButtonPressed()) { //4
-      outtake = !outtake;
-    }
-
     godSubsystem.getHatch().setHatchRotationPower(godSubsystem.getCargo().getCargoJoystick());
     godSubsystem.getCargo().setClawRotationPower(gamepad.getLeftX());
 
