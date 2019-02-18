@@ -1,12 +1,14 @@
 package frc.robot.robot;
 
 
+import frc.robot.config.BaseMotorControllerConfig;
+import frc.robot.config.LimitedRobot;
+import frc.robot.config.SubsystemTargets;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
-import org.waltonrobotics.util.RobotConfig;
 import org.waltonrobotics.util.TalonConfig;
 
-public class CompPowerUp extends RobotConfig {
+public class CompPowerUp extends LimitedRobot {
 
   public CompPowerUp() {
     super("Comp PowerUp");
@@ -155,6 +157,41 @@ public class CompPowerUp extends RobotConfig {
 
   @Override
   public boolean isCurrentRobot() {
-    return true;
+    return false;
+  }
+
+  @Override
+  public BaseMotorControllerConfig getCargoSubsystemLimits() {
+    return null;
+  }
+
+  @Override
+  public BaseMotorControllerConfig getHatchSubsystemLimits() {
+    return null;
+  }
+
+  @Override
+  public BaseMotorControllerConfig getElevatorSubsystemLimits() {
+    return null;
+  }
+
+  @Override
+  public SubsystemTargets getTargets() {
+    return null;
+  }
+
+  @Override
+  public TalonConfig getLeftIntakeMotorConfig() {
+    return null;
+  }
+
+  @Override
+  public TalonConfig getRightIntakeMotorConfig() {
+    return null;
+  }
+
+  @Override
+  public void initLimits() {
+
   }
 }

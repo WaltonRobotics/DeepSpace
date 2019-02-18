@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class TestCommand extends Command {
 
-  private List<TestResult> testResult = new ArrayList<>();
+  private final List<TestResult> testResult = new ArrayList<>();
 
   public String getTestName() {
     return getClass().getSimpleName();

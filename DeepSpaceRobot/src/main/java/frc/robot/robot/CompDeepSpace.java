@@ -1,12 +1,17 @@
 package frc.robot.robot;
 
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import frc.robot.config.BaseMotorControllerConfig;
+import frc.robot.config.LimitedRobot;
+import frc.robot.config.SubsystemTargets;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
-import org.waltonrobotics.util.RobotConfig;
 import org.waltonrobotics.util.TalonConfig;
 
-public class CompDeepSpace extends RobotConfig {
+public class CompDeepSpace extends LimitedRobot {
 
   public CompDeepSpace() {
     super("Practice DeepSpace");
@@ -156,5 +161,389 @@ public class CompDeepSpace extends RobotConfig {
   @Override
   public boolean isCurrentRobot() {
     return false;
+  }
+
+  @Override
+  public BaseMotorControllerConfig getCargoSubsystemLimits() {
+    return new BaseMotorControllerConfig() {
+      @Override
+      public int getDeviceID() {
+        return 7;
+      }
+
+      @Override
+      public NeutralMode getNeutralMode() {
+        return null;
+      }
+
+      @Override
+      public FeedbackDevice getFeedbackSensor() {
+        return FeedbackDevice.Analog;
+      }
+
+      @Override
+      public boolean getSensorPhase() {
+        return false;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return false;
+      }
+
+      @Override
+      public StatusFrameEnhanced getStatusFramePeriod() {
+        return null;
+      }
+
+      @Override
+      public double getNominalOutputForward() {
+        return 0;
+      }
+
+      @Override
+      public double getNominalOutputReverse() {
+        return 0;
+      }
+
+      @Override
+      public double getPeakOutputForward() {
+        return 0;
+      }
+
+      @Override
+      public double getPeakOutputReverse() {
+        return 0;
+      }
+
+      @Override
+      public int getProfileSlot() {
+        return 0;
+      }
+
+      @Override
+      public double getKP() {
+        return 0;
+      }
+
+      @Override
+      public double getKI() {
+        return 0;
+      }
+
+      @Override
+      public double getKD() {
+        return 0;
+      }
+
+      @Override
+      public double getKF() {
+        return 0;
+      }
+
+      @Override
+      public int getTimeout() {
+        return 0;
+      }
+
+      @Override
+      public int getPIDIdx() {
+        return 0;
+      }
+
+      @Override
+      public int getMotionCruiseVelocity() {
+        return 0;
+      }
+
+      @Override
+      public int getMotionAcceleration() {
+        return 0;
+      }
+
+      @Override
+      public boolean isReverseSoftLimitEnabled() {
+        return false;
+      }
+
+      @Override
+      public boolean isForwardsSoftLimitEnabled() {
+        return false;
+      }
+
+      @Override
+      public boolean isOverrideLimitSwitchesEnabled() {
+        return false;
+      }
+    };
+  }
+
+  @Override
+  public BaseMotorControllerConfig getHatchSubsystemLimits() {
+    return new BaseMotorControllerConfig() {
+      @Override
+      public int getDeviceID() {
+        return 6;
+      }
+
+      @Override
+      public NeutralMode getNeutralMode() {
+        return null;
+      }
+
+      @Override
+      public FeedbackDevice getFeedbackSensor() {
+        return FeedbackDevice.Analog;
+      }
+
+      @Override
+      public boolean getSensorPhase() {
+        return false;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return false;
+      }
+
+      @Override
+      public StatusFrameEnhanced getStatusFramePeriod() {
+        return null;
+      }
+
+      @Override
+      public double getNominalOutputForward() {
+        return 0;
+      }
+
+      @Override
+      public double getNominalOutputReverse() {
+        return 0;
+      }
+
+      @Override
+      public double getPeakOutputForward() {
+        return 0;
+      }
+
+      @Override
+      public double getPeakOutputReverse() {
+        return 0;
+      }
+
+      @Override
+      public int getProfileSlot() {
+        return 0;
+      }
+
+      @Override
+      public double getKP() {
+        return 0;
+      }
+
+      @Override
+      public double getKI() {
+        return 0;
+      }
+
+      @Override
+      public double getKD() {
+        return 0;
+      }
+
+      @Override
+      public double getKF() {
+        return 0;
+      }
+
+      @Override
+      public int getTimeout() {
+        return 0;
+      }
+
+      @Override
+      public int getPIDIdx() {
+        return 0;
+      }
+
+      @Override
+      public int getMotionCruiseVelocity() {
+        return 0;
+      }
+
+      @Override
+      public int getMotionAcceleration() {
+        return 0;
+      }
+
+      @Override
+      public boolean isReverseSoftLimitEnabled() {
+        return false;
+      }
+
+      @Override
+      public boolean isForwardsSoftLimitEnabled() {
+        return false;
+      }
+
+      @Override
+      public boolean isOverrideLimitSwitchesEnabled() {
+        return false;
+      }
+    };
+  }
+
+  @Override
+  public BaseMotorControllerConfig getElevatorSubsystemLimits() {
+    return new BaseMotorControllerConfig() {
+      @Override
+      public int getDeviceID() {
+        return 5;
+      }
+
+      @Override
+      public NeutralMode getNeutralMode() {
+        return null;
+      }
+
+      @Override
+      public FeedbackDevice getFeedbackSensor() {
+        return FeedbackDevice.QuadEncoder;
+      }
+
+      @Override
+      public boolean getSensorPhase() {
+        return false;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return false;
+      }
+
+      @Override
+      public StatusFrameEnhanced getStatusFramePeriod() {
+        return null;
+      }
+
+      @Override
+      public double getNominalOutputForward() {
+        return 0;
+      }
+
+      @Override
+      public double getNominalOutputReverse() {
+        return 0;
+      }
+
+      @Override
+      public double getPeakOutputForward() {
+        return 0;
+      }
+
+      @Override
+      public double getPeakOutputReverse() {
+        return 0;
+      }
+
+      @Override
+      public int getProfileSlot() {
+        return 0;
+      }
+
+      @Override
+      public double getKP() {
+        return 0;
+      }
+
+      @Override
+      public double getKI() {
+        return 0;
+      }
+
+      @Override
+      public double getKD() {
+        return 0;
+      }
+
+      @Override
+      public double getKF() {
+        return 0;
+      }
+
+      @Override
+      public int getTimeout() {
+        return 0;
+      }
+
+      @Override
+      public int getPIDIdx() {
+        return 0;
+      }
+
+      @Override
+      public int getMotionCruiseVelocity() {
+        return 0;
+      }
+
+      @Override
+      public int getMotionAcceleration() {
+        return 0;
+      }
+
+      @Override
+      public boolean isReverseSoftLimitEnabled() {
+        return false;
+      }
+
+      @Override
+      public boolean isForwardsSoftLimitEnabled() {
+        return false;
+      }
+
+      @Override
+      public boolean isOverrideLimitSwitchesEnabled() {
+        return false;
+      }
+    };
+  }
+
+  @Override
+  public SubsystemTargets getTargets() {
+    return null;
+  }
+
+  @Override
+  public TalonConfig getLeftIntakeMotorConfig() {
+    return new TalonConfig() {
+      @Override
+      public int getChanell() {
+        return 2;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return false;
+      }
+    };
+  }
+
+  @Override
+  public TalonConfig getRightIntakeMotorConfig() {
+    return new TalonConfig() {
+      @Override
+      public int getChanell() {
+        return 3;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return true;
+      }
+    };
+  }
+
+  @Override
+  public void initLimits() {
   }
 }

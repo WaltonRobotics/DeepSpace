@@ -7,10 +7,11 @@
 
 package frc.robot.command.teleop;
 
+import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_JOYSTICK_Y;
+import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_JOYSTICK_Y;
 import static frc.robot.Robot.currentRobot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
@@ -25,7 +26,7 @@ public class Drive extends Command {
   }
 
   public Transform getTransform() {
-    return ((SendableChooser<Transform>) SmartDashboard.getData("Transform Select")).getSelected();
+    return Robot.transformSendableChooser.getSelected();
   }
 
   // Called just before this command runs the first time
@@ -48,8 +49,8 @@ public class Drive extends Command {
     double leftYJoystick = getLeftYJoystick();
     double rightYJoystick = getRightYJoystick();
 
-    SmartDashboard.putNumber("leftJoystick", leftYJoystick);
-    SmartDashboard.putNumber("rightJoystick", rightYJoystick);
+    SmartDashboard.putNumber(DRIVETRAIN_LEFT_JOYSTICK_Y, leftYJoystick);
+    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, rightYJoystick);
 
     Transform transform = getTransform();
     leftYJoystick = transform.transform(leftYJoystick);

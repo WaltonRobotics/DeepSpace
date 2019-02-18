@@ -12,7 +12,18 @@ import static frc.robot.Config.Inputs.LEFT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.SHIFT_DOWN_PORT;
 import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
+import static frc.robot.Gamepad.Button.LEFT_BUMPER;
+import static frc.robot.Gamepad.Button.LEFT_TRIGGER;
+import static frc.robot.Gamepad.Button.RIGHT_BUMPER;
+import static frc.robot.Gamepad.Button.RIGHT_TRIGGER;
+import static frc.robot.Gamepad.Button._1;
+import static frc.robot.Gamepad.Button._2;
+import static frc.robot.Gamepad.Button._3;
+import static frc.robot.Gamepad.Button._4;
+import static frc.robot.Robot.catchHatch;
 import static frc.robot.Robot.drivetrain;
+import static frc.robot.Robot.intake;
+import static frc.robot.Robot.outtake;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -23,6 +34,25 @@ import org.waltonrobotics.controller.Pose;
  * This class is the glue that binds the controls on the physical operator interface to the commands and command groups
  * that allow control of the robot.
  */
+
+/*
+
+Alex is a demanding person
+
+1. make 9 and 10 cargo and hatch
+2. make dpad the defense
+3. .
+4. slow and fast outtake - 5 and 7
+5. fast intake - 8
+6. hatch - 6
+7. elevator modes = bottom = 2,middle = 1 and 3, top position = 4
+8. hold elevator is click down
+9. right joystick is elevator
+10. left joystick is cargo pivot
+
+ */
+
+
 public class OI {
 
   public static final Joystick leftJoystick = new Joystick(LEFT_JOYSTICK_PORT);
@@ -31,7 +61,15 @@ public class OI {
 
   public static final JoystickButton shiftUp = new JoystickButton(leftJoystick, SHIFT_UP_PORT);
   public static final JoystickButton shiftDown = new JoystickButton(leftJoystick, SHIFT_DOWN_PORT);
-
+  public static final JoystickButton elevatorLevel3Button = new JoystickButton(gamepad,
+      _4.index()); // All elevator joystick button ports are makeshift for now.
+  public static final JoystickButton elevatorLevel2Button = new JoystickButton(gamepad, _3.index());
+  public static final JoystickButton elevatorLevel1Button = new JoystickButton(gamepad, _2.index());
+  public static final JoystickButton elevatorZeroButton = new JoystickButton(gamepad, _1.index());
+  public static final JoystickButton hatchIntakeButton = new JoystickButton(gamepad, RIGHT_TRIGGER.index());
+  public static final JoystickButton intakeCargoButton = new JoystickButton(gamepad, RIGHT_BUMPER.index());
+  public static final JoystickButton outtakeCargoButtonFast = new JoystickButton(gamepad, LEFT_BUMPER.index());
+  public static final JoystickButton outtakeCargoButtonSlow = new JoystickButton(gamepad, LEFT_TRIGGER.index());
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.
@@ -69,5 +107,12 @@ public class OI {
         drivetrain.setStartingPosition(Pose.ZERO);
       }
     });
+
+    elevatorLevel1Button.whenPressed(new InstantCommand(() -> catchHatch = !catchHatch));
+    elevatorLevel2Button.whenPressed(new InstantCommand(() -> intake = !intake));
+    elevatorLevel3Button.whenPressed(new InstantCommand(() -> outtake = !outtake));
+  }
+
+  private OI() {
   }
 }
