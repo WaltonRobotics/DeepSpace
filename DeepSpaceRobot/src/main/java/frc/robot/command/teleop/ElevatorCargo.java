@@ -9,16 +9,17 @@ package frc.robot.command.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Elevator;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 
 
 public class ElevatorCargo extends Command {
 
-  private ElevatorCargoHatchSubsystem.Elevator elevator;
-  private ElevatorCargoHatchSubsystem.Cargo cargo;
+  private final Elevator elevator;
+  private final Cargo cargo;
 
   public ElevatorCargo() {
     requires(Robot.godSubsystem);

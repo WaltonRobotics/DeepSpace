@@ -26,9 +26,9 @@ import frc.robot.util.Logger;
 
 public class ElevatorCargoHatchSubsystem extends Subsystem {
 
-  private Elevator elevator = new Elevator();
-  private Cargo cargo = new Cargo();
-  private Hatch hatch = new Hatch();
+  private final Elevator elevator = new Elevator();
+  private final Cargo cargo = new Cargo();
+  private final Hatch hatch = new Hatch();
   private ActiveState currentActiveState = ActiveState.ROBOT_SWITCHED_ON;
   private long currentTime = 0;
   private boolean lastDefenceModePressed;
@@ -160,7 +160,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   public enum ElevatorLevel {
     UNKNOWN(0), BASE(100), CARGO1(200), HATCH1(250), CARGO2(300), HATCH2(350), CARGO3(400), HATCH3(450);
 
-    private double target;
+    private final double target;
 
     ElevatorLevel(double target) {
       this.target = target;
@@ -198,8 +198,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     CARGO_START(180, 200),
     ANGLED(0, 10);
 
-    private int angle;
-    private int upperBound;
+    private final int angle;
+    private final int upperBound;
 
     CargoPosition(int angle, int upperBound) {
       this.angle = angle;
@@ -226,8 +226,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     HATCH_START(100, 140),
     CARGO_START(180, 200);
 
-    private int angle;
-    private int upperBound;  // halfway between two different positions
+    private final int angle;
+    private final int upperBound;  // halfway between two different positions
 
     HatchPosition(int angle, int upperBound) {
       this.angle = angle;
@@ -249,6 +249,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
   public class Elevator implements SubSubsystem {
 
+    private final Logger elevatorLogger;
     // Inputs
     private boolean lastLevel3ButtonPressed;
     private boolean currentLevel3ButtonPressed;
@@ -268,7 +269,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private double elevatorCurrentPower;
     private double elevatorCurrentTarget;
     private ElevatorControlMode elevatorControlMode;
-    private Logger elevatorLogger;
 
     public Elevator() {
       elevatorLogger = new Logger();
@@ -368,12 +368,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       return (currentLevel3ButtonPressed != lastLevel3ButtonPressed) && currentLevel3ButtonPressed;
     }
 
-    public boolean wasElevatorlevel2ButtonPressed() {
+    public boolean wasElevatorLevel2ButtonPressed() {
       return (currentLevel2ButtonPressed != lastLevel2ButtonPressed) && currentLevel2ButtonPressed;
     }
 
     public boolean wasElevatorLevel1ButtonPressed() {
-      return (currentLevel1ButtonPressed != lastLevel1ButtonPressed && currentLevel1ButtonPressed);
+      return ((currentLevel1ButtonPressed != lastLevel1ButtonPressed) && currentLevel1ButtonPressed);
     }
 
     /* Get raw height of elevator from encoder ticks. */
@@ -419,9 +419,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
   public class Cargo implements SubSubsystem {
 
+    private final Logger cargoLogger;
     private long intakeTimeout = 0;
-
-
     // Inputs
     private boolean lastSlowOutButtonPressed;
     private boolean currentSlowOuttakePressed;
@@ -432,10 +431,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private int angle;
     private boolean resetLimits = false;
     private double cargoJoystick;
-
     private CargoPosition limits = CargoPosition.SAFE;
-
-    private Logger cargoLogger;
     // Outputs
     private double intakePower;
     private double clawRotationPower;
@@ -582,18 +578,16 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   public class Hatch implements SubSubsystem {
     // Output
 
+    private final Logger hatchLogger;
     private boolean lastIntakeButtonPressed;
     private boolean currentIntakeButtonPressed;
     private boolean resetLimits = false;
-
     private HatchPosition limits = HatchPosition.SAFE;
     private int angle;
     private boolean intakeIsSet;
     private double hatchRotationPower;
     private int hatchTarget;
     private HatchControlMode hatchControlMode;
-
-    private Logger hatchLogger;
 
     public Hatch() {
       hatchLogger = new Logger();

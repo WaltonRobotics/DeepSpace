@@ -1,11 +1,10 @@
 package frc.robot;
 
-import static junit.framework.TestCase.assertTrue;
-
 import frc.robot.util.Logger;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class LoggerTest {
@@ -24,7 +23,7 @@ public class LoggerTest {
 
     logger.logInfo(testLogString);
 
-    assertTrue(os.toString().contains(testLogString));
+    Assert.assertTrue(os.toString().contains(testLogString));
   }
 
   @Test
@@ -41,7 +40,7 @@ public class LoggerTest {
 
     logger.logWarning(testLogString);
 
-    assertTrue(os.toString().contains(testLogString));
+    Assert.assertTrue(os.toString().contains(testLogString));
   }
 
   @Test
@@ -58,7 +57,7 @@ public class LoggerTest {
 
     logger.logError(testLogString);
 
-    assertTrue(os.toString().contains(testLogString));
+    Assert.assertTrue(os.toString().contains(testLogString));
   }
 
 }

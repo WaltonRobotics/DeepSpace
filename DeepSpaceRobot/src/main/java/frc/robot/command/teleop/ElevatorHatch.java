@@ -11,16 +11,17 @@ import static frc.robot.RobotMap.hatchIntake;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Elevator;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Hatch;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchControlMode;
 
 
 public class ElevatorHatch extends Command {
 
-  private ElevatorCargoHatchSubsystem.Elevator elevator;
-  private ElevatorCargoHatchSubsystem.Hatch hatch;
+  private final Elevator elevator;
+  private final Hatch hatch;
 
   public ElevatorHatch() {
     requires(Robot.godSubsystem);

@@ -1,6 +1,7 @@
 package frc.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -53,12 +54,12 @@ public abstract class BaseMotorControllerConfig {
 
   public abstract boolean isForwardsSoftLimitEnabled();
 
-  public void setForwardsSoftLimitThreshold(TalonSRX talonSRX, int newForwardsSoftLimitThreshold) {
+  public void setForwardsSoftLimitThreshold(IMotorController talonSRX, int newForwardsSoftLimitThreshold) {
     talonSRX.configForwardSoftLimitThreshold(newForwardsSoftLimitThreshold, getTimeout());
   }
 
 
-  public void setReverseSoftLimitThreshold(TalonSRX talonSRX, int newReverseSoftLimitThreshold) {
+  public void setReverseSoftLimitThreshold(IMotorController talonSRX, int newReverseSoftLimitThreshold) {
     talonSRX.configReverseSoftLimitThreshold(newReverseSoftLimitThreshold, getTimeout());
   }
 

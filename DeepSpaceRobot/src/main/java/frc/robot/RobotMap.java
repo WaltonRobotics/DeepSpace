@@ -71,4 +71,7 @@ public class RobotMap {
     leftIntakeMotor.setInverted(currentRobot.getLeftIntakeMotorConfig().isInverted());
     rightIntakeMotor.setInverted(currentRobot.getRightIntakeMotorConfig().isInverted());
   }
+
+  private RobotMap() {
+  }
 }

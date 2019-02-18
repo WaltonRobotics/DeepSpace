@@ -2,13 +2,13 @@ package frc.robot.command.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Elevator;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorControlMode;
 
 
 public class ZeroElevator extends Command {
 
-  private ElevatorCargoHatchSubsystem.Elevator elevator;
+  private final Elevator elevator;
 
   public ZeroElevator() {
     requires(Robot.godSubsystem);

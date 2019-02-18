@@ -1,5 +1,6 @@
 package frc.robot;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.opencv.highgui.HighGui.waitKey;
 
 import edu.wpi.first.wpiutil.RuntimeDetector;
@@ -41,7 +42,7 @@ public class ParkingLineTest {
     camera.retrieve(mat);
     camera.release();
 
-    ParkingLines.setPercentage(.9);
+    ParkingLines.setPercentage(0.9);
     ParkingLines.setXOffset(40);
     ParkingLines.setFocusPoint(mat.width() / 2.0, mat.height() * (2.0 / 3.0));
     ParkingLines.drawParkingLines(mat);
@@ -49,6 +50,6 @@ public class ParkingLineTest {
     HighGui.imshow("Camera", mat);
     waitKey(2500);
 
-    Assert.assertTrue(true);
+    Assert.assertThat(true, is(true));
   }
 }

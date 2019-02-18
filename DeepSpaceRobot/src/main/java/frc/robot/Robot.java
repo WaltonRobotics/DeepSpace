@@ -63,8 +63,8 @@ public class Robot extends TimedRobot {
   public static final LimitedRobot currentRobot;
   public static final Drivetrain drivetrain;
   public static final ElevatorCargoHatchSubsystem godSubsystem;
-  private static final RobotBuilder<LimitedRobot> robotBuilder;
   public static final SendableChooser<Transform> transformSendableChooser = new SendableChooser<>();
+  private static final RobotBuilder<LimitedRobot> robotBuilder;
 
   static {
     robotBuilder = new RobotBuilder<>(new CompPowerUp(), new CompSteamWorks(), new PracticeDeepSpace(),
@@ -75,7 +75,6 @@ public class Robot extends TimedRobot {
     godSubsystem = new ElevatorCargoHatchSubsystem();
   }
 
-  public boolean isHatch = true;
   private boolean catchHatch;
   private boolean outtake;
   private boolean intake;
@@ -110,7 +109,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Transform Select", transformSendableChooser);
 
     SmartDashboard.putNumber("dx", 2);
-    SmartDashboard.putNumber("dy", .5);
+    SmartDashboard.putNumber("dy", 0.5);
     SmartDashboard.putNumber("angle", 30);
 
     SmartDashboard.putNumber("Elevator", 0);
@@ -288,14 +287,14 @@ public class Robot extends TimedRobot {
 
     godSubsystem.getElevator().setElevatorPower(godSubsystem.getElevator().getElevatorJoystick());
 
-    if (Robot.godSubsystem.getElevator().isElevatorLevel1ButtonPressed()) { //2
+    if (godSubsystem.getElevator().isElevatorLevel1ButtonPressed()) { //2
       catchHatch = !catchHatch;
     }
-    if (Robot.godSubsystem.getElevator().isElevatorLevel2ButtonPressed()) { //3
+    if (godSubsystem.getElevator().isElevatorLevel2ButtonPressed()) { //3
       intake = !intake;
     }
 
-    if (Robot.godSubsystem.getElevator().isElevatorLevel3ButtonPressed()) { //4
+    if (godSubsystem.getElevator().isElevatorLevel3ButtonPressed()) { //4
       outtake = !outtake;
     }
 

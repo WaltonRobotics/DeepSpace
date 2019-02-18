@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class Logger {
 
       for (OutputStream os : writeables) {
         try {
-          os.write(outputString.getBytes());
+          os.write(outputString.getBytes(StandardCharsets.UTF_8));
           os.flush();
         } catch (IOException e) {
           e.printStackTrace();

@@ -124,12 +124,12 @@ public class CompSteamWorks extends LimitedRobot {
 
   @Override
   public double getKS() {
-    return .85;
+    return 0.85;
   }
 
   @Override
   public double getKAng() {
-    return .3;
+    return 0.3;
   }
 
   @Override

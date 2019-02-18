@@ -2,13 +2,13 @@ package frc.robot.robotState;
 
 import frc.robot.Robot;
 import frc.robot.state.State;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ActiveState;
 
 public class CompStart implements State {
 
   @Override
   public void initialize() {
-    Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.ROBOT_SWITCHED_ON);
+    Robot.godSubsystem.setCurrentActiveState(ActiveState.ROBOT_SWITCHED_ON);
 
 
   }
@@ -19,11 +19,11 @@ public class CompStart implements State {
       return new Disabled();
     }
 
-    ElevatorCargoHatchSubsystem.ActiveState currentActiveState = Robot.godSubsystem.getCurrentActiveState();
+    ActiveState currentActiveState = Robot.godSubsystem.getCurrentActiveState();
 
-    if (currentActiveState == ElevatorCargoHatchSubsystem.ActiveState.CARGO_HANDLING) {
+    if (currentActiveState == ActiveState.CARGO_HANDLING) {
       return new CargoHandlingTransition();
-    } else if (currentActiveState == ElevatorCargoHatchSubsystem.ActiveState.DEFENSE) {
+    } else if (currentActiveState == ActiveState.DEFENSE) {
       return new DefenseTransition();
     } else {
       return new HatchHandlingTransition();

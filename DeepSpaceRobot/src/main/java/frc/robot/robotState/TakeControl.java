@@ -4,10 +4,12 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
 import frc.robot.command.teleop.ZeroElevator;
 import frc.robot.state.State;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Elevator;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Hatch;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 
@@ -15,9 +17,9 @@ public class TakeControl implements State {
 
   @Override
   public void initialize() {
-    ElevatorCargoHatchSubsystem.Cargo cargo = Robot.godSubsystem.getCargo();
-    ElevatorCargoHatchSubsystem.Hatch hatch = Robot.godSubsystem.getHatch();
-    ElevatorCargoHatchSubsystem.Elevator elevator = Robot.godSubsystem.getElevator();
+    Cargo cargo = Robot.godSubsystem.getCargo();
+    Hatch hatch = Robot.godSubsystem.getHatch();
+    Elevator elevator = Robot.godSubsystem.getElevator();
 
     int currentCargoAngle = cargo.getAngle();
     //FIXME:int elevatorPosition = elevator.getElevatorHeight();

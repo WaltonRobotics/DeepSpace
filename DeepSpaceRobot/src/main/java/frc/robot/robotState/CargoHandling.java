@@ -4,14 +4,14 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
 import frc.robot.command.teleop.ElevatorCargo;
 import frc.robot.state.State;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ActiveState;
 
 public class CargoHandling implements State {
 
 
   @Override
   public void initialize() {
-    Robot.godSubsystem.setCurrentActiveState(ElevatorCargoHatchSubsystem.ActiveState.CARGO_HANDLING);
+    Robot.godSubsystem.setCurrentActiveState(ActiveState.CARGO_HANDLING);
     Scheduler.getInstance().add(new ElevatorCargo());
   }
 

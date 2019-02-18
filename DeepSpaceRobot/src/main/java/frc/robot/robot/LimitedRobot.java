@@ -10,9 +10,9 @@ import org.waltonrobotics.util.TalonConfig;
 
 public abstract class LimitedRobot extends RobotConfig {
 
-  private HashMap<Enum, LimitPair> limits = new HashMap<>();
+  private final HashMap<Enum, LimitPair> limits = new HashMap<>();
 
-  public LimitedRobot(String robotName) {
+  protected LimitedRobot(String robotName) {
     super(robotName);
   }
 

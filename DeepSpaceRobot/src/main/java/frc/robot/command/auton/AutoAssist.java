@@ -7,7 +7,9 @@ import org.waltonrobotics.command.SimpleMotion;
 import org.waltonrobotics.controller.CameraData;
 
 public class AutoAssist extends Command {
+
   private boolean foundTarget = false;
+
   @Override
   protected void execute() {
     CameraData currentCameraData = SimpleMotion.getDrivetrain().getCurrentCameraData();

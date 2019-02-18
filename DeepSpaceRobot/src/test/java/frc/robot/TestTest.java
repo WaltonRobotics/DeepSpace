@@ -7,8 +7,9 @@
 
 package frc.robot;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -18,7 +19,7 @@ public class TestTest {
 
   @Test
   public void testTestingTest() {
-    assertTrue(true);
+    Assert.assertThat(true, is(true));
   }
 
 }

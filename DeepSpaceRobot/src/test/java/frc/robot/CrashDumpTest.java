@@ -1,9 +1,10 @@
 package frc.robot;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
 
 import frc.robot.util.CrashDump;
 import java.io.File;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class CrashDumpTest {
@@ -16,7 +17,7 @@ public class CrashDumpTest {
 
     File tmpDir = new File(CrashDump.getCrashDumpFilePath());
 
-    assertTrue(tmpDir.exists());
+    Assert.assertThat(tmpDir.exists(), is(true));
   }
 
 }

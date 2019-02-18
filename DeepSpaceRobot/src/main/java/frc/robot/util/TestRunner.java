@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TestRunner extends CommandGroup {
 
-  private List<TestCommand> testCommands = new ArrayList<>();
+  private final List<TestCommand> testCommands = new ArrayList<>();
 
 
   public final synchronized void addSequential(TestCommand testCommand) {

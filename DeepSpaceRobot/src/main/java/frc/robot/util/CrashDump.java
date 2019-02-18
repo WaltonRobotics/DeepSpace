@@ -8,9 +8,12 @@ import java.util.UUID;
 
 public class CrashDump {
 
-  public final static String CRASH_DUMP_DEFAULT_FILE_PATH = "/home/lvuser/CrashDump.txt";
+  public static final String CRASH_DUMP_DEFAULT_FILE_PATH = "/home/lvuser/CrashDump.txt";
   private static final UUID RUN_INSTANCE_UUID = UUID.randomUUID();
   private static String crashDumpFilePath = CRASH_DUMP_DEFAULT_FILE_PATH;
+
+  private CrashDump() {
+  }
 
   public static void logRobotStartup() {
     logMarker("Robot startup");
@@ -54,11 +57,11 @@ public class CrashDump {
 
   private static void logMarker(String mark, Throwable nullableException) {
     try (PrintWriter writer = new PrintWriter(new FileWriter(crashDumpFilePath, true))) {
-      writer.print(RUN_INSTANCE_UUID.toString());
+      writer.print(RUN_INSTANCE_UUID);
       writer.print(", ");
       writer.print(mark);
       writer.print(", ");
-      writer.print(new Date().toString());
+      writer.print(new Date());
 
       if (nullableException != null) {
         writer.print(", ");
