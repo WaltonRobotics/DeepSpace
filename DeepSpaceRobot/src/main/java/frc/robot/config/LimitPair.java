@@ -1,4 +1,4 @@
-package frc.robot.robot;
+package frc.robot.config;
 
 public class LimitPair {
 

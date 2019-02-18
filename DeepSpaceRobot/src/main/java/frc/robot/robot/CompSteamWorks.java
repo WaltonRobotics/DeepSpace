@@ -1,7 +1,8 @@
 package frc.robot.robot;
 
-import frc.robot.subsystem.BaseMotorControllerConfig;
-import frc.robot.subsystem.SubsystemTargets;
+import frc.robot.config.BaseMotorControllerConfig;
+import frc.robot.config.LimitedRobot;
+import frc.robot.config.SubsystemTargets;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
 import org.waltonrobotics.util.TalonConfig;

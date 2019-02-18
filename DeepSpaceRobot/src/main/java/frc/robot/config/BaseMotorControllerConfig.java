@@ -1,11 +1,10 @@
-package frc.robot.subsystem;
+package frc.robot.config;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import frc.robot.robot.LimitPair;
 
 public abstract class BaseMotorControllerConfig {
 

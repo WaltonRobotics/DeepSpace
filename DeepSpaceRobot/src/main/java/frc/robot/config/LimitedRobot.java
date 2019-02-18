@@ -1,9 +1,7 @@
-package frc.robot.robot;
+package frc.robot.config;
 
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import frc.robot.subsystem.BaseMotorControllerConfig;
-import frc.robot.subsystem.SubsystemTargets;
 import java.util.HashMap;
 import org.waltonrobotics.util.RobotConfig;
 import org.waltonrobotics.util.TalonConfig;
