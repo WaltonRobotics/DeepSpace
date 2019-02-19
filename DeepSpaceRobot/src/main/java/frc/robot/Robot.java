@@ -48,6 +48,7 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -319,6 +320,13 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     System.out.println("testInit");
+    TestRunner MotorTestCommand = new TestRunner();
+    MotorTestCommand.addSequential(new EncoderTestCommand());
+    MotorTestCommand.addSequential(new MotorTestCommand());
+    MotorTestCommand.addSequential(new HatchIntakerTestCommand());
+    MotorTestCommand.addSequential(new CargoIntakerTestCommand());
+    MotorTestCommand.addSequential(new ElevatorTestCommand());
+
 }
 
   /**

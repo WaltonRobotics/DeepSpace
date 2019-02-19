@@ -4,11 +4,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.TestCommand;
-
-
 import static frc.robot.Robot.drivetrain;
-import static frc.robot.RobotMap.leftWheel;
-import static frc.robot.RobotMap.rightWheel;
+import static frc.robot.RobotMap.leftWheels;
+import static frc.robot.RobotMap.rightWheels;
 
 public class MotorTestCommand extends TestCommand {
 
@@ -25,9 +23,9 @@ public class MotorTestCommand extends TestCommand {
     @Override
     protected void executeTest() {
         drivetrain.setSpeeds(speed, speed);
-        if ((speed != -leftWheel.get()))
+        if ((speed != -leftWheels.getMotorOutputPercent()))
             throw new AssertionError("Left wheel speed issue");
-        if ((speed != rightWheel.get()))
+        if ((speed != rightWheels.getMotorOutputPercent()))
             throw new AssertionError("Right wheel speed issue");
     }
 
