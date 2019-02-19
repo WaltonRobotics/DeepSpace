@@ -274,6 +274,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       elevatorLogger = new Logger();
     }
 
+    public double getElevatorCurrentTarget() {
+      return elevatorCurrentTarget;
+    }
+
     public boolean isZeroed() {
       return isZeroed;
     }
@@ -312,7 +316,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 //      elevatorLogger.logInfo(logOutput);
 
       if (resetLimits) {
-        Robot.currentRobot.setElevatorLimit(elevatorMotor, limits);
+        currentRobot.setElevatorLimit(elevatorMotor, limits);
         resetLimits = false;
       }
 
@@ -442,6 +446,14 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       cargoLogger = new Logger();
     }
 
+    public int getClawTarget() {
+      return clawTarget;
+    }
+
+    public void setClawTarget(CargoPosition clawTarget) {
+      this.clawTarget = clawTarget.getAngle();
+    }
+
     @Override
     public void collectData() {
       lastInButtonPressed = currentInButtonPressed;
@@ -453,7 +465,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       angle = clawRotationMotor.getSelectedSensorPosition();
       cargoJoystick = gamepad.getLeftY();
     }
-
 
     public void intakeCargo(int timeout) {
       intakeTimeout = currentTime + timeout;
@@ -474,7 +485,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       intakePower = 0;
     }
 
-
     public ClawControlMode getClawControlMode() {
       return clawControlMode;
     }
@@ -489,10 +499,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     public void setClawRotationPower(double clawRotationPower) {
       this.clawRotationPower = clawRotationPower;
-    }
-
-    public void setClawTarget(CargoPosition clawTarget) {
-      this.clawTarget = clawTarget.getAngle();
     }
 
     public void setClawAngle(int angle) {
@@ -539,7 +545,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 //      cargoLogger.logInfo(logOutput);
 
       if (resetLimits) {
-        Robot.currentRobot.setCargoLimit(clawRotationMotor, limits);
+        currentRobot.setCargoLimit(clawRotationMotor, limits);
         resetLimits = false;
       }
 
@@ -593,6 +599,22 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       hatchLogger = new Logger();
     }
 
+    public double getHatchRotationPower() {
+      return hatchRotationPower;
+    }
+
+    public void setHatchRotationPower(double hatchRotationPower) {
+      this.hatchRotationPower = hatchRotationPower;
+    }
+
+    public int getHatchTarget() {
+      return hatchTarget;
+    }
+
+    public void setHatchTarget(HatchPosition hatchTarget) {
+      this.hatchTarget = hatchTarget.getAngle();
+    }
+
     @Override
     public void collectData() {
       lastIntakeButtonPressed = currentIntakeButtonPressed;
@@ -612,7 +634,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 //      hatchLogger.logInfo(logOutput);
 
       if (resetLimits) {
-        Robot.currentRobot.setHatchLimit(hatchRotationMotor, limits);
+        currentRobot.setHatchLimit(hatchRotationMotor, limits);
         resetLimits = false;
       }
 
@@ -630,11 +652,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       }
 
       hatchIntake.set(intakeIsSet);
-    }
-
-
-    public void setHatchRotationPower(double hatchRotationPower) {
-      this.hatchRotationPower = hatchRotationPower;
     }
 
     @Override
@@ -660,10 +677,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     public void setHatchControlMode(HatchControlMode hatchControlMode) {
       this.hatchControlMode = hatchControlMode;
-    }
-
-    public void setHatchTarget(HatchPosition hatchTarget) {
-      this.hatchTarget = hatchTarget.getAngle();
     }
 
     public void setHatchAngle(int angle) {
