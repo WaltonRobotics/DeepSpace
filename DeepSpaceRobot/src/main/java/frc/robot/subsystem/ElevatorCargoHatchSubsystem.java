@@ -242,9 +242,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     DEPLOY(0, 40),
     SAFE(0, 90),
-    HATCH_START(100, 140),
-    CARGO_START(180, 200),
-    ANGLED(0, 10);
 
     private final int angle;
     private final int upperBound;
