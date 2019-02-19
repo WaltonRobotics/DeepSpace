@@ -10,26 +10,28 @@ public class CargoIntakerTestCommand extends TestCommand {
 
   @Override
   protected void initializeTest() {
-    Robot.godSubsystem.getCargo().setClawControlMode(ClawControlMode.MANUAL);
+    Robot.godSubsystem.getCargo().setClawControlMode(ClawControlMode.AUTO);
     Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.DEPLOY);
   }
 
   @Override
   protected void executeTest() {
-    assert CargoPosition.DEPLOY.isClose(Robot.godSubsystem.getCargo().getAngle());
+    if (!CargoPosition.DEPLOY.isClose(Robot.godSubsystem.getCargo().getAngle())) {
+      throw new AssertionError("Cargo angle issue");
+    }
     if(Robot.godSubsystem.getCargo().inButtonPressed()){
       if (RobotMap.leftIntakeMotor.get() != 1 || RobotMap.rightIntakeMotor.get() != 1) {
-        throw new AssertionError();
+        throw new AssertionError("Intake issue");
       }
     }
     if(Robot.godSubsystem.getCargo().outSlowButtonPressed()){
       if (RobotMap.leftIntakeMotor.get() != -.5 || RobotMap.rightIntakeMotor.get() != -.5) {
-        throw new AssertionError();
+        throw new AssertionError("Outtake slow issue");
       }
     }
     if(Robot.godSubsystem.getCargo().outFastButtonPressed()){
       if (RobotMap.leftIntakeMotor.get() != -1 || RobotMap.rightIntakeMotor.get() != -1) {
-        throw new AssertionError();
+        throw new AssertionError("Outtake fast issue");
       }
     }
   }
