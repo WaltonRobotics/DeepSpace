@@ -301,7 +301,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       lastLevel1ButtonPressed = currentLevel1ButtonPressed;
       currentLevel1ButtonPressed = elevatorLevel1Button.get();
 
-      elevatorJoystick = gamepad.getRightY();
+      elevatorJoystick = -gamepad.getRightY();
       currentEncoderPosition = elevatorMotor.getSelectedSensorPosition(0);
 
       lowerLimit = elevatorLowerLimit.get();
@@ -463,7 +463,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       lastFastOutButtonPressed = currentFastOutButtonPressed;
       currentFastOutButtonPressed = outtakeCargoButtonFast.get();
       angle = clawRotationMotor.getSelectedSensorPosition();
-      cargoJoystick = gamepad.getLeftY();
+      cargoJoystick = -gamepad.getLeftY();
     }
 
     public void intakeCargo(int timeout) {
