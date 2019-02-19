@@ -74,9 +74,10 @@ public abstract class LimitedRobot extends RobotConfig {
     motorController.config_kI(talonSRXConfig.getProfileSlot(), talonSRXConfig.getKI(), talonSRXConfig.getTimeout());
     motorController.config_kD(talonSRXConfig.getProfileSlot(), talonSRXConfig.getKD(), talonSRXConfig.getTimeout());
     motorController.config_kF(talonSRXConfig.getProfileSlot(), talonSRXConfig.getKF(), talonSRXConfig.getTimeout());
-
     motorController.configMotionCruiseVelocity(talonSRXConfig.getMotionCruiseVelocity(), talonSRXConfig.getTimeout());
     motorController.configMotionAcceleration(talonSRXConfig.getMotionAcceleration(), talonSRXConfig.getTimeout());
+    motorController
+        .configClosedLoopPeakOutput(talonSRXConfig.getProfileSlot(), talonSRXConfig.getClosedLoopPeakOutput());
 
     if (limitType != null) {
       LimitPair limitPair = getLimits().get(limitType);

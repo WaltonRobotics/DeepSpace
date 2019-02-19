@@ -68,4 +68,8 @@ public abstract class BaseMotorControllerConfig {
   }
 
   public abstract boolean isOverrideLimitSwitchesEnabled();
+
+  public double getClosedLoopPeakOutput(){
+    return 1.0;
+  }
 }

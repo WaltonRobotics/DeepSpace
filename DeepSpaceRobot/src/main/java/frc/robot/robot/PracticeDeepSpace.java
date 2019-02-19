@@ -279,6 +279,11 @@ public class PracticeDeepSpace extends LimitedRobot {
       public boolean isOverrideLimitSwitchesEnabled() {
         return false;
       }
+
+      @Override
+      public double getClosedLoopPeakOutput() {
+        return 0.4;
+      }
     };
   }
 
