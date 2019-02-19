@@ -12,6 +12,7 @@ public abstract class LimitedRobot extends RobotConfig {
 
   protected LimitedRobot(String robotName) {
     super(robotName);
+    initLimits();
   }
 
   public HashMap<Enum, LimitPair> getLimits() {
