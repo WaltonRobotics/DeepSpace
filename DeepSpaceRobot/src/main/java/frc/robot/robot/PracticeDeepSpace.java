@@ -554,13 +554,14 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public void initLimits() {
-    this.getLimits().put(HatchPosition.SAFE, new LimitPair(70, 90));
-    this.getLimits().put(HatchPosition.DEPLOY, new LimitPair(0, 90));
-    this.getLimits().put(HatchPosition.CARGO_START, new LimitPair(90, 100));
-    this.getLimits().put(HatchPosition.HATCH_START, new LimitPair(100, 110));
-    this.getLimits().put(CargoPosition.SAFE, new LimitPair(70, 90));
-    this.getLimits().put(CargoPosition.DEPLOY, new LimitPair(0, 90));
-    this.getLimits().put(CargoPosition.ANGLED, new LimitPair(0, 10));
+    this.getLimits().put(HatchPosition.CARGO_START, new LimitPair(-300, -568));
+    this.getLimits().put(HatchPosition.HATCH_START, new LimitPair(-466, -568));
+    this.getLimits().put(HatchPosition.SAFE, new LimitPair(-528, -578));
+    this.getLimits().put(HatchPosition.DEPLOY, new LimitPair(-528, -772));
+
+    this.getLimits().put(CargoPosition.SAFE, new LimitPair(655, 633));
+    this.getLimits().put(CargoPosition.DEPLOY, new LimitPair(655/* 548*/, 380));
+
     this.getLimits().put(ElevatorLevel.BASE, new LimitPair(0, 100));
     this.getLimits().put(ElevatorLevel.CARGO1, new LimitPair(100, 200));
     this.getLimits().put(ElevatorLevel.CARGO2, new LimitPair(200, 300));
