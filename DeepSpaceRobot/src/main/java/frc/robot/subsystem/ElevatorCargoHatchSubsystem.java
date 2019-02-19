@@ -304,7 +304,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       elevatorJoystick = -gamepad.getRightY();
       currentEncoderPosition = elevatorMotor.getSelectedSensorPosition(0);
 
-      lowerLimit = elevatorLowerLimit.get();
+      lowerLimit = !elevatorLowerLimit.get();
       baseIsPressed = elevatorZeroButton.get();
     }
 
