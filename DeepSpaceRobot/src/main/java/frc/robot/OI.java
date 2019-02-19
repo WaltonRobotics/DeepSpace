@@ -17,9 +17,11 @@ import static frc.robot.Gamepad.Button.LEFT_TRIGGER;
 import static frc.robot.Gamepad.Button.RIGHT_BUMPER;
 import static frc.robot.Gamepad.Button.RIGHT_TRIGGER;
 import static frc.robot.Gamepad.Button._1;
+import static frc.robot.Gamepad.Button._10;
 import static frc.robot.Gamepad.Button._2;
 import static frc.robot.Gamepad.Button._3;
 import static frc.robot.Gamepad.Button._4;
+import static frc.robot.Gamepad.Button._9;
 import static frc.robot.Robot.drivetrain;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -66,6 +68,9 @@ public class OI {
   public static final JoystickButton intakeCargoButton = new JoystickButton(gamepad, RIGHT_BUMPER.index());
   public static final JoystickButton outtakeCargoButtonFast = new JoystickButton(gamepad, LEFT_BUMPER.index());
   public static final JoystickButton outtakeCargoButtonSlow = new JoystickButton(gamepad, LEFT_TRIGGER.index());
+  public static final JoystickButton cargoModeButton = new JoystickButton(gamepad, _10.index());
+  public static final JoystickButton hatchModeButton = new JoystickButton(gamepad, _9.index());
+  public static final JoystickButton defenseModeButton = new JoystickButton(gamepad, LEFT_BUMPER.index());
 
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a

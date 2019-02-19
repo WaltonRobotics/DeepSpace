@@ -18,11 +18,14 @@ import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ReverseSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_LOWER_LIMIT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_STATE;
+import static frc.robot.OI.cargoModeButton;
+import static frc.robot.OI.defenseModeButton;
 import static frc.robot.OI.elevatorLevel1Button;
 import static frc.robot.OI.elevatorLevel2Button;
 import static frc.robot.OI.elevatorLevel3Button;
 import static frc.robot.OI.elevatorZeroButton;
 import static frc.robot.OI.gamepad;
+import static frc.robot.OI.hatchModeButton;
 import static frc.robot.OI.hatchIntakeButton;
 import static frc.robot.OI.intakeCargoButton;
 import static frc.robot.OI.outtakeCargoButtonFast;
@@ -125,11 +128,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     hatch.collectData();
 
     lastCargoModePressed = currentCargoModePressed;
-    //TODO:currentCargoModePressed = button;
+    currentCargoModePressed = cargoModeButton.get();
     lastHatchModePressed = currentHatchModePressed;
-    //TODO:currentHatchModePressed = button;
+    currentHatchModePressed = hatchModeButton.get();
     lastDefenceModePressed = currentDefenceModePressed;
-    //TODO:currentDefenceModePressed = button;
+    currentDefenceModePressed = defenseModeButton.get();
   }
 
   public boolean cargoModeRising() {
