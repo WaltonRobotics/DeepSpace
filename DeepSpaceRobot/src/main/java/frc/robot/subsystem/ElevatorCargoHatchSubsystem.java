@@ -545,7 +545,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
       switch (clawControlMode) {
         case AUTO:
-          clawRotationMotor.set(ControlMode.MotionMagic, clawTarget);
+          clawRotationMotor.set(ControlMode.Position, clawTarget);
           break;
         case MANUAL:
           clawRotationMotor.set(ControlMode.PercentOutput, clawRotationPower);
@@ -618,7 +618,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
       switch (hatchControlMode) {
         case AUTO:
-          hatchRotationMotor.set(ControlMode.MotionMagic, hatchTarget);
+          hatchRotationMotor.set(ControlMode.Position, hatchTarget);
           break;
         case MANUAL:
           hatchRotationMotor.set(ControlMode.PercentOutput, hatchRotationPower);
