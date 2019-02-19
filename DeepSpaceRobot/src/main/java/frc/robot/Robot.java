@@ -61,9 +61,8 @@ import frc.robot.robot.CompSteamWorks;
 import frc.robot.robot.PracticeDeepSpace;
 import frc.robot.subsystem.Drivetrain;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorControlMode;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchControlMode;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import frc.robot.util.ParkingLines;
 import frc.robot.util.RobotBuilder;
 import org.opencv.core.Mat;
@@ -106,9 +105,9 @@ public class Robot extends TimedRobot {
   }
 
   private void initHardware() {
-    currentRobot.setupController(clawRotationMotor, currentRobot.getCargoSubsystemLimits(), null);
+    currentRobot.setupController(clawRotationMotor, currentRobot.getCargoSubsystemLimits(), CargoPosition.SAFE);
     currentRobot.setupController(elevatorMotor, currentRobot.getElevatorSubsystemLimits(), null);
-    currentRobot.setupController(hatchRotationMotor, currentRobot.getHatchSubsystemLimits(), null);
+    currentRobot.setupController(hatchRotationMotor, currentRobot.getHatchSubsystemLimits(), HatchPosition.SAFE);
   }
 
   private void initShuffleBoard() {
