@@ -35,12 +35,10 @@ import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_X;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_Y;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_OFFSET;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_PERCENTAGE;
-import static frc.robot.OI.gamepad;
 import static frc.robot.RobotMap.clawRotationMotor;
 import static frc.robot.RobotMap.elevatorMotor;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
-import static frc.robot.RobotMap.hatchIntake;
 import static frc.robot.RobotMap.hatchRotationMotor;
 
 import edu.wpi.cscore.CvSink;
@@ -83,7 +81,6 @@ public class Robot extends TimedRobot {
   public static final SendableChooser<Transform> transformSendableChooser = new SendableChooser<>();
   private static final RobotBuilder<LimitedRobot> robotBuilder;
 
-
   static {
     robotBuilder = new RobotBuilder<>(new CompPowerUp(), new CompSteamWorks(), new PracticeDeepSpace(),
         new CompDeepSpace());
@@ -92,10 +89,6 @@ public class Robot extends TimedRobot {
     drivetrain = new Drivetrain();
     godSubsystem = new ElevatorCargoHatchSubsystem();
   }
-
-  public static boolean catchHatch;
-  public static boolean outtake;
-  public static boolean intake;
 
   /**
    * This function is run when the robot is first started up and should be used for any initialization code.
@@ -260,16 +253,12 @@ public class Robot extends TimedRobot {
     godSubsystem.setEnabled(true);
     drivetrain.cancelControllerMotion();
 
-    godSubsystem.setEnabled(false);
-    godSubsystem.getElevator().setElevatorControlMode(ElevatorControlMode.MANUAL);
-    godSubsystem.getCargo().setClawControlMode(ClawControlMode.MANUAL);
-    godSubsystem.getHatch().setHatchControlMode(HatchControlMode.MANUAL);
-
-    elevatorMotor.setSelectedSensorPosition(0, 0, 100);
-    clawRotationMotor.setSelectedSensorPosition(0, 0, 100);
-    hatchRotationMotor.setSelectedSensorPosition(0, 0, 100);
-
-
+//    godSubsystem.setEnabled(false);
+//    godSubsystem.getElevator().setElevatorControlMode(ElevatorControlMode.MANUAL);
+//    godSubsystem.getCargo().setClawControlMode(ClawControlMode.MANUAL);
+//    godSubsystem.getHatch().setHatchControlMode(HatchControlMode.MANUAL);
+//
+//    elevatorMotor.setSelectedSensorPosition(0, 0, 100);
   }
 
   /**
@@ -279,28 +268,28 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    godSubsystem.getElevator().setElevatorPower(godSubsystem.getElevator().getElevatorJoystick());
-    godSubsystem.getHatch().setHatchRotationPower(godSubsystem.getCargo().getCargoJoystick());
-    godSubsystem.getCargo().setClawRotationPower(gamepad.getLeftX());
-
-    if (catchHatch) {
-      if (!hatchIntake.get()) {
-        godSubsystem.getHatch().setIntake(true);
-      }
-    } else {
-      if (hatchIntake.get()) {
-        godSubsystem.getHatch().setIntake(false);
-      }
-    }
-
-    if (intake && !outtake) {
-      intake = false;
-      godSubsystem.getCargo().intakeCargo(700);
-    }
-    if (outtake && !intake) {
-      outtake = false;
-      godSubsystem.getCargo().outtakeCargoFast(1000);
-    }
+//    godSubsystem.getElevator().setElevatorPower(godSubsystem.getElevator().getElevatorJoystick());
+////    godSubsystem.getHatch().setHatchRotationPower(godSubsystem.getCargo().getCargoJoystick());
+//    godSubsystem.getCargo().setClawRotationPower(godSubsystem.getCargo().getCargoJoystick());
+//
+//    if (catchHatch) {
+//      if (!hatchIntake.get()) {
+//        godSubsystem.getHatch().setIntake(true);
+//      }
+//    } else {
+//      if (hatchIntake.get()) {
+//        godSubsystem.getHatch().setIntake(false);
+//      }
+//    }
+//
+//    if (intake && !outtake) {
+//      intake = false;
+//      godSubsystem.getCargo().intakeCargo(700);
+//    }
+//    if (outtake && !intake) {
+//      outtake = false;
+//      godSubsystem.getCargo().outtakeCargoFast(1000);
+//    }
   }
 
   /**
