@@ -32,6 +32,9 @@ public class CargoHandling implements State {
   @Override
   public void finish() {
     Robot.godSubsystem.getCargo().outtakeCargoSlow(1000);
-    Robot.godSubsystem.getCurrentCommand().cancel();
+
+    if (Robot.godSubsystem.getCurrentCommand() != null) {
+      Robot.godSubsystem.getCurrentCommand().cancel(); //FIXME do we need to do this?
+    }
   }
 }
