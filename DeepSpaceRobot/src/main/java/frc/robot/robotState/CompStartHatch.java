@@ -21,9 +21,11 @@ public class CompStartHatch implements State {
     int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
     int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
 
-    if (HatchPosition.DEPLOY.isClose(hatchAngle) && CargoPosition.SAFE.isClose(cargoAngle)) {
+    if (Robot.currentRobot.getTarget(HatchPosition.DEPLOY).isClose(hatchAngle) && Robot.currentRobot
+        .getTarget(CargoPosition.SAFE).isClose(cargoAngle)) {
       return new HatchHandlingTransition();
-    } else if (HatchPosition.DEPLOY.inRange(hatchAngle) && CargoPosition.SAFE.inRange(cargoAngle)) {
+    } else if (Robot.currentRobot.getTarget(HatchPosition.DEPLOY).inRange(hatchAngle) && Robot.currentRobot
+        .getTarget(CargoPosition.SAFE).inRange(cargoAngle)) {
       return new HatchHandlingTransition();
     }
 

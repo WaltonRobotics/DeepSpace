@@ -60,7 +60,8 @@ public class OI {
 
   public static final JoystickButton shiftUp = new JoystickButton(leftJoystick, SHIFT_UP_PORT);
   public static final JoystickButton shiftDown = new JoystickButton(leftJoystick, SHIFT_DOWN_PORT);
-  public static final JoystickButton elevatorLevel3Button = new JoystickButton(gamepad, _4.index()); // All elevator joystick button ports are makeshift for now.
+  public static final JoystickButton elevatorLevel3Button = new JoystickButton(gamepad,
+      _4.index()); // All elevator joystick button ports are makeshift for now.
   public static final JoystickButton elevatorLevel2Button = new JoystickButton(gamepad, _3.index());
   public static final JoystickButton elevatorLevel1Button = new JoystickButton(gamepad, _2.index());
   public static final JoystickButton elevatorZeroButton = new JoystickButton(gamepad, _1.index());

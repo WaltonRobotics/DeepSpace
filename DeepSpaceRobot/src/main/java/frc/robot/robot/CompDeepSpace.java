@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import frc.robot.config.BaseMotorControllerConfig;
 import frc.robot.config.LimitedRobot;
-import frc.robot.config.SubsystemTargets;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
 import org.waltonrobotics.util.TalonConfig;
@@ -509,11 +508,6 @@ public class CompDeepSpace extends LimitedRobot {
   }
 
   @Override
-  public SubsystemTargets getTargets() {
-    return null;
-  }
-
-  @Override
   public TalonConfig getLeftIntakeMotorConfig() {
     return new TalonConfig() {
       @Override
@@ -545,5 +539,10 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public void initLimits() {
+  }
+
+  @Override
+  public void defineTargets() {
+
   }
 }

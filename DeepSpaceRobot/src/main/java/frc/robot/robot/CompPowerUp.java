@@ -3,7 +3,6 @@ package frc.robot.robot;
 
 import frc.robot.config.BaseMotorControllerConfig;
 import frc.robot.config.LimitedRobot;
-import frc.robot.config.SubsystemTargets;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
 import org.waltonrobotics.util.TalonConfig;
@@ -176,11 +175,6 @@ public class CompPowerUp extends LimitedRobot {
   }
 
   @Override
-  public SubsystemTargets getTargets() {
-    return null;
-  }
-
-  @Override
   public TalonConfig getLeftIntakeMotorConfig() {
     return null;
   }
@@ -192,6 +186,11 @@ public class CompPowerUp extends LimitedRobot {
 
   @Override
   public void initLimits() {
+
+  }
+
+  @Override
+  public void defineTargets() {
 
   }
 }

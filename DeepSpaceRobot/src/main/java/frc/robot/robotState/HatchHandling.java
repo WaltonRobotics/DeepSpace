@@ -30,7 +30,7 @@ public class HatchHandling implements State {
   @Override
   public void finish() {
     Robot.godSubsystem.getHatch().setIntake(false);
-    
+
     if (Robot.godSubsystem.getCurrentCommand() != null) {
       Robot.godSubsystem.getCurrentCommand().cancel(); //FIXME do we need to do this?
     }

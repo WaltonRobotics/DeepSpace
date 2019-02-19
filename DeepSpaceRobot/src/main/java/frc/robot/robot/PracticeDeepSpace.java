@@ -7,7 +7,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import frc.robot.config.BaseMotorControllerConfig;
 import frc.robot.config.LimitPair;
 import frc.robot.config.LimitedRobot;
-import frc.robot.config.SubsystemTargets;
+import frc.robot.config.Target;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
@@ -518,11 +518,6 @@ public class PracticeDeepSpace extends LimitedRobot {
   }
 
   @Override
-  public SubsystemTargets getTargets() {
-    return null;
-  }
-
-  @Override
   public TalonConfig getLeftIntakeMotorConfig() {
     return new TalonConfig() {
       @Override
@@ -554,21 +549,43 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public void initLimits() {
-    this.getLimits().put(HatchPosition.CARGO_START, new LimitPair(-300, -568));
-    this.getLimits().put(HatchPosition.HATCH_START, new LimitPair(-466, -568));
-    this.getLimits().put(HatchPosition.SAFE, new LimitPair(-528, -578));
-    this.getLimits().put(HatchPosition.DEPLOY, new LimitPair(-528, -772));
+    this.addLimit(HatchPosition.CARGO_START, new LimitPair(-300, -568));
+    this.addLimit(HatchPosition.HATCH_START, new LimitPair(-466, -568));
+    this.addLimit(HatchPosition.SAFE, new LimitPair(-528, -578));
+    this.addLimit(HatchPosition.DEPLOY, new LimitPair(-528, -772));
 
-    this.getLimits().put(CargoPosition.SAFE, new LimitPair(655, 633));
-    this.getLimits().put(CargoPosition.DEPLOY, new LimitPair(655/* 548*/, 380));
+    this.addLimit(CargoPosition.SAFE, new LimitPair(655, 633));
+    this.addLimit(CargoPosition.DEPLOY, new LimitPair(655/* 548*/, 380));
 
-    this.getLimits().put(ElevatorLevel.BASE, new LimitPair(0, 100));
-    this.getLimits().put(ElevatorLevel.CARGO1, new LimitPair(100, 200));
-    this.getLimits().put(ElevatorLevel.CARGO2, new LimitPair(200, 300));
-    this.getLimits().put(ElevatorLevel.CARGO3, new LimitPair(300, 400));
-    this.getLimits().put(ElevatorLevel.HATCH1, new LimitPair(300, 400));
-    this.getLimits().put(ElevatorLevel.HATCH2, new LimitPair(300, 400));
-    this.getLimits().put(ElevatorLevel.HATCH3, new LimitPair(300, 400));
+    this.addLimit(ElevatorLevel.BASE, new LimitPair(0, 100));
+    this.addLimit(ElevatorLevel.CARGO1, new LimitPair(100, 200));
+    this.addLimit(ElevatorLevel.CARGO2, new LimitPair(200, 300));
+    this.addLimit(ElevatorLevel.CARGO3, new LimitPair(300, 400));
+    this.addLimit(ElevatorLevel.HATCH1, new LimitPair(300, 400));
+    this.addLimit(ElevatorLevel.HATCH2, new LimitPair(300, 400));
+    this.addLimit(ElevatorLevel.HATCH3, new LimitPair(300, 400));
+
+  }
+
+  @Override
+  public void defineTargets() {
+    this.addTarget(HatchPosition.DEPLOY, new Target(-752, -650));
+    this.addTarget(HatchPosition.SAFE, new Target(-548, -517));
+    this.addTarget(HatchPosition.HATCH_START, new Target(-486, -403));
+    this.addTarget(HatchPosition.CARGO_START, new Target(-320, -300));
+
+    this.addTarget(CargoPosition.SAFE, new Target(471, 550));
+    this.addTarget(CargoPosition.DEPLOY, new Target(644, 655));
+
+    this.addTarget(ElevatorLevel.UNKNOWN, new Target(0));
+    this.addTarget(ElevatorLevel.BASE, new Target(100));
+    this.addTarget(ElevatorLevel.CARGO1, new Target(200));
+    this.addTarget(ElevatorLevel.HATCH1, new Target(250));
+    this.addTarget(ElevatorLevel.CARGO2, new Target(300));
+    this.addTarget(ElevatorLevel.HATCH2, new Target(350));
+    this.addTarget(ElevatorLevel.CARGO3, new Target(400));
+    this.addTarget(ElevatorLevel.HATCH3, new Target(450));
+
 
   }
 }

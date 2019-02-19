@@ -9,14 +9,16 @@ import org.waltonrobotics.util.TalonConfig;
 public abstract class LimitedRobot extends RobotConfig {
 
   private final HashMap<Enum, LimitPair> limits = new HashMap<>();
+  private final HashMap<Enum, Target> targets = new HashMap<>();
 
   protected LimitedRobot(String robotName) {
     super(robotName);
     initLimits();
+    defineTargets();
   }
 
-  public HashMap<Enum, LimitPair> getLimits() {
-    return limits;
+  public void addLimit(Enum anEnum, LimitPair limitPair) {
+    limits.put(anEnum, limitPair);
   }
 
   public abstract BaseMotorControllerConfig getCargoSubsystemLimits();
@@ -24,8 +26,6 @@ public abstract class LimitedRobot extends RobotConfig {
   public abstract BaseMotorControllerConfig getHatchSubsystemLimits();
 
   public abstract BaseMotorControllerConfig getElevatorSubsystemLimits();
-
-  public abstract SubsystemTargets getTargets();
 
   public abstract TalonConfig getLeftIntakeMotorConfig();
 
@@ -37,19 +37,22 @@ public abstract class LimitedRobot extends RobotConfig {
     getCargoSubsystemLimits().setLimits(talonSRX, limits.get(cargoType));
   }
 
-
   public void setHatchLimit(TalonSRX talonSRX, Enum cargoType) {
     getHatchSubsystemLimits().setLimits(talonSRX, limits.get(cargoType));
   }
-
 
   public void setElevatorLimit(TalonSRX talonSRX, Enum cargoType) {
     getElevatorSubsystemLimits().setLimits(talonSRX, limits.get(cargoType));
   }
 
+  public abstract void defineTargets();
 
-  public int getTarget(String target) {
-    return getTargets().getTargets().get(target);
+  public void addTarget(Enum anEnum, Target target) {
+    targets.put(anEnum, target);
+  }
+
+  public Target getTarget(Enum target) {
+    return targets.get(target);
   }
 
   public void setupController(BaseMotorController motorController, BaseMotorControllerConfig talonSRXConfig,
@@ -80,7 +83,7 @@ public abstract class LimitedRobot extends RobotConfig {
         .configClosedLoopPeakOutput(talonSRXConfig.getProfileSlot(), talonSRXConfig.getClosedLoopPeakOutput());
 
     if (limitType != null) {
-      LimitPair limitPair = getLimits().get(limitType);
+      LimitPair limitPair = limits.get(limitType);
       motorController
           .configForwardSoftLimitThreshold(limitPair.getForwardsSoftLimitThreshold(), talonSRXConfig.getTimeout());
       motorController

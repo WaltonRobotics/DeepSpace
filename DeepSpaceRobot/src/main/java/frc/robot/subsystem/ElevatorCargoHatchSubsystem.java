@@ -25,8 +25,8 @@ import static frc.robot.OI.elevatorLevel2Button;
 import static frc.robot.OI.elevatorLevel3Button;
 import static frc.robot.OI.elevatorZeroButton;
 import static frc.robot.OI.gamepad;
-import static frc.robot.OI.hatchModeButton;
 import static frc.robot.OI.hatchIntakeButton;
+import static frc.robot.OI.hatchModeButton;
 import static frc.robot.OI.intakeCargoButton;
 import static frc.robot.OI.outtakeCargoButtonFast;
 import static frc.robot.OI.outtakeCargoButtonSlow;
@@ -197,11 +197,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
    */
 
   public HatchPosition findHatchClosestPosition(HatchPosition hatchPosition, int angle) {
-    if (HatchPosition.DEPLOY.inRange(angle)) {
+    if (currentRobot.getTarget(HatchPosition.DEPLOY).inRange(angle)) {
       return HatchPosition.DEPLOY;
-    } else if (HatchPosition.SAFE.inRange(angle)) {
+    } else if (currentRobot.getTarget(HatchPosition.SAFE).inRange(angle)) {
       return HatchPosition.SAFE;
-    } else if (HatchPosition.HATCH_START.inRange(angle)) {
+    } else if (currentRobot.getTarget(HatchPosition.HATCH_START).inRange(angle)) {
       return HatchPosition.HATCH_START;
     } else {
       return HatchPosition.CARGO_START;
@@ -209,17 +209,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   }
 
   public enum ElevatorLevel {
-    UNKNOWN(0), BASE(100), CARGO1(200), HATCH1(250), CARGO2(300), HATCH2(350), CARGO3(400), HATCH3(450);
-
-    private final double target;
-
-    ElevatorLevel(double target) {
-      this.target = target;
-    }
-
-    public double getTarget() {
-      return target;
-    }
+    UNKNOWN, BASE, CARGO1, HATCH1, CARGO2, HATCH2, CARGO3, HATCH3
   }
 
   public enum ElevatorControlMode {
@@ -243,56 +233,15 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
   public enum CargoPosition {
 
-    DEPLOY(471, 550),
-    SAFE(644, 655);
-
-    private final int angle;
-    private final int upperBound;
-
-    CargoPosition(int angle, int upperBound) {
-      this.angle = angle;
-      this.upperBound = upperBound;
-
-    }
-
-    public int getAngle() {
-      return angle;
-    }
-
-    public boolean inRange(int angle) {
-      return angle < upperBound;
-    }
-
-    public boolean isClose(int angle) {
-      return Math.abs(angle - this.angle) < 10;
-    }
+    DEPLOY,
+    SAFE
   }
 
   public enum HatchPosition {
-    DEPLOY(-752, -650),
-    SAFE(-548, -517),
-    HATCH_START(-486, -403),
-    CARGO_START(-320, -300);
-
-    private final int angle;
-    private final int upperBound;  // halfway between two different positions
-
-    HatchPosition(int angle, int upperBound) {
-      this.angle = angle;
-      this.upperBound = upperBound;
-    }
-
-    public int getAngle() {
-      return angle;
-    }
-
-    public boolean inRange(int angle) {
-      return angle < upperBound;
-    }
-
-    public boolean isClose(int angle) {
-      return Math.abs(angle - this.angle) < 10;
-    }
+    DEPLOY,
+    SAFE,
+    HATCH_START,
+    CARGO_START
   }
 
   public class Elevator implements SubSubsystem {
@@ -440,7 +389,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public void setElevatorLevel(ElevatorLevel level) {
-      elevatorCurrentTarget = level.getTarget();
+      elevatorCurrentTarget = currentRobot.getTarget(level).getTarget();
     }
 
     public double getElevatorPower() {
@@ -499,7 +448,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public void setClawTarget(CargoPosition clawTarget) {
-      this.clawTarget = clawTarget.getAngle();
+      this.clawTarget = currentRobot.getTarget(clawTarget).getTarget();
     }
 
     @Override
@@ -661,7 +610,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public void setHatchTarget(HatchPosition hatchTarget) {
-      this.hatchTarget = hatchTarget.getAngle();
+      this.hatchTarget = currentRobot.getTarget(hatchTarget).getTarget();
     }
 
     @Override
