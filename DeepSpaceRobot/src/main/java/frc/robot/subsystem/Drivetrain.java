@@ -29,7 +29,7 @@ import org.waltonrobotics.controller.RobotPair;
  */
 public class Drivetrain extends AbstractDrivetrain {
 
-  
+
   public Drivetrain() {
     super(currentRobot);
   }
@@ -84,14 +84,14 @@ public class Drivetrain extends AbstractDrivetrain {
 
 
   public void shiftUp() {
-    if (RobotMap.shifter.get()) {
-      RobotMap.shifter.set(false);
+    if (!RobotMap.shifter.get()) {
+      RobotMap.shifter.set(true);
     }
   }
 
   public void shiftDown() {
-    if (!RobotMap.shifter.get()) {
-      RobotMap.shifter.set(true);
+    if (RobotMap.shifter.get()) {
+      RobotMap.shifter.set(false);
     }
   }
 }
