@@ -20,10 +20,7 @@ import static frc.robot.Gamepad.Button._1;
 import static frc.robot.Gamepad.Button._2;
 import static frc.robot.Gamepad.Button._3;
 import static frc.robot.Gamepad.Button._4;
-import static frc.robot.Robot.catchHatch;
 import static frc.robot.Robot.drivetrain;
-import static frc.robot.Robot.intake;
-import static frc.robot.Robot.outtake;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -72,15 +69,18 @@ public class OI {
 //  public static final JoystickButton outtakeCargoButtonSlow = new JoystickButton(gamepad, LEFT_TRIGGER.index());
 
 
-   public static final JoysctickButtonEnhanced elevatorLevel3Button = new JoysctickButtonEnhanced(gamepad, _4.index());
-   public static final JoysctickButtonEnhanced elevatorLevel2Button = new JoysctickButtonEnhanced(gamepad, _3.index());
-   public static final JoysctickButtonEnhanced elevatorLevel1Button = new JoysctickButtonEnhanced(gamepad, _2.index());
-   public static final JoysctickButtonEnhanced elevatorZeroButton = new JoysctickButtonEnhanced(gamepad, _1.index());
-   public static final  JoysctickButtonEnhanced hatchIntakeButton = new JoysctickButtonEnhanced(gamepad, RIGHT_TRIGGER.index());
-   public static final  JoysctickButtonEnhanced intakeCargoButton = new JoysctickButtonEnhanced(gamepad, RIGHT_BUMPER.index());
-   public static final  JoysctickButtonEnhanced outtakeCargoButtonFast = new JoysctickButtonEnhanced(gamepad, LEFT_BUMPER.index());
-   public static final  JoysctickButtonEnhanced outtakeCargoButtonSlow = new JoysctickButtonEnhanced(gamepad, LEFT_TRIGGER.index());
-
+  public static final JoysctickButtonEnhanced elevatorLevel3Button = new JoysctickButtonEnhanced(gamepad, _4.index());
+  public static final JoysctickButtonEnhanced elevatorLevel2Button = new JoysctickButtonEnhanced(gamepad, _3.index());
+  public static final JoysctickButtonEnhanced elevatorLevel1Button = new JoysctickButtonEnhanced(gamepad, _2.index());
+  public static final JoysctickButtonEnhanced elevatorZeroButton = new JoysctickButtonEnhanced(gamepad, _1.index());
+  public static final JoysctickButtonEnhanced hatchIntakeButton = new JoysctickButtonEnhanced(gamepad,
+      RIGHT_TRIGGER.index());
+  public static final JoysctickButtonEnhanced intakeCargoButton = new JoysctickButtonEnhanced(gamepad,
+      RIGHT_BUMPER.index());
+  public static final JoysctickButtonEnhanced outtakeCargoButtonFast = new JoysctickButtonEnhanced(gamepad,
+      LEFT_BUMPER.index());
+  public static final JoysctickButtonEnhanced outtakeCargoButtonSlow = new JoysctickButtonEnhanced(gamepad,
+      LEFT_TRIGGER.index());
 
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
