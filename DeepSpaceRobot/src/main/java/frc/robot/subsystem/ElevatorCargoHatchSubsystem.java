@@ -240,8 +240,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
   public enum CargoPosition {
 
-    DEPLOY(0, 40),
-    SAFE(0, 90),
+    DEPLOY(471, 550),
+    SAFE(644, 655);
 
     private final int angle;
     private final int upperBound;
@@ -266,10 +266,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   }
 
   public enum HatchPosition {
-    DEPLOY(0, 40),
-    SAFE(80, 90),
-    HATCH_START(100, 140),
-    CARGO_START(180, 200);
+    DEPLOY(-752, -650),
+    SAFE(-548, -517),
+    HATCH_START(-486, -403),
+    CARGO_START(-320, -300);
 
     private final int angle;
     private final int upperBound;  // halfway between two different positions
