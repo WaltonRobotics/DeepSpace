@@ -13,7 +13,9 @@ public class DefenseTransition implements State {
   public void initialize() {
     Robot.godSubsystem.setCurrentActiveState(ActiveState.DEFENSE);
     Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
+    Robot.godSubsystem.getHatch().setLimits(HatchPosition.SAFE);
     Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.SAFE);
+    Robot.godSubsystem.getCargo().setLimits(CargoPosition.SAFE);
 
   }
 
