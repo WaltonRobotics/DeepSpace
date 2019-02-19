@@ -306,10 +306,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void outputData() {
-      String logOutput = String
-          .format("[%s]: Encoder height: %d, Current height target: %f, Current power: %f", currentTime,
-              getElevatorHeight(), elevatorCurrentTarget, getElevatorPower());
-      elevatorLogger.logInfo(logOutput);
+//      String logOutput = String
+//          .format("[%s]: Encoder height: %d, Current height target: %f, Current power: %f", currentTime,
+//              getElevatorHeight(), elevatorCurrentTarget, getElevatorPower());
+//      elevatorLogger.logInfo(logOutput);
 
       if (resetLimits) {
         Robot.currentRobot.setElevatorLimit(elevatorMotor, limits);
@@ -533,10 +533,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void outputData() {
-      String logOutput = String
-          .format("[%s]: Cargo height  : %d, Current height target: %d, Current power: %f", currentTime,
-              getAngle(), clawTarget, getCargoJoystick());
-      cargoLogger.logInfo(logOutput);
+//      String logOutput = String
+//          .format("[%s]: Cargo height  : %d, Current height target: %d, Current power: %f", currentTime,
+//              getAngle(), clawTarget, getCargoJoystick());
+//      cargoLogger.logInfo(logOutput);
 
       if (resetLimits) {
         Robot.currentRobot.setCargoLimit(clawRotationMotor, limits);
@@ -606,10 +606,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void outputData() {
-      String logOutput = String
-          .format("[%s]: Hatch height  : %d, Current height target: %d, Current power: %f", currentTime,
-              getAngle(), hatchTarget, hatchRotationPower);
-      hatchLogger.logInfo(logOutput);
+//      String logOutput = String
+//          .format("[%s]: Hatch height  : %d, Current height target: %d, Current power: %f", currentTime,
+//              getAngle(), hatchTarget, hatchRotationPower);
+//      hatchLogger.logInfo(logOutput);
 
       if (resetLimits) {
         Robot.currentRobot.setHatchLimit(hatchRotationMotor, limits);
