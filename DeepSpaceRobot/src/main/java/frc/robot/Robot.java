@@ -29,8 +29,22 @@ import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_ENCODER;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_JOYSTICK_Y;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_ANGLE;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_POWER;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLAW_ForwardSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLAW_ReverseSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_ForwardSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_HEIGHT;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_POWER;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_ReverseSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ANGLE;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ForwardSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_POWER;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ReverseSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_LOWER_LIMIT;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_STATE;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_X;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_Y;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_OFFSET;
@@ -130,6 +144,21 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(MOTORS_ELEVATOR_HEIGHT, 0);
     SmartDashboard.putNumber(MOTORS_HATCH_ANGLE, 0);
     SmartDashboard.putNumber(MOTORS_CARGO_ANGLE, 0);
+    SmartDashboard.putBoolean(MOTORS_LOWER_LIMIT, false);
+    SmartDashboard.putBoolean(MOTORS_ELEVATOR_ForwardSoftLimit, false);
+    SmartDashboard.putBoolean(MOTORS_ELEVATOR_ReverseSoftLimit, false);
+    SmartDashboard.putBoolean(MOTORS_CLAW_ForwardSoftLimit, false);
+    SmartDashboard.putBoolean(MOTORS_CLAW_ReverseSoftLimit, false);
+    SmartDashboard.putBoolean(MOTORS_HATCH_ForwardSoftLimit, false);
+    SmartDashboard.putBoolean(MOTORS_HATCH_ReverseSoftLimit, false);
+
+    SmartDashboard.putString(MOTORS_STATE, "No state");
+    SmartDashboard.putNumber(MOTORS_ELEVATOR_POWER, 0);
+    SmartDashboard.putNumber(MOTORS_ELEVATOR_TARGET, 0);
+    SmartDashboard.putNumber(MOTORS_HATCH_POWER, 0);
+    SmartDashboard.putNumber(MOTORS_HATCH_TARGET, 0);
+    SmartDashboard.putNumber(MOTORS_CARGO_POWER, 0);
+    SmartDashboard.putNumber(MOTORS_CARGO_TARGET, 0);
 
     SmartDashboard.putNumber(PARKING_LINE_OFFSET, 0);
     SmartDashboard.putNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0);
@@ -197,10 +226,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(DRIVETRAIN_LEFT_ENCODER, encoderLeft.getDistance());
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, encoderRight.getDistance());
     SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, String.valueOf(drivetrain.getActualPosition()));
-
-    SmartDashboard.putNumber(MOTORS_ELEVATOR_HEIGHT, godSubsystem.getElevator().getElevatorHeight());
-    SmartDashboard.putNumber(MOTORS_HATCH_ANGLE, godSubsystem.getHatch().getAngle());
-    SmartDashboard.putNumber(MOTORS_CARGO_ANGLE, godSubsystem.getCargo().getAngle());
     // System.out.println("robot Periodic");
   }
 
