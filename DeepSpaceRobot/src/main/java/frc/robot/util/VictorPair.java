@@ -44,4 +44,9 @@ public class VictorPair {
   public double getMotorOutputPercent() {
     return victorSPX1.getMotorOutputPercent();
   }
+
+  public void setNeutralMode(NeutralMode neutralMode) {
+    victorSPX1.setNeutralMode(neutralMode);
+    victorSPX2.setNeutralMode(neutralMode);
+  }
 }

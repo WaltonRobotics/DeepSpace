@@ -16,6 +16,7 @@ import static frc.robot.RobotMap.leftWheels;
 import static frc.robot.RobotMap.rightWheels;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -60,6 +61,9 @@ public class Drivetrain extends AbstractDrivetrain {
 
     leftWheels.configPeakOutputForward(1);
     leftWheels.configPeakOutputReverse(-1);
+
+    leftWheels.setNeutralMode(NeutralMode.Brake);
+    rightWheels.setNeutralMode(NeutralMode.Brake);
 
     rightWheels.configPeakOutputForward(1);
     rightWheels.configPeakOutputReverse(-1);
