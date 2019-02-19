@@ -1,6 +1,23 @@
 package frc.robot.subsystem;
 
 
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_ANGLE;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_POWER;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLAW_ForwardSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLAW_ReverseSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_ForwardSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_HEIGHT;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_POWER;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_ReverseSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ANGLE;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ForwardSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_POWER;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ReverseSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_LOWER_LIMIT;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_STATE;
 import static frc.robot.OI.elevatorLevel1Button;
 import static frc.robot.OI.elevatorLevel2Button;
 import static frc.robot.OI.elevatorLevel3Button;
@@ -10,6 +27,7 @@ import static frc.robot.OI.hatchIntakeButton;
 import static frc.robot.OI.intakeCargoButton;
 import static frc.robot.OI.outtakeCargoButtonFast;
 import static frc.robot.OI.outtakeCargoButtonSlow;
+import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.clawRotationMotor;
 import static frc.robot.RobotMap.elevatorLowerLimit;
 import static frc.robot.RobotMap.elevatorMotor;
@@ -17,8 +35,9 @@ import static frc.robot.RobotMap.hatchIntake;
 import static frc.robot.RobotMap.hatchRotationMotor;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.Faults;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.robotState.Disabled;
 import frc.robot.state.StateBuilder;
@@ -39,6 +58,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private boolean currentHatchModePressed;
   private boolean isEnabled = false;
   private StateBuilder stateMachine;
+
 
   public ElevatorCargoHatchSubsystem() {
     elevator.initialize();
@@ -134,6 +154,34 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     elevator.outputData();
     cargo.outputData();
     hatch.outputData();
+
+    SmartDashboard.putString(MOTORS_STATE, stateMachine.getCurrentState().getClass().getSimpleName());
+    SmartDashboard.putNumber(MOTORS_ELEVATOR_HEIGHT, getElevator().getElevatorHeight());
+    SmartDashboard.putNumber(MOTORS_ELEVATOR_POWER, getElevator().getElevatorPower());
+    SmartDashboard.putNumber(MOTORS_ELEVATOR_TARGET, getElevator().getElevatorCurrentTarget());
+
+    SmartDashboard.putNumber(MOTORS_HATCH_ANGLE, getHatch().getAngle());
+    SmartDashboard.putNumber(MOTORS_HATCH_POWER, getHatch().getHatchRotationPower());
+    SmartDashboard.putNumber(MOTORS_HATCH_TARGET, getHatch().getHatchTarget());
+
+    SmartDashboard.putNumber(MOTORS_CARGO_ANGLE, getCargo().getAngle());
+    SmartDashboard.putNumber(MOTORS_CARGO_POWER, getCargo().getClawRotationPower());
+    SmartDashboard.putNumber(MOTORS_CARGO_TARGET, getCargo().getClawTarget());
+
+    SmartDashboard.putBoolean(MOTORS_LOWER_LIMIT, getElevator().isLowerLimit());
+
+    Faults faults = new Faults();
+    elevatorMotor.getFaults(faults);
+    SmartDashboard.putBoolean(MOTORS_ELEVATOR_ForwardSoftLimit, faults.ForwardSoftLimit);
+    SmartDashboard.putBoolean(MOTORS_ELEVATOR_ReverseSoftLimit, faults.ReverseSoftLimit);
+
+    clawRotationMotor.getFaults(faults);
+    SmartDashboard.putBoolean(MOTORS_CLAW_ForwardSoftLimit, faults.ForwardSoftLimit);
+    SmartDashboard.putBoolean(MOTORS_CLAW_ReverseSoftLimit, faults.ReverseSoftLimit);
+
+    hatchRotationMotor.getFaults(faults);
+    SmartDashboard.putBoolean(MOTORS_HATCH_ForwardSoftLimit, faults.ForwardSoftLimit);
+    SmartDashboard.putBoolean(MOTORS_HATCH_ReverseSoftLimit, faults.ReverseSoftLimit);
   }
 
   @Override

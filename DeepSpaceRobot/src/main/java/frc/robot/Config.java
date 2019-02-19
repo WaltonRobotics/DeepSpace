@@ -62,6 +62,21 @@ public class Config {
     public static final String MOTORS_ELEVATOR_HEIGHT = "Motors/Elevator Height";
     public static final String MOTORS_HATCH_ANGLE = "Motors/Hatch Angle";
     public static final String MOTORS_CARGO_ANGLE = "Motors/Cargo Angle";
+    public static final String MOTORS_LOWER_LIMIT = "Motors/Lower Limit";
+    public static final String MOTORS_ELEVATOR_ForwardSoftLimit = "Motors/Elevator Forwards Soft Limit";
+    public static final String MOTORS_ELEVATOR_ReverseSoftLimit = "Motors/Elevator Reverse Soft Limit";
+    public static final String MOTORS_CLAW_ForwardSoftLimit = "Motors/Claw Forwards Soft Limit";
+    public static final String MOTORS_CLAW_ReverseSoftLimit = "Motors/Claw Reverse Soft Limit";
+    public static final String MOTORS_HATCH_ForwardSoftLimit = "Motors/Hatch Forwards Soft Limit";
+    public static final String MOTORS_HATCH_ReverseSoftLimit = "Motors/Hatch Reverse Soft Limit";
+
+    public static final String MOTORS_ELEVATOR_POWER = "Motors/Elevator Power";
+    public static final String MOTORS_ELEVATOR_TARGET = "Motors/Elevator Target";
+    public static final String MOTORS_HATCH_POWER = "Motors/Hatch Power";
+    public static final String MOTORS_HATCH_TARGET = "Motors/Hatch Target";
+    public static final String MOTORS_CARGO_POWER = "Motors/Cargo Power";
+    public static final String MOTORS_CARGO_TARGET = "Motors/Cargo Target";
+    public static final String MOTORS_STATE = "Motors/Elevator State";
 
     public static final String DRIVETEAM_FISHEYE_CAMERA = "Driveteam/Fisheye Camera";
     public static final String DRIVETEAM_TRANSFORM_SELECT = "Driveteam/Transform Select";
