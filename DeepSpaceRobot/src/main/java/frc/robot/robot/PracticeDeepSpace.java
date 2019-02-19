@@ -187,7 +187,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public boolean getSensorPhase() {
-        return false;
+        return true;
       }
 
       @Override
@@ -227,7 +227,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getKP() {
-        return 0;
+        return 10;
       }
 
       @Override
@@ -267,12 +267,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isReverseSoftLimitEnabled() {
-        return false;
+        return true;
       }
 
       @Override
       public boolean isForwardsSoftLimitEnabled() {
-        return false;
+        return true;
       }
 
       @Override
@@ -307,7 +307,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public boolean getSensorPhase() {
-        return false;
+        return true;
       }
 
       @Override
@@ -347,7 +347,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getKP() {
-        return 0;
+        return 50;
       }
 
       @Override
@@ -387,12 +387,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isReverseSoftLimitEnabled() {
-        return false;
+        return true;
       }
 
       @Override
       public boolean isForwardsSoftLimitEnabled() {
-        return false;
+        return true;
       }
 
       @Override
@@ -422,12 +422,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public boolean getSensorPhase() {
-        return false;
+        return true;
       }
 
       @Override
       public boolean isInverted() {
-        return true;
+        return false;
       }
 
       @Override
@@ -502,12 +502,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isReverseSoftLimitEnabled() {
-        return false;
+        return true;
       }
 
       @Override
       public boolean isForwardsSoftLimitEnabled() {
-        return false;
+        return true;
       }
 
       @Override
