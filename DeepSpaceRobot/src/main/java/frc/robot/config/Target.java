@@ -29,4 +29,12 @@ public class Target {
   public boolean isClose(int angle) {
     return Math.abs(angle - target) < 10;
   }
+
+  @Override
+  public String toString() {
+    return "Target{" +
+        "target=" + target +
+        ", upperBound=" + upperBound +
+        '}';
+  }
 }
