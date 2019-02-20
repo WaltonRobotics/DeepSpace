@@ -64,8 +64,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private boolean currentHatchModePressed;
   private boolean isEnabled = false;
   private StateBuilder stateMachine;
-
-
   public ElevatorCargoHatchSubsystem() {
     elevator.initialize();
     cargo.initialize();
@@ -75,6 +73,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     // Set soft targets on
     // Configure elevator encoder
 
+  }
+
+  public long getCurrentTime() {
+    return currentTime;
   }
 
   public boolean isEnabled() {
@@ -273,10 +275,15 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private double elevatorCurrentPower;
     private double elevatorCurrentTarget;
     private ElevatorControlMode elevatorControlMode;
+    private int lastEncoderPosition;
     private boolean lastIsZeroed;
 
     public Elevator() {
       elevatorLogger = new Logger();
+    }
+
+    public int getLastEncoderPosition() {
+      return lastEncoderPosition;
     }
 
     public double getElevatorCurrentTarget() {
@@ -307,6 +314,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       currentLevel1ButtonPressed = elevatorLevel1Button.get();
 
       elevatorJoystick = -gamepad.getRightY();
+
+      lastEncoderPosition = currentEncoderPosition;
       currentEncoderPosition = elevatorMotor.getSelectedSensorPosition(0);
 
       lastIsZeroed = isZeroed;
