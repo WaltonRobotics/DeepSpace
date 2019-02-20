@@ -326,6 +326,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
       if (releaseLower) {
         elevatorMotor.configReverseSoftLimitEnable(false);
+      } else {
+        elevatorMotor.configReverseSoftLimitEnable(true);
       }
 
       switch (elevatorControlMode) {
@@ -348,6 +350,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
           elevatorCurrentTarget = 0;
           break;
       }
+    }
+
+    public void enableLowerLimit() {
+      releaseLower = false;
     }
 
     @Override
