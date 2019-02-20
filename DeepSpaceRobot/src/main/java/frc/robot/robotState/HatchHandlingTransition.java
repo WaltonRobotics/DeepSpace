@@ -11,6 +11,9 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 
 public class HatchHandlingTransition implements State {
 
+  public static final Target CARGO_SAFE = Robot.currentRobot.getTarget(CargoPosition.SAFE);
+  public static final Target HATCH_ANGLE = Robot.currentRobot.getTarget(HatchPosition.DEPLOY);
+
   @Override
   public void initialize() {
     Robot.godSubsystem.setCurrentActiveState(ActiveState.HATCH_HANDLING);
@@ -32,8 +35,7 @@ public class HatchHandlingTransition implements State {
     int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
     int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
 
-    if (Robot.currentRobot.getTarget(CargoPosition.SAFE).isClose(cargoAngle) && Robot.currentRobot
-        .getTarget(HatchPosition.DEPLOY).isClose(hatchAngle)) {
+    if (CARGO_SAFE.isClose(cargoAngle) && HATCH_ANGLE.isClose(hatchAngle)) {
       return new HatchHandling();
     }
 
