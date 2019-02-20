@@ -32,7 +32,6 @@ public class TakeControl implements State {
     hatch.setHatchControlMode(HatchControlMode.AUTO);
 
     elevator.setZeroed(false);
-    Scheduler.getInstance().add(new ZeroElevator());
     cargo.setLimits(CargoPosition.SAFE);
     hatch.setLimits(HatchPosition.SAFE);
     elevator.releaseLowerLimit();
