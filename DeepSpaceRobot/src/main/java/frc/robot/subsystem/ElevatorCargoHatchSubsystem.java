@@ -47,6 +47,7 @@ import frc.robot.Gamepad.POV;
 import frc.robot.RobotMap;
 import frc.robot.robotState.Disabled;
 import frc.robot.state.StateBuilder;
+import frc.robot.util.EnhancedBoolean;
 import frc.robot.util.Logger;
 
 public class ElevatorCargoHatchSubsystem extends Subsystem {
@@ -264,7 +265,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private boolean lastLevel1ButtonPressed;
     private boolean currentLevel1ButtonPressed;
     private boolean lowerLimit;
-    private boolean isZeroed;
+    private EnhancedBoolean isZeroed = new EnhancedBoolean();
     private boolean resetLimits = false;
     private boolean releaseLower = false;
     private double elevatorJoystick;
@@ -276,7 +277,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private double elevatorCurrentTarget;
     private ElevatorControlMode elevatorControlMode;
     private int lastEncoderPosition;
-    private boolean lastIsZeroed;
 
     public Elevator() {
       elevatorLogger = new Logger();
@@ -291,11 +291,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public boolean isZeroed() {
-      return isZeroed;
+      return isZeroed.get();
     }
 
     public void setZeroed(boolean zeroed) {
-      isZeroed = zeroed;
+      isZeroed.set(zeroed);
     }
 
     public boolean isLowerLimit() {
@@ -317,8 +317,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
       lastEncoderPosition = currentEncoderPosition;
       currentEncoderPosition = elevatorMotor.getSelectedSensorPosition(0);
-
-      lastIsZeroed = isZeroed;
 
       lowerLimit = !elevatorLowerLimit.get();
       baseIsPressed = elevatorZeroButton.get();
@@ -367,7 +365,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public boolean isZeroRising() {
-      return !lastIsZeroed && isZeroed;
+      return isZeroed.isRisingEdge();
     }
 
     public void enableLowerLimit() {
