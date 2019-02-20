@@ -557,14 +557,8 @@ public class PracticeDeepSpace extends LimitedRobot {
     this.addLimit(CargoPosition.SAFE, new LimitPair(655, 633));
     this.addLimit(CargoPosition.DEPLOY, new LimitPair(655/* 548*/, 380));
 
-    this.addLimit(ElevatorLevel.BASE, new LimitPair(0, 100));
-    this.addLimit(ElevatorLevel.CARGO1, new LimitPair(100, 200));
-    this.addLimit(ElevatorLevel.CARGO2, new LimitPair(200, 300));
-    this.addLimit(ElevatorLevel.CARGO3, new LimitPair(300, 400));
-    this.addLimit(ElevatorLevel.HATCH1, new LimitPair(300, 400));
-    this.addLimit(ElevatorLevel.HATCH2, new LimitPair(300, 400));
-    this.addLimit(ElevatorLevel.HATCH3, new LimitPair(300, 400));
-
+    this.addLimit(ElevatorLevel.CARGO_BASE, new LimitPair(28750, 4615));
+    this.addLimit(ElevatorLevel.HATCH_BASE, new LimitPair(26500, 0));
   }
 
   @Override
@@ -574,17 +568,19 @@ public class PracticeDeepSpace extends LimitedRobot {
     this.addTarget(HatchPosition.HATCH_START, new Target(-486, -403));
     this.addTarget(HatchPosition.CARGO_START, new Target(-320, -300));
 
-    this.addTarget(CargoPosition.SAFE, new Target(471, 550));
-    this.addTarget(CargoPosition.DEPLOY, new Target(644, 655));
+    this.addTarget(CargoPosition.SAFE, new Target(644, 655));
+    this.addTarget(CargoPosition.DEPLOY, new Target(471, 550));
 
-    this.addTarget(ElevatorLevel.UNKNOWN, new Target(0));
-    this.addTarget(ElevatorLevel.BASE, new Target(100));
-    this.addTarget(ElevatorLevel.CARGO1, new Target(200));
-    this.addTarget(ElevatorLevel.HATCH1, new Target(250));
-    this.addTarget(ElevatorLevel.CARGO2, new Target(300));
-    this.addTarget(ElevatorLevel.HATCH2, new Target(350));
-    this.addTarget(ElevatorLevel.CARGO3, new Target(400));
-    this.addTarget(ElevatorLevel.HATCH3, new Target(450));
+    this.addTarget(ElevatorLevel.CARGO_BASE, new Target(4615));
+
+    this.addTarget(ElevatorLevel.CARGO_ROCKET, new Target(9000));
+    this.addTarget(ElevatorLevel.CARGO_HAB, new Target(11000));
+    this.addTarget(ElevatorLevel.CARGO2, new Target(18000));
+    this.addTarget(ElevatorLevel.CARGO3, new Target(27000));
+
+    this.addTarget(ElevatorLevel.HATCH_BASE, new Target(0));
+    this.addTarget(ElevatorLevel.HATCH2, new Target(13000));
+    this.addTarget(ElevatorLevel.HATCH3, new Target(26000));
 
 
   }

@@ -215,7 +215,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   }
 
   public enum ElevatorLevel {
-    UNKNOWN, BASE, CARGO1, HATCH1, CARGO2, HATCH2, CARGO3, HATCH3
+    CARGO_BASE, HATCH_BASE, CARGO_HAB, CARGO_ROCKET, CARGO2, HATCH2, CARGO3, HATCH3
   }
 
   public enum ElevatorControlMode {
@@ -267,7 +267,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private double elevatorJoystick;
     private boolean baseIsPressed;
     private int currentEncoderPosition;
-    private ElevatorLevel limits = ElevatorLevel.BASE;
+    private ElevatorLevel limits = ElevatorLevel.CARGO_BASE;
     // Output
     private double elevatorCurrentPower;
     private double elevatorCurrentTarget;
@@ -386,12 +386,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     /* Get raw height of elevator from encoder ticks. */
     public int getElevatorHeight() {
       return currentEncoderPosition;
-    }
-
-    public ElevatorLevel getElevatorLevel() {
-      int currentHeight = getElevatorHeight();
-
-      return ElevatorLevel.UNKNOWN;
     }
 
     public void setElevatorLevel(ElevatorLevel level) {

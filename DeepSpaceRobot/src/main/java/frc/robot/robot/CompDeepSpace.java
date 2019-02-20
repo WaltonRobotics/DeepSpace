@@ -544,10 +544,39 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public void initLimits() {
+    this.addLimit(HatchPosition.CARGO_START, new LimitPair(-55, -372));
+    this.addLimit(HatchPosition.HATCH_START, new LimitPair(-235, -372));
+    this.addLimit(HatchPosition.SAFE, new LimitPair(-332, -372));
+    this.addLimit(HatchPosition.DEPLOY, new LimitPair(-332, -634));
+
+    this.addLimit(CargoPosition.SAFE, new LimitPair(500, 480));
+    this.addLimit(CargoPosition.DEPLOY, new LimitPair(500, 224));
+
+    this.addLimit(ElevatorLevel.CARGO_BASE, new LimitPair(26750, 4615));
+    this.addLimit(ElevatorLevel.HATCH_BASE, new LimitPair(24500, 0));
   }
 
   @Override
   public void defineTargets() {
+    this.addTarget(HatchPosition.DEPLOY, new Target(-614, -483));
+    this.addTarget(HatchPosition.SAFE, new Target(-352, -303));
+    this.addTarget(HatchPosition.HATCH_START, new Target(-255, -165));
+    this.addTarget(HatchPosition.CARGO_START, new Target(-75, -55));
+
+    this.addTarget(CargoPosition.SAFE, new Target(498, 500));
+    this.addTarget(CargoPosition.DEPLOY, new Target(304, 400));
+
+    this.addTarget(ElevatorLevel.CARGO_BASE, new Target(4615));
+
+    this.addTarget(ElevatorLevel.CARGO_ROCKET, new Target(9000));
+    this.addTarget(ElevatorLevel.CARGO_HAB, new Target(11000));
+    this.addTarget(ElevatorLevel.CARGO2, new Target(18000));
+    this.addTarget(ElevatorLevel.CARGO3, new Target(27000));
+
+    this.addTarget(ElevatorLevel.HATCH_BASE, new Target(0));
+    this.addTarget(ElevatorLevel.HATCH2, new Target(13000));
+    this.addTarget(ElevatorLevel.HATCH3, new Target(26000));
+
 
   }
 }
