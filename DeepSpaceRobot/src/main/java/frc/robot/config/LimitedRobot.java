@@ -88,12 +88,12 @@ public abstract class LimitedRobot extends RobotConfig {
           .configForwardSoftLimitThreshold(limitPair.getForwardsSoftLimitThreshold(), talonSRXConfig.getTimeout());
       motorController
           .configReverseSoftLimitThreshold(limitPair.getReverseSoftLimitThreshold(), talonSRXConfig.getTimeout());
-
-      motorController.configForwardSoftLimitEnable(talonSRXConfig.isForwardsSoftLimitEnabled(), 10);
-      motorController.configReverseSoftLimitEnable(talonSRXConfig.isReverseSoftLimitEnabled(), 10);
-
-      /* pass false to FORCE OFF the feature.  Otherwise the enable flags above are honored */
-      motorController.overrideLimitSwitchesEnable(talonSRXConfig.isOverrideLimitSwitchesEnabled());
     }
+
+    motorController.configForwardSoftLimitEnable(talonSRXConfig.isForwardsSoftLimitEnabled(), 10);
+    motorController.configReverseSoftLimitEnable(talonSRXConfig.isReverseSoftLimitEnabled(), 10);
+
+    /* pass false to FORCE OFF the feature.  Otherwise the enable flags above are honored */
+    motorController.overrideLimitSwitchesEnable(talonSRXConfig.isOverrideLimitSwitchesEnabled());
   }
 }
