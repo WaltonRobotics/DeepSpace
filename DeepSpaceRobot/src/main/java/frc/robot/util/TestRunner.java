@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TestRunner extends CommandGroup {
 
-  private List<TestCommand> testCommands = new ArrayList<>();
+  private final List<TestCommand> testCommands = new ArrayList<>();
 
 
   public final synchronized void addSequential(TestCommand testCommand) {
@@ -19,13 +19,13 @@ public class TestRunner extends CommandGroup {
     testCommands.add(testCommand);
   }
 
-  public final synchronized void addParrallel(TestCommand testCommand, double timeout) {
+  public final synchronized void addParallel(TestCommand testCommand, double timeout) {
     super.addParallel(testCommand, timeout);
     testCommands.add(testCommand);
   }
 
 
-  public final synchronized void addParrallel(TestCommand testCommand) {
+  public final synchronized void addParallel(TestCommand testCommand) {
     super.addParallel(testCommand);
     testCommands.add(testCommand);
   }

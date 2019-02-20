@@ -1,11 +1,12 @@
 package frc.robot.robot;
 
+import frc.robot.config.BaseMotorControllerConfig;
+import frc.robot.config.LimitedRobot;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
-import org.waltonrobotics.util.RobotConfig;
 import org.waltonrobotics.util.TalonConfig;
 
-public class CompSteamWorks extends RobotConfig {
+public class CompSteamWorks extends LimitedRobot {
 
   public CompSteamWorks() {
     super("SteamWorks Comp");
@@ -123,12 +124,12 @@ public class CompSteamWorks extends RobotConfig {
 
   @Override
   public double getKS() {
-    return .85;
+    return 0.85;
   }
 
   @Override
   public double getKAng() {
-    return .3;
+    return 0.3;
   }
 
   @Override
@@ -150,5 +151,41 @@ public class CompSteamWorks extends RobotConfig {
   @Override
   public boolean isCurrentRobot() {
     return false;
+  }
+
+
+  @Override
+  public BaseMotorControllerConfig getCargoSubsystemLimits() {
+    return null;
+  }
+
+  @Override
+  public BaseMotorControllerConfig getHatchSubsystemLimits() {
+    return null;
+  }
+
+  @Override
+  public BaseMotorControllerConfig getElevatorSubsystemLimits() {
+    return null;
+  }
+
+  @Override
+  public TalonConfig getLeftIntakeMotorConfig() {
+    return null;
+  }
+
+  @Override
+  public TalonConfig getRightIntakeMotorConfig() {
+    return null;
+  }
+
+  @Override
+  public void initLimits() {
+
+  }
+
+  @Override
+  public void defineTargets() {
+
   }
 }

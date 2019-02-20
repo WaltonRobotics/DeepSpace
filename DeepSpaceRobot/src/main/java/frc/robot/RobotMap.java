@@ -7,13 +7,17 @@
 
 package frc.robot;
 
+import static frc.robot.Config.Hardware.ELEVATOR_LOWER_LIMIT_CHANNEL;
+import static frc.robot.Config.Hardware.HATCH_INTAKE_CHANNEL;
 import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
 import static frc.robot.Robot.currentRobot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
+import frc.robot.util.VictorPair;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides
@@ -32,11 +36,21 @@ public class RobotMap {
   // public static int rangefinderModule = 1;
 
 
-  public static final Talon rightWheel = new Talon(currentRobot.getRightTalonConfig().getChanell());
-  public static final Talon leftWheel = new Talon(currentRobot.getLeftTalonConfig().getChanell());
+  public static final VictorPair rightWheels = new VictorPair(currentRobot.getRightTalonConfig().getChanell(),
+      currentRobot.getRightTalonConfig().getChanell() + 1);
+  public static final VictorPair leftWheels = new VictorPair(currentRobot.getLeftTalonConfig().getChanell(),
+      currentRobot.getLeftTalonConfig().getChanell() + 1);
+
+  public static final Talon leftIntakeMotor = new Talon(currentRobot.getLeftIntakeMotorConfig().getChanell());
+  public static final Talon rightIntakeMotor = new Talon(currentRobot.getRightIntakeMotorConfig().getChanell());
+  public static final TalonSRX clawRotationMotor = new TalonSRX(currentRobot.getCargoSubsystemLimits().getDeviceID());
+  public static final TalonSRX hatchRotationMotor = new TalonSRX(currentRobot.getHatchSubsystemLimits().getDeviceID());
+  public static final TalonSRX elevatorMotor = new TalonSRX(currentRobot.getElevatorSubsystemLimits().getDeviceID());
+
 
   public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
-
+  public static final Solenoid hatchIntake = new Solenoid(HATCH_INTAKE_CHANNEL);
+  public static final DigitalInput elevatorLowerLimit = new DigitalInput(ELEVATOR_LOWER_LIMIT_CHANNEL);
 
   public static final Encoder encoderRight = new Encoder(
       new DigitalInput(currentRobot.getRightEncoderConfig().getChannell1()),
@@ -46,5 +60,18 @@ public class RobotMap {
       new DigitalInput(currentRobot.getLeftEncoderConfig().getChannell1()),
       new DigitalInput(currentRobot.getLeftEncoderConfig().getChannell2()));
 
+//  public static final DigitalInput hatchSensor = new DigitalInput(1); //makeshift number
 
+//  public static final Encoder cargoEncoder = new Encoder(
+//      new DigitalInput(1),
+//      new DigitalInput(1)
+//  );
+
+  static {
+    leftIntakeMotor.setInverted(currentRobot.getLeftIntakeMotorConfig().isInverted());
+    rightIntakeMotor.setInverted(currentRobot.getRightIntakeMotorConfig().isInverted());
+  }
+
+  private RobotMap() {
+  }
 }

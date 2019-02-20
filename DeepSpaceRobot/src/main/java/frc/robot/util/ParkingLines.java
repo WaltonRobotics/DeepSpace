@@ -15,9 +15,12 @@ public class ParkingLines {
 
   private static Scalar lineColor = new Scalar(0, 255, 0);
 
+  private ParkingLines() {
+  }
+
   private static void drawLeftLine(Mat input) {
 
-    double x = xOffset + percentage * (focusX - xOffset);
+    double x = xOffset + (percentage * (focusX - xOffset));
     double y = percentage * focusY;
     double height = input.height();
 
@@ -29,7 +32,7 @@ public class ParkingLines {
     double height = input.height();
     double xOffset = width - ParkingLines.xOffset;
 
-    double x = xOffset + percentage * (focusX - xOffset);
+    double x = xOffset + (percentage * (focusX - xOffset));
     double y = percentage * focusY;
 
     line(input, new Point(width - ParkingLines.xOffset, height), new Point(x, height - y), lineColor, 2);

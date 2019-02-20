@@ -1,23 +1,23 @@
 package frc.robot;
 
+import static org.hamcrest.CoreMatchers.is;
+
 import frc.robot.util.CrashDump;
-import org.junit.Test;
-
 import java.io.File;
-
-import static org.junit.Assert.assertTrue;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class CrashDumpTest {
 
-    @Test
-    public void crashDumpFileExistsTest() {
-        CrashDump.setCrashDumpFilePath("src/test/java/frc/robot/CrashDump.txt");
+  @Test
+  public void crashDumpFileExistsTest() {
+    CrashDump.setCrashDumpFilePath("src/test/java/frc/robot/CrashDump.txt");
 
-        CrashDump.logThrowableCrash(new Throwable("[IGNORE]: Crash dump file exists test."));
+    CrashDump.logThrowableCrash(new Throwable("[IGNORE]: Crash dump file exists test."));
 
-        File tmpDir = new File(CrashDump.getCrashDumpFilePath());
+    File tmpDir = new File(CrashDump.getCrashDumpFilePath());
 
-        assertTrue(tmpDir.exists());
-    }
+    Assert.assertThat(tmpDir.exists(), is(true));
+  }
 
 }
