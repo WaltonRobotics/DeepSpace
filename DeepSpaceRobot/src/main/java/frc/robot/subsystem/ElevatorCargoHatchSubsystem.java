@@ -2,17 +2,20 @@ package frc.robot.subsystem;
 
 
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_ANGLE;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_MODE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLAW_ForwardSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLAW_ReverseSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_ForwardSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_HEIGHT;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_MODE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_ReverseSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ANGLE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ForwardSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_MODE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ReverseSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_TARGET;
@@ -162,14 +165,17 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     SmartDashboard.putNumber(MOTORS_ELEVATOR_HEIGHT, getElevator().getElevatorHeight());
     SmartDashboard.putNumber(MOTORS_ELEVATOR_POWER, getElevator().getElevatorPower());
     SmartDashboard.putNumber(MOTORS_ELEVATOR_TARGET, getElevator().getElevatorCurrentTarget());
+    SmartDashboard.putString(MOTORS_ELEVATOR_MODE, getElevator().getElevatorControlMode().name());
 
     SmartDashboard.putNumber(MOTORS_HATCH_ANGLE, getHatch().getAngle());
     SmartDashboard.putNumber(MOTORS_HATCH_POWER, getHatch().getHatchRotationPower());
     SmartDashboard.putNumber(MOTORS_HATCH_TARGET, getHatch().getHatchTarget());
+    SmartDashboard.putString(MOTORS_HATCH_MODE, getHatch().getHatchControlMode().name());
 
     SmartDashboard.putNumber(MOTORS_CARGO_ANGLE, getCargo().getAngle());
     SmartDashboard.putNumber(MOTORS_CARGO_POWER, getCargo().getClawRotationPower());
     SmartDashboard.putNumber(MOTORS_CARGO_TARGET, getCargo().getClawTarget());
+    SmartDashboard.putString(MOTORS_CARGO_MODE, getCargo().getClawControlMode().name());
 
     SmartDashboard.putBoolean(MOTORS_LOWER_LIMIT, getElevator().isLowerLimit());
 

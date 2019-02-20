@@ -76,7 +76,10 @@ public class Config {
     public static final String MOTORS_HATCH_TARGET = "Motors/Hatch Target";
     public static final String MOTORS_CARGO_POWER = "Motors/Cargo Power";
     public static final String MOTORS_CARGO_TARGET = "Motors/Cargo Target";
-    public static final String MOTORS_STATE = "Motors/Elevator State";
+    public static final String MOTORS_STATE = "Motors/State";
+    public static final String MOTORS_ELEVATOR_MODE = "Motors/Elevator Mode";
+    public static final String MOTORS_HATCH_MODE = "Motors/Hatch Mode";
+    public static final String MOTORS_CARGO_MODE = "Motors/Cargo Mode";
 
     public static final String DRIVETEAM_FISHEYE_CAMERA = "Driveteam/Fisheye Camera";
     public static final String DRIVETEAM_TRANSFORM_SELECT = "Driveteam/Transform Select";
