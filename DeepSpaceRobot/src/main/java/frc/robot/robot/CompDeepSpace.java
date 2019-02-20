@@ -5,7 +5,12 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import frc.robot.config.BaseMotorControllerConfig;
+import frc.robot.config.LimitPair;
 import frc.robot.config.LimitedRobot;
+import frc.robot.config.Target;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import org.waltonrobotics.util.Controls;
 import org.waltonrobotics.util.EncoderConfig;
 import org.waltonrobotics.util.TalonConfig;
@@ -31,7 +36,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public int getChannell2() {
-        return 0;
+        return 1;
       }
 
       @Override
@@ -51,12 +56,12 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public int getChannell1() {
-        return 0;
+        return 2;
       }
 
       @Override
       public int getChannell2() {
-        return 0;
+        return 3;
       }
 
       @Override
@@ -71,7 +76,7 @@ public class CompDeepSpace extends LimitedRobot {
     return new TalonConfig() {
       @Override
       public int getChanell() {
-        return 0;
+        return 3;
       }
 
       @Override
@@ -86,12 +91,12 @@ public class CompDeepSpace extends LimitedRobot {
     return new TalonConfig() {
       @Override
       public int getChanell() {
-        return 0;
+        return 1;
       }
 
       @Override
       public boolean isInverted() {
-        return false;
+        return true;
       }
     };
   }
@@ -118,7 +123,7 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public double getKV() {
-    return 0;
+    return 1;
   }
 
   @Override
@@ -159,7 +164,7 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public boolean isCurrentRobot() {
-    return false;
+    return true;
   }
 
   @Override
@@ -172,7 +177,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public NeutralMode getNeutralMode() {
-        return null;
+        return NeutralMode.Brake;
       }
 
       @Override
@@ -182,17 +187,17 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public boolean getSensorPhase() {
-        return false;
+        return true;
       }
 
       @Override
       public boolean isInverted() {
-        return false;
+        return true;
       }
 
       @Override
       public StatusFrameEnhanced getStatusFramePeriod() {
-        return null;
+        return StatusFrameEnhanced.Status_10_MotionMagic;
       }
 
       @Override
@@ -207,12 +212,12 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public double getPeakOutputForward() {
-        return 0;
+        return .3;
       }
 
       @Override
       public double getPeakOutputReverse() {
-        return 0;
+        return -.3;
       }
 
       @Override
@@ -222,7 +227,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public double getKP() {
-        return 0;
+        return 10;
       }
 
       @Override
@@ -262,12 +267,12 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isReverseSoftLimitEnabled() {
-        return false;
+        return true;
       }
 
       @Override
       public boolean isForwardsSoftLimitEnabled() {
-        return false;
+        return true;
       }
 
       @Override
@@ -287,7 +292,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public NeutralMode getNeutralMode() {
-        return null;
+        return NeutralMode.Brake;
       }
 
       @Override
@@ -297,7 +302,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public boolean getSensorPhase() {
-        return false;
+        return true;
       }
 
       @Override
@@ -307,7 +312,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public StatusFrameEnhanced getStatusFramePeriod() {
-        return null;
+        return StatusFrameEnhanced.Status_10_MotionMagic;
       }
 
       @Override
@@ -322,12 +327,12 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public double getPeakOutputForward() {
-        return 0;
+        return 1;
       }
 
       @Override
       public double getPeakOutputReverse() {
-        return 0;
+        return -1;
       }
 
       @Override
@@ -337,7 +342,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public double getKP() {
-        return 0;
+        return 50;
       }
 
       @Override
@@ -377,12 +382,12 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isReverseSoftLimitEnabled() {
-        return false;
+        return true;
       }
 
       @Override
       public boolean isForwardsSoftLimitEnabled() {
-        return false;
+        return true;
       }
 
       @Override
@@ -402,7 +407,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public NeutralMode getNeutralMode() {
-        return null;
+        return NeutralMode.Brake;
       }
 
       @Override
@@ -412,7 +417,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public boolean getSensorPhase() {
-        return false;
+        return true;
       }
 
       @Override
@@ -422,7 +427,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public StatusFrameEnhanced getStatusFramePeriod() {
-        return null;
+        return StatusFrameEnhanced.Status_10_MotionMagic;
       }
 
       @Override
@@ -437,12 +442,12 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public double getPeakOutputForward() {
-        return 0;
+        return 1;
       }
 
       @Override
       public double getPeakOutputReverse() {
-        return 0;
+        return -1;
       }
 
       @Override
@@ -452,7 +457,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public double getKP() {
-        return 0;
+        return 0.5;
       }
 
       @Override
@@ -467,7 +472,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public double getKF() {
-        return 0;
+        return 1.36;
       }
 
       @Override
@@ -482,22 +487,22 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public int getMotionCruiseVelocity() {
-        return 0;
+        return 700;
       }
 
       @Override
       public int getMotionAcceleration() {
-        return 0;
+        return 1000;
       }
 
       @Override
       public boolean isReverseSoftLimitEnabled() {
-        return false;
+        return true;
       }
 
       @Override
       public boolean isForwardsSoftLimitEnabled() {
-        return false;
+        return true;
       }
 
       @Override
@@ -517,7 +522,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isInverted() {
-        return false;
+        return true;
       }
     };
   }
@@ -532,7 +537,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isInverted() {
-        return true;
+        return false;
       }
     };
   }
