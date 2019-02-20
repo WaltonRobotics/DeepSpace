@@ -164,7 +164,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public boolean isCurrentRobot() {
-    return false;
+    return true;
   }
 
   @Override
