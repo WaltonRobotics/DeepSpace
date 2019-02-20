@@ -1,13 +1,12 @@
 package frc.robot.robotState;
 
-import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
-import frc.robot.command.teleop.ZeroElevator;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Elevator;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Hatch;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchControlMode;
@@ -75,6 +74,7 @@ public class TakeControl implements State {
 
   @Override
   public void finish() {
-    Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.BASE);
+    Robot.godSubsystem.getElevator().enableLowerLimit();
+    Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.CARGO_BASE);
   }
 }
