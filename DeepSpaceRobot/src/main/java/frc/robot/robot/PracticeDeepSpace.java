@@ -164,7 +164,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public boolean isCurrentRobot() {
-    return true;
+    return false;
   }
 
   @Override
@@ -212,12 +212,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getPeakOutputForward() {
-        return 1;
+        return .3;
       }
 
       @Override
       public double getPeakOutputReverse() {
-        return -1;
+        return -.3;
       }
 
       @Override
@@ -462,7 +462,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getKP() {
-        return 0;
+        return 0.5;
       }
 
       @Override
@@ -477,7 +477,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getKF() {
-        return 0;
+        return 1.36;
       }
 
       @Override
@@ -492,12 +492,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public int getMotionCruiseVelocity() {
-        return 2500;
+        return 700;
       }
 
       @Override
       public int getMotionAcceleration() {
-        return 2000;
+        return 1000;
       }
 
       @Override
