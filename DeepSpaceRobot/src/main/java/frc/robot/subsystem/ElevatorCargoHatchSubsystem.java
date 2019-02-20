@@ -273,6 +273,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private double elevatorCurrentPower;
     private double elevatorCurrentTarget;
     private ElevatorControlMode elevatorControlMode;
+    private boolean lastIsZeroed;
 
     public Elevator() {
       elevatorLogger = new Logger();
@@ -308,6 +309,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       elevatorJoystick = -gamepad.getRightY();
       currentEncoderPosition = elevatorMotor.getSelectedSensorPosition(0);
 
+      lastIsZeroed = isZeroed;
+
       lowerLimit = !elevatorLowerLimit.get();
       baseIsPressed = elevatorZeroButton.get();
     }
@@ -333,7 +336,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       switch (elevatorControlMode) {
         case ZEROING:
           elevatorMotor.set(ControlMode.PercentOutput, -0.1);
-          elevatorMotor.setSelectedSensorPosition(0);
+          if (isZeroRising()) {
+            elevatorMotor.setSelectedSensorPosition(0);
+          }
           elevatorCurrentTarget = 0;
           break;
         case AUTO:
@@ -350,6 +355,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
           elevatorCurrentTarget = 0;
           break;
       }
+    }
+
+    public boolean isZeroRising() {
+      return !lastIsZeroed && isZeroed;
     }
 
     public void enableLowerLimit() {
