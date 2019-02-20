@@ -336,6 +336,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
           break;
         case AUTO:
           elevatorMotor.set(ControlMode.MotionMagic, elevatorCurrentTarget);
+          elevatorCurrentPower = 0;
           break;
         case MANUAL:
           elevatorMotor.set(ControlMode.PercentOutput, elevatorCurrentPower);
@@ -552,6 +553,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       switch (clawControlMode) {
         case AUTO:
           clawRotationMotor.set(ControlMode.Position, clawTarget);
+          clawRotationPower = 0;
           break;
         case MANUAL:
           clawRotationMotor.set(ControlMode.PercentOutput, clawRotationPower);
@@ -644,6 +646,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       switch (hatchControlMode) {
         case AUTO:
           hatchRotationMotor.set(ControlMode.Position, hatchTarget);
+          hatchRotationPower = 0;
           break;
         case MANUAL:
           hatchRotationMotor.set(ControlMode.PercentOutput, hatchRotationPower);
