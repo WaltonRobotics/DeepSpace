@@ -159,6 +159,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean(MOTORS_HATCH_ReverseSoftLimit, false);
 
     SmartDashboard.putString(MOTORS_STATE, "No state");
+    SmartDashboard.putString(MOTORS_ELEVATOR_MODE, "No mode");
+    SmartDashboard.putString(MOTORS_CARGO_MODE, "No mode");
+    SmartDashboard.putString(MOTORS_HATCH_MODE, "No mode");
+
     SmartDashboard.putNumber(MOTORS_ELEVATOR_POWER, 0);
     SmartDashboard.putNumber(MOTORS_ELEVATOR_TARGET, 0);
     SmartDashboard.putNumber(MOTORS_HATCH_POWER, 0);
