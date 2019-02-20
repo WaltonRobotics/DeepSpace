@@ -4,6 +4,8 @@ import frc.robot.Robot;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ActiveState;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorControlMode;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 
 public class CargoHandlingTransition implements State {
@@ -16,6 +18,9 @@ public class CargoHandlingTransition implements State {
     Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
     Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.DEPLOY);
     Robot.godSubsystem.getCargo().setLimits(CargoPosition.DEPLOY);
+
+    Robot.godSubsystem.getElevator().setElevatorControlMode(ElevatorControlMode.AUTO);
+    Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.CARGO_BASE);
   }
 
   @Override
