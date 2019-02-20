@@ -343,6 +343,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
           break;
         case DISABLED:
           elevatorMotor.set(ControlMode.Disabled, 0);
+          elevatorCurrentPower = 0;
+          elevatorCurrentTarget = 0;
           break;
       }
     }
@@ -557,6 +559,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
           break;
         case DISABLED:
           clawRotationMotor.set(ControlMode.Disabled, 0);
+          clawRotationPower = 0;
+          clawTarget = 0;
           break;
       }
 
@@ -647,6 +651,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
           break;
         case DISABLED:
           hatchRotationMotor.set(ControlMode.Disabled, 0);
+          hatchTarget = 0;
+          hatchRotationPower = 0;
           break;
       }
 
