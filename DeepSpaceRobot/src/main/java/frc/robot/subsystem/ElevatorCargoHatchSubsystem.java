@@ -22,7 +22,6 @@ import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_LOWER_LIMIT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_STATE;
 import static frc.robot.OI.cargoModeButton;
-import static frc.robot.OI.defenseModeButton;
 import static frc.robot.OI.elevatorLevel1Button;
 import static frc.robot.OI.elevatorLevel2Button;
 import static frc.robot.OI.elevatorLevel3Button;
@@ -44,6 +43,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.Faults;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Gamepad.POV;
 import frc.robot.RobotMap;
 import frc.robot.robotState.Disabled;
 import frc.robot.state.StateBuilder;
@@ -135,7 +135,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     lastHatchModePressed = currentHatchModePressed;
     currentHatchModePressed = hatchModeButton.get();
     lastDefenceModePressed = currentDefenceModePressed;
-    currentDefenceModePressed = defenseModeButton.get();
+//    currentDefenceModePressed = defenseModeButton.get();
+    currentDefenceModePressed = gamepad.getPOVButton(POV.N);
   }
 
   public boolean cargoModeRising() {

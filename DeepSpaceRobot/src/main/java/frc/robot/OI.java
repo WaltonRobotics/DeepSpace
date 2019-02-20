@@ -65,13 +65,14 @@ public class OI {
   public static final JoystickButton elevatorLevel2Button = new JoystickButton(gamepad, _3.index());
   public static final JoystickButton elevatorLevel1Button = new JoystickButton(gamepad, _2.index());
   public static final JoystickButton elevatorZeroButton = new JoystickButton(gamepad, _1.index());
-  public static final JoystickButton hatchIntakeButton = new JoystickButton(gamepad, RIGHT_TRIGGER.index());
-  public static final JoystickButton intakeCargoButton = new JoystickButton(gamepad, RIGHT_BUMPER.index());
-  public static final JoystickButton outtakeCargoButtonFast = new JoystickButton(gamepad, LEFT_BUMPER.index());
-  public static final JoystickButton outtakeCargoButtonSlow = new JoystickButton(gamepad, LEFT_TRIGGER.index());
+  public static final JoystickButton hatchIntakeButton = new JoystickButton(gamepad, RIGHT_BUMPER.index());
+  public static final JoystickButton intakeCargoButton = new JoystickButton(gamepad, RIGHT_TRIGGER.index());
+  public static final JoystickButton outtakeCargoButtonFast = new JoystickButton(gamepad, LEFT_TRIGGER.index());
+  public static final JoystickButton outtakeCargoButtonSlow = new JoystickButton(gamepad, LEFT_BUMPER.index());
+
   public static final JoystickButton cargoModeButton = new JoystickButton(gamepad, _10.index());
   public static final JoystickButton hatchModeButton = new JoystickButton(gamepad, _9.index());
-  public static final JoystickButton defenseModeButton = new JoystickButton(gamepad, LEFT_BUMPER.index());
+//  public static final JoystickButton defenseModeButton = new JoystickButton(gamepad, gamepad.getPO);
 
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
