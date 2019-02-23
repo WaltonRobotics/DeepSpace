@@ -57,6 +57,32 @@ def order_corners_clockwise(tape):
     return np.array([tl, tr, br, bl], dtype=np.float32)
 
 
+def define_tape_corners(angle, length):
+    """
+    Define the vision target points from the length of the tape and the angle, to account for inconsistencies.
+    Assume the width of the tape is 2 inches, the top point is 31.5 inches high, and the distance between tapes is 8
+    inches at the closest point.
+    :param angle:
+    :param length:
+    :return:
+    """
+    tl_x = 4
+    tr_y = 31.5
+
+    tl_y = tr_y - 2 * math.sin(angle)
+
+    tr_x = tl_x + 2 * math.cos(angle)
+
+    br_x = tr_x + length * math.sin(angle)
+    br_y = tr_y - length * math.cos(angle)
+
+    bl_x = tl_x + length * math.sin(angle)
+    bl_y = tl_y - length * math.cos(angle)
+
+    return np.array([[-tr_x, tr_y, 0.0], [-tl_x, tl_y, 0.0], [-bl_x, bl_y, 0.0], [-br_x, br_y, 0.0],
+                     [tl_x, tl_y, 0.0], [tr_x, tr_y, 0.0], [br_x, br_y, 0.0], [bl_x, bl_y, 0.0]], dtype=np.float32)
+
+
 class Pose:
 
     def __init__(self):
@@ -71,8 +97,8 @@ class DeepSpacePoseFinder:
         # !!THERE CAN BE NO FILE LOADING IN THE __init__ FUNCTION!!
 
         # Values used in detect
-        self.HLSmin = np.array([60, 100, 180], dtype=np.uint8)
-        self.HLSmax = np.array([80, 255, 255], dtype=np.uint8)
+        self.HLSmin = np.array([55, 100, 180], dtype=np.uint8)
+        self.HLSmax = np.array([70, 255, 255], dtype=np.uint8)
         self.min_area = 200.0
         self.min_perimeter = 10.0
         self.min_width = 0.0
@@ -89,21 +115,22 @@ class DeepSpacePoseFinder:
         self.targets = []
 
         # Values used in estimate_poses
-        self.object_points = np.array(
-            [[-5.936, 31.5, 0.0], [-4.0, 31, 0.0], [-5.375, 25.675, 0.0], [-7.316, 26.175, 0.0],  # Left points
-             [4.0, 31, 0.0], [5.936, 31.5, 0.0], [7.316, 26.175, 0.0], [5.375, 25.675, 0.0]],  # Right points
-            dtype=np.float32)
+        tape_angle = math.asin(0.25)
+        # tape_angle = math.radians(10)
+        tape_length = 5.5
+        self.object_points = define_tape_corners(tape_angle, tape_length)
 
         # Values used to filter out unlikely targets
         self.decision_tolerance = 0.05
         self.current_target = np.array([None, None])
-        self.target_lost_factor = 1.25
+        self.target_lost_factor = 1.25 #Larger means it will choose a new target sooner
         self.target_lost_time = -1
         self.target_lost_timeout = 2
-        self.min_x_ang = -160
+        self.min_x_ang = -170
         self.max_x_ang = -140
-        self.min_z_ang = -10
-        self.max_z_ang = 10
+        self.min_z_ang = -20
+        self.max_z_ang = 20
+        self.min_y = 0
 
         # Values used with user-commands
         self.enabled = False
@@ -467,14 +494,16 @@ class DeepSpacePoseFinder:
             while i < len(tapes) - 1:
                 second_tape = tapes[i]
                 target = Target(first_tape, second_tape)
-                if self.does_target_fit_angle_range(target):
+                if (first_tape.parity is 'right' and second_tape.parity is 'left') is False and \
+                        self.is_target_plausible(target):
                     targets.append(Target(first_tape, second_tape))
                 first_tape = tapes[i]
                 i += 1
             if i is len(tapes) - 1:
                 second_tape = tapes[i]
                 target = Target(first_tape, second_tape)
-                if self.does_target_fit_angle_range(target):
+                if (first_tape.parity is 'right' and second_tape.parity is 'left') is False and \
+                        self.is_target_plausible(target):
                     targets.append(Target(first_tape, second_tape))
 
         return targets
@@ -504,7 +533,7 @@ class DeepSpacePoseFinder:
                 closest_target, rotation, translation = target_data[0]
                 # tracker = cv2.TrackerKCF_create()
                 # tracker.init(inimg, closest_target.bounding_rectangle)
-                if self.does_target_fit_angle_range(closest_target) is False:
+                if self.is_target_plausible(closest_target) is False:
                     return
                 closest_box = closest_target.bounding_rectangle
                 self.current_target = np.array([[closest_target, rotation, translation], closest_box])
@@ -565,12 +594,15 @@ class DeepSpacePoseFinder:
         most_likely_target = targets[0]
         if distance_2d(most_likely_target.bounding_rectangle, self.current_target[1]) > \
                 most_likely_target.bounding_rectangle[3] * self.target_lost_factor:
+            jevois.LINFO("Closest target is too far away")
             return False, None
         return True, targets[0]
 
-    def does_target_fit_angle_range(self, target):
-        rotation = self.estimate_pose(target)[0]
-        return self.max_x_ang >= rotation[0] >= self.min_x_ang and self.max_z_ang >= rotation[2] >= self.min_z_ang
+    def is_target_plausible(self, target):
+        rotation, translation = self.estimate_pose(target)
+        # jevois.LINFO("{} {}".format(rotation, translation))
+        return self.max_x_ang >= rotation[0] >= self.min_x_ang and self.max_z_ang >= rotation[2] >= self.min_z_ang \
+               and translation[1] >= self.min_y and translation[2] >= 0
 
 
 class Target:
