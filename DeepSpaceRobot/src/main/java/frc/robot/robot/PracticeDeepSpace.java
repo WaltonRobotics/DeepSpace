@@ -569,18 +569,19 @@ public class PracticeDeepSpace extends LimitedRobot {
     this.addTarget(HatchPosition.CARGO_START, new Target(-320, -300));
 
     this.addTarget(CargoPosition.SAFE, new Target(644, 655));
-    this.addTarget(CargoPosition.DEPLOY, new Target(471, 550));
+    this.addTarget(CargoPosition.ANGLE, new Target(509, 655));
+    this.addTarget(CargoPosition.DEPLOY, new Target(450, 550));
 
-    this.addTarget(ElevatorLevel.CARGO_BASE, new Target(4615));
+    this.addTarget(ElevatorLevel.CARGO_BASE, new Target(997));
 
-    this.addTarget(ElevatorLevel.CARGO_ROCKET, new Target(9000));
-    this.addTarget(ElevatorLevel.CARGO_HAB, new Target(11000));
-    this.addTarget(ElevatorLevel.CARGO2, new Target(18000));
-    this.addTarget(ElevatorLevel.CARGO3, new Target(27000));
+    this.addTarget(ElevatorLevel.CARGO_ROCKET, new Target(10607));
+    this.addTarget(ElevatorLevel.CARGO_HAB, new Target(15200));
+    this.addTarget(ElevatorLevel.CARGO2, new Target(22470));
+    this.addTarget(ElevatorLevel.CARGO3, new Target(31418));
 
-    this.addTarget(ElevatorLevel.HATCH_BASE, new Target(0));
-    this.addTarget(ElevatorLevel.HATCH2, new Target(13000));
-    this.addTarget(ElevatorLevel.HATCH3, new Target(26000));
+    this.addTarget(ElevatorLevel.HATCH_BASE, new Target(1619));
+    this.addTarget(ElevatorLevel.HATCH2, new Target(14465));
+    this.addTarget(ElevatorLevel.HATCH3, new Target(27147));
 
 
   }
