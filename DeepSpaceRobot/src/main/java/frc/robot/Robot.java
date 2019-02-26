@@ -84,7 +84,9 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import frc.robot.util.ParkingLines;
 import frc.robot.util.RobotBuilder;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -212,6 +214,7 @@ public class Robot extends TimedRobot {
 
       while (!Thread.interrupted()) {
         cvSink.grabFrame(source);
+        Core.flip(source, source, -1);
         ParkingLines.setFocusPoint(
             SmartDashboard.getNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0),
             SmartDashboard.getNumber(PARKING_LINE_FOCUS_Y, HEIGHT / 2.0)
