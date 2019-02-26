@@ -111,6 +111,10 @@ public class OI {
         drivetrain.setStartingPosition(Pose.ZERO);
       }
     });
+
+//    TODO uncomment this to use autoassist
+//    JoystickButton rightTrigger = new JoystickButton(rightJoystick,0);
+//    rightTrigger.whenPressed(new AutoAssist());
   }
 
   private OI() {
