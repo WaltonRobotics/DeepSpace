@@ -56,10 +56,10 @@ public class CargoHandling implements State {
       cargo.setClawControlMode(ClawControlMode.AUTO);
 
       if (elevator.isBasePressed()) {
-        elevator.setElevatorLevel(ElevatorLevel.CARGO_ROCKET);
-      } else if (elevator.isElevatorLevel1ButtonPressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO_HAB);
         cargo.setClawTarget(CargoPosition.DEPLOY);
+      } else if (elevator.isElevatorLevel1ButtonPressed()) {
+        elevator.setElevatorLevel(ElevatorLevel.CARGO_BASE);
         cargo.setClawTarget(CargoPosition.DEPLOY);
       } else if (elevator.isElevatorLevel2ButtonPressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO2);
