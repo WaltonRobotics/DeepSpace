@@ -81,7 +81,7 @@ public class Config {
     public static final String MOTORS_HATCH_MODE = "Motors/Hatch Mode";
     public static final String MOTORS_CARGO_MODE = "Motors/Cargo Mode";
 
-    public static final String DRIVETEAM_FISHEYE_CAMERA = "Driveteam/Fisheye Camera";
+    public static final String DRIVETEAM_FISHEYE_CAMERA = "Fisheye Camera";
     public static final String DRIVETEAM_TRANSFORM_SELECT = "Driveteam/Transform Select";
 
     private SmartDashboardKeys() {
