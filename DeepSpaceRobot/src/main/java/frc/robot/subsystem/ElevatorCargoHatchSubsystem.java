@@ -65,6 +65,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private boolean currentHatchModePressed;
   private boolean isEnabled = false;
   private StateBuilder stateMachine;
+
   public ElevatorCargoHatchSubsystem() {
     elevator.initialize();
     cargo.initialize();
@@ -242,8 +243,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   }
 
   public enum CargoPosition {
-
     DEPLOY,
+    ANGLE,
     SAFE
   }
 
