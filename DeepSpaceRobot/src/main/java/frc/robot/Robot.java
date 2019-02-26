@@ -171,10 +171,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(MOTORS_CARGO_POWER, 0);
     SmartDashboard.putNumber(MOTORS_CARGO_TARGET, 0);
 
-    SmartDashboard.putNumber(PARKING_LINE_OFFSET, 0);
+    SmartDashboard.putNumber(PARKING_LINE_OFFSET, 60);
     SmartDashboard.putNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0);
-    SmartDashboard.putNumber(PARKING_LINE_FOCUS_Y, HEIGHT / 2.0);
-    SmartDashboard.putNumber(PARKING_LINE_PERCENTAGE, 1.0);
+    SmartDashboard.putNumber(PARKING_LINE_FOCUS_Y, 240);
+    SmartDashboard.putNumber(PARKING_LINE_PERCENTAGE, .5);
 
     SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, "No position has been reported");
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, 0);
