@@ -4,6 +4,7 @@ import frc.robot.Robot;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ActiveState;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Elevator;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorControlMode;
@@ -58,10 +59,14 @@ public class CargoHandling implements State {
         elevator.setElevatorLevel(ElevatorLevel.CARGO_ROCKET);
       } else if (elevator.isElevatorLevel1ButtonPressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO_HAB);
+        cargo.setClawTarget(CargoPosition.DEPLOY);
+        cargo.setClawTarget(CargoPosition.DEPLOY);
       } else if (elevator.isElevatorLevel2ButtonPressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO2);
+        cargo.setClawTarget(CargoPosition.DEPLOY);
       } else if (elevator.isElevatorLevel3ButtonPressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO3);
+        cargo.setClawTarget(CargoPosition.ANGLE);
       }
     }
 
