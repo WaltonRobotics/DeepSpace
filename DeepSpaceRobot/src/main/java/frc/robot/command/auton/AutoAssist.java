@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import org.waltonrobotics.command.SimpleCameraPositioning;
 import org.waltonrobotics.command.SimpleMotion;
-import org.waltonrobotics.controller.CameraData;
+import org.waltonrobotics.metadata.CameraData;
 
 public class AutoAssist extends Command {
 

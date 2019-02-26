@@ -27,7 +27,7 @@ import static frc.robot.Robot.drivetrain;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import org.waltonrobotics.controller.Pose;
+import org.waltonrobotics.metadata.Pose;
 
 /**
  * This class is the glue that binds the controls on the physical operator interface to the commands and command groups

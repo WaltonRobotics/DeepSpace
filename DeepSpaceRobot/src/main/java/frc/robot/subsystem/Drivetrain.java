@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.command.teleop.Drive;
 import org.waltonrobotics.AbstractDrivetrain;
-import org.waltonrobotics.controller.RobotPair;
+import org.waltonrobotics.metadata.RobotPair;
 
 /**
  * Add your docs here.

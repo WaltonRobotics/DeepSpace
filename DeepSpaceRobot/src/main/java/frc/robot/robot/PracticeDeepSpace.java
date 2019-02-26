@@ -11,9 +11,9 @@ import frc.robot.config.Target;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
-import org.waltonrobotics.util.Controls;
-import org.waltonrobotics.util.EncoderConfig;
-import org.waltonrobotics.util.TalonConfig;
+import org.waltonrobotics.config.Controls;
+import org.waltonrobotics.config.EncoderConfig;
+import org.waltonrobotics.config.TalonConfig;
 
 public class PracticeDeepSpace extends LimitedRobot {
 
