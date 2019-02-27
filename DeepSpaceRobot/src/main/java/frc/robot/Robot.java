@@ -11,6 +11,16 @@ import static frc.robot.Config.Camera.DEFAULT_CAMERA_COMPRESSION_QUALITY;
 import static frc.robot.Config.Camera.FPS;
 import static frc.robot.Config.Camera.HEIGHT;
 import static frc.robot.Config.Camera.WIDTH;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ACTUAL;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ANGLE;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_CAMERA_INFO;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_HEIGHT;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_NUMBER_OF_TARGETS;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TIME;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_USES_AUTOASSIST;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_X;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_Y;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KACC;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KANGLE;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KK;
@@ -65,7 +75,6 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.command.teleop.util.NormalSpeed;
@@ -86,7 +95,6 @@ import frc.robot.util.ParkingLines;
 import frc.robot.util.RobotBuilder;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -117,6 +125,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     drivetrain.cancelControllerMotion();
     drivetrain.reset();
+
+//    Robot.drivetrain.getController().getCameraTimerTask().startCollecting();
 
     initShuffleBoard();
 
@@ -185,6 +195,17 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, 0);
     SmartDashboard.putNumber(DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT, 0);
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT, 0);
+
+    SmartDashboard.putNumber(CAMERA_DATA_X, 1);
+    SmartDashboard.putNumber(CAMERA_DATA_Y, 0);
+    SmartDashboard.putNumber(CAMERA_DATA_HEIGHT, 0);
+    SmartDashboard.putNumber(CAMERA_DATA_ANGLE, 0);
+    SmartDashboard.putNumber(CAMERA_DATA_NUMBER_OF_TARGETS, 1);
+    SmartDashboard.putNumber(CAMERA_DATA_TIME, 0);
+    SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, false);
+    SmartDashboard.putString(CAMERA_DATA_ACTUAL, "No actual data");
+    SmartDashboard.putString(CAMERA_DATA_TARGET, "No target data");
+    SmartDashboard.putString(CAMERA_DATA_CAMERA_INFO, "No camera data");
   }
 
   private void initCamera() {
