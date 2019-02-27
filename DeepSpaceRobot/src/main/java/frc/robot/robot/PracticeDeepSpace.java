@@ -138,12 +138,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public double getKS() {
-    return 0;
+    return 2;
   }
 
   @Override
   public double getKAng() {
-    return 0;
+    return 1;
   }
 
   @Override
