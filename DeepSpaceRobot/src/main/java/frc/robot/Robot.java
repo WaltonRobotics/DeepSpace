@@ -214,6 +214,7 @@ public class Robot extends TimedRobot {
 
       while (!Thread.interrupted()) {
         cvSink.grabFrame(source);
+
         Core.flip(source, source, -1);
         ParkingLines.setFocusPoint(
             SmartDashboard.getNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0),
@@ -240,6 +241,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(DRIVETRAIN_LEFT_ENCODER, encoderLeft.getDistance());
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, encoderRight.getDistance());
     SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, String.valueOf(drivetrain.getActualPosition()));
+    SmartDashboard.putString(CAMERA_DATA_CAMERA_INFO, String.valueOf(drivetrain.getCurrentCameraData()));
     // System.out.println("robot Periodic");
   }
 
