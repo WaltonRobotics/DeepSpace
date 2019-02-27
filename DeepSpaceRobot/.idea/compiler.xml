@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="DeepSpaceRobot.main" target="1.8" />
-      <module name="DeepSpaceRobot.test" target="1.8" />
+      <module name="DeepSpaceRobot.main" target="11" />
+      <module name="DeepSpaceRobot.test" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
