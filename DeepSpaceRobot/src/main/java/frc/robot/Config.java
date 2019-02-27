@@ -84,6 +84,18 @@ public class Config {
     public static final String DRIVETEAM_FISHEYE_CAMERA = "Fisheye Camera";
     public static final String DRIVETEAM_TRANSFORM_SELECT = "Driveteam/Transform Select";
 
+    public static final String CAMERA_DATA_X = "CameraData/x";
+    public static final String CAMERA_DATA_Y = "CameraData/y";
+    public static final String CAMERA_DATA_HEIGHT = "CameraData/Height";
+    public static final String CAMERA_DATA_ANGLE = "CameraData/Angle";
+    public static final String CAMERA_DATA_NUMBER_OF_TARGETS = "CameraData/NumberOfTargets";
+    public static final String CAMERA_DATA_TIME = "CameraData/Time";
+    public static final String CAMERA_DATA_ACTUAL = "CameraData/Actual";
+    public static final String CAMERA_DATA_TARGET = "CameraData/Target";
+    public static final String CAMERA_DATA_USES_AUTOASSIST = "CameraData/Uses Auto Assist";
+    public static final String CAMERA_DATA_CAMERA_INFO = "CameraData/Camera Info";
+
+
     private SmartDashboardKeys() {
     }
   }
