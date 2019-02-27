@@ -192,6 +192,12 @@ public class Robot extends TimedRobot {
       CameraServer cameraServer = CameraServer.getInstance();
 
       UsbCamera fishEyeCamera = cameraServer.startAutomaticCapture();
+
+      if (!fishEyeCamera.isConnected() || !fishEyeCamera.isValid() || !fishEyeCamera.isEnabled()) {
+        fishEyeCamera.close();
+        return;
+      }
+
       fishEyeCamera.setResolution(WIDTH, HEIGHT);
 
       CvSink cvSink = cameraServer.getVideo();
@@ -203,12 +209,6 @@ public class Robot extends TimedRobot {
 
       fisheyeServer.getProperty("compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
       fisheyeServer.getProperty("default_compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
-
-      if (!fishEyeCamera.isConnected()) {
-        fishEyeCamera.close();
-        fisheyeServer.close();
-        return;
-      }
 
       Mat source = new Mat();
 
