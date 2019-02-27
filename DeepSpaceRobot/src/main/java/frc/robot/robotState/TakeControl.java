@@ -2,6 +2,7 @@ package frc.robot.robotState;
 
 import frc.robot.Robot;
 import frc.robot.state.State;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ActiveState;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
@@ -38,6 +39,9 @@ public class TakeControl implements State {
     cargo.setLimits(CargoPosition.SAFE);
     hatch.setLimits(HatchPosition.SAFE);
     elevator.releaseLowerLimit();
+
+    Robot.godSubsystem.setCurrentActiveState(ActiveState.HATCH_HANDLING);
+    Robot.godSubsystem.getHatch().setIntake(true);
   }
 
   @Override
