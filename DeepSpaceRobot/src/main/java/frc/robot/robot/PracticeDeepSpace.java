@@ -26,7 +26,7 @@ public class PracticeDeepSpace extends LimitedRobot {
     return new EncoderConfig() {
       @Override
       public double getDistancePerPulse() {
-        return 0.0;
+        return 0.000588608;
       }
 
       @Override
@@ -51,7 +51,7 @@ public class PracticeDeepSpace extends LimitedRobot {
     return new EncoderConfig() {
       @Override
       public double getDistancePerPulse() {
-        return 0;
+        return 0.000588608;
       }
 
       @Override
