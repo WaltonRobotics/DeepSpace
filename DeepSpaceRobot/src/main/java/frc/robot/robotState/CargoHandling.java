@@ -31,6 +31,10 @@ public class CargoHandling implements State {
       return new DefenseTransition();
     }
 
+    if (Robot.godSubsystem.hatchModeRising()) {
+      return new HatchHandlingTransition();
+    }
+
     boolean elevatorManual = Math.abs(elevator.getElevatorJoystick()) > 0.1;
     boolean cargoManual = Math.abs(cargo.getCargoJoystick()) > 0.1;
 
