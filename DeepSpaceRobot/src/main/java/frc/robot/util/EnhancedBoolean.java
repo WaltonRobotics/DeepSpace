@@ -1,6 +1,7 @@
 package frc.robot.util;
 
 public class EnhancedBoolean {
+
   private boolean value;
   private boolean previousValue;
 
@@ -13,20 +14,20 @@ public class EnhancedBoolean {
     this(false);
   }
 
-  public boolean get(){
+  public boolean get() {
     return value;
   }
 
-  public void set(boolean newValue){
+  public void set(boolean newValue) {
     previousValue = value;
     value = newValue;
   }
 
-  public boolean isRisingEdge(){
+  public boolean isRisingEdge() {
     return value && !previousValue;
   }
 
-  public boolean isFallingEdge(){
+  public boolean isFallingEdge() {
     return !value && previousValue;
   }
 }
