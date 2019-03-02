@@ -60,17 +60,20 @@ public class CargoHandling implements State {
       cargo.setClawControlMode(ClawControlMode.AUTO);
 
       if (elevator.isBasePressed()) {
-        elevator.setElevatorLevel(ElevatorLevel.CARGO_HAB);
-        cargo.setClawTarget(CargoPosition.DEPLOY);
+        elevator.setElevatorLevel(ElevatorLevel.CARGO_ROCKET);
+        cargo.setClawTarget(CargoPosition.CARGO_1);
       } else if (elevator.isElevatorLevel1ButtonPressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO_BASE);
         cargo.setClawTarget(CargoPosition.DEPLOY);
       } else if (elevator.isElevatorLevel2ButtonPressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO2);
-        cargo.setClawTarget(CargoPosition.DEPLOY);
+        cargo.setClawTarget(CargoPosition.CARGO_2);
       } else if (elevator.isElevatorLevel3ButtonPressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO3);
-        cargo.setClawTarget(CargoPosition.ANGLE);
+        cargo.setClawTarget(CargoPosition.CARGO_3);
+      } else if (elevator.isElevatorCargoShipButtonPressed()) {
+        elevator.setElevatorLevel(ElevatorLevel.CARGO_HAB);
+        cargo.setClawTarget(CargoPosition.DEPLOY);
       }
     }
 
