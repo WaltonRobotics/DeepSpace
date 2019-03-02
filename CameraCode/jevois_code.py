@@ -125,7 +125,7 @@ class DeepSpacePoseFinder:
         self.current_target = np.array([None, None])
         self.target_lost_factor = 1.25 #Larger means it will choose a new target sooner
         self.target_lost_time = -1
-        self.target_lost_timeout = 2
+        self.target_lost_timeout = 0.25
         self.min_x_ang = -170
         self.max_x_ang = -140
         self.min_z_ang = -20
