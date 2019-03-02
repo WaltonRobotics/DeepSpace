@@ -196,7 +196,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT, 0);
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT, 0);
 
-    SmartDashboard.putNumber(CAMERA_DATA_X, 1);
+    SmartDashboard.putNumber(CAMERA_DATA_X, -1);
     SmartDashboard.putNumber(CAMERA_DATA_Y, 0);
     SmartDashboard.putNumber(CAMERA_DATA_HEIGHT, 0);
     SmartDashboard.putNumber(CAMERA_DATA_ANGLE, 0);
