@@ -244,8 +244,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
   public enum CargoPosition {
     DEPLOY,
-    ANGLE,
-    SAFE
+    CARGO_3,
+    CARGO_2, CARGO_1, CARGO_START, SAFE
   }
 
   public enum HatchPosition {

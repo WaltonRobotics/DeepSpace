@@ -227,7 +227,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getKP() {
-        return 10;
+        return 15;
       }
 
       @Override
@@ -568,16 +568,18 @@ public class PracticeDeepSpace extends LimitedRobot {
     this.addTarget(HatchPosition.HATCH_START, new Target(-486, -403));
     this.addTarget(HatchPosition.CARGO_START, new Target(-320, -300));
 
-    this.addTarget(CargoPosition.SAFE, new Target(644, 655));
-    this.addTarget(CargoPosition.ANGLE, new Target(509, 655));
-    this.addTarget(CargoPosition.DEPLOY, new Target(450, 550));
+    this.addTarget(CargoPosition.SAFE, new Target(635, 655));
+    this.addTarget(CargoPosition.CARGO_1, new Target(468, 655));
+    this.addTarget(CargoPosition.CARGO_2, new Target(486, 655));
+    this.addTarget(CargoPosition.CARGO_3, new Target(509, 655));
+    this.addTarget(CargoPosition.DEPLOY, new Target(435, 550));
 
-    this.addTarget(ElevatorLevel.CARGO_BASE, new Target(1230));
+    this.addTarget(ElevatorLevel.CARGO_BASE, new Target(1084));
 
-    this.addTarget(ElevatorLevel.CARGO_ROCKET, new Target(10607));
+    this.addTarget(ElevatorLevel.CARGO_ROCKET, new Target(7584));
     this.addTarget(ElevatorLevel.CARGO_HAB, new Target(15200));
-    this.addTarget(ElevatorLevel.CARGO2, new Target(22470));
-    this.addTarget(ElevatorLevel.CARGO3, new Target(31418));
+    this.addTarget(ElevatorLevel.CARGO2, new Target(19050));
+    this.addTarget(ElevatorLevel.CARGO3, new Target(30143));
 
     this.addTarget(ElevatorLevel.HATCH_BASE, new Target(1619));
     this.addTarget(ElevatorLevel.HATCH2, new Target(14465));
