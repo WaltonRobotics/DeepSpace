@@ -330,7 +330,7 @@ public class Robot extends TimedRobot {
 
 //    godSubsystem.getElevator().setElevatorPower(godSubsystem.getElevator().getElevatorJoystick());
 ////    godSubsystem.getHatch().setHatchRotationPower(godSubsystem.getCargo().getCargoJoystick());
-//    godSubsystem.getCargo().setClawRotationPower(godSubsystem.getCargo().getCargoJoystick());
+//    godSubsystem.getCargo().setCargoRotationPower(godSubsystem.getCargo().getCargoJoystick());
 //
 //    if (catchHatch) {
 //      if (!hatchIntake.get()) {

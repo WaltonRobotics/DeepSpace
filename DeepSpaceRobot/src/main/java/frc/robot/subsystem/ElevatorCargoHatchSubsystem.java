@@ -178,7 +178,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     SmartDashboard.putString(MOTORS_HATCH_MODE, getHatch().getHatchControlMode().name());
 
     SmartDashboard.putNumber(MOTORS_CARGO_ANGLE, getCargo().getAngle());
-    SmartDashboard.putNumber(MOTORS_CARGO_POWER, getCargo().getClawRotationPower());
+    SmartDashboard.putNumber(MOTORS_CARGO_POWER, getCargo().getCargoRotationPower());
     SmartDashboard.putNumber(MOTORS_CARGO_TARGET, getCargo().getClawTarget());
     SmartDashboard.putString(MOTORS_CARGO_MODE, getCargo().getClawControlMode().name());
 
@@ -462,7 +462,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private CargoPosition limits = CargoPosition.SAFE;
     // Outputs
     private double intakePower;
-    private double clawRotationPower;
+    private double cargoRotationPower;
     private int clawTarget;
     private ClawControlMode clawControlMode;
 
@@ -517,12 +517,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       this.clawControlMode = clawControlMode;
     }
 
-    public double getClawRotationPower() {
-      return clawRotationPower;
+    public double getCargoRotationPower() {
+      return cargoRotationPower;
     }
 
-    public void setClawRotationPower(double clawRotationPower) {
-      this.clawRotationPower = clawRotationPower;
+    public void setCargoRotationPower(double cargoRotationPower) {
+      this.cargoRotationPower = cargoRotationPower;
     }
 
     public void setClawAngle(int angle) {
@@ -576,15 +576,15 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       switch (clawControlMode) {
         case AUTO:
           clawRotationMotor.set(ControlMode.Position, clawTarget);
-          clawRotationPower = 0;
+          cargoRotationPower = 0;
           break;
         case MANUAL:
-          clawRotationMotor.set(ControlMode.PercentOutput, clawRotationPower);
+          clawRotationMotor.set(ControlMode.PercentOutput, cargoRotationPower);
           clawTarget = angle;
           break;
         case DISABLED:
           clawRotationMotor.set(ControlMode.Disabled, 0);
-          clawRotationPower = 0;
+          cargoRotationPower = 0;
           clawTarget = 0;
           break;
       }

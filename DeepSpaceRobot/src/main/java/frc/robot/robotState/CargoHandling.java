@@ -51,7 +51,7 @@ public class CargoHandling implements State {
         double cargoJoystick = cargo.getCargoJoystick();
 
         cargoJoystick = Math.signum(cargoJoystick) * Math.min(Math.abs(cargoJoystick), 0.3);
-        cargo.setClawRotationPower(cargoJoystick);
+        cargo.setCargoRotationPower(cargoJoystick);
       } else {
         cargo.setClawControlMode(ClawControlMode.AUTO);
       }
