@@ -104,6 +104,7 @@ public class Drive extends Command {
 
     if (triggerPress.get() && hasFound) {
       PathData actualPathData = drivetrain.getCurrentRobotState();
+      //Get cameradata and get 90 percent of it in
       PathData targetPathData = new PathData(new Pose(actualPathData.getCenterPose().getX(), 0));
       ErrorVector currentError = MotionController
           .findCurrentError(targetPathData,
@@ -114,9 +115,7 @@ public class Drive extends Command {
       double steerPowerXTE = currentRobot.getKS() * currentError.getXTrack();
       double steerPowerAngle = currentRobot.getKAng() * currentError.getAngle();
 
-      double steerPower =
-          Math.max(-1.0,
-              Math.min(1.0, ((rightYJoystick - leftYJoystick) / 2.0) + steerPowerXTE + steerPowerAngle));
+      double steerPower = Math.max(-1.0, Math.min(1.0, steerPowerXTE + steerPowerAngle));
 
       centerPower = Math
           .max(-1.0 + Math.abs(steerPower),
