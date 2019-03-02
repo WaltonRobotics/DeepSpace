@@ -214,10 +214,10 @@ public class Robot extends TimedRobot {
 
       UsbCamera fishEyeCamera = cameraServer.startAutomaticCapture();
 
-      if (!fishEyeCamera.isConnected() || !fishEyeCamera.isValid() || !fishEyeCamera.isEnabled()) {
-        fishEyeCamera.close();
-        return;
-      }
+//      if (!fishEyeCamera.isConnected() || !fishEyeCamera.isValid() || !fishEyeCamera.isEnabled()) {
+//        fishEyeCamera.close();
+//        return;
+//      }
 
       fishEyeCamera.setResolution(WIDTH, HEIGHT);
 
@@ -235,7 +235,6 @@ public class Robot extends TimedRobot {
 
       while (!Thread.interrupted()) {
         cvSink.grabFrame(source);
-
         Core.flip(source, source, -1);
         ParkingLines.setFocusPoint(
             SmartDashboard.getNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0),
