@@ -22,6 +22,7 @@ import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_LOWER_LIMIT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_STATE;
 import static frc.robot.OI.cargoModeButton;
+import static frc.robot.OI.cargoStart;
 import static frc.robot.OI.elevatorLevel1Button;
 import static frc.robot.OI.elevatorLevel2Button;
 import static frc.robot.OI.elevatorLevel3Button;
@@ -29,6 +30,7 @@ import static frc.robot.OI.elevatorZeroButton;
 import static frc.robot.OI.gamepad;
 import static frc.robot.OI.hatchIntakeButton;
 import static frc.robot.OI.hatchModeButton;
+import static frc.robot.OI.hatchStart;
 import static frc.robot.OI.intakeCargoButton;
 import static frc.robot.OI.outtakeCargoButtonFast;
 import static frc.robot.OI.outtakeCargoButtonSlow;
@@ -57,14 +59,13 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private final Hatch hatch = new Hatch();
   private ActiveState currentActiveState = ActiveState.ROBOT_SWITCHED_ON;
   private long currentTime = 0;
-  private boolean lastDefenceModePressed;
-  private boolean currentDefenceModePressed;
-  private boolean lastCargoModePressed;
-  private boolean currentCargoModePressed;
-  private boolean lastHatchModePressed;
-  private boolean currentHatchModePressed;
+  private EnhancedBoolean currentDefenceModePressed = new EnhancedBoolean();
+  private EnhancedBoolean currentCargoModePressed = new EnhancedBoolean();
+  private EnhancedBoolean currentHatchModePressed = new EnhancedBoolean();
   private boolean isEnabled = false;
   private StateBuilder stateMachine;
+  private EnhancedBoolean currentSetStartModePressed = new EnhancedBoolean();
+  private EnhancedBoolean currentSetStartCargoModePressed = new EnhancedBoolean();
 
   public ElevatorCargoHatchSubsystem() {
     elevator.initialize();
@@ -134,25 +135,33 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     cargo.collectData();
     hatch.collectData();
 
-    lastCargoModePressed = currentCargoModePressed;
-    currentCargoModePressed = cargoModeButton.get();
-    lastHatchModePressed = currentHatchModePressed;
-    currentHatchModePressed = hatchModeButton.get();
-    lastDefenceModePressed = currentDefenceModePressed;
+    currentCargoModePressed.set(cargoModeButton.get());
+    currentHatchModePressed.set(hatchModeButton.get());
 //    currentDefenceModePressed = defenseModeButton.get();
-    currentDefenceModePressed = gamepad.getPOVButton(POV.N);
+    currentDefenceModePressed.set(gamepad.getPOVButton(POV.S));
+    currentSetStartModePressed.set(hatchStart.get());
+    currentSetStartCargoModePressed.set(cargoStart.get());
   }
 
   public boolean cargoModeRising() {
-    return currentCargoModePressed && !lastCargoModePressed;
+    return currentCargoModePressed.isRisingEdge();
   }
 
   public boolean hatchModeRising() {
-    return currentHatchModePressed && !lastHatchModePressed;
+    return currentHatchModePressed.isRisingEdge();
   }
 
   public boolean defenceModeRising() {
-    return currentDefenceModePressed && !lastDefenceModePressed;
+    return currentDefenceModePressed.isRisingEdge();
+  }
+
+  public boolean setCompStartHatchModeRising() {
+    return currentSetStartModePressed.isRisingEdge();
+  }
+
+
+  public boolean setCompStartCargoModeRising() {
+    return currentSetStartCargoModePressed.isRisingEdge();
   }
 
   private void processSensorData() {
@@ -207,7 +216,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
    * @return if the getAngle() value is in the enumerated range above the hatch position will be returned
    */
 
-  public HatchPosition findHatchClosestPosition(HatchPosition hatchPosition, int angle) {
+  public HatchPosition findHatchClosestPosition(int angle) {
     if (currentRobot.getTarget(HatchPosition.DEPLOY).inRange(angle)) {
       return HatchPosition.DEPLOY;
     } else if (currentRobot.getTarget(HatchPosition.SAFE).inRange(angle)) {
@@ -278,6 +287,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private double elevatorCurrentTarget;
     private ElevatorControlMode elevatorControlMode;
     private int lastEncoderPosition;
+    private boolean carogShipPressed;
 
     public Elevator() {
       elevatorLogger = new Logger();
@@ -321,6 +331,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
       lowerLimit = !elevatorLowerLimit.get();
       baseIsPressed = elevatorZeroButton.get();
+      carogShipPressed = gamepad.getPOVButton(POV.N);
     }
 
     @Override
@@ -442,6 +453,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     public void releaseLowerLimit() {
       releaseLower = true;
+    }
+
+    public boolean isElevatorCargoShipButtonPressed() {
+      return carogShipPressed;
     }
   }
 
