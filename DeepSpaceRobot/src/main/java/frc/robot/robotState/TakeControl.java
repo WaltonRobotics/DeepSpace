@@ -60,15 +60,24 @@ public class TakeControl implements State {
 
     if (Robot.godSubsystem.getElevator().isZeroed()) {
       if (Robot.godSubsystem.getCurrentTime() >= timeout) {
-        switch (Robot.godSubsystem.getCurrentActiveState()) {
-          case DEFENSE:
-            return new DefenseTransition();
-          case CARGO_HANDLING:
-            return new CargoHandlingTransition();
-          case HATCH_HANDLING:
-            return new HatchHandlingTransition();
-          case ROBOT_SWITCHED_ON:
-            return new HatchHandlingTransition();
+//        if ()
+
+        HatchPosition hatchPosition = Robot.godSubsystem.findHatchClosestPosition(hatch.getAngle());
+        if (hatchPosition == HatchPosition.HATCH_START) {
+          return new CompStartHatch();
+        } else if (hatchPosition == HatchPosition.CARGO_START) {
+          return new CompStartCargo();
+        } else {
+          switch (Robot.godSubsystem.getCurrentActiveState()) {
+            case DEFENSE:
+              return new DefenseTransition();
+            case CARGO_HANDLING:
+              return new CargoHandlingTransition();
+            case HATCH_HANDLING:
+              return new HatchHandlingTransition();
+            case ROBOT_SWITCHED_ON:
+              return new HatchHandlingTransition();
+          }
         }
       }
     }
