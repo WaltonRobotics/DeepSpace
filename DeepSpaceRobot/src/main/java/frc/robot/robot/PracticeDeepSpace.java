@@ -41,7 +41,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isInverted() {
-        return false;
+        return true;
       }
     };
   }
@@ -81,7 +81,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isInverted() {
-        return false;
+        return true;
       }
     };
   }
@@ -96,19 +96,19 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isInverted() {
-        return true;
+        return false;
       }
     };
   }
 
   @Override
   public Controls getRightJoystickConfig() {
-    return () -> false;
+    return () -> true;
   }
 
   @Override
   public Controls getLeftJoystickConfig() {
-    return () -> false;
+    return () -> true;
   }
 
   @Override
@@ -138,7 +138,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public double getKS() {
-    return 2;
+    return 5;
   }
 
   @Override
@@ -164,7 +164,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public boolean isCurrentRobot() {
-    return true;
+    return false;
   }
 
   @Override
