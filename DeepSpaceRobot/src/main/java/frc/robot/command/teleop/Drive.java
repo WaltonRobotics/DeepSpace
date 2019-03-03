@@ -8,14 +8,8 @@
 package frc.robot.command.teleop;
 
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ACTUAL;
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ANGLE;
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_HEIGHT;
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_NUMBER_OF_TARGETS;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TARGET;
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TIME;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_USES_AUTOASSIST;
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_X;
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_Y;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_ACTUAL_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_CHOSEN_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_JUST_BEFORE;
