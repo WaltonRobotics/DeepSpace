@@ -116,8 +116,8 @@ public class Drive extends Command {
               actualPathData.getCenterPose());
 
       double centerPower = (leftYJoystick + rightYJoystick) / 2;
+      double steerPowerXTE = Math.abs(centerPower) * currentRobot.getKS() * currentError.getXTrack();
 
-      double steerPowerXTE = currentRobot.getKS() * currentError.getXTrack();
       double steerPowerAngle = currentRobot.getKAng() * currentError.getAngle();
 
       double steerPower = Math.max(-1.0, Math.min(1.0, steerPowerXTE + steerPowerAngle));
