@@ -354,7 +354,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
       switch (elevatorControlMode) {
         case ZEROING:
-          elevatorMotor.set(ControlMode.PercentOutput, -0.1);
+          elevatorMotor.set(ControlMode.PercentOutput, -0.2);
           if (isZeroRising()) {
             elevatorMotor.setSelectedSensorPosition(0);
           }
