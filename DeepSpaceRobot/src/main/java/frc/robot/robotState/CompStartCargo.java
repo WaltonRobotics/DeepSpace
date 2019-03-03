@@ -15,6 +15,7 @@ public class CompStartCargo implements State {
     cargo.setLimits(CargoPosition.DEPLOY);
     cargo.setClawTarget(CargoPosition.DEPLOY);
 
+    Robot.godSubsystem.getHatch().setIntake(false);
     timeout = Robot.godSubsystem.getCurrentTime() + 1000;
   }
 
