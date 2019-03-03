@@ -27,7 +27,12 @@ public class Target {
   }
 
   public boolean isClose(int angle) {
-    return Math.abs(angle - target) < 10;
+    return isClose(angle, 10);
+  }
+
+
+  public boolean isClose(int angle, int threshold) {
+    return Math.abs(angle - target) < threshold;
   }
 
   @Override
