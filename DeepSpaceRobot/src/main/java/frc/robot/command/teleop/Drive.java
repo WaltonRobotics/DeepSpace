@@ -108,12 +108,10 @@ public class Drive extends Command {
     }
 
     if (triggerPress.get() && hasFound) {
-      PathData actualPathData = drivetrain.getCurrentRobotState();
+      Pose actualPathData = drivetrain.getActualPosition();
       //Get cameradata and get 90 percent of it in
-      PathData targetPathData = new PathData(new Pose(actualPathData.getCenterPose().getX(), 0));
-      ErrorVector currentError = MotionController
-          .findCurrentError(targetPathData,
-              actualPathData.getCenterPose());
+      PathData targetPathData = new PathData(new Pose(actualPathData.getX(), 0));
+      ErrorVector currentError = MotionController.findCurrentError(targetPathData, actualPathData);
 
       double centerPower = (leftYJoystick + rightYJoystick) / 2;
       double steerPowerXTE = Math.abs(centerPower) * currentRobot.getKS() * currentError.getXTrack();
@@ -131,7 +129,7 @@ public class Drive extends Command {
 
       motionLogger.addMotionData(
           new MotionData(
-              actualPathData.getCenterPose(),
+              actualPathData,
               targetPathData.getCenterPose(),
               currentError,
               new RobotPair(
@@ -142,7 +140,7 @@ public class Drive extends Command {
               0,
               MotionState.MOVING));
       SmartDashboard.putString(
-          CAMERA_DATA_ACTUAL, actualPathData.getCenterPose().toString());
+          CAMERA_DATA_ACTUAL, actualPathData.toString());
       SmartDashboard.putString(
           CAMERA_DATA_TARGET, targetPathData.getCenterPose().toString());
       SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, true);
