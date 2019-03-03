@@ -1,6 +1,7 @@
 package frc.robot.subsystem;
 
 
+import static frc.robot.Config.Elevator.ZEROING;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_ANGLE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_MODE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_POWER;
@@ -354,7 +355,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
       switch (elevatorControlMode) {
         case ZEROING:
-          elevatorMotor.set(ControlMode.PercentOutput, -0.2);
+          elevatorMotor.set(ControlMode.PercentOutput, ZEROING);
           if (isZeroRising()) {
             elevatorMotor.setSelectedSensorPosition(0);
           }

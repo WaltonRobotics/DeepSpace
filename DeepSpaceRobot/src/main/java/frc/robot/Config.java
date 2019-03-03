@@ -104,9 +104,7 @@ public class Config {
   }
 
   public static final class Elevator {
-
-    public static final double LOWERING_TO_BASE_POWER = 0.2;
-    public static final double LOWERING_TO_BASE_TIMEOUT_SECONDS = 5;
+    public static final double ZEROING = -0.2;
 
     private Elevator() {
     }
