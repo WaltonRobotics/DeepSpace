@@ -1,5 +1,7 @@
 package frc.robot.robotState;
 
+import static frc.robot.Robot.currentRobot;
+
 import frc.robot.Robot;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ActiveState;
@@ -41,13 +43,17 @@ public class TakeControl implements State {
     elevator.releaseLowerLimit();
 
     Robot.godSubsystem.setCurrentActiveState(ActiveState.HATCH_HANDLING);
-    Robot.godSubsystem.getHatch().setIntake(true);
+
   }
 
   @Override
   public State periodic() {
     if (!Robot.godSubsystem.isEnabled()) {
       return new Disabled();
+    }
+
+    if (currentRobot.getTarget(ElevatorLevel.HATCH_BASE).isClose(elevator.getElevatorHeight(), 250)) {
+      Robot.godSubsystem.getHatch().setIntake(true);
     }
 
     if (elevator.isLowerLimit()
