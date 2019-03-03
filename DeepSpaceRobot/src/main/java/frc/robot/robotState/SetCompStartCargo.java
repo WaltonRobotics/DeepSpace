@@ -43,7 +43,7 @@ public class SetCompStartCargo implements State {
     }
 
     if (Robot.godSubsystem.defenceModeRising()) {
-      return new CargoHandlingTransition();
+      return new DefenseTransition();
     }
 
     if (Robot.godSubsystem.hatchModeRising()) {

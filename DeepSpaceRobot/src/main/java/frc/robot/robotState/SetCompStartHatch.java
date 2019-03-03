@@ -42,7 +42,7 @@ public class SetCompStartHatch implements State {
       return new CargoHandlingTransition();
     }
     if (Robot.godSubsystem.defenceModeRising()) {
-      return new CargoHandlingTransition();
+      return new DefenseTransition();
     }
 
     if (Robot.godSubsystem.hatchModeRising()) {
