@@ -16,6 +16,9 @@ import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TIME;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_USES_AUTOASSIST;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_X;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_Y;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_ACTUAL_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_CHOSEN_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_JUST_BEFORE;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_JOYSTICK_Y;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_JOYSTICK_Y;
 import static frc.robot.Robot.currentRobot;
@@ -92,8 +95,12 @@ public class Drive extends Command {
 //          (int) SmartDashboard.getNumber(CAMERA_DATA_NUMBER_OF_TARGETS, 0),
 //          SmartDashboard.getNumber(CAMERA_DATA_TIME, 0)
 //      );
+
+      SmartDashboard.putString(DEBUG_CHOSEN_TARGET, currentCameraData.toString());
+      SmartDashboard.putString(DEBUG_JUST_BEFORE, drivetrain.getActualPosition().toString());
       if (currentCameraData.getNumberOfTargets() != 0) {
         drivetrain.setStartingPosition(currentCameraData.getCameraPose());
+        SmartDashboard.putString(DEBUG_ACTUAL_TARGET, drivetrain.getActualPosition().toString());
         hasFound = true;
       } else {
         hasFound = false;

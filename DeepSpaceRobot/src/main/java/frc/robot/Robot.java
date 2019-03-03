@@ -13,7 +13,6 @@ import static frc.robot.Config.Camera.HEIGHT;
 import static frc.robot.Config.Camera.WIDTH;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ACTUAL;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ANGLE;
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_CAMERA_INFO;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_HEIGHT;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_NUMBER_OF_TARGETS;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TARGET;
@@ -29,6 +28,10 @@ import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KS;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KV;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_ACCELERATION;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_VELOCITY;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_ACTUAL_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_CAMERA_VISION;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_CHOSEN_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_JUST_BEFORE;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETEAM_FISHEYE_CAMERA;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETEAM_TRANSFORM_SELECT;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_ACTUAL_POSITION;
@@ -205,7 +208,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, false);
     SmartDashboard.putString(CAMERA_DATA_ACTUAL, "No actual data");
     SmartDashboard.putString(CAMERA_DATA_TARGET, "No target data");
-    SmartDashboard.putString(CAMERA_DATA_CAMERA_INFO, "No camera data");
+
+    SmartDashboard.putString(DEBUG_CHOSEN_TARGET, "No camera data");
+    SmartDashboard.putString(DEBUG_JUST_BEFORE, "No camera data");
+    SmartDashboard.putString(DEBUG_ACTUAL_TARGET, "No camera data");
+    SmartDashboard.putString(DEBUG_CAMERA_VISION, "No Camera Data");
   }
 
   private void initCamera() {
@@ -261,7 +268,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(DRIVETRAIN_LEFT_ENCODER, encoderLeft.getDistance());
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, encoderRight.getDistance());
     SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, String.valueOf(drivetrain.getActualPosition()));
-    SmartDashboard.putString(CAMERA_DATA_CAMERA_INFO, String.valueOf(drivetrain.getCurrentCameraData()));
+    SmartDashboard.putString(DEBUG_CAMERA_VISION, String.valueOf(drivetrain.getCurrentCameraData()));
     // System.out.println("robot Periodic");
   }
 
