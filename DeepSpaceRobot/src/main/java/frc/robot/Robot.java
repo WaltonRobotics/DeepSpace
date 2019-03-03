@@ -129,7 +129,7 @@ public class Robot extends TimedRobot {
     drivetrain.cancelControllerMotion();
     drivetrain.reset();
 
-//    Robot.drivetrain.getController().getCameraTimerTask().startCollecting();
+    Robot.drivetrain.getController().getCameraTimerTask().startCollecting();
 
     initShuffleBoard();
 
