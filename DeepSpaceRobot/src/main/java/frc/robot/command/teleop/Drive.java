@@ -109,6 +109,16 @@ public class Drive extends Command {
 
     if (triggerPress.get() && hasFound) {
       Pose actualPathData = drivetrain.getActualPosition();
+
+      CameraData cameraData = drivetrain.getCurrentCameraData();
+      if (cameraData.getTime() != -1) {
+        Pose camera = cameraData.getCameraPose();
+
+        System.out.println(
+            "Difference: " + new Pose(actualPathData.getX() - camera.getX(), actualPathData.getY() - camera.getY(),
+                actualPathData.getAngle() - camera.getAngle()).toString());
+      }
+
       //Get cameradata and get 90 percent of it in
       PathData targetPathData = new PathData(new Pose(actualPathData.getX(), 0));
       ErrorVector currentError = MotionController.findCurrentError(targetPathData, actualPathData);
