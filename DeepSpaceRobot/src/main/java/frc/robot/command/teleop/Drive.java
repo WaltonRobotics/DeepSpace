@@ -84,16 +84,15 @@ public class Drive extends Command {
     rightYJoystick = transform.transform(rightYJoystick);
 
     if (triggerPress.isRisingEdge()) {
-//      CameraData currentCameraData = drivetrain.getCurrentCameraData();
-      CameraData currentCameraData = new CameraData(
-          SmartDashboard.getNumber(CAMERA_DATA_X, 0),
-          SmartDashboard.getNumber(CAMERA_DATA_Y, 0),
-          SmartDashboard.getNumber(CAMERA_DATA_HEIGHT, 0),
-          SmartDashboard.getNumber(CAMERA_DATA_ANGLE, 0),
-          (int) SmartDashboard.getNumber(CAMERA_DATA_NUMBER_OF_TARGETS, 0),
-          SmartDashboard.getNumber(CAMERA_DATA_TIME, 0)
-      );
-
+      CameraData currentCameraData = drivetrain.getCurrentCameraData();
+//      CameraData currentCameraData = new CameraData(
+//          SmartDashboard.getNumber(CAMERA_DATA_X, 0),
+//          SmartDashboard.getNumber(CAMERA_DATA_Y, 0),
+//          SmartDashboard.getNumber(CAMERA_DATA_HEIGHT, 0),
+//          SmartDashboard.getNumber(CAMERA_DATA_ANGLE, 0),
+//          (int) SmartDashboard.getNumber(CAMERA_DATA_NUMBER_OF_TARGETS, 0),
+//          SmartDashboard.getNumber(CAMERA_DATA_TIME, 0)
+//      );
       if (currentCameraData.getNumberOfTargets() != 0) {
         drivetrain.setStartingPosition(currentCameraData.getCameraPose());
         hasFound = true;
