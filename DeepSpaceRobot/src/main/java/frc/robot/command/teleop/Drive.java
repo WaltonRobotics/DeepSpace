@@ -83,7 +83,7 @@ public class Drive extends Command {
     leftYJoystick = transform.transform(leftYJoystick);
     rightYJoystick = transform.transform(rightYJoystick);
 
-    if (triggerPress.isRisingEdge()) {
+    if (triggerPress.get() && !hasFound) {
       CameraData currentCameraData = drivetrain.getCurrentCameraData();
 //      CameraData currentCameraData = new CameraData(
 //          SmartDashboard.getNumber(CAMERA_DATA_X, 0),
