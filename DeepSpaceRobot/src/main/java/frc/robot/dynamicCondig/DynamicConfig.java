@@ -46,7 +46,6 @@ public class DynamicConfig extends SendableBase {
     sendableBuilder.getEntry(".name").setString("Cheese");
 
 //    SendableChooser
-    System.out.println(methods);
     for (Entry<String, Variable> entry : methods.entrySet()) {
       if (entry.getValue().getValueType() == Setter.ValueType.BOOLEAN) {
         sendableBuilder.addBooleanProperty(

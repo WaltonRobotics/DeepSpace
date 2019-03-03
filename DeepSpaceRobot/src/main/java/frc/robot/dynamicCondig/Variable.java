@@ -32,8 +32,6 @@ class Variable {
   }
 
   public Object getAccessor() {
-    System.out.println("Hello");
-
     try {
       return accessor.invoke(instance);
     } catch (IllegalAccessException e) {
