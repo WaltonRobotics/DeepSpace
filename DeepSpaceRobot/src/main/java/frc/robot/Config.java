@@ -93,11 +93,15 @@ public class Config {
     public static final String CAMERA_DATA_ACTUAL = "CameraData/Actual";
     public static final String CAMERA_DATA_TARGET = "CameraData/Target";
     public static final String CAMERA_DATA_USES_AUTOASSIST = "CameraData/Uses Auto Assist";
+    public static final String CAMERA_DATA_PROPORTIONAL_POWER = "CameraData/Proportional Power";
+    public static final String CAMERA_DATA_TARGET_OFFSET = "CameraData/Target Offset";
 
     public static final String DEBUG_CHOSEN_TARGET = "Debug/Chosen Target";
     public static final String DEBUG_JUST_BEFORE = "Debug/Just before";
     public static final String DEBUG_ACTUAL_TARGET = "Debug/Actual Target";
     public static final String DEBUG_CAMERA_VISION = "Debug/Camera Vision";
+    public static final String DEBUG_CAMERA_OFFSET = "Debug/Camera Offset";
+    public static final String DEBUG_HAS_VALID_CAMERA_DATA = "Debug/Has Valid Camera Data";
 
     private SmartDashboardKeys() {
     }
