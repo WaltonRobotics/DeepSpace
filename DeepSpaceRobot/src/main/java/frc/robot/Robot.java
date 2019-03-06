@@ -15,7 +15,9 @@ import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ACTUAL;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ANGLE;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_HEIGHT;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_NUMBER_OF_TARGETS;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_PROPORTIONAL_POWER;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TARGET_OFFSET;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TIME;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_USES_AUTOASSIST;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_X;
@@ -29,8 +31,10 @@ import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KV;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_ACCELERATION;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_VELOCITY;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_ACTUAL_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_CAMERA_OFFSET;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_CAMERA_VISION;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_CHOSEN_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_JUST_BEFORE;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETEAM_FISHEYE_CAMERA;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETEAM_TRANSFORM_SELECT;
@@ -212,11 +216,15 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, false);
     SmartDashboard.putString(CAMERA_DATA_ACTUAL, "No actual data");
     SmartDashboard.putString(CAMERA_DATA_TARGET, "No target data");
+    SmartDashboard.putNumber(CAMERA_DATA_PROPORTIONAL_POWER, .2);
+    SmartDashboard.putNumber(CAMERA_DATA_TARGET_OFFSET, 0.05);
 
+    SmartDashboard.putString(DEBUG_CAMERA_OFFSET, "No camera offset");
     SmartDashboard.putString(DEBUG_CHOSEN_TARGET, "No camera data");
     SmartDashboard.putString(DEBUG_JUST_BEFORE, "No camera data");
     SmartDashboard.putString(DEBUG_ACTUAL_TARGET, "No camera data");
     SmartDashboard.putString(DEBUG_CAMERA_VISION, "No Camera Data");
+    SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, false);
   }
 
   private void initCamera() {
