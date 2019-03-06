@@ -284,7 +284,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(DRIVETRAIN_LEFT_ENCODER, encoderLeft.getDistance());
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, encoderRight.getDistance());
     SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, String.valueOf(drivetrain.getActualPosition()));
-    SmartDashboard.putString(DEBUG_CAMERA_VISION, String.valueOf(drivetrain.getCurrentCameraData()));
+    SmartDashboard.putString(DEBUG_CAMERA_VISION, String.valueOf(drivetrain.getCameraData()));
     // System.out.println("robot Periodic");
   }
 
