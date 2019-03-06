@@ -4,6 +4,7 @@ package frc.robot.robot;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import frc.robot.Robot;
 import frc.robot.config.BaseMotorControllerConfig;
 import frc.robot.config.LimitPair;
 import frc.robot.config.LimitedRobot;
@@ -164,7 +165,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public boolean isCurrentRobot() {
-    return false;
+    return !Robot.isCompBot;
   }
 
   @Override

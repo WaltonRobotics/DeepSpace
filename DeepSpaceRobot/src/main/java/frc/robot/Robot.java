@@ -76,6 +76,7 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -106,6 +107,7 @@ import org.opencv.core.Mat;
  */
 public class Robot extends TimedRobot {
 
+  public static final boolean isCompBot;
   public static final LimitedRobot currentRobot;
   public static final Drivetrain drivetrain;
   public static final ElevatorCargoHatchSubsystem godSubsystem;
@@ -113,6 +115,8 @@ public class Robot extends TimedRobot {
   private static final RobotBuilder<LimitedRobot> robotBuilder;
 
   static {
+    isCompBot = new DigitalInput(9).get();
+    SmartDashboard.putBoolean("identifier", isCompBot);
     robotBuilder = new RobotBuilder<>(new CompPowerUp(), new CompSteamWorks(), new PracticeDeepSpace(),
         new CompDeepSpace());
     currentRobot = robotBuilder.getCurrentRobotConfig();
