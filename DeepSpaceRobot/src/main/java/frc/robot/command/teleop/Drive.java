@@ -153,6 +153,7 @@ public class Drive extends Command {
     if (triggerPress.isFallingEdge() && hasFound) {
       motionLogger.writeMotionDataCSV(true);
       SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, false);
+      hasFound = false;
     }
 
     Robot.drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
