@@ -7,6 +7,7 @@
 
 package frc.robot.subsystem;
 
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT;
 import static frc.robot.Robot.currentRobot;
@@ -48,6 +49,12 @@ public class Drivetrain extends AbstractDrivetrain {
     super.periodic();
 
     cameraData = drivetrain.getCurrentCameraData();
+
+    if (cameraData.getTime() != -1) {
+      SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, true);
+    } else {
+      SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, false);
+    }
   }
 
   @Override
