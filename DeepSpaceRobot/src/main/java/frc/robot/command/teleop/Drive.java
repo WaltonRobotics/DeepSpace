@@ -39,7 +39,7 @@ public class Drive extends Command {
 
   public MotionLogger motionLogger = new MotionLogger();
   private boolean hasFound = false;
-  private EnhancedBoolean triggerPress = new EnhancedBoolean();
+  private EnhancedBoolean rightTriggerPress = new EnhancedBoolean();
 
   public Drive() {
     // Use requires() here to declare subsystem dependencies
@@ -70,7 +70,7 @@ public class Drive extends Command {
     double leftYJoystick = getLeftYJoystick();
     double rightYJoystick = getRightYJoystick();
 
-    triggerPress.set(OI.rightJoystick.getTrigger());
+    rightTriggerPress.set(OI.rightJoystick.getTrigger());
 
     SmartDashboard.putNumber(DRIVETRAIN_LEFT_JOYSTICK_Y, leftYJoystick);
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, rightYJoystick);
@@ -79,9 +79,9 @@ public class Drive extends Command {
     leftYJoystick = transform.transform(leftYJoystick);
     rightYJoystick = transform.transform(rightYJoystick);
 
-    if (triggerPress.get() && !hasFound) {
       CameraData currentCameraData = drivetrain.getCurrentCameraData();
 //      CameraData currentCameraData = new CameraData(
+    if (rightTriggerPress.get() && !hasFound) {
 //          SmartDashboard.getNumber(CAMERA_DATA_X, 0),
 //          SmartDashboard.getNumber(CAMERA_DATA_Y, 0),
 //          SmartDashboard.getNumber(CAMERA_DATA_HEIGHT, 0),
@@ -101,10 +101,11 @@ public class Drive extends Command {
       }
     }
 
-    if (triggerPress.get() && hasFound) {
+    if (rightTriggerPress.get() && hasFound) {
       Pose actualPathData = drivetrain.getActualPosition();
 
       CameraData cameraData = drivetrain.getCurrentCameraData();
+
       if (cameraData.getTime() != -1) {
         Pose camera = cameraData.getCameraPose();
 
@@ -150,7 +151,7 @@ public class Drive extends Command {
       SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, true);
     }
 
-    if (triggerPress.isFallingEdge() && hasFound) {
+    if (rightTriggerPress.isFallingEdge() && hasFound) {
       motionLogger.writeMotionDataCSV(true);
       SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, false);
       hasFound = false;
