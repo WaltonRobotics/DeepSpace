@@ -26,7 +26,7 @@ public class CompDeepSpace extends LimitedRobot {
     return new EncoderConfig() {
       @Override
       public double getDistancePerPulse() {
-        return 0.000588608;
+        return 0.000593397;
       }
 
       @Override
@@ -51,7 +51,7 @@ public class CompDeepSpace extends LimitedRobot {
     return new EncoderConfig() {
       @Override
       public double getDistancePerPulse() {
-        return 0.000588608;
+        return 0.000593397;
       }
 
       @Override
@@ -544,10 +544,10 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public void initLimits() {
-    this.addLimit(HatchPosition.CARGO_START, new LimitPair(-55, -372));
-    this.addLimit(HatchPosition.HATCH_START, new LimitPair(-235, -372));
-    this.addLimit(HatchPosition.SAFE, new LimitPair(-332, -372));
-    this.addLimit(HatchPosition.DEPLOY, new LimitPair(-332, -634));
+    this.addLimit(HatchPosition.CARGO_START, new LimitPair(-95, -412));
+    this.addLimit(HatchPosition.HATCH_START, new LimitPair(-275, -412));
+    this.addLimit(HatchPosition.SAFE, new LimitPair(-372, -412));
+    this.addLimit(HatchPosition.DEPLOY, new LimitPair(-372, -674));
 
     this.addLimit(CargoPosition.SAFE, new LimitPair(500, 480));
     this.addLimit(CargoPosition.DEPLOY, new LimitPair(500, 224));
@@ -558,10 +558,10 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public void defineTargets() {
-    this.addTarget(HatchPosition.DEPLOY, new Target(-600, -483));
-    this.addTarget(HatchPosition.SAFE, new Target(-352, -303));
-    this.addTarget(HatchPosition.HATCH_START, new Target(-255, -165));
-    this.addTarget(HatchPosition.CARGO_START, new Target(-75, -55));
+    this.addTarget(HatchPosition.DEPLOY, new Target(-640, -523));
+    this.addTarget(HatchPosition.SAFE, new Target(-392, -343));
+    this.addTarget(HatchPosition.HATCH_START, new Target(-295, -205));
+    this.addTarget(HatchPosition.CARGO_START, new Target(-115, -85));
 
     this.addTarget(CargoPosition.DEPLOY, new Target(304, 400));
     this.addTarget(CargoPosition.CARGO_1, new Target(333, 500));
