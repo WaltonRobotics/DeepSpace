@@ -129,6 +129,10 @@ public class Robot extends TimedRobot {
     godSubsystem = new ElevatorCargoHatchSubsystem();
   }
 
+  public Robot() {
+    super(0.04);
+  }
+
   /**
    * This function is run when the robot is first started up and should be used for any initialization code.
    */
