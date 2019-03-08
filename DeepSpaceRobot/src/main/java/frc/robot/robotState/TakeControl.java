@@ -41,9 +41,6 @@ public class TakeControl implements State {
     cargo.setLimits(CargoPosition.SAFE);
     hatch.setLimits(HatchPosition.SAFE);
     elevator.releaseLowerLimit();
-
-    Robot.godSubsystem.setCurrentActiveState(ActiveState.HATCH_HANDLING);
-
   }
 
   @Override
@@ -52,8 +49,10 @@ public class TakeControl implements State {
       return new Disabled();
     }
 
-    if (currentRobot.getTarget(ElevatorLevel.HATCH_BASE).isClose(elevator.getElevatorHeight(), 250)) {
+    if (elevator.getElevatorHeight() <= currentRobot.getTarget(ElevatorLevel.CARGO2).getTarget()
+        && Robot.godSubsystem.getCurrentActiveState() != ActiveState.HATCH_HANDLING) {
       Robot.godSubsystem.getHatch().setIntake(true);
+      Robot.godSubsystem.setCurrentActiveState(ActiveState.HATCH_HANDLING);
     }
 
     if (elevator.isLowerLimit()
