@@ -257,9 +257,12 @@ public class Robot extends TimedRobot {
 
       MjpegServer fisheyeServer = cameraServer.addServer("Fisheye Camera Server");
       fisheyeServer.setSource(outputStream);
+      fisheyeServer.setCompression(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+      fisheyeServer.setDefaultCompression(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+      fisheyeServer.setResolution(WIDTH, HEIGHT);
 
-      fisheyeServer.getProperty("compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
-      fisheyeServer.getProperty("default_compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+//      fisheyeServer.getProperty("compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+//      fisheyeServer.getProperty("default_compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
 
       Mat source = new Mat();
 
