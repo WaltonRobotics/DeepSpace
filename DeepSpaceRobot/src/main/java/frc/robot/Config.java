@@ -82,6 +82,7 @@ public class Config {
     public static final String MOTORS_CARGO_MODE = "Motors/Cargo Mode";
     public static final String MOTORS_CLIMBER_MODE = "Motors/Climber Mode";
     public static final String MOTORS_CLIMBER_POWER = "Motors/Climber Power";
+    public static final String MOTORS_INTAKE_OPEN = "Motors/Intake Open";
 
     public static final String DRIVETEAM_FISHEYE_CAMERA = "Fisheye Camera";
     public static final String DRIVETEAM_TRANSFORM_SELECT = "Driveteam/Transform Select";

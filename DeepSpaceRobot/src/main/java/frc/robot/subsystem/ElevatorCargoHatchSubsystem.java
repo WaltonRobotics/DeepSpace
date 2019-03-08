@@ -22,6 +22,7 @@ import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_MODE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ReverseSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_INTAKE_OPEN;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_LOWER_LIMIT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_STATE;
 import static frc.robot.OI.bringDown;
@@ -206,6 +207,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     SmartDashboard.putNumber(MOTORS_HATCH_POWER, getHatch().getHatchRotationPower());
     SmartDashboard.putNumber(MOTORS_HATCH_TARGET, getHatch().getHatchTarget());
     SmartDashboard.putString(MOTORS_HATCH_MODE, getHatch().getHatchControlMode().name());
+    SmartDashboard.putBoolean(MOTORS_INTAKE_OPEN, getHatch().getIntakeIsSet());
 
     SmartDashboard.putNumber(MOTORS_CARGO_ANGLE, getCargo().getAngle());
     SmartDashboard.putNumber(MOTORS_CARGO_POWER, getCargo().getCargoRotationPower());

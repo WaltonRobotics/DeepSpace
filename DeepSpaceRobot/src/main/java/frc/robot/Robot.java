@@ -65,6 +65,7 @@ import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_MODE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ReverseSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_INTAKE_OPEN;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_LOWER_LIMIT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_STATE;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_X;
@@ -179,6 +180,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber(MOTORS_ELEVATOR_HEIGHT, 0);
     SmartDashboard.putNumber(MOTORS_HATCH_ANGLE, 0);
+    SmartDashboard.putBoolean(MOTORS_INTAKE_OPEN, false);
     SmartDashboard.putNumber(MOTORS_CARGO_ANGLE, 0);
     SmartDashboard.putBoolean(MOTORS_LOWER_LIMIT, false);
     SmartDashboard.putBoolean(MOTORS_ELEVATOR_ForwardSoftLimit, false);
