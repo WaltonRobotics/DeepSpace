@@ -75,6 +75,9 @@ public class OI {
 
   public static final JoystickButton hatchStart = new JoystickButton(rightJoystick, 8);
   public static final JoystickButton cargoStart = new JoystickButton(rightJoystick, 9);
+
+  public static final JoystickButton bringUp = new JoystickButton(rightJoystick, 8);
+  public static final JoystickButton bringDown = new JoystickButton(rightJoystick, 9);
 //  public static final JoystickButton defenseModeButton = new JoystickButton(gamepad, gamepad.getPO);
 
   //// CREATING BUTTONS
