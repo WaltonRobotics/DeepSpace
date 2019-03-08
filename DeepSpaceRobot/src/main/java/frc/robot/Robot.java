@@ -51,6 +51,8 @@ import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLAW_ForwardSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLAW_ReverseSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLIMBER_MODE;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLIMBER_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_ForwardSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_HEIGHT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_MODE;
@@ -197,6 +199,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(MOTORS_HATCH_TARGET, 0);
     SmartDashboard.putNumber(MOTORS_CARGO_POWER, 0);
     SmartDashboard.putNumber(MOTORS_CARGO_TARGET, 0);
+
+    SmartDashboard.putNumber(MOTORS_CLIMBER_POWER, 0);
+    SmartDashboard.putString(MOTORS_CLIMBER_MODE, "No mode");
 
     SmartDashboard.putNumber(PARKING_LINE_OFFSET, 60);
     SmartDashboard.putNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0);
