@@ -190,6 +190,11 @@ public class CompPowerUp extends LimitedRobot {
   }
 
   @Override
+  public TalonConfig getClimberMotorConfig() {
+    return null;
+  }
+
+  @Override
   public void defineTargets() {
 
   }

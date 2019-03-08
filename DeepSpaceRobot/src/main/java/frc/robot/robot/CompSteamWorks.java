@@ -185,6 +185,11 @@ public class CompSteamWorks extends LimitedRobot {
   }
 
   @Override
+  public TalonConfig getClimberMotorConfig() {
+    return null;
+  }
+
+  @Override
   public void defineTargets() {
 
   }

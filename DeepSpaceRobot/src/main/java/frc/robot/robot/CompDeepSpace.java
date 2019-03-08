@@ -558,6 +558,21 @@ public class CompDeepSpace extends LimitedRobot {
   }
 
   @Override
+  public TalonConfig getClimberMotorConfig() {
+    return new TalonConfig() {
+      @Override
+      public int getChanell() {
+        return 5;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return false;
+      }
+    };
+  }
+
+  @Override
   public void defineTargets() {
     this.addTarget(HatchPosition.DEPLOY, new Target(-640, -523));
     this.addTarget(HatchPosition.SAFE, new Target(-392, -343));

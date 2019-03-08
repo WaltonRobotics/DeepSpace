@@ -45,6 +45,8 @@ public abstract class LimitedRobot extends RobotConfig {
     getElevatorSubsystemLimits().setLimits(talonSRX, limits.get(cargoType));
   }
 
+  public abstract TalonConfig getClimberMotorConfig();
+
   public abstract void defineTargets();
 
   public void addTarget(Enum anEnum, Target target) {

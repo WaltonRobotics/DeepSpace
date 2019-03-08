@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 import frc.robot.util.VictorPair;
 
 /**
@@ -67,9 +68,12 @@ public class RobotMap {
 //      new DigitalInput(1)
 //  );
 
+  public static final Victor climberMotor = new Victor(currentRobot.getClimberMotorConfig().getChanell());
+
   static {
     leftIntakeMotor.setInverted(currentRobot.getLeftIntakeMotorConfig().isInverted());
     rightIntakeMotor.setInverted(currentRobot.getRightIntakeMotorConfig().isInverted());
+    climberMotor.setInverted(currentRobot.getClimberMotorConfig().isInverted());
   }
 
   private RobotMap() {
