@@ -8,6 +8,8 @@ import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLAW_ForwardSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLAW_ReverseSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLIMBER_MODE;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLIMBER_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_ForwardSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_HEIGHT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_MODE;
@@ -22,6 +24,8 @@ import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ReverseSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_LOWER_LIMIT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_STATE;
+import static frc.robot.OI.bringDown;
+import static frc.robot.OI.bringUp;
 import static frc.robot.OI.cargoModeButton;
 import static frc.robot.OI.cargoStart;
 import static frc.robot.OI.elevatorLevel1Button;
@@ -37,6 +41,7 @@ import static frc.robot.OI.outtakeCargoButtonFast;
 import static frc.robot.OI.outtakeCargoButtonSlow;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.clawRotationMotor;
+import static frc.robot.RobotMap.climberMotor;
 import static frc.robot.RobotMap.elevatorLowerLimit;
 import static frc.robot.RobotMap.elevatorMotor;
 import static frc.robot.RobotMap.hatchIntake;
@@ -58,6 +63,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private final Elevator elevator = new Elevator();
   private final Cargo cargo = new Cargo();
   private final Hatch hatch = new Hatch();
+  private final Climber climber = new Climber();
   private ActiveState currentActiveState = ActiveState.ROBOT_SWITCHED_ON;
   private long currentTime = 0;
   private EnhancedBoolean currentDefenceModePressed = new EnhancedBoolean();
@@ -67,16 +73,23 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private StateBuilder stateMachine;
   private EnhancedBoolean currentSetStartModePressed = new EnhancedBoolean();
   private EnhancedBoolean currentSetStartCargoModePressed = new EnhancedBoolean();
+  private EnhancedBoolean climberPreset = new EnhancedBoolean();
+
 
   public ElevatorCargoHatchSubsystem() {
     elevator.initialize();
     cargo.initialize();
     hatch.initialize();
+    climber.initialize();
     // Set sense of encoder
     // Set sense of motors
     // Set soft targets on
     // Configure elevator encoder
 
+  }
+
+  public Climber getClimber() {
+    return climber;
   }
 
   public long getCurrentTime() {
@@ -135,6 +148,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     elevator.collectData();
     cargo.collectData();
     hatch.collectData();
+    climber.collectData();
 
     currentCargoModePressed.set(cargoModeButton.get());
     currentHatchModePressed.set(hatchModeButton.get());
@@ -142,6 +156,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     currentDefenceModePressed.set(gamepad.getPOVButton(POV.S));
     currentSetStartModePressed.set(hatchStart.get());
     currentSetStartCargoModePressed.set(cargoStart.get());
+    climberPreset.set(gamepad.getPOVButton(POV.W));
+  }
+
+  public boolean climbModeRising() {
+    return climberPreset.isRisingEdge();
   }
 
   public boolean cargoModeRising() {
@@ -175,6 +194,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     elevator.outputData();
     cargo.outputData();
     hatch.outputData();
+    climber.outputData();
 
     SmartDashboard.putString(MOTORS_STATE, stateMachine.getCurrentState().getClass().getSimpleName());
     SmartDashboard.putNumber(MOTORS_ELEVATOR_HEIGHT, getElevator().getElevatorHeight());
@@ -191,6 +211,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     SmartDashboard.putNumber(MOTORS_CARGO_POWER, getCargo().getCargoRotationPower());
     SmartDashboard.putNumber(MOTORS_CARGO_TARGET, getCargo().getClawTarget());
     SmartDashboard.putString(MOTORS_CARGO_MODE, getCargo().getClawControlMode().name());
+
+    SmartDashboard.putNumber(MOTORS_CLIMBER_POWER, getClimber().getClimberPower());
+    SmartDashboard.putString(MOTORS_CLIMBER_MODE, getClimber().getClimberControlMode().name());
 
     SmartDashboard.putBoolean(MOTORS_LOWER_LIMIT, getElevator().isLowerLimit());
 
@@ -230,7 +253,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   }
 
   public enum ElevatorLevel {
-    CARGO_BASE, HATCH_BASE, CARGO_HAB, CARGO_ROCKET, CARGO2, HATCH2, CARGO3, HATCH3
+    CARGO_BASE, HATCH_BASE, CARGO_HAB, CARGO_ROCKET, CARGO2, HATCH2, CARGO3, CLIMB, HATCH3
   }
 
   public enum ElevatorControlMode {
@@ -255,7 +278,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   public enum CargoPosition {
     DEPLOY,
     CARGO_3,
-    CARGO_2, CARGO_1, CARGO_START, SAFE
+    CARGO_2, CARGO_1, CARGO_START, CLIMB, SAFE
   }
 
   public enum HatchPosition {
@@ -263,6 +286,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     SAFE,
     HATCH_START,
     CARGO_START
+  }
+
+  public enum ClimberControlMode {
+    AUTO, MANUAL, TIMED, DISABLED
   }
 
   public class Elevator implements SubSubsystem {
@@ -737,6 +764,90 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     public void setLimits(HatchPosition limits) {
       this.limits = limits;
       resetLimits = true;
+    }
+  }
+
+  public class Climber implements SubSubsystem {
+
+
+    public long timeout;
+    private EnhancedBoolean climberUp = new EnhancedBoolean();
+    private EnhancedBoolean climberDown = new EnhancedBoolean();
+    private ClimberControlMode climberControlMode;
+    private double climberPower;
+
+    public ClimberControlMode getClimberControlMode() {
+      return climberControlMode;
+    }
+
+    public void setClimberControlMode(ClimberControlMode climberControlMode) {
+      this.climberControlMode = climberControlMode;
+    }
+
+    public double getClimberPower() {
+      return climberPower;
+    }
+
+    public void setClimberPower(double climberPower) {
+      this.climberPower = climberPower;
+    }
+
+    public boolean isClimberUpRising() {
+      return climberUp.isRisingEdge();
+    }
+
+    public boolean isClimberUpPressed() {
+      return climberUp.get();
+    }
+
+    public boolean isClimberDownPressed() {
+      return climberDown.get();
+    }
+
+    public boolean isClimberDownRising() {
+      return climberDown.isRisingEdge();
+    }
+
+    @Override
+    public void collectData() {
+      climberUp.set(bringUp.get());
+      climberDown.set(bringDown.get());
+    }
+
+    @Override
+    public void outputData() {
+      switch (climberControlMode) {
+        case TIMED:
+          if (currentTime <= timeout) {
+            climberMotor.set(climberPower);
+          } else {
+            climberControlMode = ClimberControlMode.MANUAL;
+          }
+          climberPower = 0;
+          break;
+        case MANUAL:
+          climberMotor.set(climberPower);
+          break;
+        case DISABLED:
+          climberMotor.set(0);
+          climberMotor.disable();
+          break;
+      }
+    }
+
+    public void setTimer(int interval, double power) {
+      timeout = currentTime + interval;
+      climberPower = power;
+      climberControlMode = ClimberControlMode.TIMED;
+    }
+
+    @Override
+    public void initialize() {
+
+    }
+
+    public void setTimer(double power) {
+      setTimer(750, power);
     }
   }
 }
