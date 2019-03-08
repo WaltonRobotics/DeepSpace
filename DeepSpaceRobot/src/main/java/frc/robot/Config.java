@@ -108,9 +108,19 @@ public class Config {
   }
 
   public static final class Elevator {
+
     public static final double ZEROING = -0.2;
 
     private Elevator() {
+    }
+  }
+
+  public static final class Cargo {
+
+    public static final double CLIMB_MAX = 1;
+
+    private Cargo() {
+
     }
   }
 
