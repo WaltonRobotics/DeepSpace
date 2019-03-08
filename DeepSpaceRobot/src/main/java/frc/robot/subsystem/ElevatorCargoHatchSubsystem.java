@@ -830,7 +830,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
           break;
         case DISABLED:
           climberMotor.set(0);
-          climberMotor.disable();
+//          climberMotor.disable();
           break;
       }
     }
