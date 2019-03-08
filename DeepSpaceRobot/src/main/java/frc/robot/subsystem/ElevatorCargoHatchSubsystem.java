@@ -287,7 +287,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     DEPLOY,
     SAFE,
     HATCH_START,
-    CARGO_START
+    DEFENSE, CARGO_START
   }
 
   public enum ClimberControlMode {
