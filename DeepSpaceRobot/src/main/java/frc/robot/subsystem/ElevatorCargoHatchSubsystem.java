@@ -650,6 +650,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     public void initialize() {
 
     }
+
+
+    public void intakeCargoSlow(int timeout) {
+      intakeTimeout = currentTime + timeout;
+      intakePower = .5;
+    }
   }
 
   public class Hatch implements SubSubsystem {

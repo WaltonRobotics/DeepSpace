@@ -1,7 +1,5 @@
 package frc.robot.robotState;
 
-import static frc.robot.RobotMap.climberMotor;
-
 import frc.robot.Robot;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
