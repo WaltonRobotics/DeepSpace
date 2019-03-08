@@ -69,7 +69,7 @@ public class ClimbHandling implements State {
     }
 
     if (climber.isClimberUpPressed()) {
-      climber.setClimberPower(-1.0);
+      climber.setClimberPower(-0.5);
     } else if (climber.isClimberDownPressed()) {
       climber.setClimberPower(1.0);
     } else {

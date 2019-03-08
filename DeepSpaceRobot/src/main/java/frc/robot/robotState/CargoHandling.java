@@ -87,6 +87,8 @@ public class CargoHandling implements State {
       cargo.outtakeCargoFast(0);
     } else if (cargo.inButtonPressed()) {
       cargo.intakeCargo(0);
+    } else if (cargo.inSlowButtonPressed()) {
+      cargo.intakeCargoSlow(0);
     }
 
     return this;

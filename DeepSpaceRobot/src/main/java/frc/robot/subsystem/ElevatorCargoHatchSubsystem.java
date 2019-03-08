@@ -510,6 +510,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private double cargoRotationPower;
     private int clawTarget;
     private ClawControlMode clawControlMode;
+    private boolean currentSlowIntakePressed;
 
     public Cargo() {
       cargoLogger = new Logger();
@@ -533,6 +534,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       currentFastOutButtonPressed = outtakeCargoButtonFast.get();
       angle = clawRotationMotor.getSelectedSensorPosition();
       cargoJoystick = -gamepad.getLeftY();
+
+      currentSlowIntakePressed = hatchIntakeButton.get();
     }
 
     public void intakeCargo(int timeout) {
@@ -657,6 +660,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     public void intakeCargoSlow(int timeout) {
       intakeTimeout = currentTime + timeout;
       intakePower = .5;
+    }
+
+    public boolean inSlowButtonPressed() {
+      return currentSlowIntakePressed;
     }
   }
 
