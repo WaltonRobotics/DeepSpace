@@ -4,9 +4,9 @@ public class Config {
 
   public static final class Camera {
 
-    public static final int WIDTH = 320;
-    public static final int HEIGHT = 240;
-    public static final int FPS = 30;
+    public static final int WIDTH = 160; //320
+    public static final int HEIGHT = 120; //240
+    public static final int FPS = 10;
     public static final int DEFAULT_CAMERA_COMPRESSION_QUALITY = 20; // between 0 and 100, 100 being the max, -1 being left to Shuffleboard
 
     private Camera() {
