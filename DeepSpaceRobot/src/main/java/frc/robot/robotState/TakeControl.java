@@ -87,6 +87,14 @@ public class TakeControl implements State {
       }
     }
 
+    if (hatch.intakeButtonRising()) {
+      if (Robot.godSubsystem.getHatch().getIntakeIsSet()) {
+        Robot.godSubsystem.getHatch().setIntake(false);
+      } else {
+        Robot.godSubsystem.getHatch().setIntake(true);
+      }
+    }
+
     return this;
   }
 
