@@ -34,8 +34,8 @@ public class DefenseTransition implements State {
     int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
     int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
 
-    return Robot.currentRobot.getTarget(CargoPosition.SAFE).isClose(cargoAngle, 20) && Robot.currentRobot
-        .getTarget(HatchPosition.SAFE).isClose(hatchAngle, 20) ? new Defense() : this;
+    return Robot.currentRobot.getTarget(CargoPosition.SAFE).isClose(cargoAngle, 50) && Robot.currentRobot
+        .getTarget(HatchPosition.SAFE).isClose(hatchAngle, 50) ? new Defense() : this;
   }
 
   @Override

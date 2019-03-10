@@ -34,8 +34,8 @@ public class CargoHandlingTransition implements State {
     int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
     int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
 
-    return Robot.currentRobot.getTarget(CargoPosition.DEPLOY).isClose(cargoAngle) && Robot.currentRobot
-        .getTarget(HatchPosition.SAFE).isClose(hatchAngle) ? new CargoHandling()
+    return Robot.currentRobot.getTarget(CargoPosition.DEPLOY).isClose(cargoAngle, 50) && Robot.currentRobot
+        .getTarget(HatchPosition.SAFE).isClose(hatchAngle, 50) ? new CargoHandling()
         : this;
   }
 
