@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import static frc.robot.Config.Camera.DEFAULT_CAMERA_COMPRESSION_QUALITY;
 import static frc.robot.Config.Camera.FPS;
 import static frc.robot.Config.Camera.HEIGHT;
 import static frc.robot.Config.Camera.WIDTH;
@@ -36,7 +35,6 @@ import static frc.robot.Config.SmartDashboardKeys.DEBUG_CAMERA_VISION;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_CHOSEN_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_JUST_BEFORE;
-import static frc.robot.Config.SmartDashboardKeys.DRIVETEAM_FISHEYE_CAMERA;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETEAM_TRANSFORM_SELECT;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_ACTUAL_POSITION;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_ENCODER;
@@ -78,9 +76,6 @@ import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.hatchRotationMotor;
 
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
-import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -102,10 +97,7 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
-import frc.robot.util.ParkingLines;
 import frc.robot.util.RobotBuilder;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -239,47 +231,52 @@ public class Robot extends TimedRobot {
   }
 
   private void initCamera() {
-    new Thread(() -> {
-      CameraServer cameraServer = CameraServer.getInstance();
+    UsbCamera usbCamera = CameraServer.getInstance().startAutomaticCapture();
+    usbCamera.setResolution(WIDTH, HEIGHT);
+    usbCamera.setFPS(FPS);
 
-      UsbCamera fishEyeCamera = cameraServer.startAutomaticCapture();
-
-//      if (!fishEyeCamera.isConnected() || !fishEyeCamera.isValid() || !fishEyeCamera.isEnabled()) {
-//        fishEyeCamera.close();
-//        return;
+//    new Thread(() -> {
+//      CameraServer cameraServer = CameraServer.getInstance();
+//
+//      UsbCamera fishEyeCamera = cameraServer.startAutomaticCapture();
+//
+////      if (!fishEyeCamera.isConnected() || !fishEyeCamera.isValid() || !fishEyeCamera.isEnabled()) {
+////        fishEyeCamera.close();
+////        return;
+////      }
+//
+//      fishEyeCamera.setResolution(WIDTH, HEIGHT);
+//
+//      CvSink cvSink = cameraServer.getVideo();
+//      CvSource outputStream = cameraServer.putVideo(DRIVETEAM_FISHEYE_CAMERA, WIDTH, HEIGHT);
+//      outputStream.setFPS(FPS);
+//
+//      MjpegServer fisheyeServer = cameraServer.addServer("Fisheye Camera Server");
+//      fisheyeServer.setSource(outputStream);
+//      fisheyeServer.setCompression(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+//      fisheyeServer.setDefaultCompression(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+//      fisheyeServer.setResolution(WIDTH, HEIGHT);
+//
+////      fisheyeServer.getProperty("compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+////      fisheyeServer.getProperty("default_compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+//
+//      Mat source = new Mat();
+//
+//      System.out.println("Fisheye Camera Connected");
+//      while (!Thread.interrupted()) {
+//        cvSink.grabFrame(source);
+//        Core.flip(source, source, -1);
+//        ParkingLines.setFocusPoint(
+//            SmartDashboard.getNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0),
+//            SmartDashboard.getNumber(PARKING_LINE_FOCUS_Y, HEIGHT / 2.0)
+//        );
+//        ParkingLines.setPercentage(SmartDashboard.getNumber(PARKING_LINE_PERCENTAGE, 1.0));
+//        ParkingLines.setXOffset(SmartDashboard.getNumber(PARKING_LINE_OFFSET, 0));
+//
+//        ParkingLines.drawParkingLines(source);
+//        outputStream.putFrame(source);
 //      }
-
-      fishEyeCamera.setResolution(WIDTH, HEIGHT);
-
-      CvSink cvSink = cameraServer.getVideo();
-      CvSource outputStream = cameraServer.putVideo(DRIVETEAM_FISHEYE_CAMERA, WIDTH, HEIGHT);
-      outputStream.setFPS(FPS);
-
-      MjpegServer fisheyeServer = cameraServer.addServer("Fisheye Camera Server");
-      fisheyeServer.setSource(outputStream);
-      fisheyeServer.setCompression(DEFAULT_CAMERA_COMPRESSION_QUALITY);
-      fisheyeServer.setDefaultCompression(DEFAULT_CAMERA_COMPRESSION_QUALITY);
-      fisheyeServer.setResolution(WIDTH, HEIGHT);
-
-//      fisheyeServer.getProperty("compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
-//      fisheyeServer.getProperty("default_compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
-
-      Mat source = new Mat();
-
-      while (!Thread.interrupted()) {
-        cvSink.grabFrame(source);
-        Core.flip(source, source, -1);
-        ParkingLines.setFocusPoint(
-            SmartDashboard.getNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0),
-            SmartDashboard.getNumber(PARKING_LINE_FOCUS_Y, HEIGHT / 2.0)
-        );
-        ParkingLines.setPercentage(SmartDashboard.getNumber(PARKING_LINE_PERCENTAGE, 1.0));
-        ParkingLines.setXOffset(SmartDashboard.getNumber(PARKING_LINE_OFFSET, 0));
-
-        ParkingLines.drawParkingLines(source);
-        outputStream.putFrame(source);
-      }
-    }).start();
+//    }).start();
   }
 
   /**
