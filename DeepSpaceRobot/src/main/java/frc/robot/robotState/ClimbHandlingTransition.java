@@ -23,7 +23,7 @@ public class ClimbHandlingTransition implements State {
 
     Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
     Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.CLIMB);
-    Robot.godSubsystem.getCargo().setLimits(CargoPosition.DEPLOY);
+    Robot.godSubsystem.getCargo().setLimits(CargoPosition.CLIMB);
 
     Robot.godSubsystem.getElevator().setElevatorControlMode(ElevatorControlMode.AUTO);
     Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.CLIMB);
