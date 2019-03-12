@@ -31,6 +31,10 @@ public class DefenseTransition implements State {
       return new Disabled();
     }
 
+    if (Robot.godSubsystem.climbModeRising()) {
+      return new ClimbHandlingTransition();
+    }
+
     int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
     int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
 
