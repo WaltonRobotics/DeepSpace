@@ -213,12 +213,12 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public double getPeakOutputForward() {
-        return .3;
+        return 1;
       }
 
       @Override
       public double getPeakOutputReverse() {
-        return -.3;
+        return -1;
       }
 
       @Override
@@ -279,6 +279,11 @@ public class CompDeepSpace extends LimitedRobot {
       @Override
       public boolean isOverrideLimitSwitchesEnabled() {
         return false;
+      }
+
+      @Override
+      public double getClosedLoopPeakOutput() {
+        return .8;
       }
     };
   }
@@ -488,12 +493,12 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public int getMotionCruiseVelocity() {
-        return 700;
+        return 800;
       }
 
       @Override
       public int getMotionAcceleration() {
-        return 1000;
+        return 4000;
       }
 
       @Override

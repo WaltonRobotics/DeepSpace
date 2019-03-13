@@ -1,5 +1,7 @@
 package frc.robot.robotState;
 
+import static frc.robot.Config.Cargo.CARGO_LIMIT;
+
 import frc.robot.Robot;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ActiveState;
@@ -54,7 +56,7 @@ public class CargoHandling implements State {
 
         double cargoJoystick = cargo.getCargoJoystick();
 
-        cargoJoystick = Math.signum(cargoJoystick) * Math.min(Math.abs(cargoJoystick), 0.3);
+        cargoJoystick = Math.signum(cargoJoystick) * Math.min(Math.abs(cargoJoystick), CARGO_LIMIT);
         cargo.setCargoRotationPower(cargoJoystick);
       } else {
         cargo.setClawControlMode(ClawControlMode.AUTO);
