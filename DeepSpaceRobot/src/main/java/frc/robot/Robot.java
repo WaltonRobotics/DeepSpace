@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import static frc.robot.Config.Camera.FPS;
 import static frc.robot.Config.Camera.HEIGHT;
 import static frc.robot.Config.Camera.WIDTH;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ACTUAL;
@@ -220,7 +219,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString(CAMERA_DATA_ACTUAL, "No actual data");
     SmartDashboard.putString(CAMERA_DATA_TARGET, "No target data");
     SmartDashboard.putNumber(CAMERA_DATA_PROPORTIONAL_POWER, .2);
-    SmartDashboard.putNumber(CAMERA_DATA_TARGET_OFFSET, 0.05);
+    SmartDashboard.putNumber(CAMERA_DATA_TARGET_OFFSET, 0.0);
 
     SmartDashboard.putString(DEBUG_CAMERA_OFFSET, "No camera offset");
     SmartDashboard.putString(DEBUG_CHOSEN_TARGET, "No camera data");
@@ -233,7 +232,7 @@ public class Robot extends TimedRobot {
   private void initCamera() {
     UsbCamera usbCamera = CameraServer.getInstance().startAutomaticCapture();
     usbCamera.setResolution(WIDTH, HEIGHT);
-    usbCamera.setFPS(FPS);
+//    usbCamera.setFPS(FPS);
 
 //    new Thread(() -> {
 //      CameraServer cameraServer = CameraServer.getInstance();
