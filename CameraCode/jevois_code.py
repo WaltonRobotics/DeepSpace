@@ -45,13 +45,9 @@ def order_corners_clockwise(tape):
     left_most = left_most[np.argsort(left_most[:, 1]), :]
     (tl, bl) = left_most
 
-    # now that we have the top-left coordinate, use it as an anchor to calculate the Euclidean distance between the
-    # top-left and right-most points; by the Pythagorean theorem, the point with the largest distance will be our
-    # bottom-right point
-    if distance_2d(tl, right_most[0]) > distance_2d(tl, right_most[1]):
-        br, tr = right_most
-    else:
-        tr, br = right_most
+    # sort the left-most coordinates in the same fashion
+    right_most = right_most[np.argsort(right_most[:, 1]), :]
+    (tr, br) = right_most
 
     # return the coordinates in top-left, top-right, bottom-right, and bottom-left order
     return np.array([tl, tr, br, bl], dtype=np.float32)
@@ -83,6 +79,30 @@ def define_tape_corners(angle, length):
                      [tl_x, tl_y, 0.0], [tr_x, tr_y, 0.0], [br_x, br_y, 0.0], [bl_x, bl_y, 0.0]], dtype=np.float32)
 
 
+def euler_to_matrix(euler):
+    x = euler[0]
+    y = euler[1]
+    z = euler[2]
+
+    ch = math.cos(z)
+    sh = math.sin(z)
+    ca = math.cos(y)
+    sa = math.sin(y)
+    cb = math.cos(x)
+    sb = math.sin(x)
+
+    m00 = ch * ca
+    m01 = sh * sb - ch * sa * cb
+    m02 = ch * sa * sb + sh * cb
+    m10 = sa
+    m11 = ca * cb
+    m12 = -ca * sb
+    m20 = -sh * ca
+    m21 = sh * sa * cb + ch * sb
+    m22 = -sh * sa * sb + ch * cb
+
+    return np.array([[m00, m01, m02],[m10, m11, m12], [m20, m21, m22]])
+
 class Pose:
 
     def __init__(self):
@@ -92,14 +112,14 @@ class Pose:
         self.angle = 0
 
 
-class DeepSpacePoseFinder:
+class HiRezDeepSpace:
     def __init__(self):
         # !!THERE CAN BE NO FILE LOADING IN THE __init__ FUNCTION!!
 
         # Values used in detect
         self.HLSmin = np.array([55, 100, 180], dtype=np.uint8)
         self.HLSmax = np.array([70, 255, 255], dtype=np.uint8)
-        self.min_area = 200.0
+        self.min_area = 150.0
         self.min_perimeter = 10.0
         self.min_width = 0.0
         self.max_width = 1000.0
@@ -119,6 +139,11 @@ class DeepSpacePoseFinder:
         # tape_angle = math.radians(10)
         tape_length = 5.5
         self.object_points = define_tape_corners(tape_angle, tape_length)
+        self.offset_x = 2
+        self.offset_z = 0
+        euler_assumption = np.array([math.radians(50), 0.0, 0.0], dtype=np.float32)
+        self.rotation_assumption = cv2.Rodrigues(euler_to_matrix(euler_assumption))[0]
+        self.translation_assumption = np.array([0, 50, 0], dtype=np.float32).reshape(3, 1)
 
         # Values used to filter out unlikely targets
         self.decision_tolerance = 0.05
@@ -126,16 +151,17 @@ class DeepSpacePoseFinder:
         self.target_lost_factor = 1.25 #Larger means it will choose a new target sooner
         self.target_lost_time = -1
         self.target_lost_timeout = 0.25
-        self.min_x_ang = -170
-        self.max_x_ang = -140
+        self.min_x_ang = -180
+        self.max_x_ang = 180
         self.min_z_ang = -20
         self.max_z_ang = 20
         self.min_y = 0
 
         # Values used with user-commands
-        self.enabled = False
-        self.save_frame = False
+        self.enabled = True
+        self.save_frame = 0
         self.current_time = date.now()
+
 
     def load_camera_calibration(self, w, h):
         """
@@ -258,6 +284,7 @@ class DeepSpacePoseFinder:
             for target in targets:
                 target.draw_trapezoid(outimg)
 
+
     def estimate_poses(self, targets):
         """
         Estimates the rotation and position of the camera wrt all the targets\n\n
@@ -276,7 +303,8 @@ class DeepSpacePoseFinder:
             image_points = target.tape_corners
 
             # Collect the 3 rotation vectors and origin translation vector
-            ret, rvecs, tvecs = cv2.solvePnP(self.object_points, image_points, self.cam_matrix, self.dist_coeffs)
+            ret, rvecs, tvecs = cv2.solvePnP(self.object_points, image_points, self.cam_matrix, self.dist_coeffs,
+                                             self.rotation_assumption, self.translation_assumption, False)
 
             # Calculate the actual camera position
             np_rodrigues = np.asarray(rvecs[:, :], np.float64)
@@ -308,8 +336,8 @@ class DeepSpacePoseFinder:
         if self.current_target[0] is not None and len(self.current_target[0]) is 3:
             current_target, rotation, translation = self.current_target[0]
             pose = Pose()
-            pose.x = -translation[2]
-            pose.y = -translation[0]
+            pose.x = -(translation[2] + self.offset_z)
+            pose.y = -(translation[0] + self.offset_x)
             pose.z = translation[1]
             pose.angle = rotation[1]
 
@@ -360,7 +388,7 @@ class DeepSpacePoseFinder:
         if self.enabled:
             self.send_all_serial()
 
-        if self.save_frame:
+        if self.save_frame > 0:
             self.save_image(jevois.convertToCvBGR(inimg))
 
     def process(self, inframe, outframe):
@@ -372,7 +400,7 @@ class DeepSpacePoseFinder:
         """
         inimg = inframe.get()
         outimg = outframe.get()
-        outimg.require("output", 640, 480, jevois.V4L2_PIX_FMT_YUYV)
+        outimg.require("output", 1280, 1024, jevois.V4L2_PIX_FMT_YUYV)
 
         self.draw_image(outimg, inimg)
         imgbgr = jevois.convertToCvBGR(inimg)
@@ -394,12 +422,12 @@ class DeepSpacePoseFinder:
         if self.enabled:
             self.send_all_serial()
 
-        if self.save_frame:
+        if self.save_frame > 0:
             self.save_image(jevois.convertToCvBGR(outimg))
 
         outframe.send()
 
-    def parseSerial(self, string):
+    def parseSerial(self, string : str):
         """
         Processes user commands
         :param string:
@@ -416,7 +444,21 @@ class DeepSpacePoseFinder:
         # Send data once
         if string == 's':
             self.send_all_serial()
-            return ''
+            return ""
+
+        # Save a frame
+        if string.lower() == 'frame':
+            self.current_time = date.strptime(string, "%Y%m%d%H%M%S")
+            self.save_frame = 1
+            return ""
+
+        # Save several frames
+        if string.lower().startswith('frames'):
+            try:
+                self.save_frame = int(string[6:])
+            except ValueError:
+                self.save_frame = 5
+            return ""
         return ""
 
     def start_sending(self, string):
@@ -426,7 +468,7 @@ class DeepSpacePoseFinder:
         :return:
         """
         self.send_all_serial()
-        self.save_frame = True
+        self.save_frame = 5
         self.enabled = True
         if string is not "":
             self.current_time = date.strptime(string, "%Y%m%d%H%M%S")
@@ -449,7 +491,7 @@ class DeepSpacePoseFinder:
         file_name = 'data/ImageCapture {}.png'.format(self.current_time.strftime("%Y-%m-%d-%H-%M-%S"))
         jevois.LINFO("Saving current image to {}".format(file_name))
         cv2.imwrite(file_name, img)
-        self.save_frame = False
+        self.save_frame -= 1
 
     @staticmethod
     def percent_difference(value1, value2):
