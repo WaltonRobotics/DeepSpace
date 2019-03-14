@@ -298,12 +298,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     private final Logger elevatorLogger;
     // Inputs
-    private boolean lastLevel3ButtonPressed;
-    private boolean currentLevel3ButtonPressed;
-    private boolean lastLevel2ButtonPressed;
-    private boolean currentLevel2ButtonPressed;
-    private boolean lastLevel1ButtonPressed;
-    private boolean currentLevel1ButtonPressed;
+    private EnhancedBoolean level3Button = new EnhancedBoolean();
+    private EnhancedBoolean level2Button = new EnhancedBoolean();
+    private EnhancedBoolean level1Button = new EnhancedBoolean();
     private boolean lowerLimit;
     private EnhancedBoolean isZeroed = new EnhancedBoolean();
     private boolean resetLimits = false;
@@ -313,9 +310,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private int currentEncoderPosition;
     private ElevatorLevel limits = ElevatorLevel.CARGO_BASE;
     // Output
-    private double elevatorCurrentPower;
-    private double elevatorCurrentTarget;
-    private ElevatorControlMode elevatorControlMode;
+    private double currentPower;
+    private double currentTarget;
+    private ElevatorControlMode controlMode;
     private int lastEncoderPosition;
     private boolean cargoShipPressed;
 
@@ -327,8 +324,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       return lastEncoderPosition;
     }
 
-    public double getElevatorCurrentTarget() {
-      return elevatorCurrentTarget;
+    public double getCurrentTarget() {
+      return currentTarget;
     }
 
     public boolean isZeroed() {
@@ -345,14 +342,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void collectData() {
-      lastLevel3ButtonPressed = currentLevel3ButtonPressed;
-      currentLevel3ButtonPressed = elevatorLevel3Button.get();
-
-      lastLevel2ButtonPressed = currentLevel2ButtonPressed;
-      currentLevel2ButtonPressed = elevatorLevel2Button.get();
-
-      lastLevel1ButtonPressed = currentLevel1ButtonPressed;
-      currentLevel1ButtonPressed = elevatorLevel1Button.get();
+      level3Button.set(elevatorLevel3Button.get());
+      level2Button.set(elevatorLevel2Button.get());
+      level1Button.set(elevatorLevel1Button.get());
 
       elevatorJoystick = -gamepad.getRightY();
 
@@ -428,27 +420,27 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public boolean isElevatorLevel3ButtonPressed() {
-      return currentLevel3ButtonPressed;
+      return level3Button.get();
     }
 
     public boolean isElevatorLevel2ButtonPressed() {
-      return currentLevel2ButtonPressed;
+      return level2Button.get();
     }
 
     public boolean isElevatorLevel1ButtonPressed() {
-      return currentLevel1ButtonPressed;
+      return level1Button.get();
     }
 
     public boolean wasElevatorLevel3ButtonPressed() {
-      return (currentLevel3ButtonPressed != lastLevel3ButtonPressed) && currentLevel3ButtonPressed;
+      return level3Button.hasChanged() && level3Button.get();
     }
 
     public boolean wasElevatorLevel2ButtonPressed() {
-      return (currentLevel2ButtonPressed != lastLevel2ButtonPressed) && currentLevel2ButtonPressed;
+      return level2Button.hasChanged() && level2Button.get();
     }
 
     public boolean wasElevatorLevel1ButtonPressed() {
-      return ((currentLevel1ButtonPressed != lastLevel1ButtonPressed) && currentLevel1ButtonPressed);
+      return level1Button.hasChanged() && level1Button.get();
     }
 
     /* Get raw height of elevator from encoder ticks. */
@@ -495,12 +487,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private final Logger cargoLogger;
     private long intakeTimeout = 0L;
     // Inputs
-    private boolean lastSlowOutButtonPressed;
-    private boolean currentSlowOuttakePressed;
-    private boolean lastInButtonPressed;
-    private boolean currentInButtonPressed;
-    private boolean lastFastOutButtonPressed;
-    private boolean currentFastOutButtonPressed;
     private int angle;
     private boolean resetLimits = false;
     private double cargoJoystick;
@@ -511,6 +497,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private int currentTarget;
     private ClawControlMode controlMode;
 
+    private EnhancedBoolean slowOutake = new EnhancedBoolean();
+    private EnhancedBoolean fastOuttake = new EnhancedBoolean();
+    private EnhancedBoolean fastIntake = new EnhancedBoolean();
+    private EnhancedBoolean slowIntake = new EnhancedBoolean();
 
     public Cargo() {
       cargoLogger = new Logger();
@@ -526,16 +516,13 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void collectData() {
-      lastInButtonPressed = currentInButtonPressed;
-      currentInButtonPressed = intakeCargoButton.get();
-      lastSlowOutButtonPressed = currentSlowOuttakePressed;
-      currentSlowOuttakePressed = outtakeCargoButtonSlow.get();
-      lastFastOutButtonPressed = currentFastOutButtonPressed;
-      currentFastOutButtonPressed = outtakeCargoButtonFast.get();
+      fastIntake.set(intakeCargoButton.get());
+      slowOutake.set(outtakeCargoButtonSlow.get());
+      fastOuttake.set(outtakeCargoButtonFast.get());
+      slowIntake.set(hatchIntakeButton.get());
+
       angle = clawRotationMotor.getSelectedSensorPosition();
       cargoJoystick = -gamepad.getLeftY();
-
-      currentSlowIntakePressed = hatchIntakeButton.get();
     }
 
     public void intakeCargoFast(int timeout) {
@@ -577,24 +564,28 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       this.currentTarget = angle;
     }
 
+    public boolean inFastButtonPressed() {
+      return fastIntake.get();
     }
 
+    public boolean inFastButtonRising() {
+      return fastIntake.isRisingEdge();
     }
 
     public boolean outSlowButtonPressed() {
-      return currentSlowOuttakePressed;
+      return slowOutake.get();
     }
 
     public boolean outSlowButtonRising() {
-      return currentSlowOuttakePressed && !lastSlowOutButtonPressed;
+      return slowOutake.isRisingEdge();
     }
 
     public boolean outFastButtonPressed() {
-      return currentFastOutButtonPressed;
+      return fastOuttake.get();
     }
 
     public boolean outFastButtonRising() {
-      return currentFastOutButtonPressed && !lastFastOutButtonPressed;
+      return fastOuttake.isRisingEdge();
     }
 
     public double getCargoJoystick() {
@@ -671,8 +662,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     // Output
 
     private final Logger hatchLogger;
-    private boolean lastIntakeButtonPressed;
-    private boolean currentIntakeButtonPressed;
+    private EnhancedBoolean intake = new EnhancedBoolean();
     private boolean resetLimits = false;
     private HatchPosition limits = HatchPosition.SAFE;
     private int angle;
@@ -703,13 +693,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void collectData() {
-      lastIntakeButtonPressed = currentIntakeButtonPressed;
-      currentIntakeButtonPressed = hatchIntakeButton.get();
+      intake.set(hatchIntakeButton.get());
       angle = hatchRotationMotor.getSelectedSensorPosition();
     }
 
     public boolean isCurrentIntakeButtonPressed() {
-      return currentIntakeButtonPressed;
+      return intake.get();
     }
 
     @Override
@@ -773,7 +762,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public boolean intakeButtonRising() {
-      return currentIntakeButtonPressed && !lastIntakeButtonPressed;
+      return intake.isRisingEdge();
     }
 
     public void setLimits(HatchPosition limits) {
