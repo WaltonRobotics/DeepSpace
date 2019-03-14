@@ -1,12 +1,15 @@
 package frc.robot.subsystem;
 
 
+import static frc.robot.Config.Elevator.ZEROING;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_ANGLE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_MODE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLAW_ForwardSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLAW_ReverseSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLIMBER_MODE;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLIMBER_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_ForwardSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_HEIGHT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_MODE;
@@ -19,9 +22,13 @@ import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_MODE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ReverseSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_INTAKE_OPEN;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_LOWER_LIMIT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_STATE;
+import static frc.robot.OI.bringDown;
+import static frc.robot.OI.bringUp;
 import static frc.robot.OI.cargoModeButton;
+import static frc.robot.OI.cargoStart;
 import static frc.robot.OI.elevatorLevel1Button;
 import static frc.robot.OI.elevatorLevel2Button;
 import static frc.robot.OI.elevatorLevel3Button;
@@ -29,11 +36,13 @@ import static frc.robot.OI.elevatorZeroButton;
 import static frc.robot.OI.gamepad;
 import static frc.robot.OI.hatchIntakeButton;
 import static frc.robot.OI.hatchModeButton;
+import static frc.robot.OI.hatchStart;
 import static frc.robot.OI.intakeCargoButton;
 import static frc.robot.OI.outtakeCargoButtonFast;
 import static frc.robot.OI.outtakeCargoButtonSlow;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.clawRotationMotor;
+import static frc.robot.RobotMap.climberMotor;
 import static frc.robot.RobotMap.elevatorLowerLimit;
 import static frc.robot.RobotMap.elevatorMotor;
 import static frc.robot.RobotMap.hatchIntake;
@@ -47,6 +56,7 @@ import frc.robot.Gamepad.POV;
 import frc.robot.RobotMap;
 import frc.robot.robotState.Disabled;
 import frc.robot.state.StateBuilder;
+import frc.robot.util.EnhancedBoolean;
 import frc.robot.util.Logger;
 
 public class ElevatorCargoHatchSubsystem extends Subsystem {
@@ -54,25 +64,33 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private final Elevator elevator = new Elevator();
   private final Cargo cargo = new Cargo();
   private final Hatch hatch = new Hatch();
+  private final Climber climber = new Climber();
   private ActiveState currentActiveState = ActiveState.ROBOT_SWITCHED_ON;
   private long currentTime = 0;
-  private boolean lastDefenceModePressed;
-  private boolean currentDefenceModePressed;
-  private boolean lastCargoModePressed;
-  private boolean currentCargoModePressed;
-  private boolean lastHatchModePressed;
-  private boolean currentHatchModePressed;
+  private EnhancedBoolean currentDefenceModePressed = new EnhancedBoolean();
+  private EnhancedBoolean currentCargoModePressed = new EnhancedBoolean();
+  private EnhancedBoolean currentHatchModePressed = new EnhancedBoolean();
   private boolean isEnabled = false;
   private StateBuilder stateMachine;
+  private EnhancedBoolean currentSetStartModePressed = new EnhancedBoolean();
+  private EnhancedBoolean currentSetStartCargoModePressed = new EnhancedBoolean();
+  private EnhancedBoolean climberPreset = new EnhancedBoolean();
+
+
   public ElevatorCargoHatchSubsystem() {
     elevator.initialize();
     cargo.initialize();
     hatch.initialize();
+    climber.initialize();
     // Set sense of encoder
     // Set sense of motors
     // Set soft targets on
     // Configure elevator encoder
 
+  }
+
+  public Climber getClimber() {
+    return climber;
   }
 
   public long getCurrentTime() {
@@ -131,26 +149,40 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     elevator.collectData();
     cargo.collectData();
     hatch.collectData();
+    climber.collectData();
 
-    lastCargoModePressed = currentCargoModePressed;
-    currentCargoModePressed = cargoModeButton.get();
-    lastHatchModePressed = currentHatchModePressed;
-    currentHatchModePressed = hatchModeButton.get();
-    lastDefenceModePressed = currentDefenceModePressed;
+    currentCargoModePressed.set(cargoModeButton.get());
+    currentHatchModePressed.set(hatchModeButton.get());
 //    currentDefenceModePressed = defenseModeButton.get();
-    currentDefenceModePressed = gamepad.getPOVButton(POV.N);
+    currentDefenceModePressed.set(gamepad.getPOVButton(POV.S));
+    currentSetStartModePressed.set(hatchStart.get());
+    currentSetStartCargoModePressed.set(cargoStart.get());
+    climberPreset.set(gamepad.getPOVButton(POV.W));
+  }
+
+  public boolean climbModeRising() {
+    return climberPreset.isRisingEdge();
   }
 
   public boolean cargoModeRising() {
-    return currentCargoModePressed && !lastCargoModePressed;
+    return currentCargoModePressed.isRisingEdge();
   }
 
   public boolean hatchModeRising() {
-    return currentHatchModePressed && !lastHatchModePressed;
+    return currentHatchModePressed.isRisingEdge();
   }
 
   public boolean defenceModeRising() {
-    return currentDefenceModePressed && !lastDefenceModePressed;
+    return currentDefenceModePressed.isRisingEdge();
+  }
+
+  public boolean setCompStartHatchModeRising() {
+    return currentSetStartModePressed.isRisingEdge();
+  }
+
+
+  public boolean setCompStartCargoModeRising() {
+    return currentSetStartCargoModePressed.isRisingEdge();
   }
 
   private void processSensorData() {
@@ -163,6 +195,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     elevator.outputData();
     cargo.outputData();
     hatch.outputData();
+    climber.outputData();
 
     SmartDashboard.putString(MOTORS_STATE, stateMachine.getCurrentState().getClass().getSimpleName());
     SmartDashboard.putNumber(MOTORS_ELEVATOR_HEIGHT, getElevator().getElevatorHeight());
@@ -174,11 +207,15 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     SmartDashboard.putNumber(MOTORS_HATCH_POWER, getHatch().getHatchRotationPower());
     SmartDashboard.putNumber(MOTORS_HATCH_TARGET, getHatch().getHatchTarget());
     SmartDashboard.putString(MOTORS_HATCH_MODE, getHatch().getHatchControlMode().name());
+    SmartDashboard.putBoolean(MOTORS_INTAKE_OPEN, getHatch().getIntakeIsSet());
 
     SmartDashboard.putNumber(MOTORS_CARGO_ANGLE, getCargo().getAngle());
-    SmartDashboard.putNumber(MOTORS_CARGO_POWER, getCargo().getClawRotationPower());
+    SmartDashboard.putNumber(MOTORS_CARGO_POWER, getCargo().getCargoRotationPower());
     SmartDashboard.putNumber(MOTORS_CARGO_TARGET, getCargo().getClawTarget());
     SmartDashboard.putString(MOTORS_CARGO_MODE, getCargo().getClawControlMode().name());
+
+    SmartDashboard.putNumber(MOTORS_CLIMBER_POWER, getClimber().getClimberPower());
+    SmartDashboard.putString(MOTORS_CLIMBER_MODE, getClimber().getClimberControlMode().name());
 
     SmartDashboard.putBoolean(MOTORS_LOWER_LIMIT, getElevator().isLowerLimit());
 
@@ -205,7 +242,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
    * @return if the getAngle() value is in the enumerated range above the hatch position will be returned
    */
 
-  public HatchPosition findHatchClosestPosition(HatchPosition hatchPosition, int angle) {
+  public HatchPosition findHatchClosestPosition(int angle) {
     if (currentRobot.getTarget(HatchPosition.DEPLOY).inRange(angle)) {
       return HatchPosition.DEPLOY;
     } else if (currentRobot.getTarget(HatchPosition.SAFE).inRange(angle)) {
@@ -218,7 +255,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   }
 
   public enum ElevatorLevel {
-    CARGO_BASE, HATCH_BASE, CARGO_HAB, CARGO_ROCKET, CARGO2, HATCH2, CARGO3, HATCH3
+    CARGO_BASE, HATCH_BASE, CARGO_HAB, CARGO_ROCKET, CARGO2, HATCH2, CARGO3, CLIMB, HATCH3
   }
 
   public enum ElevatorControlMode {
@@ -241,16 +278,20 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   }
 
   public enum CargoPosition {
-
     DEPLOY,
-    SAFE
+    CARGO_3,
+    CARGO_2, CARGO_1, CARGO_START, CLIMB, SAFE
   }
 
   public enum HatchPosition {
     DEPLOY,
     SAFE,
     HATCH_START,
-    CARGO_START
+    DEFENSE, CARGO_START
+  }
+
+  public enum ClimberControlMode {
+    AUTO, MANUAL, TIMED, DISABLED
   }
 
   public class Elevator implements SubSubsystem {
@@ -264,7 +305,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private boolean lastLevel1ButtonPressed;
     private boolean currentLevel1ButtonPressed;
     private boolean lowerLimit;
-    private boolean isZeroed;
+    private EnhancedBoolean isZeroed = new EnhancedBoolean();
     private boolean resetLimits = false;
     private boolean releaseLower = false;
     private double elevatorJoystick;
@@ -276,7 +317,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private double elevatorCurrentTarget;
     private ElevatorControlMode elevatorControlMode;
     private int lastEncoderPosition;
-    private boolean lastIsZeroed;
+    private boolean carogShipPressed;
 
     public Elevator() {
       elevatorLogger = new Logger();
@@ -291,11 +332,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public boolean isZeroed() {
-      return isZeroed;
+      return isZeroed.get();
     }
 
     public void setZeroed(boolean zeroed) {
-      isZeroed = zeroed;
+      isZeroed.set(zeroed);
     }
 
     public boolean isLowerLimit() {
@@ -318,10 +359,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       lastEncoderPosition = currentEncoderPosition;
       currentEncoderPosition = elevatorMotor.getSelectedSensorPosition(0);
 
-      lastIsZeroed = isZeroed;
-
       lowerLimit = !elevatorLowerLimit.get();
       baseIsPressed = elevatorZeroButton.get();
+      carogShipPressed = gamepad.getPOVButton(POV.N);
     }
 
     @Override
@@ -344,7 +384,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
       switch (elevatorControlMode) {
         case ZEROING:
-          elevatorMotor.set(ControlMode.PercentOutput, -0.1);
+          elevatorMotor.set(ControlMode.PercentOutput, ZEROING);
           if (isZeroRising()) {
             elevatorMotor.setSelectedSensorPosition(0);
           }
@@ -367,7 +407,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public boolean isZeroRising() {
-      return !lastIsZeroed && isZeroed;
+      return isZeroed.isRisingEdge();
     }
 
     public void enableLowerLimit() {
@@ -444,6 +484,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     public void releaseLowerLimit() {
       releaseLower = true;
     }
+
+    public boolean isElevatorCargoShipButtonPressed() {
+      return carogShipPressed;
+    }
   }
 
   public class Cargo implements SubSubsystem {
@@ -463,9 +507,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private CargoPosition limits = CargoPosition.SAFE;
     // Outputs
     private double intakePower;
-    private double clawRotationPower;
+    private double cargoRotationPower;
     private int clawTarget;
     private ClawControlMode clawControlMode;
+    private boolean currentSlowIntakePressed;
 
     public Cargo() {
       cargoLogger = new Logger();
@@ -489,6 +534,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       currentFastOutButtonPressed = outtakeCargoButtonFast.get();
       angle = clawRotationMotor.getSelectedSensorPosition();
       cargoJoystick = -gamepad.getLeftY();
+
+      currentSlowIntakePressed = hatchIntakeButton.get();
     }
 
     public void intakeCargo(int timeout) {
@@ -518,12 +565,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       this.clawControlMode = clawControlMode;
     }
 
-    public double getClawRotationPower() {
-      return clawRotationPower;
+    public double getCargoRotationPower() {
+      return cargoRotationPower;
     }
 
-    public void setClawRotationPower(double clawRotationPower) {
-      this.clawRotationPower = clawRotationPower;
+    public void setCargoRotationPower(double cargoRotationPower) {
+      this.cargoRotationPower = cargoRotationPower;
     }
 
     public void setClawAngle(int angle) {
@@ -577,15 +624,15 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       switch (clawControlMode) {
         case AUTO:
           clawRotationMotor.set(ControlMode.Position, clawTarget);
-          clawRotationPower = 0;
+          cargoRotationPower = 0;
           break;
         case MANUAL:
-          clawRotationMotor.set(ControlMode.PercentOutput, clawRotationPower);
+          clawRotationMotor.set(ControlMode.PercentOutput, cargoRotationPower);
           clawTarget = angle;
           break;
         case DISABLED:
           clawRotationMotor.set(ControlMode.Disabled, 0);
-          clawRotationPower = 0;
+          cargoRotationPower = 0;
           clawTarget = 0;
           break;
       }
@@ -607,6 +654,16 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     @Override
     public void initialize() {
 
+    }
+
+
+    public void intakeCargoSlow(int timeout) {
+      intakeTimeout = currentTime + timeout;
+      intakePower = .5;
+    }
+
+    public boolean inSlowButtonPressed() {
+      return currentSlowIntakePressed;
     }
   }
 
@@ -722,6 +779,90 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     public void setLimits(HatchPosition limits) {
       this.limits = limits;
       resetLimits = true;
+    }
+  }
+
+  public class Climber implements SubSubsystem {
+
+
+    public long timeout;
+    private EnhancedBoolean climberUp = new EnhancedBoolean();
+    private EnhancedBoolean climberDown = new EnhancedBoolean();
+    private ClimberControlMode climberControlMode;
+    private double climberPower;
+
+    public ClimberControlMode getClimberControlMode() {
+      return climberControlMode;
+    }
+
+    public void setClimberControlMode(ClimberControlMode climberControlMode) {
+      this.climberControlMode = climberControlMode;
+    }
+
+    public double getClimberPower() {
+      return climberPower;
+    }
+
+    public void setClimberPower(double climberPower) {
+      this.climberPower = climberPower;
+    }
+
+    public boolean isClimberUpRising() {
+      return climberUp.isRisingEdge();
+    }
+
+    public boolean isClimberUpPressed() {
+      return climberUp.get();
+    }
+
+    public boolean isClimberDownPressed() {
+      return climberDown.get();
+    }
+
+    public boolean isClimberDownRising() {
+      return climberDown.isRisingEdge();
+    }
+
+    @Override
+    public void collectData() {
+      climberUp.set(bringUp.get());
+      climberDown.set(bringDown.get());
+    }
+
+    @Override
+    public void outputData() {
+      switch (climberControlMode) {
+        case TIMED:
+          if (currentTime <= timeout) {
+            climberMotor.set(climberPower);
+          } else {
+            climberControlMode = ClimberControlMode.MANUAL;
+          }
+          climberPower = 0;
+          break;
+        case MANUAL:
+          climberMotor.set(climberPower);
+          break;
+        case DISABLED:
+          climberMotor.set(0);
+//          climberMotor.disable();
+          break;
+      }
+    }
+
+    public void setTimer(int interval, double power) {
+      timeout = currentTime + interval;
+      climberPower = power;
+      climberControlMode = ClimberControlMode.TIMED;
+    }
+
+    @Override
+    public void initialize() {
+
+    }
+
+    public void setTimer(double power) {
+      setTimer(750, power);
     }
   }
 }

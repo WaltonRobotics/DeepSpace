@@ -1,6 +1,7 @@
 plugins {
+    id 'com.gradle.build-scan' version '2.1'
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2019.3.2"
+    id "edu.wpi.first.GradleRIO" version "2019.4.1"
 }
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
@@ -67,4 +68,9 @@ test {
     filter {
         includeTestsMatching "frc.robot.*"
     }
+}
+
+buildScan {
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
 }

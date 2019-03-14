@@ -7,10 +7,19 @@
 
 package frc.robot;
 
-import static frc.robot.Config.Camera.DEFAULT_CAMERA_COMPRESSION_QUALITY;
-import static frc.robot.Config.Camera.FPS;
 import static frc.robot.Config.Camera.HEIGHT;
 import static frc.robot.Config.Camera.WIDTH;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ACTUAL;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ANGLE;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_HEIGHT;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_NUMBER_OF_TARGETS;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_PROPORTIONAL_POWER;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TARGET_OFFSET;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TIME;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_USES_AUTOASSIST;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_X;
+import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_Y;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KACC;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KANGLE;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KK;
@@ -19,7 +28,12 @@ import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KS;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KV;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_ACCELERATION;
 import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_VELOCITY;
-import static frc.robot.Config.SmartDashboardKeys.DRIVETEAM_FISHEYE_CAMERA;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_ACTUAL_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_CAMERA_OFFSET;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_CAMERA_VISION;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_CHOSEN_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_JUST_BEFORE;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETEAM_TRANSFORM_SELECT;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_ACTUAL_POSITION;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_ENCODER;
@@ -34,6 +48,8 @@ import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLAW_ForwardSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLAW_ReverseSoftLimit;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLIMBER_MODE;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_CLIMBER_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_ForwardSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_HEIGHT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_ELEVATOR_MODE;
@@ -46,6 +62,7 @@ import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_MODE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_POWER;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_ReverseSoftLimit;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.MOTORS_INTAKE_OPEN;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_LOWER_LIMIT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_STATE;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_X;
@@ -58,11 +75,9 @@ import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.hatchRotationMotor;
 
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
-import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -81,9 +96,7 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
-import frc.robot.util.ParkingLines;
 import frc.robot.util.RobotBuilder;
-import org.opencv.core.Mat;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -92,6 +105,7 @@ import org.opencv.core.Mat;
  */
 public class Robot extends TimedRobot {
 
+  public static final boolean isCompBot;
   public static final LimitedRobot currentRobot;
   public static final Drivetrain drivetrain;
   public static final ElevatorCargoHatchSubsystem godSubsystem;
@@ -99,12 +113,18 @@ public class Robot extends TimedRobot {
   private static final RobotBuilder<LimitedRobot> robotBuilder;
 
   static {
+    isCompBot = new DigitalInput(9).get();
+    SmartDashboard.putBoolean("identifier", isCompBot);
     robotBuilder = new RobotBuilder<>(new CompPowerUp(), new CompSteamWorks(), new PracticeDeepSpace(),
         new CompDeepSpace());
     currentRobot = robotBuilder.getCurrentRobotConfig();
     System.out.println(currentRobot);
     drivetrain = new Drivetrain();
     godSubsystem = new ElevatorCargoHatchSubsystem();
+  }
+
+  public Robot() {
+    super(0.04);
   }
 
   /**
@@ -114,6 +134,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     drivetrain.cancelControllerMotion();
     drivetrain.reset();
+
+    Robot.drivetrain.getController().getCameraTimerTask().startCollecting();
 
     initShuffleBoard();
 
@@ -149,6 +171,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber(MOTORS_ELEVATOR_HEIGHT, 0);
     SmartDashboard.putNumber(MOTORS_HATCH_ANGLE, 0);
+    SmartDashboard.putBoolean(MOTORS_INTAKE_OPEN, false);
     SmartDashboard.putNumber(MOTORS_CARGO_ANGLE, 0);
     SmartDashboard.putBoolean(MOTORS_LOWER_LIMIT, false);
     SmartDashboard.putBoolean(MOTORS_ELEVATOR_ForwardSoftLimit, false);
@@ -170,10 +193,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(MOTORS_CARGO_POWER, 0);
     SmartDashboard.putNumber(MOTORS_CARGO_TARGET, 0);
 
-    SmartDashboard.putNumber(PARKING_LINE_OFFSET, 0);
+    SmartDashboard.putNumber(MOTORS_CLIMBER_POWER, 0);
+    SmartDashboard.putString(MOTORS_CLIMBER_MODE, "No mode");
+
+    SmartDashboard.putNumber(PARKING_LINE_OFFSET, 60);
     SmartDashboard.putNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0);
-    SmartDashboard.putNumber(PARKING_LINE_FOCUS_Y, HEIGHT / 2.0);
-    SmartDashboard.putNumber(PARKING_LINE_PERCENTAGE, 1.0);
+    SmartDashboard.putNumber(PARKING_LINE_FOCUS_Y, 240);
+    SmartDashboard.putNumber(PARKING_LINE_PERCENTAGE, .5);
 
     SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, "No position has been reported");
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, 0);
@@ -182,46 +208,74 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, 0);
     SmartDashboard.putNumber(DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT, 0);
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT, 0);
+
+    SmartDashboard.putNumber(CAMERA_DATA_X, -1);
+    SmartDashboard.putNumber(CAMERA_DATA_Y, 0.1);
+    SmartDashboard.putNumber(CAMERA_DATA_HEIGHT, 0);
+    SmartDashboard.putNumber(CAMERA_DATA_ANGLE, 0);
+    SmartDashboard.putNumber(CAMERA_DATA_NUMBER_OF_TARGETS, 1);
+    SmartDashboard.putNumber(CAMERA_DATA_TIME, 0);
+    SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, false);
+    SmartDashboard.putString(CAMERA_DATA_ACTUAL, "No actual data");
+    SmartDashboard.putString(CAMERA_DATA_TARGET, "No target data");
+    SmartDashboard.putNumber(CAMERA_DATA_PROPORTIONAL_POWER, .2);
+    SmartDashboard.putNumber(CAMERA_DATA_TARGET_OFFSET, 0.0);
+
+    SmartDashboard.putString(DEBUG_CAMERA_OFFSET, "No camera offset");
+    SmartDashboard.putString(DEBUG_CHOSEN_TARGET, "No camera data");
+    SmartDashboard.putString(DEBUG_JUST_BEFORE, "No camera data");
+    SmartDashboard.putString(DEBUG_ACTUAL_TARGET, "No camera data");
+    SmartDashboard.putString(DEBUG_CAMERA_VISION, "No Camera Data");
+    SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, false);
   }
 
   private void initCamera() {
-    new Thread(() -> {
-      CameraServer cameraServer = CameraServer.getInstance();
+    UsbCamera usbCamera = CameraServer.getInstance().startAutomaticCapture();
+    usbCamera.setResolution(WIDTH, HEIGHT);
+//    usbCamera.setFPS(FPS);
 
-      UsbCamera fishEyeCamera = cameraServer.startAutomaticCapture();
-      fishEyeCamera.setResolution(WIDTH, HEIGHT);
-
-      CvSink cvSink = cameraServer.getVideo();
-      CvSource outputStream = cameraServer.putVideo(DRIVETEAM_FISHEYE_CAMERA, WIDTH, HEIGHT);
-      outputStream.setFPS(FPS);
-
-      MjpegServer fisheyeServer = cameraServer.addServer("Fisheye Camera Server");
-      fisheyeServer.setSource(outputStream);
-
-      fisheyeServer.getProperty("compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
-      fisheyeServer.getProperty("default_compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
-
-      if (!fishEyeCamera.isConnected()) {
-        fishEyeCamera.close();
-        fisheyeServer.close();
-        return;
-      }
-
-      Mat source = new Mat();
-
-      while (!Thread.interrupted()) {
-        cvSink.grabFrame(source);
-        ParkingLines.setFocusPoint(
-            SmartDashboard.getNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0),
-            SmartDashboard.getNumber(PARKING_LINE_FOCUS_Y, HEIGHT / 2.0)
-        );
-        ParkingLines.setPercentage(SmartDashboard.getNumber(PARKING_LINE_PERCENTAGE, 1.0));
-        ParkingLines.setXOffset(SmartDashboard.getNumber(PARKING_LINE_OFFSET, 0));
-
-        ParkingLines.drawParkingLines(source);
-        outputStream.putFrame(source);
-      }
-    }).start();
+//    new Thread(() -> {
+//      CameraServer cameraServer = CameraServer.getInstance();
+//
+//      UsbCamera fishEyeCamera = cameraServer.startAutomaticCapture();
+//
+////      if (!fishEyeCamera.isConnected() || !fishEyeCamera.isValid() || !fishEyeCamera.isEnabled()) {
+////        fishEyeCamera.close();
+////        return;
+////      }
+//
+//      fishEyeCamera.setResolution(WIDTH, HEIGHT);
+//
+//      CvSink cvSink = cameraServer.getVideo();
+//      CvSource outputStream = cameraServer.putVideo(DRIVETEAM_FISHEYE_CAMERA, WIDTH, HEIGHT);
+//      outputStream.setFPS(FPS);
+//
+//      MjpegServer fisheyeServer = cameraServer.addServer("Fisheye Camera Server");
+//      fisheyeServer.setSource(outputStream);
+//      fisheyeServer.setCompression(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+//      fisheyeServer.setDefaultCompression(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+//      fisheyeServer.setResolution(WIDTH, HEIGHT);
+//
+////      fisheyeServer.getProperty("compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+////      fisheyeServer.getProperty("default_compression").set(DEFAULT_CAMERA_COMPRESSION_QUALITY);
+//
+//      Mat source = new Mat();
+//
+//      System.out.println("Fisheye Camera Connected");
+//      while (!Thread.interrupted()) {
+//        cvSink.grabFrame(source);
+//        Core.flip(source, source, -1);
+//        ParkingLines.setFocusPoint(
+//            SmartDashboard.getNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0),
+//            SmartDashboard.getNumber(PARKING_LINE_FOCUS_Y, HEIGHT / 2.0)
+//        );
+//        ParkingLines.setPercentage(SmartDashboard.getNumber(PARKING_LINE_PERCENTAGE, 1.0));
+//        ParkingLines.setXOffset(SmartDashboard.getNumber(PARKING_LINE_OFFSET, 0));
+//
+//        ParkingLines.drawParkingLines(source);
+//        outputStream.putFrame(source);
+//      }
+//    }).start();
   }
 
   /**
@@ -236,6 +290,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(DRIVETRAIN_LEFT_ENCODER, encoderLeft.getDistance());
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, encoderRight.getDistance());
     SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, String.valueOf(drivetrain.getActualPosition()));
+    SmartDashboard.putString(DEBUG_CAMERA_VISION, String.valueOf(drivetrain.getCameraData()));
     // System.out.println("robot Periodic");
   }
 
@@ -269,8 +324,6 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     godSubsystem.setEnabled(true);
     drivetrain.cancelControllerMotion();
-    drivetrain.startControllerMotion();
-    drivetrain.reset();
     drivetrain.shiftUp();
   }
 
@@ -304,7 +357,7 @@ public class Robot extends TimedRobot {
 
 //    godSubsystem.getElevator().setElevatorPower(godSubsystem.getElevator().getElevatorJoystick());
 ////    godSubsystem.getHatch().setHatchRotationPower(godSubsystem.getCargo().getCargoJoystick());
-//    godSubsystem.getCargo().setClawRotationPower(godSubsystem.getCargo().getCargoJoystick());
+//    godSubsystem.getCargo().setCargoRotationPower(godSubsystem.getCargo().getCargoJoystick());
 //
 //    if (catchHatch) {
 //      if (!hatchIntake.get()) {

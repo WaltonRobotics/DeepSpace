@@ -23,6 +23,14 @@ public class Defense implements State {
     if (Robot.godSubsystem.hatchModeRising()) {
       return new HatchHandlingTransition();
     }
+
+    if (Robot.godSubsystem.setCompStartHatchModeRising()) {
+      return new SetCompStartHatch();
+    }
+
+    if (Robot.godSubsystem.setCompStartCargoModeRising()) {
+      return new SetCompStartCargo();
+    }
     return this;
   }
 

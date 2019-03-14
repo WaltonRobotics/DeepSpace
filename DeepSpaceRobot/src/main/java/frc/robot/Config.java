@@ -4,10 +4,10 @@ public class Config {
 
   public static final class Camera {
 
-    public static final int WIDTH = 320;
-    public static final int HEIGHT = 240;
+    public static final int WIDTH = 320; //320
+    public static final int HEIGHT = 240; //240
     public static final int FPS = 30;
-    public static final int DEFAULT_CAMERA_COMPRESSION_QUALITY = 40; // between 0 and 100, 100 being the max, -1 being left to Shuffleboard
+    public static final int DEFAULT_CAMERA_COMPRESSION_QUALITY = 20; // between 0 and 100, 100 being the max, -1 being left to Shuffleboard
 
     private Camera() {
     }
@@ -80,9 +80,31 @@ public class Config {
     public static final String MOTORS_ELEVATOR_MODE = "Motors/Elevator Mode";
     public static final String MOTORS_HATCH_MODE = "Motors/Hatch Mode";
     public static final String MOTORS_CARGO_MODE = "Motors/Cargo Mode";
+    public static final String MOTORS_CLIMBER_MODE = "Motors/Climber Mode";
+    public static final String MOTORS_CLIMBER_POWER = "Motors/Climber Power";
+    public static final String MOTORS_INTAKE_OPEN = "Motors/Intake Open";
 
-    public static final String DRIVETEAM_FISHEYE_CAMERA = "Driveteam/Fisheye Camera";
+    public static final String DRIVETEAM_FISHEYE_CAMERA = "Fisheye Camera";
     public static final String DRIVETEAM_TRANSFORM_SELECT = "Driveteam/Transform Select";
+
+    public static final String CAMERA_DATA_X = "CameraData/x";
+    public static final String CAMERA_DATA_Y = "CameraData/y";
+    public static final String CAMERA_DATA_HEIGHT = "CameraData/Height";
+    public static final String CAMERA_DATA_ANGLE = "CameraData/Angle";
+    public static final String CAMERA_DATA_NUMBER_OF_TARGETS = "CameraData/NumberOfTargets";
+    public static final String CAMERA_DATA_TIME = "CameraData/Time";
+    public static final String CAMERA_DATA_ACTUAL = "CameraData/Actual";
+    public static final String CAMERA_DATA_TARGET = "CameraData/Target";
+    public static final String CAMERA_DATA_USES_AUTOASSIST = "CameraData/Uses Auto Assist";
+    public static final String CAMERA_DATA_PROPORTIONAL_POWER = "CameraData/Proportional Power";
+    public static final String CAMERA_DATA_TARGET_OFFSET = "CameraData/Target Offset";
+
+    public static final String DEBUG_CHOSEN_TARGET = "Debug/Chosen Target";
+    public static final String DEBUG_JUST_BEFORE = "Debug/Just before";
+    public static final String DEBUG_ACTUAL_TARGET = "Debug/Actual Target";
+    public static final String DEBUG_CAMERA_VISION = "Debug/Camera Vision";
+    public static final String DEBUG_CAMERA_OFFSET = "Debug/Camera Offset";
+    public static final String DEBUG_HAS_VALID_CAMERA_DATA = "Debug/Has Valid Camera Data";
 
     private SmartDashboardKeys() {
     }
@@ -90,10 +112,19 @@ public class Config {
 
   public static final class Elevator {
 
-    public static final double LOWERING_TO_BASE_POWER = 0.2;
-    public static final double LOWERING_TO_BASE_TIMEOUT_SECONDS = 5;
+    public static final double ZEROING = -0.2;
 
     private Elevator() {
+    }
+  }
+
+  public static final class Cargo {
+
+    public static final double CLIMB_MAX = 1;
+    public static final double CARGO_LIMIT = 0.3;
+
+    private Cargo() {
+
     }
   }
 

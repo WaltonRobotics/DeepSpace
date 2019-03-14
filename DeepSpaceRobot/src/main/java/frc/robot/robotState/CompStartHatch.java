@@ -2,14 +2,22 @@ package frc.robot.robotState;
 
 import frc.robot.Robot;
 import frc.robot.state.State;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Hatch;
 
 public class CompStartHatch implements State {
 
+  private double timeout;
+  private Hatch hatch = Robot.godSubsystem.getHatch();
+  private Cargo cargo = Robot.godSubsystem.getCargo();
+
   @Override
   public void initialize() {
+    cargo.setLimits(CargoPosition.SAFE);
 
+    hatch.setIntake(true);
+    timeout = Robot.godSubsystem.getCurrentTime() + 500;
   }
 
   @Override
@@ -18,14 +26,8 @@ public class CompStartHatch implements State {
     if (!Robot.godSubsystem.isEnabled()) {
       return new Disabled();
     }
-    int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
-    int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
 
-    if (Robot.currentRobot.getTarget(HatchPosition.DEPLOY).isClose(hatchAngle) && Robot.currentRobot
-        .getTarget(CargoPosition.SAFE).isClose(cargoAngle)) {
-      return new HatchHandlingTransition();
-    } else if (Robot.currentRobot.getTarget(HatchPosition.DEPLOY).inRange(hatchAngle) && Robot.currentRobot
-        .getTarget(CargoPosition.SAFE).inRange(cargoAngle)) {
+    if (Robot.godSubsystem.getCurrentTime() >= timeout) {
       return new HatchHandlingTransition();
     }
 

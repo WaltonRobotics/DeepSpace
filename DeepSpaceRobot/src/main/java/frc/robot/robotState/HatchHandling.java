@@ -30,6 +30,9 @@ public class HatchHandling implements State {
     if (Robot.godSubsystem.defenceModeRising()) {
       return new DefenseTransition();
     }
+    if (Robot.godSubsystem.cargoModeRising()) {
+      return new CargoHandlingTransition();
+    }
 
     boolean elevatorManual = Math.abs(elevator.getElevatorJoystick()) > 0.1;
     if (elevatorManual) {

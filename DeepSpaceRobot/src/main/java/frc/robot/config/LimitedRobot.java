@@ -3,8 +3,8 @@ package frc.robot.config;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import java.util.HashMap;
-import org.waltonrobotics.util.RobotConfig;
-import org.waltonrobotics.util.TalonConfig;
+import org.waltonrobotics.config.RobotConfig;
+import org.waltonrobotics.config.TalonConfig;
 
 public abstract class LimitedRobot extends RobotConfig {
 
@@ -44,6 +44,8 @@ public abstract class LimitedRobot extends RobotConfig {
   public void setElevatorLimit(TalonSRX talonSRX, Enum cargoType) {
     getElevatorSubsystemLimits().setLimits(talonSRX, limits.get(cargoType));
   }
+
+  public abstract TalonConfig getClimberMotorConfig();
 
   public abstract void defineTargets();
 

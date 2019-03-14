@@ -14,7 +14,7 @@ public class DefenseTransition implements State {
   @Override
   public void initialize() {
     Robot.godSubsystem.setCurrentActiveState(ActiveState.DEFENSE);
-    Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
+    Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.DEFENSE);
     Robot.godSubsystem.getHatch().setLimits(HatchPosition.SAFE);
     Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.SAFE);
     Robot.godSubsystem.getCargo().setLimits(CargoPosition.SAFE);
@@ -31,11 +31,15 @@ public class DefenseTransition implements State {
       return new Disabled();
     }
 
+    if (Robot.godSubsystem.climbModeRising()) {
+      return new ClimbHandlingTransition();
+    }
+
     int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
     int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
 
-    return Robot.currentRobot.getTarget(CargoPosition.SAFE).isClose(cargoAngle) && Robot.currentRobot
-        .getTarget(HatchPosition.SAFE).isClose(hatchAngle) ? new Defense() : this;
+    return Robot.currentRobot.getTarget(CargoPosition.SAFE).isClose(cargoAngle, 50) && Robot.currentRobot
+        .getTarget(HatchPosition.SAFE).isClose(hatchAngle, 50) ? new Defense() : this;
   }
 
   @Override

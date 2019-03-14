@@ -7,9 +7,11 @@
 
 package frc.robot.subsystem;
 
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT;
 import static frc.robot.Robot.currentRobot;
+import static frc.robot.Robot.drivetrain;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.leftWheels;
@@ -22,13 +24,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.command.teleop.Drive;
 import org.waltonrobotics.AbstractDrivetrain;
-import org.waltonrobotics.controller.RobotPair;
+import org.waltonrobotics.metadata.CameraData;
+import org.waltonrobotics.metadata.RobotPair;
 
 /**
  * Add your docs here.
  */
 public class Drivetrain extends AbstractDrivetrain {
 
+
+  private CameraData cameraData = new CameraData();
 
   public Drivetrain() {
     super(currentRobot);
@@ -37,6 +42,19 @@ public class Drivetrain extends AbstractDrivetrain {
   @Override
   public RobotPair getWheelPositions() {
     return new RobotPair(encoderLeft.getDistance(), encoderRight.getDistance(), Timer.getFPGATimestamp());
+  }
+
+  @Override
+  public void periodic() {
+    super.periodic();
+
+    cameraData = drivetrain.getCurrentCameraData();
+
+    if (cameraData.getTime() != -1) {
+      SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, true);
+    } else {
+      SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, false);
+    }
   }
 
   @Override
@@ -93,5 +111,9 @@ public class Drivetrain extends AbstractDrivetrain {
     if (RobotMap.shifter.get()) {
       RobotMap.shifter.set(false);
     }
+  }
+
+  public CameraData getCameraData() {
+    return cameraData;
   }
 }

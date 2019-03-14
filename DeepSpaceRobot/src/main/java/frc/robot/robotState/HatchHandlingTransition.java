@@ -35,7 +35,7 @@ public class HatchHandlingTransition implements State {
     int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
     int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
 
-    if (CARGO_SAFE.isClose(cargoAngle) && HATCH_ANGLE.isClose(hatchAngle)) {
+    if (CARGO_SAFE.isClose(cargoAngle, 50) && HATCH_ANGLE.isClose(hatchAngle, 50)) {
       return new HatchHandling();
     }
 

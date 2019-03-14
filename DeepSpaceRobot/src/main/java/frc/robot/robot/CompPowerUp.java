@@ -3,9 +3,9 @@ package frc.robot.robot;
 
 import frc.robot.config.BaseMotorControllerConfig;
 import frc.robot.config.LimitedRobot;
-import org.waltonrobotics.util.Controls;
-import org.waltonrobotics.util.EncoderConfig;
-import org.waltonrobotics.util.TalonConfig;
+import org.waltonrobotics.config.Controls;
+import org.waltonrobotics.config.EncoderConfig;
+import org.waltonrobotics.config.TalonConfig;
 
 public class CompPowerUp extends LimitedRobot {
 
@@ -187,6 +187,11 @@ public class CompPowerUp extends LimitedRobot {
   @Override
   public void initLimits() {
 
+  }
+
+  @Override
+  public TalonConfig getClimberMotorConfig() {
+    return null;
   }
 
   @Override

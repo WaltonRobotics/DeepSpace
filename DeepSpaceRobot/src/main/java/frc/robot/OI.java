@@ -27,7 +27,7 @@ import static frc.robot.Robot.drivetrain;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import org.waltonrobotics.controller.Pose;
+import org.waltonrobotics.metadata.Pose;
 
 /**
  * This class is the glue that binds the controls on the physical operator interface to the commands and command groups
@@ -72,6 +72,12 @@ public class OI {
 
   public static final JoystickButton cargoModeButton = new JoystickButton(gamepad, _10.index());
   public static final JoystickButton hatchModeButton = new JoystickButton(gamepad, _9.index());
+
+  public static final JoystickButton hatchStart = new JoystickButton(rightJoystick, 8);
+  public static final JoystickButton cargoStart = new JoystickButton(rightJoystick, 9);
+
+  public static final JoystickButton bringUp = new JoystickButton(rightJoystick, 4);
+  public static final JoystickButton bringDown = new JoystickButton(rightJoystick, 5);
 //  public static final JoystickButton defenseModeButton = new JoystickButton(gamepad, gamepad.getPO);
 
   //// CREATING BUTTONS
@@ -111,6 +117,10 @@ public class OI {
         drivetrain.setStartingPosition(Pose.ZERO);
       }
     });
+
+//    TODO uncomment this to use autoassist
+//    JoystickButton rightTrigger = new JoystickButton(rightJoystick,0);
+//    rightTrigger.whenPressed(new AutoAssist());
   }
 
   private OI() {

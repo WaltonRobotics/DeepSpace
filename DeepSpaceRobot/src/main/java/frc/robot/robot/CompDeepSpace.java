@@ -4,6 +4,7 @@ package frc.robot.robot;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import frc.robot.Robot;
 import frc.robot.config.BaseMotorControllerConfig;
 import frc.robot.config.LimitPair;
 import frc.robot.config.LimitedRobot;
@@ -11,9 +12,9 @@ import frc.robot.config.Target;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
-import org.waltonrobotics.util.Controls;
-import org.waltonrobotics.util.EncoderConfig;
-import org.waltonrobotics.util.TalonConfig;
+import org.waltonrobotics.config.Controls;
+import org.waltonrobotics.config.EncoderConfig;
+import org.waltonrobotics.config.TalonConfig;
 
 public class CompDeepSpace extends LimitedRobot {
 
@@ -26,7 +27,7 @@ public class CompDeepSpace extends LimitedRobot {
     return new EncoderConfig() {
       @Override
       public double getDistancePerPulse() {
-        return 0.0;
+        return 0.000593397;
       }
 
       @Override
@@ -41,7 +42,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isInverted() {
-        return false;
+        return true;
       }
     };
   }
@@ -51,7 +52,7 @@ public class CompDeepSpace extends LimitedRobot {
     return new EncoderConfig() {
       @Override
       public double getDistancePerPulse() {
-        return 0;
+        return 0.000593397;
       }
 
       @Override
@@ -81,7 +82,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isInverted() {
-        return false;
+        return true;
       }
     };
   }
@@ -96,19 +97,19 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public boolean isInverted() {
-        return true;
+        return false;
       }
     };
   }
 
   @Override
   public Controls getRightJoystickConfig() {
-    return () -> false;
+    return () -> true;
   }
 
   @Override
   public Controls getLeftJoystickConfig() {
-    return () -> false;
+    return () -> true;
   }
 
   @Override
@@ -138,12 +139,12 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public double getKS() {
-    return 0;
+    return 2;
   }
 
   @Override
   public double getKAng() {
-    return 0;
+    return 1;
   }
 
   @Override
@@ -164,7 +165,7 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public boolean isCurrentRobot() {
-    return true;
+    return Robot.isCompBot;
   }
 
   @Override
@@ -212,12 +213,12 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public double getPeakOutputForward() {
-        return .3;
+        return 1;
       }
 
       @Override
       public double getPeakOutputReverse() {
-        return -.3;
+        return -1;
       }
 
       @Override
@@ -278,6 +279,11 @@ public class CompDeepSpace extends LimitedRobot {
       @Override
       public boolean isOverrideLimitSwitchesEnabled() {
         return false;
+      }
+
+      @Override
+      public double getClosedLoopPeakOutput() {
+        return .8;
       }
     };
   }
@@ -342,7 +348,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public double getKP() {
-        return 50;
+        return 30;
       }
 
       @Override
@@ -487,12 +493,12 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public int getMotionCruiseVelocity() {
-        return 700;
+        return 800;
       }
 
       @Override
       public int getMotionAcceleration() {
-        return 1000;
+        return 4000;
       }
 
       @Override
@@ -544,38 +550,60 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public void initLimits() {
-    this.addLimit(HatchPosition.CARGO_START, new LimitPair(-55, -372));
-    this.addLimit(HatchPosition.HATCH_START, new LimitPair(-235, -372));
-    this.addLimit(HatchPosition.SAFE, new LimitPair(-332, -372));
-    this.addLimit(HatchPosition.DEPLOY, new LimitPair(-332, -634));
+    this.addLimit(HatchPosition.CARGO_START, new LimitPair(-95, -412));
+    this.addLimit(HatchPosition.HATCH_START, new LimitPair(-275, -412));
+    this.addLimit(HatchPosition.SAFE, new LimitPair(-372, -412));
+    this.addLimit(HatchPosition.DEPLOY, new LimitPair(-372, -674));
 
     this.addLimit(CargoPosition.SAFE, new LimitPair(500, 480));
     this.addLimit(CargoPosition.DEPLOY, new LimitPair(500, 224));
+    this.addLimit(CargoPosition.CLIMB, new LimitPair(500, 184));
 
-    this.addLimit(ElevatorLevel.CARGO_BASE, new LimitPair(26750, 4615));
-    this.addLimit(ElevatorLevel.HATCH_BASE, new LimitPair(24500, 0));
+    this.addLimit(ElevatorLevel.CARGO_BASE, new LimitPair(29857, 1230));
+    this.addLimit(ElevatorLevel.HATCH_BASE, new LimitPair(26528, 0));
+  }
+
+  @Override
+  public TalonConfig getClimberMotorConfig() {
+    return new TalonConfig() {
+      @Override
+      public int getChanell() {
+        return 5;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return false;
+      }
+    };
   }
 
   @Override
   public void defineTargets() {
-    this.addTarget(HatchPosition.DEPLOY, new Target(-614, -483));
-    this.addTarget(HatchPosition.SAFE, new Target(-352, -303));
-    this.addTarget(HatchPosition.HATCH_START, new Target(-255, -165));
-    this.addTarget(HatchPosition.CARGO_START, new Target(-75, -55));
+    this.addTarget(HatchPosition.DEPLOY, new Target(-668, -551));
+    this.addTarget(HatchPosition.SAFE, new Target(-433, -371));
+    this.addTarget(HatchPosition.DEFENSE, new Target(-372, -371));
+    this.addTarget(HatchPosition.HATCH_START, new Target(-372, -233));
+    this.addTarget(HatchPosition.CARGO_START, new Target(-143, -113));
 
+    this.addTarget(CargoPosition.DEPLOY, new Target(270, 400));
+    this.addTarget(CargoPosition.CARGO_1, new Target(333, 500));
+    this.addTarget(CargoPosition.CARGO_2, new Target(351, 500));
+    this.addTarget(CargoPosition.CARGO_3, new Target(374, 500));
     this.addTarget(CargoPosition.SAFE, new Target(498, 500));
-    this.addTarget(CargoPosition.DEPLOY, new Target(304, 400));
+    this.addTarget(CargoPosition.CLIMB, new Target(184, 500));
 
-    this.addTarget(ElevatorLevel.CARGO_BASE, new Target(4615));
+    this.addTarget(ElevatorLevel.CARGO_BASE, new Target(1074));
 
-    this.addTarget(ElevatorLevel.CARGO_ROCKET, new Target(9000));
-    this.addTarget(ElevatorLevel.CARGO_HAB, new Target(11000));
-    this.addTarget(ElevatorLevel.CARGO2, new Target(18000));
-    this.addTarget(ElevatorLevel.CARGO3, new Target(27000));
+    this.addTarget(ElevatorLevel.CARGO_ROCKET, new Target(7584));
+    this.addTarget(ElevatorLevel.CARGO_HAB, new Target(15200));
+    this.addTarget(ElevatorLevel.CARGO2, new Target(19050));
+    this.addTarget(ElevatorLevel.CARGO3, new Target(31000));
+    this.addTarget(ElevatorLevel.CLIMB, new Target(8403));
 
-    this.addTarget(ElevatorLevel.HATCH_BASE, new Target(0));
-    this.addTarget(ElevatorLevel.HATCH2, new Target(13000));
-    this.addTarget(ElevatorLevel.HATCH3, new Target(26000));
+    this.addTarget(ElevatorLevel.HATCH_BASE, new Target(1619));
+    this.addTarget(ElevatorLevel.HATCH2, new Target(14465));
+    this.addTarget(ElevatorLevel.HATCH3, new Target(26528));
 
 
   }
