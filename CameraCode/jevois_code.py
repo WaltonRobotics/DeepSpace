@@ -80,6 +80,12 @@ def define_tape_corners(angle, length):
 
 
 def euler_to_matrix(euler):
+    """
+    I found this on the internet\n
+    http://answers.opencv.org/question/88531/how-can-i-get-rotation-vector-from-euler-angles/ \n
+    :param euler: the euler angles to convert
+    :return:
+    """
     x = euler[0]
     y = euler[1]
     z = euler[2]
