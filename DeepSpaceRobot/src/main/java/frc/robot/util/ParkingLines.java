@@ -10,10 +10,10 @@ public class ParkingLines {
 
   private static double focusX;
   private static double focusY;
-  private static double percentage = 1;
+  private static double percentage = 1.0;
   private static double xOffset;
 
-  private static Scalar lineColor = new Scalar(0, 255, 0);
+  private static Scalar lineColor = new Scalar(0, 255.0, 0);
 
   private ParkingLines() {
   }

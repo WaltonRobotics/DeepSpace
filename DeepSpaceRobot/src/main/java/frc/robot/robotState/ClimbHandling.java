@@ -5,6 +5,7 @@ import static frc.robot.Config.Cargo.CLIMB_MAX;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.state.State;
+import frc.robot.subsystem.Drivetrain;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Climber;
@@ -22,11 +23,12 @@ public class ClimbHandling implements State {
   private final Elevator elevator = Robot.godSubsystem.getElevator();
   private final Cargo cargo = Robot.godSubsystem.getCargo();
   private final Climber climber = Robot.godSubsystem.getClimber();
+  private final Drivetrain drivetrain = Robot.drivetrain;
 
 
   @Override
   public void initialize() {
-    hatch.setHatchControlMode(HatchControlMode.DISABLED);
+    hatch.setControlMode(HatchControlMode.DISABLED);
 
   }
 
@@ -51,25 +53,25 @@ public class ClimbHandling implements State {
 
     if (elevatorManual || cargoManual) {
       if (elevatorManual) {
-        elevator.setElevatorControlMode(ElevatorControlMode.MANUAL);
+        elevator.setControlMode(ElevatorControlMode.MANUAL);
         elevator.setElevatorPower(elevator.getElevatorJoystick());
       } else {
-        elevator.setElevatorControlMode(ElevatorControlMode.AUTO);
+        elevator.setControlMode(ElevatorControlMode.AUTO);
       }
 
       if (cargoManual) {
-        cargo.setClawControlMode(ClawControlMode.MANUAL);
+        cargo.setControlMode(ClawControlMode.MANUAL);
 
         double cargoJoystick = cargo.getCargoJoystick();
 
         cargoJoystick = Math.signum(cargoJoystick) * Math.min(Math.abs(cargoJoystick), CLIMB_MAX);
-        cargo.setCargoRotationPower(cargoJoystick);
+        cargo.setRotationPower(cargoJoystick);
       } else {
-        cargo.setClawControlMode(ClawControlMode.AUTO);
+        cargo.setControlMode(ClawControlMode.AUTO);
       }
     } else {
-      elevator.setElevatorControlMode(ElevatorControlMode.AUTO);
-      cargo.setClawControlMode(ClawControlMode.AUTO);
+      elevator.setControlMode(ElevatorControlMode.AUTO);
+      cargo.setControlMode(ClawControlMode.AUTO);
     }
 
     if (climber.isClimberUpPressed()) {
@@ -84,8 +86,8 @@ public class ClimbHandling implements State {
       cargo.outtakeCargoSlow(0);
     } else if (cargo.outFastButtonPressed()) {
       cargo.outtakeCargoFast(0);
-    } else if (cargo.inButtonPressed()) {
-      cargo.intakeCargo(0);
+    } else if (cargo.inFastButtonPressed()) {
+      cargo.intakeCargoFast(0);
     }
 
     return this;
@@ -97,6 +99,6 @@ public class ClimbHandling implements State {
         .configPeakOutputForward(Robot.currentRobot.getCargoSubsystemLimits().getPeakOutputForward());
     RobotMap.clawRotationMotor
         .configPeakOutputReverse(Robot.currentRobot.getCargoSubsystemLimits().getPeakOutputReverse());
-    hatch.setHatchControlMode(HatchControlMode.AUTO);
+    hatch.setControlMode(HatchControlMode.AUTO);
   }
 }

@@ -49,7 +49,7 @@ public class Drive extends Command {
   public Drive() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.drivetrain);
+    requires(drivetrain);
   }
 
   private Transform getTransform() {
@@ -95,7 +95,9 @@ public class Drive extends Command {
 //          SmartDashboard.getNumber(CAMERA_DATA_TIME, 0)
 //      );
 
-      if (cameraData.getNumberOfTargets() != 0) {
+      if (cameraData.getNumberOfTargets() == 0) {
+        hasFound = false;
+      } else {
         System.out.println("Found target");
         SmartDashboard.putString(DEBUG_CHOSEN_TARGET, cameraData.toString());
         SmartDashboard.putString(DEBUG_JUST_BEFORE, drivetrain.getActualPosition().toString());
@@ -104,8 +106,6 @@ public class Drive extends Command {
         offset = new Pose();
 
         hasFound = true;
-      } else {
-        hasFound = false;
       }
     }
 
@@ -114,40 +114,40 @@ public class Drive extends Command {
 
       CameraData cameraData = drivetrain.getCurrentCameraData();
 
-      if (cameraData.getTime() != -1) {
+      if (cameraData.getTime() != -1.0) {
         Pose camera = cameraData.getCameraPose();
 
         Pose difference = new Pose(camera.getX() - actualPathData.getX(), camera.getY() - actualPathData.getY(),
             camera.getAngle() - actualPathData.getAngle());
 
-        offset = new Pose(offset.getX() * (1 - cameraFilter) + difference.getX() * cameraFilter,
-            offset.getY() * (1 - cameraFilter) + difference.getY() * cameraFilter,
-            offset.getAngle() * (1 - cameraFilter) + difference.getAngle() * cameraFilter);
+        offset = new Pose((offset.getX() * (1.0 - cameraFilter)) + (difference.getX() * cameraFilter),
+            (offset.getY() * (1.0 - cameraFilter)) + (difference.getY() * cameraFilter),
+            (offset.getAngle() * (1 - cameraFilter)) + (difference.getAngle() * cameraFilter));
       }
 
       //Get cameradata and get 90 percent of it in
       double distance = Math
-          .max(Math.abs(actualPathData.getX()) - .5, SmartDashboard.getNumber(CAMERA_DATA_PROPORTIONAL_POWER, .2));
+          .max(Math.abs(actualPathData.getX()) - 0.5, SmartDashboard.getNumber(CAMERA_DATA_PROPORTIONAL_POWER, 0.2));
 
       PathData targetPathData = new PathData(new Pose(actualPathData.getX(), SmartDashboard.getNumber(
           CAMERA_DATA_TARGET_OFFSET, 0)));
 
       Pose correctedPosition = new Pose();
-      if (distance <= .5) {
+      if (distance <= 0.5) {
         correctedPosition = actualPathData
             .offset(offset.getX(), offset.getY(), offset.getAngle()); //FIXME overload to use with Pose
       }
 
       ErrorVector currentError = MotionController.findCurrentError(targetPathData, correctedPosition);
 
-      double centerPower = (leftYJoystick + rightYJoystick) / 2;
+      double centerPower = (leftYJoystick + rightYJoystick) / 2.0;
       double steerPowerXTE = Math.abs(centerPower) * currentRobot.getKS() * currentError.getXTrack();
 
       double steerPowerAngle = currentRobot.getKAng() * currentError.getAngle();
 
       System.out.println(distance);
       if (distance <= 1.5) {
-        centerPower = centerPower * distance;
+        centerPower *= distance;
       }
 
       double steerPower = Math.max(-1.0, Math.min(1.0, steerPowerXTE + steerPowerAngle));
@@ -187,12 +187,12 @@ public class Drive extends Command {
       hasFound = false;
     }
 
-    Robot.drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
+    drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
 
     if (OI.shiftUp.get()) {
-      Robot.drivetrain.shiftUp();
+      drivetrain.shiftUp();
     } else if (OI.shiftDown.get()) {
-      Robot.drivetrain.shiftDown();
+      drivetrain.shiftDown();
     }
   }
 

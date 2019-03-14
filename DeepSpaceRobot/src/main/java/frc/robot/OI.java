@@ -52,7 +52,7 @@ Alex is a demanding person
  */
 
 
-public class OI {
+public final class OI {
 
   public static final Joystick leftJoystick = new Joystick(LEFT_JOYSTICK_PORT);
   public static final Joystick rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);

@@ -30,4 +30,8 @@ public class EnhancedBoolean {
   public boolean isFallingEdge() {
     return !value && previousValue;
   }
+
+  public boolean hasChanged() {
+    return value != previousValue;
+  }
 }

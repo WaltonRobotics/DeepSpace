@@ -15,11 +15,11 @@ public class CargoHandlingTransition implements State {
 
     // set limits for play mode
     Robot.godSubsystem.setCurrentActiveState(ActiveState.CARGO_HANDLING);
-    Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.SAFE);
-    Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.DEPLOY);
+    Robot.godSubsystem.getHatch().setCurrentTarget(HatchPosition.SAFE);
+    Robot.godSubsystem.getCargo().setCurrentTarget(CargoPosition.DEPLOY);
     Robot.godSubsystem.getCargo().setLimits(CargoPosition.DEPLOY);
 
-    Robot.godSubsystem.getElevator().setElevatorControlMode(ElevatorControlMode.AUTO);
+    Robot.godSubsystem.getElevator().setControlMode(ElevatorControlMode.AUTO);
     Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.CARGO_BASE);
     Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.CARGO_BASE);
   }
@@ -34,8 +34,8 @@ public class CargoHandlingTransition implements State {
     int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
     int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
 
-    return Robot.currentRobot.getTarget(CargoPosition.DEPLOY).isClose(cargoAngle, 50) && Robot.currentRobot
-        .getTarget(HatchPosition.SAFE).isClose(hatchAngle, 50) ? new CargoHandling()
+    return (Robot.currentRobot.getTarget(CargoPosition.DEPLOY).isClose(cargoAngle, 50) && Robot.currentRobot
+        .getTarget(HatchPosition.SAFE).isClose(hatchAngle, 50)) ? new CargoHandling()
         : this;
   }
 

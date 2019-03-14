@@ -44,42 +44,44 @@ public class CargoHandling implements State {
     boolean elevatorManual = Math.abs(elevator.getElevatorJoystick()) > 0.1;
     boolean cargoManual = Math.abs(cargo.getCargoJoystick()) > 0.1;
 
+    cargo.intakeCargoHold();
+
     if (elevatorManual || cargoManual) {
       if (elevatorManual) {
-        elevator.setElevatorControlMode(ElevatorControlMode.MANUAL);
+        elevator.setControlMode(ElevatorControlMode.MANUAL);
         elevator.setElevatorPower(elevator.getElevatorJoystick());
       } else {
-        elevator.setElevatorControlMode(ElevatorControlMode.AUTO);
+        elevator.setControlMode(ElevatorControlMode.AUTO);
       }
       if (cargoManual) {
-        cargo.setClawControlMode(ClawControlMode.MANUAL);
+        cargo.setControlMode(ClawControlMode.MANUAL);
 
         double cargoJoystick = cargo.getCargoJoystick();
 
         cargoJoystick = Math.signum(cargoJoystick) * Math.min(Math.abs(cargoJoystick), CARGO_LIMIT);
-        cargo.setCargoRotationPower(cargoJoystick);
+        cargo.setRotationPower(cargoJoystick);
       } else {
-        cargo.setClawControlMode(ClawControlMode.AUTO);
+        cargo.setControlMode(ClawControlMode.AUTO);
       }
     } else {
-      elevator.setElevatorControlMode(ElevatorControlMode.AUTO);
-      cargo.setClawControlMode(ClawControlMode.AUTO);
+      elevator.setControlMode(ElevatorControlMode.AUTO);
+      cargo.setControlMode(ClawControlMode.AUTO);
 
       if (elevator.isBasePressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO_ROCKET);
-        cargo.setClawTarget(CargoPosition.CARGO_1);
+        cargo.setCurrentTarget(CargoPosition.CARGO_1);
       } else if (elevator.isElevatorLevel1ButtonPressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO_BASE);
-        cargo.setClawTarget(CargoPosition.DEPLOY);
+        cargo.setCurrentTarget(CargoPosition.DEPLOY);
       } else if (elevator.isElevatorLevel2ButtonPressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO2);
-        cargo.setClawTarget(CargoPosition.CARGO_2);
+        cargo.setCurrentTarget(CargoPosition.CARGO_2);
       } else if (elevator.isElevatorLevel3ButtonPressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO3);
-        cargo.setClawTarget(CargoPosition.CARGO_3);
+        cargo.setCurrentTarget(CargoPosition.CARGO_3);
       } else if (elevator.isElevatorCargoShipButtonPressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO_HAB);
-        cargo.setClawTarget(CargoPosition.DEPLOY);
+        cargo.setCurrentTarget(CargoPosition.DEPLOY);
       }
     }
 
@@ -87,8 +89,8 @@ public class CargoHandling implements State {
       cargo.outtakeCargoSlow(0);
     } else if (cargo.outFastButtonPressed()) {
       cargo.outtakeCargoFast(0);
-    } else if (cargo.inButtonPressed()) {
-      cargo.intakeCargo(0);
+    } else if (cargo.inFastButtonPressed()) {
+      cargo.intakeCargoFast(0);
     } else if (cargo.inSlowButtonPressed()) {
       cargo.intakeCargoSlow(0);
     }

@@ -43,7 +43,7 @@ public class ParkingLineTest {
     camera.release();
 
     ParkingLines.setPercentage(0.9);
-    ParkingLines.setXOffset(40);
+    ParkingLines.setXOffset(40.0);
     ParkingLines.setFocusPoint(mat.width() / 2.0, mat.height() * (2.0 / 3.0));
     ParkingLines.drawParkingLines(mat);
 

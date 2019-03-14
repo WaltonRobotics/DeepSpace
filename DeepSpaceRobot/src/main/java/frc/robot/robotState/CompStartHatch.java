@@ -17,7 +17,7 @@ public class CompStartHatch implements State {
     cargo.setLimits(CargoPosition.SAFE);
 
     hatch.setIntake(true);
-    timeout = Robot.godSubsystem.getCurrentTime() + 500;
+    timeout = Robot.godSubsystem.getCurrentTime() + 500L;
   }
 
   @Override

@@ -50,10 +50,10 @@ public class Drivetrain extends AbstractDrivetrain {
 
     cameraData = drivetrain.getCurrentCameraData();
 
-    if (cameraData.getTime() != -1) {
-      SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, true);
-    } else {
+    if (cameraData.getTime() == -1.0) {
       SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, false);
+    } else {
+      SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, true);
     }
   }
 
@@ -77,14 +77,14 @@ public class Drivetrain extends AbstractDrivetrain {
     leftWheels.setInverted(currentRobot.getLeftTalonConfig().isInverted());
     rightWheels.setInverted(currentRobot.getRightTalonConfig().isInverted());
 
-    leftWheels.configPeakOutputForward(1);
-    leftWheels.configPeakOutputReverse(-1);
+    leftWheels.configPeakOutputForward(1.0);
+    leftWheels.configPeakOutputReverse(-1.0);
 
     leftWheels.setNeutralMode(NeutralMode.Brake);
     rightWheels.setNeutralMode(NeutralMode.Brake);
 
-    rightWheels.configPeakOutputForward(1);
-    rightWheels.configPeakOutputReverse(-1);
+    rightWheels.configPeakOutputForward(1.0);
+    rightWheels.configPeakOutputReverse(-1.0);
 
     encoderLeft.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
     encoderRight.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());

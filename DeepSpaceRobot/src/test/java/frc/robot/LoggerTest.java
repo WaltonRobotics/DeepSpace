@@ -1,5 +1,7 @@
 package frc.robot;
 
+import static org.hamcrest.CoreMatchers.containsString;
+
 import frc.robot.util.Logger;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -23,7 +25,7 @@ public class LoggerTest {
 
     logger.logInfo(testLogString);
 
-    Assert.assertTrue(os.toString().contains(testLogString));
+    Assert.assertThat(os.toString(), containsString(testLogString));
   }
 
   @Test
@@ -40,7 +42,7 @@ public class LoggerTest {
 
     logger.logWarning(testLogString);
 
-    Assert.assertTrue(os.toString().contains(testLogString));
+    Assert.assertThat(os.toString(), containsString(testLogString));
   }
 
   @Test
@@ -57,7 +59,7 @@ public class LoggerTest {
 
     logger.logError(testLogString);
 
-    Assert.assertTrue(os.toString().contains(testLogString));
+    Assert.assertThat(os.toString(), containsString(testLogString));
   }
 
 }

@@ -61,7 +61,7 @@ class Variable {
   }
 
   public void setMutator(Method mutator, Setter.ValueType valueType) {
-    if (mutator != null && mutator.getParameterCount() != 1
+    if ((mutator != null) && (mutator.getParameterCount() != 1)
         && mutator.getParameterTypes()[0].isInstance(valueType.getDefiningClass())) {
       throw new IllegalArgumentException("The mutator method must only need a single parameter");
     }

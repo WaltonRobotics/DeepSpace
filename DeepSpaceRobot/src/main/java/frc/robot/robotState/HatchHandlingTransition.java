@@ -17,11 +17,11 @@ public class HatchHandlingTransition implements State {
   @Override
   public void initialize() {
     Robot.godSubsystem.setCurrentActiveState(ActiveState.HATCH_HANDLING);
-    Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.SAFE);
-    Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.DEPLOY);
+    Robot.godSubsystem.getCargo().setCurrentTarget(CargoPosition.SAFE);
+    Robot.godSubsystem.getHatch().setCurrentTarget(HatchPosition.DEPLOY);
     Robot.godSubsystem.getHatch().setLimits(HatchPosition.DEPLOY);
 
-    Robot.godSubsystem.getElevator().setElevatorControlMode(ElevatorControlMode.AUTO);
+    Robot.godSubsystem.getElevator().setControlMode(ElevatorControlMode.AUTO);
     Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH_BASE);
     Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.HATCH_BASE);
   }

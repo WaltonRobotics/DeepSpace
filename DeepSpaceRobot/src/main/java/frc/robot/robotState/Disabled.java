@@ -11,9 +11,9 @@ public class Disabled implements State {
 
   @Override
   public void initialize() {
-    Robot.godSubsystem.getHatch().setHatchControlMode(HatchControlMode.DISABLED);
-    Robot.godSubsystem.getCargo().setClawControlMode(ClawControlMode.DISABLED);
-    Robot.godSubsystem.getElevator().setElevatorControlMode(ElevatorControlMode.DISABLED);
+    Robot.godSubsystem.getHatch().setControlMode(HatchControlMode.DISABLED);
+    Robot.godSubsystem.getCargo().setControlMode(ClawControlMode.DISABLED);
+    Robot.godSubsystem.getElevator().setControlMode(ElevatorControlMode.DISABLED);
     Robot.godSubsystem.getClimber().setClimberControlMode(ClimberControlMode.DISABLED);
   }
 

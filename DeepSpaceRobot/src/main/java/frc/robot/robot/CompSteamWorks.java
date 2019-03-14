@@ -104,7 +104,7 @@ public class CompSteamWorks extends LimitedRobot {
 
   @Override
   public double getMaxAcceleration() {
-    return 4;
+    return 4.0;
   }
 
   @Override
@@ -134,7 +134,7 @@ public class CompSteamWorks extends LimitedRobot {
 
   @Override
   public double getKL() {
-    return 2;
+    return 2.0;
   }
 
 

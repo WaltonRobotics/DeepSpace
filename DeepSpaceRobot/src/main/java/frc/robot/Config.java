@@ -120,7 +120,7 @@ public class Config {
 
   public static final class Cargo {
 
-    public static final double CLIMB_MAX = 1;
+    public static final double CLIMB_MAX = 1.0;
     public static final double CARGO_LIMIT = 0.3;
 
     private Cargo() {

@@ -7,7 +7,7 @@ import org.waltonrobotics.config.RobotConfig;
 
 public class RobotBuilder<T extends RobotConfig> {
 
-  private ArrayList<T> robotConfigs = new ArrayList<>();
+  private ArrayList<T> robotConfigs = new ArrayList<>(2);
 
   public RobotBuilder(ArrayList<T> robotConfigs) {
     this.robotConfigs = robotConfigs;

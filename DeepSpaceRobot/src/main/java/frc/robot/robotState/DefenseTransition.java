@@ -14,12 +14,12 @@ public class DefenseTransition implements State {
   @Override
   public void initialize() {
     Robot.godSubsystem.setCurrentActiveState(ActiveState.DEFENSE);
-    Robot.godSubsystem.getHatch().setHatchTarget(HatchPosition.DEFENSE);
+    Robot.godSubsystem.getHatch().setCurrentTarget(HatchPosition.DEFENSE);
     Robot.godSubsystem.getHatch().setLimits(HatchPosition.SAFE);
-    Robot.godSubsystem.getCargo().setClawTarget(CargoPosition.SAFE);
+    Robot.godSubsystem.getCargo().setCurrentTarget(CargoPosition.SAFE);
     Robot.godSubsystem.getCargo().setLimits(CargoPosition.SAFE);
 
-    Robot.godSubsystem.getElevator().setElevatorControlMode(ElevatorControlMode.AUTO);
+    Robot.godSubsystem.getElevator().setControlMode(ElevatorControlMode.AUTO);
     Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH_BASE);
     Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.HATCH_BASE);
   }
@@ -38,8 +38,8 @@ public class DefenseTransition implements State {
     int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
     int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
 
-    return Robot.currentRobot.getTarget(CargoPosition.SAFE).isClose(cargoAngle, 50) && Robot.currentRobot
-        .getTarget(HatchPosition.SAFE).isClose(hatchAngle, 50) ? new Defense() : this;
+    return (Robot.currentRobot.getTarget(CargoPosition.SAFE).isClose(cargoAngle, 50) && Robot.currentRobot
+        .getTarget(HatchPosition.SAFE).isClose(hatchAngle, 50)) ? new Defense() : this;
   }
 
   @Override

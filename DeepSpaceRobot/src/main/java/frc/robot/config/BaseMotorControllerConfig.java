@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public abstract class BaseMotorControllerConfig {
 
@@ -62,7 +61,7 @@ public abstract class BaseMotorControllerConfig {
     talonSRX.configReverseSoftLimitThreshold(newReverseSoftLimitThreshold, getTimeout());
   }
 
-  public void setLimits(TalonSRX talonSRX, LimitPair limits) {
+  public void setLimits(IMotorController talonSRX, LimitPair limits) {
     setForwardsSoftLimitThreshold(talonSRX, limits.getForwardsSoftLimitThreshold());
     setReverseSoftLimitThreshold(talonSRX, limits.getReverseSoftLimitThreshold());
   }

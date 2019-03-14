@@ -34,8 +34,8 @@ public class SetCompStartCargo implements State {
     }
 
     if (currentRobot.getTarget(ElevatorLevel.HATCH_BASE).isClose(elevator.getElevatorHeight(), 250)) {
-      hatch.setHatchTarget(HatchPosition.CARGO_START);
-      cargo.setClawTarget(CargoPosition.SAFE);
+      hatch.setCurrentTarget(HatchPosition.CARGO_START);
+      cargo.setCurrentTarget(CargoPosition.SAFE);
     }
 
     if (Robot.godSubsystem.cargoModeRising()) {

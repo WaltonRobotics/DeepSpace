@@ -135,7 +135,7 @@ public class Robot extends TimedRobot {
     drivetrain.cancelControllerMotion();
     drivetrain.reset();
 
-    Robot.drivetrain.getController().getCameraTimerTask().startCollecting();
+    drivetrain.getController().getCameraTimerTask().startCollecting();
 
     initShuffleBoard();
 
@@ -196,10 +196,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(MOTORS_CLIMBER_POWER, 0);
     SmartDashboard.putString(MOTORS_CLIMBER_MODE, "No mode");
 
-    SmartDashboard.putNumber(PARKING_LINE_OFFSET, 60);
+    SmartDashboard.putNumber(PARKING_LINE_OFFSET, 60.0);
     SmartDashboard.putNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0);
     SmartDashboard.putNumber(PARKING_LINE_FOCUS_Y, 240);
-    SmartDashboard.putNumber(PARKING_LINE_PERCENTAGE, .5);
+    SmartDashboard.putNumber(PARKING_LINE_PERCENTAGE, 0.5);
 
     SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, "No position has been reported");
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, 0);
@@ -213,12 +213,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(CAMERA_DATA_Y, 0.1);
     SmartDashboard.putNumber(CAMERA_DATA_HEIGHT, 0);
     SmartDashboard.putNumber(CAMERA_DATA_ANGLE, 0);
-    SmartDashboard.putNumber(CAMERA_DATA_NUMBER_OF_TARGETS, 1);
+    SmartDashboard.putNumber(CAMERA_DATA_NUMBER_OF_TARGETS, 1.0);
     SmartDashboard.putNumber(CAMERA_DATA_TIME, 0);
     SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, false);
     SmartDashboard.putString(CAMERA_DATA_ACTUAL, "No actual data");
     SmartDashboard.putString(CAMERA_DATA_TARGET, "No target data");
-    SmartDashboard.putNumber(CAMERA_DATA_PROPORTIONAL_POWER, .2);
+    SmartDashboard.putNumber(CAMERA_DATA_PROPORTIONAL_POWER, 0.2);
     SmartDashboard.putNumber(CAMERA_DATA_TARGET_OFFSET, 0.0);
 
     SmartDashboard.putString(DEBUG_CAMERA_OFFSET, "No camera offset");
@@ -341,9 +341,9 @@ public class Robot extends TimedRobot {
     drivetrain.cancelControllerMotion();
 
 //    godSubsystem.setEnabled(false);
-//    godSubsystem.getElevator().setElevatorControlMode(ElevatorControlMode.MANUAL);
-//    godSubsystem.getCargo().setClawControlMode(ClawControlMode.MANUAL);
-//    godSubsystem.getHatch().setHatchControlMode(HatchControlMode.MANUAL);
+//    godSubsystem.getElevator().setControlMode(ElevatorControlMode.MANUAL);
+//    godSubsystem.getCargo().setControlMode(ClawControlMode.MANUAL);
+//    godSubsystem.getHatch().setControlMode(HatchControlMode.MANUAL);
 //
 //    elevatorMotor.setSelectedSensorPosition(0, 0, 100);
   }
@@ -356,8 +356,8 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
 
 //    godSubsystem.getElevator().setElevatorPower(godSubsystem.getElevator().getElevatorJoystick());
-////    godSubsystem.getHatch().setHatchRotationPower(godSubsystem.getCargo().getCargoJoystick());
-//    godSubsystem.getCargo().setCargoRotationPower(godSubsystem.getCargo().getCargoJoystick());
+////    godSubsystem.getHatch().setRotationPower(godSubsystem.getCargo().getCargoJoystick());
+//    godSubsystem.getCargo().setRotationPower(godSubsystem.getCargo().getCargoJoystick());
 //
 //    if (catchHatch) {
 //      if (!hatchIntake.get()) {
@@ -371,7 +371,7 @@ public class Robot extends TimedRobot {
 //
 //    if (intake && !outtake) {
 //      intake = false;
-//      godSubsystem.getCargo().intakeCargo(700);
+//      godSubsystem.getCargo().intakeCargoFast(700);
 //    }
 //    if (outtake && !intake) {
 //      outtake = false;

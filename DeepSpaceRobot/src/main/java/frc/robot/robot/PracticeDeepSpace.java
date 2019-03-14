@@ -124,7 +124,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public double getKV() {
-    return 1;
+    return 1.0;
   }
 
   @Override
@@ -139,12 +139,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public double getKS() {
-    return 2;
+    return 2.0;
   }
 
   @Override
   public double getKAng() {
-    return 1;
+    return 1.0;
   }
 
   @Override
@@ -213,12 +213,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getPeakOutputForward() {
-        return 1;
+        return 1.0;
       }
 
       @Override
       public double getPeakOutputReverse() {
-        return -1;
+        return -1.0;
       }
 
       @Override
@@ -228,7 +228,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getKP() {
-        return 15;
+        return 15.0;
       }
 
       @Override
@@ -283,7 +283,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getClosedLoopPeakOutput() {
-        return .8;
+        return 0.8;
       }
     };
   }
@@ -333,12 +333,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getPeakOutputForward() {
-        return 1;
+        return 1.0;
       }
 
       @Override
       public double getPeakOutputReverse() {
-        return -1;
+        return -1.0;
       }
 
       @Override
@@ -348,7 +348,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getKP() {
-        return 50;
+        return 50.0;
       }
 
       @Override
@@ -448,12 +448,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getPeakOutputForward() {
-        return 1;
+        return 1.0;
       }
 
       @Override
       public double getPeakOutputReverse() {
-        return -1;
+        return -1.0;
       }
 
       @Override

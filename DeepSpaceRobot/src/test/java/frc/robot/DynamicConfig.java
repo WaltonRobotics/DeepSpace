@@ -26,9 +26,9 @@ public class DynamicConfig {
     SmartDashboard.putData("Test", dynamicC);
     System.out.println(dynamicC.getTestValue());
 
-    Thread.sleep(2000);
+    Thread.sleep(2000L);
     System.out.println(dynamicC.getTestValue());
-    double testValue = SmartDashboard.getNumber("testValue", 2);
+    double testValue = SmartDashboard.getNumber("testValue", 2.0);
     System.out.println(testValue);
     Assert.fail();
 

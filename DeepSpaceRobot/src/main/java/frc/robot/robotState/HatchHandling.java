@@ -36,12 +36,12 @@ public class HatchHandling implements State {
 
     boolean elevatorManual = Math.abs(elevator.getElevatorJoystick()) > 0.1;
     if (elevatorManual) {
-      hatch.setHatchControlMode(HatchControlMode.AUTO);
-      elevator.setElevatorControlMode(ElevatorControlMode.MANUAL);
+      hatch.setControlMode(HatchControlMode.AUTO);
+      elevator.setControlMode(ElevatorControlMode.MANUAL);
       elevator.setElevatorPower(elevator.getElevatorJoystick());
 
     } else {
-      elevator.setElevatorControlMode(ElevatorControlMode.AUTO);
+      elevator.setControlMode(ElevatorControlMode.AUTO);
 
       if (elevator.isBasePressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO_BASE);

@@ -4,13 +4,14 @@ import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DynamicConfig extends SendableBase {
 
   private static final AtomicInteger instances = new AtomicInteger();
-  private final HashMap<String, Variable> methods = new HashMap<>();
+  private final Map<String, Variable> methods = new HashMap<>();
 
   public DynamicConfig() {
     super(false);
@@ -18,21 +19,21 @@ public class DynamicConfig extends SendableBase {
     for (Method method : getClass().getMethods()) {
       if (method.isAnnotationPresent(Getter.class)) {
         Getter annotation = method.getAnnotation(Getter.class);
-        if (!methods.containsKey(annotation.name())) {
+        if (methods.containsKey(annotation.name())) {
+          methods.get(annotation.name()).setAccessor(method);
+        } else {
           Variable variable = new Variable(this, annotation.name());
           variable.setAccessor(method);
           methods.put(annotation.name(), variable);
-        } else {
-          methods.get(annotation.name()).setAccessor(method);
         }
       } else if (method.isAnnotationPresent(Setter.class)) {
         Setter annotation = method.getAnnotation(Setter.class);
-        if (!methods.containsKey(annotation.name())) {
+        if (methods.containsKey(annotation.name())) {
+          methods.get(annotation.name()).setMutator(method, annotation.value());
+        } else {
           Variable variable = new Variable(this, annotation.name());
           variable.setMutator(method, annotation.value());
           methods.put(annotation.name(), variable);
-        } else {
-          methods.get(annotation.name()).setMutator(method, annotation.value());
         }
       }
     }

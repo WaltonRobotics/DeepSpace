@@ -25,7 +25,7 @@ public class TakeControl implements State {
   @Override
   public void initialize() {
 
-    elevator.setElevatorControlMode(ElevatorControlMode.ZEROING);
+    elevator.setControlMode(ElevatorControlMode.ZEROING);
     int currentCargoAngle = cargo.getAngle();
     //FIXME:int elevatorPosition = elevator.getElevatorHeight();
     int currentHatchAngle = hatch.getAngle();
@@ -33,8 +33,8 @@ public class TakeControl implements State {
     cargo.setClawAngle(currentCargoAngle);
     hatch.setHatchAngle(currentHatchAngle);
 
-    cargo.setClawControlMode(ClawControlMode.AUTO);
-    hatch.setHatchControlMode(HatchControlMode.AUTO);
+    cargo.setControlMode(ClawControlMode.AUTO);
+    hatch.setControlMode(HatchControlMode.AUTO);
 
 //    elevator.setZeroed(true);
     elevator.setZeroed(false);
@@ -49,8 +49,8 @@ public class TakeControl implements State {
       return new Disabled();
     }
 
-    if (elevator.getElevatorHeight() <= currentRobot.getTarget(ElevatorLevel.CARGO2).getTarget()
-        && Robot.godSubsystem.getCurrentActiveState() != ActiveState.HATCH_HANDLING) {
+    if ((elevator.getElevatorHeight() <= currentRobot.getTarget(ElevatorLevel.CARGO2).getTarget())
+        && (Robot.godSubsystem.getCurrentActiveState() != ActiveState.HATCH_HANDLING)) {
       Robot.godSubsystem.getHatch().setIntake(true);
       Robot.godSubsystem.setCurrentActiveState(ActiveState.HATCH_HANDLING);
     }
@@ -60,7 +60,7 @@ public class TakeControl implements State {
     ) {
       elevator.setZeroed(true);
     } else {
-      timeout = Robot.godSubsystem.getCurrentTime() + 500;
+      timeout = Robot.godSubsystem.getCurrentTime() + 500L;
     }
 
     if (Robot.godSubsystem.getElevator().isZeroed()) {

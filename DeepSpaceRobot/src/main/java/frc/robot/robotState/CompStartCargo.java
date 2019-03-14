@@ -13,10 +13,10 @@ public class CompStartCargo implements State {
   @Override
   public void initialize() {
     cargo.setLimits(CargoPosition.DEPLOY);
-    cargo.setClawTarget(CargoPosition.DEPLOY);
+    cargo.setCurrentTarget(CargoPosition.DEPLOY);
 
     Robot.godSubsystem.getHatch().setIntake(false);
-    timeout = Robot.godSubsystem.getCurrentTime() + 1000;
+    timeout = Robot.godSubsystem.getCurrentTime() + 1000L;
   }
 
   @Override

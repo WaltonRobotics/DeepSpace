@@ -110,7 +110,7 @@ public class CompPowerUp extends LimitedRobot {
 
   @Override
   public double getMaxVelocity() {
-    return 4;
+    return 4.0;
   }
 
   @Override
@@ -130,17 +130,17 @@ public class CompPowerUp extends LimitedRobot {
 
   @Override
   public double getKS() {
-    return 2;
+    return 2.0;
   }
 
   @Override
   public double getKAng() {
-    return 1;
+    return 1.0;
   }
 
   @Override
   public double getKL() {
-    return 2;
+    return 2.0;
   }
 
 
