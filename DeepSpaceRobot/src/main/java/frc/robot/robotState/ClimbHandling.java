@@ -10,12 +10,15 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Climber;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Elevator;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorControlMode;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Hatch;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchControlMode;
 
 /**
  * @author Marius Juston
  **/
 public class ClimbHandling implements State {
 
+  private final Hatch hatch = Robot.godSubsystem.getHatch();
   private final Elevator elevator = Robot.godSubsystem.getElevator();
   private final Cargo cargo = Robot.godSubsystem.getCargo();
   private final Climber climber = Robot.godSubsystem.getClimber();
@@ -23,6 +26,7 @@ public class ClimbHandling implements State {
 
   @Override
   public void initialize() {
+    hatch.setHatchControlMode(HatchControlMode.DISABLED);
 
   }
 
@@ -93,5 +97,6 @@ public class ClimbHandling implements State {
         .configPeakOutputForward(Robot.currentRobot.getCargoSubsystemLimits().getPeakOutputForward());
     RobotMap.clawRotationMotor
         .configPeakOutputReverse(Robot.currentRobot.getCargoSubsystemLimits().getPeakOutputReverse());
+    hatch.setHatchControlMode(HatchControlMode.AUTO);
   }
 }
