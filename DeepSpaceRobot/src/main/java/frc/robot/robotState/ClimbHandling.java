@@ -9,6 +9,7 @@ import frc.robot.subsystem.Drivetrain;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Climber;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClimberControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Elevator;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Hatch;
@@ -29,6 +30,7 @@ public class ClimbHandling implements State {
   @Override
   public void initialize() {
     hatch.setControlMode(HatchControlMode.DISABLED);
+    climber.setClimberControlMode(ClimberControlMode.MANUAL);
 
   }
 
@@ -46,6 +48,9 @@ public class ClimbHandling implements State {
     }
     if (Robot.godSubsystem.defenceModeRising()) {
       return new DefenseTransition();
+    }
+    if (Robot.godSubsystem.autoClimbRising()) {
+      return new PrepareAutoClimb();
     }
 
     boolean elevatorManual = Math.abs(elevator.getElevatorJoystick()) > 0.1;
