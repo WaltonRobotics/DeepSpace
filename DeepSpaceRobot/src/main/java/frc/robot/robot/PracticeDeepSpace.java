@@ -586,12 +586,13 @@ public class PracticeDeepSpace extends LimitedRobot {
     this.addTarget(HatchPosition.HATCH_START, new Target(-486, -403));
     this.addTarget(HatchPosition.CARGO_START, new Target(-320, -300));
 
-    this.addTarget(CargoPosition.DEPLOY, new Target(458, 550));
-    this.addTarget(CargoPosition.CARGO_1, new Target(468, 655));
-    this.addTarget(CargoPosition.CARGO_2, new Target(486, 655));
-    this.addTarget(CargoPosition.CARGO_3, new Target(509, 655));
-    this.addTarget(CargoPosition.SAFE, new Target(635, 655));
-    this.addTarget(CargoPosition.CLIMB, new Target(349, 550));
+    int cargoOffset = 635;
+    this.addTarget(CargoPosition.DEPLOY, new Target(-187 + cargoOffset, -85 + cargoOffset));
+    this.addTarget(CargoPosition.CARGO_1, new Target(-144 + cargoOffset, 20 + cargoOffset));
+    this.addTarget(CargoPosition.CARGO_2, new Target(-124 + cargoOffset, 20 + cargoOffset));
+    this.addTarget(CargoPosition.CARGO_3, new Target(-95 + cargoOffset, 20 + cargoOffset));
+    this.addTarget(CargoPosition.SAFE, new Target(cargoOffset, 20 + cargoOffset));
+    this.addTarget(CargoPosition.CLIMB, new Target(-271 + cargoOffset, -85 + cargoOffset));
 
     this.addTarget(ElevatorLevel.CARGO_BASE, new Target(1784));
 

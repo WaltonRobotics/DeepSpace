@@ -586,12 +586,13 @@ public class CompDeepSpace extends LimitedRobot {
     this.addTarget(HatchPosition.HATCH_START, new Target(-372, -233));
     this.addTarget(HatchPosition.CARGO_START, new Target(-143, -113));
 
-    this.addTarget(CargoPosition.DEPLOY, new Target(270, 400));
-    this.addTarget(CargoPosition.CARGO_1, new Target(333, 500));
-    this.addTarget(CargoPosition.CARGO_2, new Target(351, 500));
-    this.addTarget(CargoPosition.CARGO_3, new Target(374, 500));
-    this.addTarget(CargoPosition.SAFE, new Target(498, 500));
-    this.addTarget(CargoPosition.CLIMB, new Target(184, 500));
+    int cargoOffset = 498;
+    this.addTarget(CargoPosition.DEPLOY, new Target(-228 + cargoOffset, -98 + cargoOffset));
+    this.addTarget(CargoPosition.CARGO_1, new Target(-165 + cargoOffset, 2 + cargoOffset));
+    this.addTarget(CargoPosition.CARGO_2, new Target(-147 + cargoOffset, 2 + cargoOffset));
+    this.addTarget(CargoPosition.CARGO_3, new Target(-134 + cargoOffset, 2 + cargoOffset));
+    this.addTarget(CargoPosition.SAFE, new Target(cargoOffset, 2 + cargoOffset));
+    this.addTarget(CargoPosition.CLIMB, new Target(-314 + cargoOffset, 2 + cargoOffset));
 
     this.addTarget(ElevatorLevel.CARGO_BASE, new Target(1074));
 
