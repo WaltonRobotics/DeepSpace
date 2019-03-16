@@ -58,6 +58,7 @@ public final class OI {
   public static final Joystick rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
   public static final Gamepad gamepad = new Gamepad(GAMEPAD_PORT);
 
+  public static final JoystickButton masterOverride = new JoystickButton(leftJoystick, 7);
   public static final JoystickButton shiftUp = new JoystickButton(leftJoystick, SHIFT_UP_PORT);
   public static final JoystickButton shiftDown = new JoystickButton(leftJoystick, SHIFT_DOWN_PORT);
   public static final JoystickButton elevatorLevel3Button = new JoystickButton(gamepad,

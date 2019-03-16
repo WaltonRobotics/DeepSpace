@@ -53,6 +53,7 @@ import com.ctre.phoenix.motorcontrol.Faults;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Gamepad.POV;
+import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.robotState.Disabled;
 import frc.robot.state.StateBuilder;
@@ -70,11 +71,13 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private EnhancedBoolean currentDefenceModePressed = new EnhancedBoolean();
   private EnhancedBoolean currentCargoModePressed = new EnhancedBoolean();
   private EnhancedBoolean currentHatchModePressed = new EnhancedBoolean();
+  private EnhancedBoolean masterOverride = new EnhancedBoolean();
   private boolean isEnabled = false;
   private StateBuilder stateMachine;
   private EnhancedBoolean currentSetStartModePressed = new EnhancedBoolean();
   private EnhancedBoolean currentSetStartCargoModePressed = new EnhancedBoolean();
   private EnhancedBoolean climberPreset = new EnhancedBoolean();
+  private EnhancedBoolean autoClimbMode = new EnhancedBoolean();
 
 
   public ElevatorCargoHatchSubsystem() {
@@ -158,6 +161,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     currentSetStartModePressed.set(hatchStart.get());
     currentSetStartCargoModePressed.set(cargoStart.get());
     climberPreset.set(gamepad.getPOVButton(POV.W));
+    masterOverride.set(OI.masterOverride.get());
+    autoClimbMode.set(OI.leftJoystick.getTrigger());
   }
 
   public boolean climbModeRising() {
@@ -252,6 +257,14 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     } else {
       return HatchPosition.CARGO_START;
     }
+  }
+
+  public boolean isMasterOverride() {
+    return masterOverride.get();
+  }
+
+  public boolean autoClimbRising() {
+    return autoClimbMode.isRisingEdge();
   }
 
   public enum ElevatorLevel {
