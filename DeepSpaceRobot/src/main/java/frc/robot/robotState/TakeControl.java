@@ -66,7 +66,7 @@ public class TakeControl implements State {
       Robot.godSubsystem.setCurrentActiveState(ActiveState.HATCH_HANDLING);
     }
 
-    if (elevator.isLowerLimit()
+    if (elevator.isLowerLimit() || godSubsystem.isMasterOverride()
 //        || (elevator.getElevatorHeight()  - elevator.getLastEncoderPosition()) >= 0
     ) {
       elevator.setZeroed(true);

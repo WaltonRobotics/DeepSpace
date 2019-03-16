@@ -44,7 +44,8 @@ public class ClimbHandlingTransition implements State {
     int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
 
     return (Robot.currentRobot.getTarget(CargoPosition.CLIMB).isClose(cargoAngle, 50) && Robot.currentRobot
-        .getTarget(ElevatorLevel.CLIMB).isClose(elevatorHeight, 250)) ? new ClimbHandling() : this;
+        .getTarget(ElevatorLevel.CLIMB).isClose(elevatorHeight, 250)) || Robot.godSubsystem.isMasterOverride()
+        ? new ClimbHandling() : this;
   }
 
   @Override

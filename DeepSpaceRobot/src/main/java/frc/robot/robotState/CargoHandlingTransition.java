@@ -35,7 +35,8 @@ public class CargoHandlingTransition implements State {
     int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
 
     return (Robot.currentRobot.getTarget(CargoPosition.DEPLOY).isClose(cargoAngle, 50) && Robot.currentRobot
-        .getTarget(HatchPosition.SAFE).isClose(hatchAngle, 50)) ? new CargoHandling()
+        .getTarget(HatchPosition.SAFE).isClose(hatchAngle, 50)) || Robot.godSubsystem.isMasterOverride()
+        ? new CargoHandling()
         : this;
   }
 
