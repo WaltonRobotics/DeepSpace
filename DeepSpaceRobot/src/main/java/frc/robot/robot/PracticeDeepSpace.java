@@ -468,7 +468,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getKI() {
-        return 0;
+        return 0.00025;
       }
 
       @Override
@@ -478,7 +478,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getKF() {
-        return 1.36;
+        return 0.876857143;
       }
 
       @Override
@@ -493,12 +493,12 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public int getMotionCruiseVelocity() {
-        return 800;
+        return 1600;
       }
 
       @Override
       public int getMotionAcceleration() {
-        return 4000;
+        return 8000;
       }
 
       @Override
