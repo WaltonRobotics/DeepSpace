@@ -48,6 +48,10 @@ public class TakeControl implements State {
     cargo.setLimits(CargoPosition.SAFE);
     hatch.setLimits(HatchPosition.SAFE);
     elevator.releaseLowerLimit();
+
+    if (cargo.getAngle() < currentRobot.getTarget(CargoPosition.DEPLOY).getTarget()) {
+      cargo.setCurrentTarget(CargoPosition.DEPLOY);
+    }
   }
 
   @Override
