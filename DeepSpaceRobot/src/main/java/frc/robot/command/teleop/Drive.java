@@ -27,20 +27,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.command.teleop.util.Transform;
+import frc.robot.metadata.CameraDataMotionLogger;
+import frc.robot.metadata.CameraMotionData;
 import frc.robot.util.EnhancedBoolean;
 import org.waltonrobotics.controller.MotionController;
-import org.waltonrobotics.controller.MotionLogger;
 import org.waltonrobotics.metadata.CameraData;
 import org.waltonrobotics.metadata.ErrorVector;
-import org.waltonrobotics.metadata.MotionData;
 import org.waltonrobotics.metadata.MotionState;
 import org.waltonrobotics.metadata.PathData;
 import org.waltonrobotics.metadata.Pose;
 import org.waltonrobotics.metadata.RobotPair;
 
+//  CameraData
+//  Position before applying offset
+//  Offset
 public class Drive extends Command {
 
   private static final double cameraFilter = 0.5;
+  private static boolean isEnabled = true;
   private CameraDataMotionLogger motionLogger = new CameraDataMotionLogger();
   private Pose offset = new Pose(0, 0, 0);
   private boolean hasFound = false;
@@ -50,6 +54,10 @@ public class Drive extends Command {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(drivetrain);
+  }
+
+  public static void setIsEnabled(boolean isEnabled) {
+    Drive.isEnabled = isEnabled;
   }
 
   private Transform getTransform() {
@@ -72,20 +80,21 @@ public class Drive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double leftYJoystick = getLeftYJoystick();
-    double rightYJoystick = getRightYJoystick();
+    if (isEnabled) {
+      double leftYJoystick = getLeftYJoystick();
+      double rightYJoystick = getRightYJoystick();
 
-    rightTriggerPress.set(OI.rightJoystick.getTrigger());
+      rightTriggerPress.set(OI.rightJoystick.getTrigger());
 
-    SmartDashboard.putNumber(DRIVETRAIN_LEFT_JOYSTICK_Y, leftYJoystick);
-    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, rightYJoystick);
+      SmartDashboard.putNumber(DRIVETRAIN_LEFT_JOYSTICK_Y, leftYJoystick);
+      SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, rightYJoystick);
 
-    Transform transform = getTransform();
-    leftYJoystick = transform.transform(leftYJoystick);
-    rightYJoystick = transform.transform(rightYJoystick);
+      Transform transform = getTransform();
+      leftYJoystick = transform.transform(leftYJoystick);
+      rightYJoystick = transform.transform(rightYJoystick);
 
-    if (rightTriggerPress.get() && !hasFound) {
-      CameraData cameraData = drivetrain.getCameraData();
+      if (rightTriggerPress.get() && !hasFound) {
+        CameraData cameraData = drivetrain.getCameraData();
 //      CameraData cameraData = new CameraData(
 //          SmartDashboard.getNumber(CAMERA_DATA_X, 0),
 //          SmartDashboard.getNumber(CAMERA_DATA_Y, 0),
@@ -95,107 +104,108 @@ public class Drive extends Command {
 //          SmartDashboard.getNumber(CAMERA_DATA_TIME, 0)
 //      );
 
-      if (cameraData.getNumberOfTargets() == 0) {
+        if (cameraData.getNumberOfTargets() == 0) {
+          hasFound = false;
+        } else {
+          System.out.println("Found target");
+          SmartDashboard.putString(DEBUG_CHOSEN_TARGET, cameraData.toString());
+          SmartDashboard.putString(DEBUG_JUST_BEFORE, drivetrain.getActualPosition().toString());
+          drivetrain.setStartingPosition(cameraData.getCameraPose());
+          SmartDashboard.putString(DEBUG_ACTUAL_TARGET, drivetrain.getActualPosition().toString());
+          offset = new Pose();
+
+          hasFound = true;
+        }
+      }
+
+      if (rightTriggerPress.get() && hasFound) {
+        Pose actualPathData = drivetrain.getActualPosition();
+
+        CameraData cameraData = drivetrain.getCurrentCameraData();
+
+        if (cameraData.getTime() != -1.0) {
+          Pose camera = cameraData.getCameraPose();
+
+          Pose difference = new Pose(camera.getX() - actualPathData.getX(), camera.getY() - actualPathData.getY(),
+              camera.getAngle() - actualPathData.getAngle());
+
+          offset = new Pose((offset.getX() * (1.0 - cameraFilter)) + (difference.getX() * cameraFilter),
+              (offset.getY() * (1.0 - cameraFilter)) + (difference.getY() * cameraFilter),
+              (offset.getAngle() * (1 - cameraFilter)) + (difference.getAngle() * cameraFilter));
+        }
+
+        //Get cameradata and get 90 percent of it in
+        double distance = Math
+            .max(Math.abs(actualPathData.getX()) - 0.5, SmartDashboard.getNumber(CAMERA_DATA_PROPORTIONAL_POWER, 0.2));
+
+        PathData targetPathData = new PathData(new Pose(actualPathData.getX(), SmartDashboard.getNumber(
+            CAMERA_DATA_TARGET_OFFSET, 0)));
+
+        Pose correctedPosition = new Pose();
+        if (distance <= 0.5) {
+          correctedPosition = actualPathData
+              .offset(offset.getX(), offset.getY(), offset.getAngle()); //FIXME overload to use with Pose
+        }
+
+        ErrorVector currentError = MotionController.findCurrentError(targetPathData, correctedPosition);
+
+        double centerPower = (leftYJoystick + rightYJoystick) / 2.0;
+        double steerPowerXTE = Math.abs(centerPower) * currentRobot.getKS() * currentError.getXTrack();
+
+        double steerPowerAngle = currentRobot.getKAng() * currentError.getAngle();
+
+        System.out.println(distance);
+        if (distance <= 1.5) {
+          centerPower *= distance;
+        }
+
+        double steerPower = Math.max(-1.0, Math.min(1.0, steerPowerXTE + steerPowerAngle));
+
+        centerPower = Math
+            .max(-1.0 + Math.abs(steerPower),
+                Math.min(1.0 - Math.abs(steerPower), centerPower));
+
+        leftYJoystick = centerPower - steerPower;
+        rightYJoystick = centerPower + steerPower;
+
+        motionLogger.addMotionData(
+            new CameraMotionData(
+                actualPathData,
+                targetPathData.getCenterPose(),
+                currentError,
+                new RobotPair(
+                    leftYJoystick,
+                    rightYJoystick,
+                    Timer.getFPGATimestamp()
+                ),
+                0,
+                MotionState.MOVING,
+                cameraData,
+                offset
+            ));
+
+        SmartDashboard.putString(
+            DEBUG_CAMERA_OFFSET, offset.toString());
+        SmartDashboard.putString(
+            CAMERA_DATA_ACTUAL, actualPathData.toString());
+        SmartDashboard.putString(
+            CAMERA_DATA_TARGET, targetPathData.getCenterPose().toString());
+        SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, true);
+      }
+
+      if (rightTriggerPress.isFallingEdge() && hasFound) {
+        motionLogger.writeMotionDataCSV(true);
+        SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, false);
         hasFound = false;
-      } else {
-        System.out.println("Found target");
-        SmartDashboard.putString(DEBUG_CHOSEN_TARGET, cameraData.toString());
-        SmartDashboard.putString(DEBUG_JUST_BEFORE, drivetrain.getActualPosition().toString());
-        drivetrain.setStartingPosition(cameraData.getCameraPose());
-        SmartDashboard.putString(DEBUG_ACTUAL_TARGET, drivetrain.getActualPosition().toString());
-        offset = new Pose();
-
-        hasFound = true;
-      }
-    }
-
-    if (rightTriggerPress.get() && hasFound) {
-      Pose actualPathData = drivetrain.getActualPosition();
-
-      CameraData cameraData = drivetrain.getCurrentCameraData();
-
-      if (cameraData.getTime() != -1.0) {
-        Pose camera = cameraData.getCameraPose();
-
-        Pose difference = new Pose(camera.getX() - actualPathData.getX(), camera.getY() - actualPathData.getY(),
-            camera.getAngle() - actualPathData.getAngle());
-
-        offset = new Pose((offset.getX() * (1.0 - cameraFilter)) + (difference.getX() * cameraFilter),
-            (offset.getY() * (1.0 - cameraFilter)) + (difference.getY() * cameraFilter),
-            (offset.getAngle() * (1 - cameraFilter)) + (difference.getAngle() * cameraFilter));
       }
 
-      //Get cameradata and get 90 percent of it in
-      double distance = Math
-          .max(Math.abs(actualPathData.getX()) - 0.5, SmartDashboard.getNumber(CAMERA_DATA_PROPORTIONAL_POWER, 0.2));
+      drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
 
-      PathData targetPathData = new PathData(new Pose(actualPathData.getX(), SmartDashboard.getNumber(
-          CAMERA_DATA_TARGET_OFFSET, 0)));
-
-      Pose correctedPosition = new Pose();
-      if (distance <= 0.5) {
-        correctedPosition = actualPathData
-            .offset(offset.getX(), offset.getY(), offset.getAngle()); //FIXME overload to use with Pose
+      if (OI.shiftUp.get()) {
+        drivetrain.shiftUp();
+      } else if (OI.shiftDown.get()) {
+        drivetrain.shiftDown();
       }
-
-      ErrorVector currentError = MotionController.findCurrentError(targetPathData, correctedPosition);
-
-      double centerPower = (leftYJoystick + rightYJoystick) / 2.0;
-      double steerPowerXTE = Math.abs(centerPower) * currentRobot.getKS() * currentError.getXTrack();
-
-      double steerPowerAngle = currentRobot.getKAng() * currentError.getAngle();
-
-      System.out.println(distance);
-      if (distance <= 1.5) {
-        centerPower *= distance;
-      }
-
-      double steerPower = Math.max(-1.0, Math.min(1.0, steerPowerXTE + steerPowerAngle));
-
-      centerPower = Math
-          .max(-1.0 + Math.abs(steerPower),
-              Math.min(1.0 - Math.abs(steerPower), centerPower));
-
-      leftYJoystick = centerPower - steerPower;
-      rightYJoystick = centerPower + steerPower;
-
-      motionLogger.addMotionData(
-          new CameraMotionData(
-              actualPathData,
-              targetPathData.getCenterPose(),
-              currentError,
-              new RobotPair(
-                  leftYJoystick,
-                  rightYJoystick,
-                  Timer.getFPGATimestamp()
-              ),
-              0,
-              MotionState.MOVING,
-              cameraData,
-              offset
-          ));
-
-      SmartDashboard.putString(
-          DEBUG_CAMERA_OFFSET, offset.toString());
-      SmartDashboard.putString(
-          CAMERA_DATA_ACTUAL, actualPathData.toString());
-      SmartDashboard.putString(
-          CAMERA_DATA_TARGET, targetPathData.getCenterPose().toString());
-      SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, true);
-    }
-
-    if (rightTriggerPress.isFallingEdge() && hasFound) {
-      motionLogger.writeMotionDataCSV(true);
-      SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, false);
-      hasFound = false;
-    }
-
-    drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
-
-    if (OI.shiftUp.get()) {
-      drivetrain.shiftUp();
-    } else if (OI.shiftDown.get()) {
-      drivetrain.shiftDown();
     }
   }
 
