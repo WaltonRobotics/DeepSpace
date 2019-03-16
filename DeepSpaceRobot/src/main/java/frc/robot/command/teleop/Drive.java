@@ -41,7 +41,7 @@ import org.waltonrobotics.metadata.RobotPair;
 public class Drive extends Command {
 
   private static final double cameraFilter = 0.5;
-  private MotionLogger motionLogger = new MotionLogger();
+  private CameraDataMotionLogger motionLogger = new CameraDataMotionLogger();
   private Pose offset = new Pose(0, 0, 0);
   private boolean hasFound = false;
   private EnhancedBoolean rightTriggerPress = new EnhancedBoolean();
@@ -160,7 +160,7 @@ public class Drive extends Command {
       rightYJoystick = centerPower + steerPower;
 
       motionLogger.addMotionData(
-          new MotionData(
+          new CameraMotionData(
               actualPathData,
               targetPathData.getCenterPose(),
               currentError,
@@ -170,7 +170,10 @@ public class Drive extends Command {
                   Timer.getFPGATimestamp()
               ),
               0,
-              MotionState.MOVING));
+              MotionState.MOVING,
+              cameraData,
+              offset
+          ));
 
       SmartDashboard.putString(
           DEBUG_CAMERA_OFFSET, offset.toString());
