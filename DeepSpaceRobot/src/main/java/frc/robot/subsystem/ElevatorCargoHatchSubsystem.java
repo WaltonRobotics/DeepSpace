@@ -840,8 +840,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
             climberMotor.set(climberPower);
           } else {
             climberControlMode = ClimberControlMode.MANUAL;
+            climberPower = 0;
           }
-          climberPower = 0;
           break;
         case MANUAL:
           climberMotor.set(climberPower);
