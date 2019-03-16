@@ -118,9 +118,16 @@ class Pose:
         self.angle = 0
 
 
-class HiRezDeepSpace:
+class DeepSpace:
     def __init__(self):
         # !!THERE CAN BE NO FILE LOADING IN THE __init__ FUNCTION!!
+        # On the whole it's best to avoid doing anything here.
+
+        self.init_ok = False
+
+
+    def reinit(self):
+        jevois.LINFO("(Re)initializing...")
 
         # Values used in detect
         self.HLSmin = np.array([55, 100, 180], dtype=np.uint8)
@@ -167,6 +174,8 @@ class HiRezDeepSpace:
         self.enabled = True
         self.save_frame = 0
         self.current_time = date.now()
+
+        self.init_ok = True
 
 
     def load_camera_calibration(self, w, h):
@@ -372,6 +381,10 @@ class HiRezDeepSpace:
         :param inframe:
         :return:
         """
+
+        if not self.init_ok:
+            self.reinit()
+
         # We draw onto inimg for the purpose of saving images
         inimg = inframe.get()
 
@@ -404,9 +417,13 @@ class HiRezDeepSpace:
         :param outframe:
         :return:
         """
+
+        if not self.init_ok:
+            self.reinit()
+
         inimg = inframe.get()
         outimg = outframe.get()
-        outimg.require("output", 1280, 1024, jevois.V4L2_PIX_FMT_YUYV)
+        outimg.require("output", 640, 480, jevois.V4L2_PIX_FMT_YUYV)
 
         self.draw_image(outimg, inimg)
         imgbgr = jevois.convertToCvBGR(inimg)
@@ -439,6 +456,7 @@ class HiRezDeepSpace:
         :param string:
         :return:
         """
+        jevois.LINFO("Got command: %s" % string)
         # Start sending data
         if string[0] == 'S':
             return self.start_sending(string[1:])
