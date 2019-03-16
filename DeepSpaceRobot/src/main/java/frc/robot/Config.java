@@ -106,6 +106,10 @@ public class Config {
     public static final String DEBUG_CAMERA_OFFSET = "Debug/Camera Offset";
     public static final String DEBUG_HAS_VALID_CAMERA_DATA = "Debug/Has Valid Camera Data";
 
+    public static final String ACCELEROMETER_Z = "Accelerometer Z";
+    public static final String ACCELEROMETER_Y = "Accelerometer Y";
+    public static final String ACCELEROMETER_X = "Accelerometer X";
+
     private SmartDashboardKeys() {
     }
   }

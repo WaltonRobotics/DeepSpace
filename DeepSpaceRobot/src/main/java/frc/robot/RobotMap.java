@@ -13,6 +13,7 @@ import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
 import static frc.robot.Robot.currentRobot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -69,6 +70,7 @@ public final class RobotMap {
 //  );
 
   public static final SpeedController climberMotor = new Talon(currentRobot.getClimberMotorConfig().getChanell());
+  public static final BuiltInAccelerometer accelerometer = new BuiltInAccelerometer();
 
   static {
     leftIntakeMotor.setInverted(currentRobot.getLeftIntakeMotorConfig().isInverted());

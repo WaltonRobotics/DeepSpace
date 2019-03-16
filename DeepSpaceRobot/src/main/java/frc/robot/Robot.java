@@ -9,6 +9,9 @@ package frc.robot;
 
 import static frc.robot.Config.Camera.HEIGHT;
 import static frc.robot.Config.Camera.WIDTH;
+import static frc.robot.Config.SmartDashboardKeys.ACCELEROMETER_X;
+import static frc.robot.Config.SmartDashboardKeys.ACCELEROMETER_Y;
+import static frc.robot.Config.SmartDashboardKeys.ACCELEROMETER_Z;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ACTUAL;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ANGLE;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_HEIGHT;
@@ -69,6 +72,7 @@ import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_X;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_Y;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_OFFSET;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_PERCENTAGE;
+import static frc.robot.RobotMap.accelerometer;
 import static frc.robot.RobotMap.clawRotationMotor;
 import static frc.robot.RobotMap.elevatorMotor;
 import static frc.robot.RobotMap.encoderLeft;
@@ -291,6 +295,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, encoderRight.getDistance());
     SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, String.valueOf(drivetrain.getActualPosition()));
     SmartDashboard.putString(DEBUG_CAMERA_VISION, String.valueOf(drivetrain.getCameraData()));
+    SmartDashboard.putNumber(ACCELEROMETER_X, accelerometer.getX());
+    SmartDashboard.putNumber(ACCELEROMETER_Y, accelerometer.getZ());
+    SmartDashboard.putNumber(ACCELEROMETER_Z, accelerometer.getY());
     // System.out.println("robot Periodic");
   }
 
