@@ -1,6 +1,10 @@
 package frc.robot.robotState;
 
 import static frc.robot.Robot.currentRobot;
+import static frc.robot.Robot.godSubsystem;
+import static frc.robot.RobotMap.clawRotationMotor;
+import static frc.robot.RobotMap.elevatorMotor;
+import static frc.robot.RobotMap.hatchRotationMotor;
 
 import frc.robot.Robot;
 import frc.robot.state.State;
@@ -24,6 +28,9 @@ public class TakeControl implements State {
 
   @Override
   public void initialize() {
+    currentRobot.setupController(clawRotationMotor, currentRobot.getCargoSubsystemLimits(), CargoPosition.SAFE);
+    currentRobot.setupController(elevatorMotor, currentRobot.getElevatorSubsystemLimits(), ElevatorLevel.HATCH_BASE);
+    currentRobot.setupController(hatchRotationMotor, currentRobot.getHatchSubsystemLimits(), HatchPosition.SAFE);
 
     elevator.setControlMode(ElevatorControlMode.ZEROING);
     int currentCargoAngle = cargo.getAngle();
