@@ -667,7 +667,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public void intakeCargoHold() {
-      intakePower = 0.1;
+      intakePower = 0.15;
+      intakeTimeout = currentTime;
     }
   }
 
