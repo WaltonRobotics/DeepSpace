@@ -331,7 +331,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     godSubsystem.setEnabled(true);
     drivetrain.cancelControllerMotion();
-    drivetrain.shiftUp();
+    drivetrain.shiftDown();
   }
 
   /**
