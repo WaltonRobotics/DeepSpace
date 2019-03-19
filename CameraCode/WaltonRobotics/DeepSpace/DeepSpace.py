@@ -173,6 +173,7 @@ class DeepSpace:
         # Values used with user-commands
         self.enabled = True
         self.save_frame = 0
+        self.current_frame = 0
         self.current_time = date.now()
 
         self.init_ok = True
@@ -512,10 +513,12 @@ class DeepSpace:
         :param img:
         :return:
         """
-        file_name = 'data/ImageCapture {}.png'.format(self.current_time.strftime("%Y-%m-%d-%H-%M-%S"))
+        # file_name = 'data/ImageCapture {}.png'.format(self.current_time.strftime("%Y-%m-%d-%H-%M-%S"))
+        file_name = 'data/ImageCapture {}.png'.format(self.current_frame)
         jevois.LINFO("Saving current image to {}".format(file_name))
         cv2.imwrite(file_name, img)
         self.save_frame -= 1
+        self.current_frame += 1
 
     @staticmethod
     def percent_difference(value1, value2):
