@@ -559,8 +559,8 @@ public class PracticeDeepSpace extends LimitedRobot {
     this.addLimit(CargoPosition.DEPLOY, new LimitPair(655/* 548*/, 380));
     this.addLimit(CargoPosition.CLIMB, new LimitPair(655, 349));
 
-    this.addLimit(ElevatorLevel.CARGO_BASE, new LimitPair(31418, 1230));
-    this.addLimit(ElevatorLevel.HATCH_BASE, new LimitPair(27500, 0));
+    this.addLimit(ElevatorLevel.CARGO_BASE, new LimitPair(30221, 1230));
+    this.addLimit(ElevatorLevel.HATCH_BASE, new LimitPair(26952, 0));
   }
 
   @Override
@@ -604,7 +604,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
     this.addTarget(ElevatorLevel.HATCH_BASE, new Target(1619));
     this.addTarget(ElevatorLevel.HATCH2, new Target(14465));
-    this.addTarget(ElevatorLevel.HATCH3, new Target(27147));
+    this.addTarget(ElevatorLevel.HATCH3, new Target(26952));
 
 
   }
