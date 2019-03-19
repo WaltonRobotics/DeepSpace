@@ -136,13 +136,13 @@ public class Drive extends Command {
 
         //Get cameradata and get 90 percent of it in
         double distance = Math
-            .max(Math.abs(actualPathData.getX()) - 0.5, SmartDashboard.getNumber(CAMERA_DATA_PROPORTIONAL_POWER, 0.2));
+            .max(Math.abs(actualPathData.getX()), SmartDashboard.getNumber(CAMERA_DATA_PROPORTIONAL_POWER, 0.2));
 
         PathData targetPathData = new PathData(new Pose(actualPathData.getX(), SmartDashboard.getNumber(
             CAMERA_DATA_TARGET_OFFSET, 0)));
 
-        Pose correctedPosition = new Pose();
-        if (distance <= 0.5) {
+        Pose correctedPosition = actualPathData;
+        if (distance <= 2) {
           correctedPosition = actualPathData
               .offset(offset.getX(), offset.getY(), offset.getAngle()); //FIXME overload to use with Pose
         }
