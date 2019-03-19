@@ -149,7 +149,7 @@ public class Drive extends Command {
 
         ErrorVector currentError = MotionController.findCurrentError(targetPathData, correctedPosition);
 
-        double centerPower = (leftYJoystick + rightYJoystick) / 2.0;
+        double centerPower = Math.min((leftYJoystick + rightYJoystick) / 2.0, 0.3);
         double steerPowerXTE = Math.abs(centerPower) * currentRobot.getKS() * currentError.getXTrack();
 
         double steerPowerAngle = currentRobot.getKAng() * currentError.getAngle();
