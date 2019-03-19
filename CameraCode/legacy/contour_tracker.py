@@ -11,9 +11,9 @@ try:
 except:
     has_networktable = False
 
-import pipeline
-from perspective_math import PerspectiveMath
-from solve_extrinsics import SolveExtrinsics
+from legacy import pipeline
+from legacy.perspective_math import PerspectiveMath
+from legacy.solve_extrinsics import SolveExtrinsics
 
 colors = [
     (0, 0, 255),

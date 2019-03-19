@@ -24,7 +24,8 @@ y1 = actual center
 
 """
 import math
-import contour_tracker
+from legacy import contour_tracker
+
 
 class ComputeDistance:
 
