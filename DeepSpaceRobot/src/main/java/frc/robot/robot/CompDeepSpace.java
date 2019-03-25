@@ -19,7 +19,7 @@ import org.waltonrobotics.config.TalonConfig;
 public class CompDeepSpace extends LimitedRobot {
 
   public CompDeepSpace() {
-    super("Practice DeepSpace");
+    super("Comp DeepSpace");
   }
 
   @Override
@@ -233,7 +233,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public double getKI() {
-        return 0;
+        return 0.00025;
       }
 
       @Override
@@ -468,7 +468,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public double getKI() {
-        return 0;
+        return 0.00025;
       }
 
       @Override
@@ -478,7 +478,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public double getKF() {
-        return 1.36;
+        return 0.876857143;
       }
 
       @Override
@@ -493,12 +493,12 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public int getMotionCruiseVelocity() {
-        return 800;
+        return 1600;
       }
 
       @Override
       public int getMotionAcceleration() {
-        return 4000;
+        return 8000;
       }
 
       @Override
@@ -555,9 +555,9 @@ public class CompDeepSpace extends LimitedRobot {
     this.addLimit(HatchPosition.SAFE, new LimitPair(-372, -412));
     this.addLimit(HatchPosition.DEPLOY, new LimitPair(-372, -674));
 
-    this.addLimit(CargoPosition.SAFE, new LimitPair(500, 480));
-    this.addLimit(CargoPosition.DEPLOY, new LimitPair(500, 224));
-    this.addLimit(CargoPosition.CLIMB, new LimitPair(500, 184));
+    this.addLimit(CargoPosition.SAFE, new LimitPair(520, 500));
+    this.addLimit(CargoPosition.DEPLOY, new LimitPair(520, 244));
+    this.addLimit(CargoPosition.CLIMB, new LimitPair(520, 204));
 
     this.addLimit(ElevatorLevel.CARGO_BASE, new LimitPair(29857, 1230));
     this.addLimit(ElevatorLevel.HATCH_BASE, new LimitPair(26528, 0));
@@ -580,29 +580,30 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public void defineTargets() {
-    this.addTarget(HatchPosition.DEPLOY, new Target(-668, -551));
+    this.addTarget(HatchPosition.DEPLOY, new Target(-660, -551));
     this.addTarget(HatchPosition.SAFE, new Target(-433, -371));
     this.addTarget(HatchPosition.DEFENSE, new Target(-372, -371));
     this.addTarget(HatchPosition.HATCH_START, new Target(-372, -233));
     this.addTarget(HatchPosition.CARGO_START, new Target(-143, -113));
 
-    this.addTarget(CargoPosition.DEPLOY, new Target(270, 400));
-    this.addTarget(CargoPosition.CARGO_1, new Target(333, 500));
-    this.addTarget(CargoPosition.CARGO_2, new Target(351, 500));
-    this.addTarget(CargoPosition.CARGO_3, new Target(374, 500));
-    this.addTarget(CargoPosition.SAFE, new Target(498, 500));
-    this.addTarget(CargoPosition.CLIMB, new Target(184, 500));
+    this.addTarget(CargoPosition.DEPLOY, new Target(287, 420));
+    this.addTarget(CargoPosition.CARGO_1, new Target(353, 520));
+    this.addTarget(CargoPosition.CARGO_2, new Target(371, 520));
+    this.addTarget(CargoPosition.CARGO_3, new Target(380, 520));
+    this.addTarget(CargoPosition.SAFE, new Target(511, 520));
+    this.addTarget(CargoPosition.HAB, new Target(300, 520));
+    this.addTarget(CargoPosition.CLIMB, new Target(204, 520));
 
-    this.addTarget(ElevatorLevel.CARGO_BASE, new Target(1074));
+    this.addTarget(ElevatorLevel.CARGO_BASE, new Target(2195));
 
     this.addTarget(ElevatorLevel.CARGO_ROCKET, new Target(7584));
-    this.addTarget(ElevatorLevel.CARGO_HAB, new Target(15200));
-    this.addTarget(ElevatorLevel.CARGO2, new Target(19050));
-    this.addTarget(ElevatorLevel.CARGO3, new Target(31000));
+    this.addTarget(ElevatorLevel.CARGO_HAB, new Target(15195));
+    this.addTarget(ElevatorLevel.CARGO2, new Target(18448));
+    this.addTarget(ElevatorLevel.CARGO3, new Target(29842));
     this.addTarget(ElevatorLevel.CLIMB, new Target(8403));
 
-    this.addTarget(ElevatorLevel.HATCH_BASE, new Target(1619));
-    this.addTarget(ElevatorLevel.HATCH2, new Target(14465));
+    this.addTarget(ElevatorLevel.HATCH_BASE, new Target(1458));
+    this.addTarget(ElevatorLevel.HATCH2, new Target(14241));
     this.addTarget(ElevatorLevel.HATCH3, new Target(26528));
 
 

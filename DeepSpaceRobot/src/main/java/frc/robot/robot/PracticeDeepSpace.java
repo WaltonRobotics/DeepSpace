@@ -587,6 +587,7 @@ public class PracticeDeepSpace extends LimitedRobot {
     this.addTarget(HatchPosition.CARGO_START, new Target(-320, -300));
 
     this.addTarget(CargoPosition.DEPLOY, new Target(458, 550));
+    this.addTarget(CargoPosition.HAB, new Target(461, 550));
     this.addTarget(CargoPosition.CARGO_1, new Target(468, 655));
     this.addTarget(CargoPosition.CARGO_2, new Target(486, 655));
     this.addTarget(CargoPosition.CARGO_3, new Target(509, 655));
