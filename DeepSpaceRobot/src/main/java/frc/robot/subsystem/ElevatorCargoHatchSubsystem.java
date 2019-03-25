@@ -77,6 +77,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private EnhancedBoolean currentSetStartCargoModePressed = new EnhancedBoolean();
   private EnhancedBoolean climberPreset = new EnhancedBoolean();
   private EnhancedBoolean autoClimbMode = new EnhancedBoolean();
+  private EnhancedBoolean masterOverride = new EnhancedBoolean();
 
   public ElevatorCargoHatchSubsystem() {
     elevator.initialize();
@@ -110,15 +111,15 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     return elevator;
   }
 
-  public Cargo getCargo() {
-    return cargo;
-  }
-
   // Inputs
 
   // Output
 
   // ???
+
+  public Cargo getCargo() {
+    return cargo;
+  }
 
   public Hatch getHatch() {
     return hatch;
@@ -160,6 +161,14 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     currentSetStartCargoModePressed.set(cargoStart.get());
     climberPreset.set(gamepad.getPOVButton(POV.W));
     autoClimbMode.set(OI.leftJoystick.getTrigger());
+    masterOverride.set(OI.masterOverride.get());
+
+  }
+
+  public boolean isMasterOverride() {
+    return masterOverride.get();
+  }
+
 
   public boolean autoClimbRising() {
     return autoClimbMode.isRisingEdge();
@@ -285,7 +294,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   public enum CargoPosition {
     DEPLOY,
     CARGO_3,
-    CARGO_2, CARGO_1, CARGO_START, CLIMB, SAFE
+    CARGO_2, CARGO_1, CARGO_START, CLIMB, HAB, SAFE
   }
 
   public enum HatchPosition {
@@ -506,6 +515,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     private EnhancedBoolean fastOuttake = new EnhancedBoolean();
     private EnhancedBoolean fastIntake = new EnhancedBoolean();
     private EnhancedBoolean slowIntake = new EnhancedBoolean();
+    private EnhancedBoolean cargoTurbo = new EnhancedBoolean();
 
     public Cargo() {
       cargoLogger = new Logger();
@@ -525,9 +535,14 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       slowOutake.set(outtakeCargoButtonSlow.get());
       fastOuttake.set(outtakeCargoButtonFast.get());
       slowIntake.set(hatchIntakeButton.get());
+      cargoTurbo.set(OI.cargoTurbo.get());
 
       angle = clawRotationMotor.getSelectedSensorPosition();
       cargoJoystick = -gamepad.getLeftY();
+    }
+
+    public boolean cargoTurbo() {
+      return cargoTurbo.get();
     }
 
     public void intakeCargoFast(int timeout) {
@@ -648,7 +663,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     }
 
-
     public void intakeCargoSlow(int timeout) {
       intakeTimeout = currentTime + timeout;
       intakePower = 0.5;
@@ -660,6 +674,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     public void intakeCargoHold() {
       intakePower = 0.1;
+      intakeTimeout = currentTime;
     }
   }
 

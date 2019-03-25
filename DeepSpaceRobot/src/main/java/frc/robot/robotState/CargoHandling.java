@@ -1,6 +1,7 @@
 package frc.robot.robotState;
 
 import static frc.robot.Config.Cargo.CARGO_LIMIT;
+import static frc.robot.Config.Cargo.CARGO_TURBO_LIMIT;
 
 import frc.robot.Robot;
 import frc.robot.state.State;
@@ -58,7 +59,9 @@ public class CargoHandling implements State {
 
         double cargoJoystick = cargo.getCargoJoystick();
 
-        cargoJoystick = Math.signum(cargoJoystick) * Math.min(Math.abs(cargoJoystick), CARGO_LIMIT);
+        double cargoLimit = cargo.cargoTurbo() ? CARGO_TURBO_LIMIT : CARGO_LIMIT;
+
+        cargoJoystick = Math.signum(cargoJoystick) * Math.min(Math.abs(cargoJoystick), cargoLimit);
         cargo.setRotationPower(cargoJoystick);
       } else {
         cargo.setControlMode(ClawControlMode.AUTO);
@@ -81,7 +84,7 @@ public class CargoHandling implements State {
         cargo.setCurrentTarget(CargoPosition.CARGO_3);
       } else if (elevator.isElevatorCargoShipButtonPressed()) {
         elevator.setElevatorLevel(ElevatorLevel.CARGO_HAB);
-        cargo.setCurrentTarget(CargoPosition.DEPLOY);
+        cargo.setCurrentTarget(CargoPosition.HAB);
       }
     }
 

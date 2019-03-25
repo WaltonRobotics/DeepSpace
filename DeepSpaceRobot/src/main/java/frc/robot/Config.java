@@ -122,6 +122,7 @@ public class Config {
 
     public static final double CLIMB_MAX = 1.0;
     public static final double CARGO_LIMIT = 0.3;
+    public static final double CARGO_TURBO_LIMIT = 1;
 
     private Cargo() {
 
