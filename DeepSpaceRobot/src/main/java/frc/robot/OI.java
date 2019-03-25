@@ -13,6 +13,7 @@ import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.SHIFT_DOWN_PORT;
 import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
 import static frc.robot.Gamepad.Button.LEFT_BUMPER;
+import static frc.robot.Gamepad.Button.LEFT_STICK_BUTTON;
 import static frc.robot.Gamepad.Button.LEFT_TRIGGER;
 import static frc.robot.Gamepad.Button.RIGHT_BUMPER;
 import static frc.robot.Gamepad.Button.RIGHT_TRIGGER;
@@ -80,6 +81,8 @@ public final class OI {
   public static final JoystickButton bringDown = new JoystickButton(rightJoystick, 5);
 //  public static final JoystickButton defenseModeButton = new JoystickButton(gamepad, gamepad.getPO);
 
+  public static final JoystickButton masterOverride = new JoystickButton(leftJoystick, 7);
+  public static final JoystickButton cargoTurbo = new JoystickButton(gamepad, LEFT_STICK_BUTTON.index());
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.

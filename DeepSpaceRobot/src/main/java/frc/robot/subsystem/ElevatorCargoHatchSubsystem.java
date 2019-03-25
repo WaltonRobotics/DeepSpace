@@ -53,6 +53,7 @@ import com.ctre.phoenix.motorcontrol.Faults;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Gamepad.POV;
+import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.robotState.Disabled;
 import frc.robot.state.StateBuilder;
@@ -75,7 +76,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private EnhancedBoolean currentSetStartModePressed = new EnhancedBoolean();
   private EnhancedBoolean currentSetStartCargoModePressed = new EnhancedBoolean();
   private EnhancedBoolean climberPreset = new EnhancedBoolean();
-
+  private EnhancedBoolean autoClimbMode = new EnhancedBoolean();
 
   public ElevatorCargoHatchSubsystem() {
     elevator.initialize();
@@ -158,6 +159,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     currentSetStartModePressed.set(hatchStart.get());
     currentSetStartCargoModePressed.set(cargoStart.get());
     climberPreset.set(gamepad.getPOVButton(POV.W));
+    autoClimbMode.set(OI.leftJoystick.getTrigger());
+
+  public boolean autoClimbRising() {
+    return autoClimbMode.isRisingEdge();
   }
 
   public boolean climbModeRising() {
@@ -826,8 +831,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
             climberMotor.set(climberPower);
           } else {
             climberControlMode = ClimberControlMode.MANUAL;
+            climberPower = 0;
           }
-          climberPower = 0;
           break;
         case MANUAL:
           climberMotor.set(climberPower);

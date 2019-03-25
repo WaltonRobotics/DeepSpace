@@ -48,6 +48,10 @@ public class ClimbHandling implements State {
       return new DefenseTransition();
     }
 
+    if (Robot.godSubsystem.autoClimbRising()) {
+      return new PrepareAutoClimb();
+    }
+
     boolean elevatorManual = Math.abs(elevator.getElevatorJoystick()) > 0.1;
     boolean cargoManual = Math.abs(cargo.getCargoJoystick()) > 0.1;
 
