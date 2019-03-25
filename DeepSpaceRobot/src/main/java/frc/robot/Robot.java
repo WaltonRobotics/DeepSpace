@@ -324,7 +324,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     godSubsystem.setEnabled(true);
     drivetrain.cancelControllerMotion();
-    drivetrain.shiftUp();
+    drivetrain.shiftDown();
   }
 
   /**
@@ -339,6 +339,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     godSubsystem.setEnabled(true);
     drivetrain.cancelControllerMotion();
+    drivetrain.shiftUp();
 
 //    godSubsystem.setEnabled(false);
 //    godSubsystem.getElevator().setControlMode(ElevatorControlMode.MANUAL);
