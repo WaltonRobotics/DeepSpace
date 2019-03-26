@@ -212,6 +212,8 @@ public class Drive extends Command {
         motionLogger.writeMotionDataCSV(true);
         SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, false);
         hasFound = false;
+        drivetrain.cancelControllerMotion();
+        drivetrain.clearControllerMotions();
         isAlligning = false;
       }
 
