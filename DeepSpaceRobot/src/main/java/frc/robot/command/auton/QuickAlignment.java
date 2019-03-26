@@ -15,7 +15,7 @@ public class QuickAlignment extends Command {
 
   @Override
   protected void execute() {
-    CameraData currentCameraData = SimpleMotion.getDrivetrain().getCurrentCameraData();
+    CameraData currentCameraData = Robot.drivetrain.getCurrentCameraData();
 
 //    double targetAngle = Math.atan2(currentCameraData.getCameraPose().getY(), currentCameraData.getCameraPose().getX());
 //    double startAngle = currentCameraData.getCameraPose().getAngle();
