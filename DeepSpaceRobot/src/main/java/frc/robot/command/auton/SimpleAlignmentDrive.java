@@ -11,7 +11,7 @@ public class SimpleAlignmentDrive {
   public static double safetyDistance = 0.5;
 
   public static void forwardPowerDrive(double distance) {
-    SimpleLine.lineWithDistance(distance - safetyDistance);
+    SimpleLine.lineWithDistance(distance - safetyDistance).start();
   }
 
   public static void fixAlignment(Double currentAngle) {

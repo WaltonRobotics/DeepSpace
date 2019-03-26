@@ -2,6 +2,7 @@ package frc.robot.command.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
+import frc.robot.Robot;
 import org.waltonrobotics.command.SimpleMotion;
 import org.waltonrobotics.controller.CameraData;
 
@@ -31,6 +32,7 @@ public class QuickAlignment extends Command {
 
   @Override
   protected boolean isFinished() {
+    Robot.drivetrain.cancelControllerMotion();
     return foundTarget;
   }
 }
