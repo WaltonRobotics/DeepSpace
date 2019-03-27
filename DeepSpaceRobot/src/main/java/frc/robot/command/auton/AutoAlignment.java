@@ -19,6 +19,7 @@ public class AutoAlignment extends Command {
   protected void execute() {
 
       error = Math.atan2(Robot.drivetrain.getCameraData().getCameraPose().getY(), Robot.drivetrain.getCameraData().getCameraPose().getX());
+      System.out.println("Error: " + error);
       leftPower = (error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
       rightPower = (-error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
 

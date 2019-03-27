@@ -96,7 +96,7 @@ public class Drive extends Command {
       if (rightTriggerPress.get() && drivetrain.getCameraData().getNumberOfTargets() > 0) {
         SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, true);
         hasFound = true;
-        new AutoAlignment();
+        new AutoAlignment().start();
       }
 
       if (rightTriggerPress.isFallingEdge() && hasFound) {
