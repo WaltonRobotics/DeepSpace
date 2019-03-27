@@ -22,7 +22,7 @@ public class QuickAlignment extends Command {
 
     if (currentCameraData.getNumberOfTargets() > 0) {
       if (OI.rightJoystick.getTrigger()) {
-        SimpleAlignmentDrive.fixAlignment(currentCameraData.getCameraPose().getAngle());
+       // SimpleAlignmentDrive.fixAlignment(currentCameraData.getCameraPose().getAngle());
         SimpleAlignmentDrive.forwardPowerDrive(Math.abs(currentCameraData.getCameraPose().getX()));
         foundTarget = true;
       }

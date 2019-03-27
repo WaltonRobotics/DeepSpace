@@ -7,21 +7,25 @@ import org.waltonrobotics.command.SimpleLine;
 
 public class SimpleAlignmentDrive {
 
-  public static double forwardAngle = 10;
   public static double safetyDistance = 0.5;
 
   public static void forwardPowerDrive(double distance) {
     SimpleLine.lineWithDistance(distance - safetyDistance).start();
   }
 
-  public static void fixAlignment(Double currentAngle) {
+  public static boolean inRange(double angle, double target, double tolerance) {
 
-    if (currentAngle != forwardAngle) {
-      if (currentAngle > forwardAngle) {
+    return Math.abs(target - angle) < tolerance;
+  }
+
+  public static void fixAlignment(double currentAngle, double targetAngle) {
+
+    if (inRange(currentAngle, targetAngle, 10)) {
+      if (currentAngle > targetAngle) {
         RobotMap.rightWheels.set(ControlMode.PercentOutput, .5);
         RobotMap.leftWheels.set(ControlMode.PercentOutput, -.5);
       }
-      else if (currentAngle < forwardAngle) {
+      else if (currentAngle < targetAngle) {
         RobotMap.rightWheels.set(ControlMode.PercentOutput, -.5);
         RobotMap.leftWheels.set(ControlMode.PercentOutput, .5);
       }
