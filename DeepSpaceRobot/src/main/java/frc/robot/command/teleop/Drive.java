@@ -92,10 +92,13 @@ public class Drive extends Command {
       leftYJoystick = transform.transform(leftYJoystick);
       rightYJoystick = transform.transform(rightYJoystick);
 
-      if (rightTriggerPress.get() && drivetrain.getCameraData().getNumberOfTargets() > 0) {
+      if (rightTriggerPress.get()) {
         SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, true);
+        CameraData cameraData = new CameraData();
         hasFound = true;
-        new AutoAlignment().start();
+        if(cameraData.getNumberOfTargets() > 0) {
+          new AutoAlignment().start();
+        }
       }
 
       if (rightTriggerPress.isFallingEdge() && hasFound) {
