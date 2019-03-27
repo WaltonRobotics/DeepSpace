@@ -125,7 +125,7 @@ public class Drive extends Command {
 
         CameraData cameraData = drivetrain.getCurrentCameraData();
         SimpleAlignmentDrive.fixAlignment(cameraData.getCameraPose().getAngle(), Math.atan2(cameraData.getCameraPose().getY(), cameraData.getCameraPose().getX()));
-        SimpleAlignmentDrive.forwardPowerDrive(Math.abs(cameraData.getCameraPose().getX()));
+        //SimpleAlignmentDrive.forwardPowerDrive(Math.abs(cameraData.getCameraPose().getX()));
         SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, true);
       }
 

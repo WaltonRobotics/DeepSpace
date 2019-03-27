@@ -1,6 +1,7 @@
 package frc.robot.command.auton;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import org.waltonrobotics.command.SimpleLine;
 
@@ -24,10 +25,14 @@ public class SimpleAlignmentDrive {
       if (currentAngle > targetAngle) {
         RobotMap.rightWheels.set(ControlMode.PercentOutput, .5);
         RobotMap.leftWheels.set(ControlMode.PercentOutput, -.5);
+        System.out.println("Current Angle: " + currentAngle);
+        System.out.println("target Angle: " + targetAngle);
       }
       else if (currentAngle < targetAngle) {
         RobotMap.rightWheels.set(ControlMode.PercentOutput, -.5);
         RobotMap.leftWheels.set(ControlMode.PercentOutput, .5);
+        System.out.println("Current Angle: " + currentAngle);
+        System.out.println("target Angle: " + targetAngle);
       }
     }
   }
