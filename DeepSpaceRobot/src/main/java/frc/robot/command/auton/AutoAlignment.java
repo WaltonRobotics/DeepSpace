@@ -11,6 +11,13 @@ import frc.robot.RobotMap;
 public class AutoAlignment extends Command {
   private double error, leftPower, rightPower;
 
+  @Override
+  public void initialize() {
+
+      System.out.println("it ran");
+
+  }
+
   public AutoAlignment() {
     requires(Robot.drivetrain);
   }
@@ -22,8 +29,10 @@ public class AutoAlignment extends Command {
       leftPower = (error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
       rightPower = (-error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
 
-      RobotMap.leftWheels.set(ControlMode.PercentOutput, leftPower);
-      RobotMap.rightWheels.set(ControlMode.PercentOutput, rightPower);
+      System.out.println("error " + error);
+
+//      RobotMap.leftWheels.set(ControlMode.PercentOutput, leftPower);
+//      RobotMap.rightWheels.set(ControlMode.PercentOutput, rightPower);
   }
 
   @Override
