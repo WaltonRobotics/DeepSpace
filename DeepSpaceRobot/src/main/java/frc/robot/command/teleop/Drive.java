@@ -92,7 +92,33 @@ public class Drive extends Command {
       leftYJoystick = transform.transform(leftYJoystick);
       rightYJoystick = transform.transform(rightYJoystick);
 
-      if (rightTriggerPress.get()) {
+      if (rightTriggerPress.get() && !hasFound) {
+        CameraData cameraData = drivetrain.getCameraData();
+//      CameraData cameraData = new CameraData(
+//          SmartDashboard.getNumber(CAMERA_DATA_X, 0),
+//          SmartDashboard.getNumber(CAMERA_DATA_Y, 0),
+//          SmartDashboard.getNumber(CAMERA_DATA_HEIGHT, 0),
+//          SmartDashboard.getNumber(CAMERA_DATA_ANGLE, 0),
+//          (int) SmartDashboard.getNumber(CAMERA_DATA_NUMBER_OF_TARGETS, 0),
+//          SmartDashboard.getNumber(CAMERA_DATA_TIME, 0)
+//      );
+
+        if (cameraData.getNumberOfTargets() == 0) {
+          hasFound = false;
+        } else {
+          System.out.println("Found target");
+          SmartDashboard.putString(DEBUG_CHOSEN_TARGET, cameraData.toString());
+          SmartDashboard.putString(DEBUG_JUST_BEFORE, drivetrain.getActualPosition().toString());
+          drivetrain.setStartingPosition(cameraData.getCameraPose());
+          SmartDashboard.putString(DEBUG_ACTUAL_TARGET, drivetrain.getActualPosition().toString());
+          offset = new Pose();
+
+          hasFound = true;
+        }
+      }
+
+
+      if (rightTriggerPress.get() && hasFound) {
         SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, true);
         CameraData cameraData = new CameraData();
         hasFound = true;
