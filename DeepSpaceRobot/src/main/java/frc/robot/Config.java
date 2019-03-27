@@ -10,6 +10,7 @@ public class Config {
     public static final int DEFAULT_CAMERA_COMPRESSION_QUALITY = 20; // between 0 and 100, 100 being the max, -1 being left to Shuffleboard
 
     private Camera() {
+
     }
   }
 
@@ -33,6 +34,13 @@ public class Config {
 
     private Hardware() {
     }
+  }
+
+  public static final class AutoAlineConstants {
+
+    public static final double FORWARD = 0;
+    public static final double TURNING_kP = 0.1;
+
   }
 
   public static final class SmartDashboardKeys {
