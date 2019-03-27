@@ -18,13 +18,12 @@ public class AutoAlignment extends Command {
   @Override
   protected void execute() {
 
-      error = Robot.drivetrain.getCameraData().getCameraPose().getAngle();
+      error = Math.atan2(Robot.drivetrain.getCameraData().getCameraPose().getY(), Robot.drivetrain.getCameraData().getCameraPose().getX());
       leftPower = (error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
       rightPower = (-error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
 
       RobotMap.leftWheels.set(ControlMode.PercentOutput, leftPower);
       RobotMap.rightWheels.set(ControlMode.PercentOutput, rightPower);
-      
   }
 
   @Override
