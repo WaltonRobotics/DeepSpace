@@ -82,6 +82,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Config.AutoAlineConstants;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
@@ -227,6 +228,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString(DEBUG_ACTUAL_TARGET, "No camera data");
     SmartDashboard.putString(DEBUG_CAMERA_VISION, "No Camera Data");
     SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, false);
+    SmartDashboard.putNumber("Turning kP", AutoAlineConstants.FORWARD);
+    SmartDashboard.putNumber("Forward", AutoAlineConstants.TURNING_kP);
   }
 
   private void initCamera() {
