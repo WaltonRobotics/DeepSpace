@@ -7,13 +7,8 @@
 
 package frc.robot.command.teleop;
 
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ACTUAL;
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_PROPORTIONAL_POWER;
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TARGET;
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TARGET_OFFSET;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_USES_AUTOASSIST;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_ACTUAL_TARGET;
-import static frc.robot.Config.SmartDashboardKeys.DEBUG_CAMERA_OFFSET;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_CHOSEN_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_JUST_BEFORE;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_JOYSTICK_Y;
@@ -21,7 +16,6 @@ import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_JOYSTICK_Y;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.Robot.drivetrain;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
@@ -29,15 +23,9 @@ import frc.robot.Robot;
 import frc.robot.command.auton.AutoAlignment;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.util.EnhancedBoolean;
-import org.waltonrobotics.controller.MotionController;
 import org.waltonrobotics.controller.MotionLogger;
 import org.waltonrobotics.metadata.CameraData;
-import org.waltonrobotics.metadata.ErrorVector;
-import org.waltonrobotics.metadata.MotionData;
-import org.waltonrobotics.metadata.MotionState;
-import org.waltonrobotics.metadata.PathData;
 import org.waltonrobotics.metadata.Pose;
-import org.waltonrobotics.metadata.RobotPair;
 
 public class Drive extends Command {
 
@@ -122,7 +110,7 @@ public class Drive extends Command {
 
       if (rightTriggerPress.get() && hasFound) {
         SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, true);
-        CameraData cameraData = new CameraData();
+        CameraData cameraData = drivetrain.getCameraData();
         hasFound = true;
         if(cameraData.getNumberOfTargets() > 0) {
           new AutoAlignment().start();
