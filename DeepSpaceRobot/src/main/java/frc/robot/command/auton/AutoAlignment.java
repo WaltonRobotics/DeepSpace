@@ -3,6 +3,7 @@ package frc.robot.command.auton;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -25,14 +26,19 @@ public class AutoAlignment extends Command {
   @Override
   protected void execute() {
 
-      error = Math.atan2(Robot.drivetrain.getCameraData().getCameraPose().getY(), Robot.drivetrain.getCameraData().getCameraPose().getX());
+      error = -Math.atan2(Robot.drivetrain.getCameraData().getCameraPose().getY(), Robot.drivetrain.getCameraData().getCameraPose().getX());
       leftPower = (error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
-      rightPower = (-error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
+      rightPower = (error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
+
+      //tried with rightpower negative
+
 
       System.out.println("error " + error);
 
-//      RobotMap.leftWheels.set(ControlMode.PercentOutput, leftPower);
-//      RobotMap.rightWheels.set(ControlMode.PercentOutput, rightPower);
+      SmartDashboard.putString("Error ", String.valueOf(error));
+
+      RobotMap.leftWheels.set(ControlMode.PercentOutput, leftPower);
+      RobotMap.rightWheels.set(ControlMode.PercentOutput, rightPower);
   }
 
   @Override
