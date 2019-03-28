@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import frc.robot.util.VictorPair;
@@ -76,7 +77,8 @@ public final class RobotMap {
     leftIntakeMotor.setInverted(currentRobot.getLeftIntakeMotorConfig().isInverted());
     rightIntakeMotor.setInverted(currentRobot.getRightIntakeMotorConfig().isInverted());
     climberMotor.setInverted(currentRobot.getClimberMotorConfig().isInverted());
-  }
+    }
+
 
   private RobotMap() {
   }

@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class Config {
 
   public static final class Camera {
@@ -38,8 +40,8 @@ public class Config {
 
   public static final class AutoAlineConstants {
 
-    public static final double FORWARD = 0.3;
-    public static final double TURNING_kP = 0.065;
+    public static final double FORWARD = SmartDashboard.getNumber("Forward", 0.3);
+    public static final double TURNING_kP = SmartDashboard.getNumber("Turning kP", 0.065);
 
   }
 

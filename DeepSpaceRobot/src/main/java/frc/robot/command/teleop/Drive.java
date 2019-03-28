@@ -26,16 +26,12 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.util.EnhancedBoolean;
-import org.waltonrobotics.controller.MotionLogger;
+import java.awt.image.renderable.RenderableImage;
 import org.waltonrobotics.metadata.CameraData;
-import org.waltonrobotics.metadata.Pose;
 
 public class Drive extends Command {
 
-  private static final double cameraFilter = 0.5;
   private static boolean enabled = true;
-  private MotionLogger motionLogger = new MotionLogger();
-  private Pose offset = new Pose(0, 0, 0);
   private boolean hasFound = false;
   private EnhancedBoolean rightTriggerPress = new EnhancedBoolean();
 
@@ -74,7 +70,6 @@ public class Drive extends Command {
       double leftYJoystick = getLeftYJoystick();
       double rightYJoystick = getRightYJoystick();
 
-      rightTriggerPress.set(OI.rightJoystick.getTrigger());
 
       SmartDashboard.putNumber(DRIVETRAIN_LEFT_JOYSTICK_Y, leftYJoystick);
       SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, rightYJoystick);
@@ -104,34 +99,39 @@ public class Drive extends Command {
           SmartDashboard.putString(DEBUG_JUST_BEFORE, drivetrain.getActualPosition().toString());
           drivetrain.setStartingPosition(cameraData.getCameraPose());
           SmartDashboard.putString(DEBUG_ACTUAL_TARGET, drivetrain.getActualPosition().toString());
-          offset = new Pose();
 
           hasFound = true;
         }
       }
 
+      if (OI.rightJoystick.getTriggerPressed() && hasFound) {
 
-      if (rightTriggerPress.get() && hasFound) {
-        SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, true);
         CameraData cameraData = drivetrain.getCameraData();
+
+        SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, true);
         hasFound = true;
 
         double error, leftPower, rightPower;
 
-        error = Math.atan2(Robot.drivetrain.getCameraData().getCameraPose().getY(), Robot.drivetrain.getCameraData().getCameraPose().getX());
+        error = Math.atan2(cameraData.getCameraPose().getY(), cameraData.getCameraPose().getX());
 
         leftPower = (error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
-        rightPower = (error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
+        rightPower = (-error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
 
-        SmartDashboard.putString("Error", String.valueOf(error));
-        SmartDashboard.putString("Left Motor", String.valueOf(leftPower));
-        SmartDashboard.putString("Right Motor", String.valueOf(rightPower));
+        SmartDashboard.putNumber("Error", error);
+        SmartDashboard.putNumber("Left Motor", leftPower);
+        SmartDashboard.putNumber("Right Motor", rightPower);
 
-        RobotMap.leftWheels.set(ControlMode.PercentOutput, leftPower);
-        RobotMap.rightWheels.set(ControlMode.PercentOutput, rightPower);
+        System.out.println("Error: " + error + " Left Motor: " + leftPower + " Right Motor: " + rightPower);
+
+        leftYJoystick = leftPower;
+        rightYJoystick = rightPower;
+
+//        RobotMap.leftWheels.set(ControlMode.PercentOutput, leftPower);
+//        RobotMap.rightWheels.set(ControlMode.PercentOutput, rightPower);
       }
 
-      if (rightTriggerPress.isFallingEdge() && hasFound) {
+      if (OI.rightJoystick.getTriggerReleased() && hasFound) {
         SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, false);
         hasFound = false;
       }
