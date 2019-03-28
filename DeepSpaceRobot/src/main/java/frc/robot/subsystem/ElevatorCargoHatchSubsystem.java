@@ -1,6 +1,9 @@
 package frc.robot.subsystem;
 
 
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kOff;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 import static frc.robot.Config.Elevator.ZEROING;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_ANGLE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_MODE;
@@ -50,6 +53,7 @@ import static frc.robot.RobotMap.hatchRotationMotor;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.Faults;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Gamepad.POV;
@@ -749,7 +753,14 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
           break;
       }
 
-      hatchIntake.set(intakeIsSet);
+      Value hatchMode = kOff;
+      if (intakeIsSet) {
+        hatchMode = kForward;
+      } else {
+        hatchMode = kReverse;
+      }
+
+      hatchIntake.set(hatchMode);
     }
 
     @Override
@@ -766,6 +777,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public void setIntake(boolean setOpen) {
+      System.out.println(stateMachine.getCurrentState().getClass().getSimpleName() + "\t" + setOpen);
       intakeIsSet = setOpen;
     }
 

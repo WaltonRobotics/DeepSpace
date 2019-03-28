@@ -14,6 +14,7 @@ import static frc.robot.Robot.currentRobot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -51,7 +52,7 @@ public final class RobotMap {
 
 
   public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
-  public static final Solenoid hatchIntake = new Solenoid(HATCH_INTAKE_CHANNEL);
+  public static final DoubleSolenoid hatchIntake = new DoubleSolenoid(HATCH_INTAKE_CHANNEL, HATCH_INTAKE_CHANNEL + 1);
   public static final DigitalInput elevatorLowerLimit = new DigitalInput(ELEVATOR_LOWER_LIMIT_CHANNEL);
 
   public static final Encoder encoderRight = new Encoder(
