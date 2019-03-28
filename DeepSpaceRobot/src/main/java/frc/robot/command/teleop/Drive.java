@@ -9,6 +9,9 @@ package frc.robot.command.teleop;
 
 
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_USES_AUTOASSIST;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_ACTUAL_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_CHOSEN_TARGET;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_JUST_BEFORE;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_JOYSTICK_Y;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_JOYSTICK_Y;
 import static frc.robot.Robot.currentRobot;
@@ -21,10 +24,10 @@ import frc.robot.Config;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.command.auton.AutoAlignment;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.util.EnhancedBoolean;
 import org.waltonrobotics.controller.MotionLogger;
+import org.waltonrobotics.metadata.CameraData;
 import org.waltonrobotics.metadata.Pose;
 
 public class Drive extends Command {
@@ -80,9 +83,37 @@ public class Drive extends Command {
       leftYJoystick = transform.transform(leftYJoystick);
       rightYJoystick = transform.transform(rightYJoystick);
 
+      System.out.println(drivetrain.getCameraData().getCameraPose().toString());
 
-      if (rightTriggerPress.get() && drivetrain.getCameraData().getNumberOfTargets() > 0) {
+      if (rightTriggerPress.get() && !hasFound) {
+        CameraData cameraData = drivetrain.getCameraData();
+//      CameraData cameraData = new CameraData(
+//          SmartDashboard.getNumber(CAMERA_DATA_X, 0),
+//          SmartDashboard.getNumber(CAMERA_DATA_Y, 0),
+//          SmartDashboard.getNumber(CAMERA_DATA_HEIGHT, 0),
+//          SmartDashboard.getNumber(CAMERA_DATA_ANGLE, 0),
+//          (int) SmartDashboard.getNumber(CAMERA_DATA_NUMBER_OF_TARGETS, 0),
+//          SmartDashboard.getNumber(CAMERA_DATA_TIME, 0)
+//      );
+
+        if (cameraData.getNumberOfTargets() == 0) {
+          hasFound = false;
+        } else {
+          System.out.println("Found target");
+          SmartDashboard.putString(DEBUG_CHOSEN_TARGET, cameraData.toString());
+          SmartDashboard.putString(DEBUG_JUST_BEFORE, drivetrain.getActualPosition().toString());
+          drivetrain.setStartingPosition(cameraData.getCameraPose());
+          SmartDashboard.putString(DEBUG_ACTUAL_TARGET, drivetrain.getActualPosition().toString());
+          offset = new Pose();
+
+          hasFound = true;
+        }
+      }
+
+
+      if (rightTriggerPress.get() && hasFound) {
         SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, true);
+        CameraData cameraData = drivetrain.getCameraData();
         hasFound = true;
 
         double error, leftPower, rightPower;
