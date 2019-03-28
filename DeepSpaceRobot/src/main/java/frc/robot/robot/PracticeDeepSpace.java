@@ -1,9 +1,19 @@
 package frc.robot.robot;
 
 
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KACC;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KANGLE;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KK;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KL;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KS;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_KV;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_ACCELERATION;
+import static frc.robot.Config.SmartDashboardKeys.CONSTANTS_MAX_VELOCITY;
+
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.config.BaseMotorControllerConfig;
 import frc.robot.config.LimitPair;
@@ -114,42 +124,42 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public double getMaxAcceleration() {
-    return 0;
+    return SmartDashboard.getNumber(CONSTANTS_MAX_ACCELERATION, 3);
   }
 
   @Override
   public double getMaxVelocity() {
-    return 0;
+    return SmartDashboard.getNumber(CONSTANTS_MAX_VELOCITY, 1.5);
   }
 
   @Override
   public double getKV() {
-    return 1.0;
+    return SmartDashboard.getNumber(CONSTANTS_KV, 0.25);
   }
 
   @Override
   public double getKAcc() {
-    return 0;
+    return SmartDashboard.getNumber(CONSTANTS_KACC, 0.03);
   }
 
   @Override
   public double getKK() {
-    return 0;
+    return SmartDashboard.getNumber(CONSTANTS_KK, 0.01);
   }
 
   @Override
   public double getKS() {
-    return 2.0;
+    return SmartDashboard.getNumber(CONSTANTS_KS, 0.5);
   }
 
   @Override
   public double getKAng() {
-    return 1.0;
+    return SmartDashboard.getNumber(CONSTANTS_KANGLE, 1.05);
   }
 
   @Override
   public double getKL() {
-    return 0;
+    return SmartDashboard.getNumber(CONSTANTS_KL, .5);
   }
 
 
