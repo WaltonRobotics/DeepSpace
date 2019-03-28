@@ -92,6 +92,8 @@ public class Drive extends Command {
       leftYJoystick = transform.transform(leftYJoystick);
       rightYJoystick = transform.transform(rightYJoystick);
 
+      System.out.println(drivetrain.getCameraData().getCameraPose().toString());
+
       if (rightTriggerPress.get() && !hasFound) {
         CameraData cameraData = drivetrain.getCameraData();
 //      CameraData cameraData = new CameraData(
