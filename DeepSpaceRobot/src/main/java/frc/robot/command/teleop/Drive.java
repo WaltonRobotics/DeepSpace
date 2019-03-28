@@ -104,7 +104,7 @@ public class Drive extends Command {
         }
       }
 
-      if (OI.rightJoystick.getTriggerPressed() && hasFound) {
+      if (rightTriggerPress.get() && hasFound) {
 
         CameraData cameraData = drivetrain.getCameraData();
 
@@ -131,7 +131,7 @@ public class Drive extends Command {
 //        RobotMap.rightWheels.set(ControlMode.PercentOutput, rightPower);
       }
 
-      if (OI.rightJoystick.getTriggerReleased() && hasFound) {
+      if (rightTriggerPress.isFallingEdge() && hasFound) {
         SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, false);
         hasFound = false;
       }
