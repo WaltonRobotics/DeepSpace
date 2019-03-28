@@ -7,8 +7,8 @@
 
 package frc.robot;
 
-import static frc.robot.Config.Camera.HEIGHT;
 import static frc.robot.Config.Camera.WIDTH;
+import static frc.robot.Config.Point.frontRocketR;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ACTUAL;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ANGLE;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_HEIGHT;
@@ -75,8 +75,6 @@ import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.hatchRotationMotor;
 
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -97,6 +95,9 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import frc.robot.util.RobotBuilder;
+import org.waltonrobotics.command.SimpleLine;
+import org.waltonrobotics.command.SimpleSpline;
+import org.waltonrobotics.metadata.Pose;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -227,11 +228,17 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString(DEBUG_ACTUAL_TARGET, "No camera data");
     SmartDashboard.putString(DEBUG_CAMERA_VISION, "No Camera Data");
     SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, false);
+
+    SmartDashboard.putNumber("x", 2.3622);
+    SmartDashboard.putNumber("y", 3.56);
+    SmartDashboard.putNumber("angle", 45);
+
+    SmartDashboard.putNumber("Distance", 2);
   }
 
   private void initCamera() {
-    UsbCamera usbCamera = CameraServer.getInstance().startAutomaticCapture();
-    usbCamera.setResolution(WIDTH, HEIGHT);
+//    UsbCamera usbCamera = CameraServer.getInstance().startAutomaticCapture();
+//    usbCamera.setResolution(WIDTH, HEIGHT);
 //    usbCamera.setFPS(FPS);
 
 //    new Thread(() -> {
@@ -322,9 +329,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    godSubsystem.setEnabled(true);
+    godSubsystem.setEnabled(false);
     drivetrain.cancelControllerMotion();
-    drivetrain.shiftDown();
+    drivetrain.shiftUp();
+    Pose pose = new Pose(0, 0, StrictMath.toRadians(90));
+    double distance = SmartDashboard.getNumber("Distance", 2);
+
+    SimpleLine.lineWithDistance(false, distance).start();
+    SimpleSpline.pathFromPosesWithAngle(false, pose.offset(distance), frontRocketR).start();
+    drivetrain.startControllerMotion(pose);
+//    SimpleLine.lineWithDistance(SmartDashboard.getNumber("Distance", 2)).start();
+//    SimpleSpline.pathFromPosesWithAngle(false, Pose.ZERO, new Pose(1.5, 2)).start();
   }
 
   /**
