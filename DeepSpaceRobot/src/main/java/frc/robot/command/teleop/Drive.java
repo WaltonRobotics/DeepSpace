@@ -7,37 +7,25 @@
 
 package frc.robot.command.teleop;
 
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ACTUAL;
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_PROPORTIONAL_POWER;
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TARGET;
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_TARGET_OFFSET;
+
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_USES_AUTOASSIST;
-import static frc.robot.Config.SmartDashboardKeys.DEBUG_ACTUAL_TARGET;
-import static frc.robot.Config.SmartDashboardKeys.DEBUG_CAMERA_OFFSET;
-import static frc.robot.Config.SmartDashboardKeys.DEBUG_CHOSEN_TARGET;
-import static frc.robot.Config.SmartDashboardKeys.DEBUG_JUST_BEFORE;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_JOYSTICK_Y;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_JOYSTICK_Y;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.Robot.drivetrain;
 
-import edu.wpi.first.wpilibj.Timer;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Config;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 import frc.robot.command.auton.AutoAlignment;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.util.EnhancedBoolean;
-import org.waltonrobotics.controller.MotionController;
 import org.waltonrobotics.controller.MotionLogger;
-import org.waltonrobotics.metadata.CameraData;
-import org.waltonrobotics.metadata.ErrorVector;
-import org.waltonrobotics.metadata.MotionData;
-import org.waltonrobotics.metadata.MotionState;
-import org.waltonrobotics.metadata.PathData;
 import org.waltonrobotics.metadata.Pose;
-import org.waltonrobotics.metadata.RobotPair;
 
 public class Drive extends Command {
 
@@ -96,7 +84,20 @@ public class Drive extends Command {
       if (rightTriggerPress.get() && drivetrain.getCameraData().getNumberOfTargets() > 0) {
         SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, true);
         hasFound = true;
-        new AutoAlignment().start();
+
+        double error, leftPower, rightPower;
+
+        error = Math.atan2(Robot.drivetrain.getCameraData().getCameraPose().getY(), Robot.drivetrain.getCameraData().getCameraPose().getX());
+
+        leftPower = (error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
+        rightPower = (error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
+
+        SmartDashboard.putString("Error", String.valueOf(error));
+        SmartDashboard.putString("Left Motor", String.valueOf(leftPower));
+        SmartDashboard.putString("Right Motor", String.valueOf(rightPower));
+
+        RobotMap.leftWheels.set(ControlMode.PercentOutput, leftPower);
+        RobotMap.rightWheels.set(ControlMode.PercentOutput, rightPower);
       }
 
       if (rightTriggerPress.isFallingEdge() && hasFound) {
