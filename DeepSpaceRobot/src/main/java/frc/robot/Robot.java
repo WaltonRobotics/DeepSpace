@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import static frc.robot.Config.Camera.HEIGHT;
 import static frc.robot.Config.Camera.WIDTH;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ACTUAL;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ANGLE;
