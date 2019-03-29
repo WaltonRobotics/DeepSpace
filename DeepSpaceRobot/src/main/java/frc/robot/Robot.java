@@ -228,13 +228,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString(DEBUG_ACTUAL_TARGET, "No camera data");
     SmartDashboard.putString(DEBUG_CAMERA_VISION, "No Camera Data");
     SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, false);
-    SmartDashboard.putNumber("Turning kP", AutoAlineConstants.FORWARD);
-    SmartDashboard.putNumber("Forward", AutoAlineConstants.TURNING_kP);
+    SmartDashboard.putNumber("Turning kP", AutoAlineConstants.TURNING_kP);
+    SmartDashboard.putNumber("Forward", AutoAlineConstants.FORWARD);
   }
 
   private void initCamera() {
-    UsbCamera usbCamera = CameraServer.getInstance().startAutomaticCapture();
-    usbCamera.setResolution(WIDTH, HEIGHT);
+   // UsbCamera usbCamera = CameraServer.getInstance().startAutomaticCapture();
+    //usbCamera.setResolution(WIDTH, HEIGHT);
 //    usbCamera.setFPS(FPS);
 
 //    new Thread(() -> {

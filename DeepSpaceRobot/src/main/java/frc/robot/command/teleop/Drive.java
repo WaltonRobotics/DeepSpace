@@ -70,6 +70,7 @@ public class Drive extends Command {
       double leftYJoystick = getLeftYJoystick();
       double rightYJoystick = getRightYJoystick();
 
+      rightTriggerPress.set(OI.rightJoystick.getTrigger());
 
       SmartDashboard.putNumber(DRIVETRAIN_LEFT_JOYSTICK_Y, leftYJoystick);
       SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, rightYJoystick);
@@ -115,6 +116,8 @@ public class Drive extends Command {
 
         error = Math.atan2(cameraData.getCameraPose().getY(), cameraData.getCameraPose().getX());
 
+        //error = -cameraData.getCameraPose().getDegrees();
+
         leftPower = (error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
         rightPower = (-error * Config.AutoAlineConstants.TURNING_kP) + Config.AutoAlineConstants.FORWARD;
 
@@ -128,7 +131,7 @@ public class Drive extends Command {
         rightYJoystick = rightPower;
 
 //        RobotMap.leftWheels.set(ControlMode.PercentOutput, leftPower);
-//        RobotMap.rightWheels.set(ControlMode.PercentOutput, rightPower);
+  //      RobotMap.rightWheels.set(ControlMode.PercentOutput, rightPower);
       }
 
       if (rightTriggerPress.isFallingEdge() && hasFound) {

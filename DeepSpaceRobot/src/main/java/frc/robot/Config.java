@@ -40,8 +40,8 @@ public class Config {
 
   public static final class AutoAlineConstants {
 
-    public static final double FORWARD = SmartDashboard.getNumber("Forward", 0.3);
-    public static final double TURNING_kP = SmartDashboard.getNumber("Turning kP", 0.065);
+    public static final double FORWARD = SmartDashboard.getNumber("Forward", 0.4);
+    public static final double TURNING_kP = SmartDashboard.getNumber("Turning kP", 0.22);  //0.0317
 
   }
 
