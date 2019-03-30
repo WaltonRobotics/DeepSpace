@@ -44,6 +44,7 @@ import static frc.robot.OI.intakeCargoButton;
 import static frc.robot.OI.outtakeCargoButtonFast;
 import static frc.robot.OI.outtakeCargoButtonSlow;
 import static frc.robot.Robot.currentRobot;
+import static frc.robot.Robot.drivetrain;
 import static frc.robot.RobotMap.clawRotationMotor;
 import static frc.robot.RobotMap.climberMotor;
 import static frc.robot.RobotMap.elevatorLowerLimit;
@@ -76,12 +77,21 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private EnhancedBoolean currentCargoModePressed = new EnhancedBoolean();
   private EnhancedBoolean currentHatchModePressed = new EnhancedBoolean();
   private boolean isEnabled = false;
+  private EnhancedBoolean isAutonomousEnabled = new EnhancedBoolean();
   private StateBuilder stateMachine;
   private EnhancedBoolean currentSetStartModePressed = new EnhancedBoolean();
   private EnhancedBoolean currentSetStartCargoModePressed = new EnhancedBoolean();
   private EnhancedBoolean climberPreset = new EnhancedBoolean();
   private EnhancedBoolean autoClimbMode = new EnhancedBoolean();
   private EnhancedBoolean masterOverride = new EnhancedBoolean();
+
+  public boolean isAutonomousEnabled() {
+    return isAutonomousEnabled.get();
+  }
+
+  public void setAutonomousEnabled(boolean autonomousEnabled) {
+    isAutonomousEnabled.set(autonomousEnabled);
+  }
 
   public ElevatorCargoHatchSubsystem() {
     elevator.initialize();
@@ -249,6 +259,11 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     hatchRotationMotor.getFaults(faults);
     SmartDashboard.putBoolean(MOTORS_HATCH_ForwardSoftLimit, faults.ForwardSoftLimit);
     SmartDashboard.putBoolean(MOTORS_HATCH_ReverseSoftLimit, faults.ReverseSoftLimit);
+
+    if (isAutonomousEnabled.isFallingEdge()){
+      drivetrain.clearControllerMotions();
+      drivetrain.cancelControllerMotion();
+    }
   }
 
   @Override

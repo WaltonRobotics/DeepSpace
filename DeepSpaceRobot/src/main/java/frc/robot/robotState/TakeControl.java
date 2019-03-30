@@ -71,6 +71,9 @@ public class TakeControl implements State {
       if (Robot.godSubsystem.getCurrentTime() >= timeout) {
 //        if ()
 
+        if (Robot.godSubsystem.isAutonomousEnabled()){
+        }
+
         HatchPosition hatchPosition = Robot.godSubsystem.findHatchClosestPosition(hatch.getAngle());
         if (hatchPosition == HatchPosition.HATCH_START) {
           return new CompStartHatch();
