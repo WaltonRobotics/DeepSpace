@@ -16,7 +16,6 @@ public class VictorPair {
     this.CANId1 = CANId1;
     this.victorSPX2 = new VictorSPX(CANId2);
     this.CANId2 = CANId2;
-    victorSPX2.follow(victorSPX1);
   }
 
   public VictorSPX getVictorSPX1() {
@@ -28,7 +27,7 @@ public class VictorPair {
   }
 
   public void set(ControlMode controlMode, double percentage) {
-    victorSPX2.follow(victorSPX1);
+    victorSPX2.set(controlMode, percentage);
     victorSPX1.set(controlMode, percentage);
   }
 
