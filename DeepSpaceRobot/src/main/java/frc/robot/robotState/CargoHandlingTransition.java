@@ -22,6 +22,8 @@ public class CargoHandlingTransition implements State {
     Robot.godSubsystem.getElevator().setControlMode(ElevatorControlMode.AUTO);
     Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.CARGO_BASE);
     Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.CARGO_BASE);
+
+    Robot.godSubsystem.getHatch().setIntake(false);
   }
 
   @Override

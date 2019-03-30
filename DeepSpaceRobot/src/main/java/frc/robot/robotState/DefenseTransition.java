@@ -24,6 +24,8 @@ public class DefenseTransition implements State {
     Robot.godSubsystem.getElevator().setControlMode(ElevatorControlMode.AUTO);
     Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH_BASE);
     Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.HATCH_BASE);
+
+    Robot.godSubsystem.getHatch().setIntake(false);
   }
 
   @Override
