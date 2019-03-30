@@ -75,6 +75,8 @@ import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.hatchRotationMotor;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -307,6 +309,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    godSubsystem.setAutonomousEnabled(false);
     godSubsystem.setEnabled(false);
     drivetrain.cancelControllerMotion();
     drivetrain.getMotionLogger().writeMotionDataCSV(true);
@@ -329,15 +332,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    godSubsystem.setEnabled(false);
+//    godSubsystem.setEnabled(false);
+    godSubsystem.setEnabled(true);
+    godSubsystem.setAutonomousEnabled(true);
     drivetrain.cancelControllerMotion();
     drivetrain.shiftUp();
-    Pose pose = new Pose(0, 0, StrictMath.toRadians(90));
-    double distance = SmartDashboard.getNumber("Distance", 2);
 
-    SimpleLine.lineWithDistance(false, distance).start();
-    SimpleSpline.pathFromPosesWithAngle(false, pose.offset(distance), frontRocketR).start();
-    drivetrain.startControllerMotion(pose);
+
+//    Pose pose = new Pose(0, 0, StrictMath.toRadians(90));
+//    double distance = SmartDashboard.getNumber("Distance", 2);
+//    SimpleSpline.pathFromPosesWithAngle(false, pose, pose.offset(distance), frontRocketR).start();
+//    drivetrain.startControllerMotion(pose);
 //    SimpleLine.lineWithDistance(SmartDashboard.getNumber("Distance", 2)).start();
 //    SimpleSpline.pathFromPosesWithAngle(false, Pose.ZERO, new Pose(1.5, 2)).start();
   }
@@ -352,6 +357,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    godSubsystem.setAutonomousEnabled(false);
     godSubsystem.setEnabled(true);
     drivetrain.cancelControllerMotion();
     drivetrain.shiftUp();
