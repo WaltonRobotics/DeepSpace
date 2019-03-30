@@ -229,9 +229,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString(DEBUG_CAMERA_VISION, "No Camera Data");
     SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, false);
 
-    SmartDashboard.putNumber("x", 2.3622);
-    SmartDashboard.putNumber("y", 3.56);
-    SmartDashboard.putNumber("angle", 45);
+    SmartDashboard.putNumber("x", 2.65);
+    SmartDashboard.putNumber("y", 3.6);
+    SmartDashboard.putNumber("angle", 60);
 
     SmartDashboard.putNumber("Distance", 2);
   }
