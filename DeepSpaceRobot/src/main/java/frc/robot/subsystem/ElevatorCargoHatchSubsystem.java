@@ -85,14 +85,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   private EnhancedBoolean autoClimbMode = new EnhancedBoolean();
   private EnhancedBoolean masterOverride = new EnhancedBoolean();
 
-  public boolean isAutonomousEnabled() {
-    return isAutonomousEnabled.get();
-  }
-
-  public void setAutonomousEnabled(boolean autonomousEnabled) {
-    isAutonomousEnabled.set(autonomousEnabled);
-  }
-
   public ElevatorCargoHatchSubsystem() {
     elevator.initialize();
     cargo.initialize();
@@ -103,6 +95,14 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     // Set soft targets on
     // Configure elevator encoder
 
+  }
+
+  public boolean isAutonomousEnabled() {
+    return isAutonomousEnabled.get();
+  }
+
+  public void setAutonomousEnabled(boolean autonomousEnabled) {
+    isAutonomousEnabled.set(autonomousEnabled);
   }
 
   public Climber getClimber() {
@@ -260,7 +260,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     SmartDashboard.putBoolean(MOTORS_HATCH_ForwardSoftLimit, faults.ForwardSoftLimit);
     SmartDashboard.putBoolean(MOTORS_HATCH_ReverseSoftLimit, faults.ReverseSoftLimit);
 
-    if (isAutonomousEnabled.isFallingEdge()){
+    if (isAutonomousEnabled.isFallingEdge()) {
       drivetrain.clearControllerMotions();
       drivetrain.cancelControllerMotion();
     }

@@ -8,7 +8,9 @@
 package frc.robot;
 
 import static frc.robot.Config.Camera.WIDTH;
+import static frc.robot.Config.Point.backup;
 import static frc.robot.Config.Point.frontRocketR;
+import static frc.robot.Config.Point.hatchIntakeR;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ACTUAL;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ANGLE;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_HEIGHT;
@@ -42,6 +44,15 @@ import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_MOTOR_PERCENT_
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_ENCODER;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_JOYSTICK_Y;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT;
+import static frc.robot.Config.SmartDashboardKeys.MOTION_BACKUP_ANGLE;
+import static frc.robot.Config.SmartDashboardKeys.MOTION_BACKUP_X;
+import static frc.robot.Config.SmartDashboardKeys.MOTION_BACKUP_Y;
+import static frc.robot.Config.SmartDashboardKeys.MOTION_FRONT_ROCKET_ANGLE;
+import static frc.robot.Config.SmartDashboardKeys.MOTION_FRONT_ROCKET_X;
+import static frc.robot.Config.SmartDashboardKeys.MOTION_FRONT_ROCKET_Y;
+import static frc.robot.Config.SmartDashboardKeys.MOTION_HATCH_PICKUP_ANGLE;
+import static frc.robot.Config.SmartDashboardKeys.MOTION_HATCH_PICKUP_X;
+import static frc.robot.Config.SmartDashboardKeys.MOTION_HATCH_PICKUP_Y;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_ANGLE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_MODE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_POWER;
@@ -76,7 +87,9 @@ import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.hatchRotationMotor;
 
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -97,7 +110,6 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import frc.robot.util.RobotBuilder;
-import org.waltonrobotics.command.SimpleLine;
 import org.waltonrobotics.command.SimpleSpline;
 import org.waltonrobotics.metadata.Pose;
 
@@ -231,16 +243,26 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString(DEBUG_CAMERA_VISION, "No Camera Data");
     SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, false);
 
-    SmartDashboard.putNumber("x", 2.65);
-    SmartDashboard.putNumber("y", 3.6);
-    SmartDashboard.putNumber("angle", 60);
+    SmartDashboard.putNumber(MOTION_FRONT_ROCKET_X, frontRocketR.getX());
+    SmartDashboard.putNumber(MOTION_FRONT_ROCKET_Y, frontRocketR.getY());
+    SmartDashboard.putNumber(MOTION_FRONT_ROCKET_ANGLE, frontRocketR.getDegrees());
+
+    SmartDashboard.putNumber(MOTION_BACKUP_X, backup.getX());
+    SmartDashboard.putNumber(MOTION_BACKUP_Y, backup.getY());
+    SmartDashboard.putNumber(MOTION_BACKUP_ANGLE, backup.getDegrees());
+
+    SmartDashboard.putNumber(MOTION_HATCH_PICKUP_X, hatchIntakeR.getX());
+    SmartDashboard.putNumber(MOTION_HATCH_PICKUP_Y, hatchIntakeR.getY());
+    SmartDashboard.putNumber(MOTION_HATCH_PICKUP_ANGLE, hatchIntakeR.getDegrees());
+
+    SmartDashboard.putBoolean("isBackwards", false);
 
     SmartDashboard.putNumber("Distance", 2);
   }
 
   private void initCamera() {
-//    UsbCamera usbCamera = CameraServer.getInstance().startAutomaticCapture();
-//    usbCamera.setResolution(WIDTH, HEIGHT);
+    UsbCamera usbCamera = CameraServer.getInstance().startAutomaticCapture();
+//    usbCamera.setVideoMode(PixelFormat.kYUYV, 640, 480, 30);
 //    usbCamera.setFPS(FPS);
 
 //    new Thread(() -> {
@@ -335,11 +357,30 @@ public class Robot extends TimedRobot {
 //    godSubsystem.setEnabled(false);
     godSubsystem.setEnabled(true);
     godSubsystem.setAutonomousEnabled(true);
+//    godSubsystem.setAutonomousEnabled(false);
     drivetrain.cancelControllerMotion();
+    drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
 
 
+
 //    Pose pose = new Pose(0, 0, StrictMath.toRadians(90));
+//    drivetrain.startControllerMotion(pose);
+
+//    SimpleSpline.pathFromPosesWithAngle(false, pose, pose.offset(2,2, 0)).start();
+
+//    Pose backup = new Pose(SmartDashboard.getNumber("x", 2.1), SmartDashboard.getNumber("y", 2.75),
+//        Math.toRadians(SmartDashboard.getNumber("angle", 0)));
+
+//    SimpleSpline.pathFromPosesWithAngleAndScale(true, .2 ,.2,frontRocketR,  backup).start();
+
+//    boolean isBackwards = SmartDashboard.getBoolean("isBackwards", true);
+
+//    Pose pose1 = new Pose(SmartDashboard.getNumber("x", -1), SmartDashboard.getNumber("y", -1),
+//        Math.toRadians(SmartDashboard.getNumber("angle", 90)));
+//
+//    SimpleSpline.pathFromPosesWithAngle(isBackwards, pose, pose1).start();
+
 //    double distance = SmartDashboard.getNumber("Distance", 2);
 //    SimpleSpline.pathFromPosesWithAngle(false, pose, pose.offset(distance), frontRocketR).start();
 //    drivetrain.startControllerMotion(pose);

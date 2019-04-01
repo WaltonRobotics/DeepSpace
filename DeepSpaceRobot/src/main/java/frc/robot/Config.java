@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.waltonrobotics.metadata.Pose;
 
 public class Config {
@@ -109,6 +108,19 @@ public class Config {
     public static final String DEBUG_CAMERA_OFFSET = "Debug/Camera Offset";
     public static final String DEBUG_HAS_VALID_CAMERA_DATA = "Debug/Has Valid Camera Data";
 
+    public static final String MOTION_FRONT_ROCKET_X = "Motion/Front Rocket X";
+    public static final String MOTION_FRONT_ROCKET_Y = "Motion/Front Rocket Y";
+    public static final String MOTION_FRONT_ROCKET_ANGLE = "Motion/Front Rocket Angle";
+
+    public static final String MOTION_BACKUP_X = "Motion/BackUp X";
+    public static final String MOTION_BACKUP_Y = "Motion/BackUp Y";
+    public static final String MOTION_BACKUP_ANGLE = "Motion/BackUp Angle";
+
+    public static final String MOTION_HATCH_PICKUP_X = "Motion/Hatch PickUp X";
+    public static final String MOTION_HATCH_PICKUP_Y = "Motion/Hatch PickUp Y";
+    public static final String MOTION_HATCH_PICKUP_ANGLE = "Motion/Hatch PickUp Angle";
+
+
     private SmartDashboardKeys() {
     }
   }
@@ -134,9 +146,11 @@ public class Config {
 
   public static final class Point {
 
-    public static final Pose frontRocketR = new Pose(SmartDashboard.getNumber("x", 2.65),
-        SmartDashboard.getNumber("y", 3.6), StrictMath.toRadians(SmartDashboard.getNumber("angle", 60)));
-    public static final Pose hatchIntakeR = new Pose(-2.37, -1.3462, StrictMath.toRadians(45));
+    //    public static final Pose frontRocketR = new Pose(2.82, 3.3, StrictMath.toRadians(60));
+    public static final Pose frontRocketR = new Pose(2.52, 3.15, StrictMath.toRadians(60));
+    public static final Pose backup = new Pose(2, 2, Math.toRadians(0));
+
+    public static final Pose hatchIntakeR = new Pose(2.1, -1.3462, StrictMath.toRadians(270));
 
   }
 

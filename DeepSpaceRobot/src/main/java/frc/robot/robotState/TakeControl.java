@@ -3,6 +3,7 @@ package frc.robot.robotState;
 import static frc.robot.Robot.currentRobot;
 
 import frc.robot.Robot;
+import frc.robot.robotState.auto.AutoHabitatToRocketHatchLevel3;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ActiveState;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
@@ -71,7 +72,8 @@ public class TakeControl implements State {
       if (Robot.godSubsystem.getCurrentTime() >= timeout) {
 //        if ()
 
-        if (Robot.godSubsystem.isAutonomousEnabled()){
+        if (Robot.godSubsystem.isAutonomousEnabled()) {
+          return new AutoHabitatToRocketHatchLevel3();
         }
 
         HatchPosition hatchPosition = Robot.godSubsystem.findHatchClosestPosition(hatch.getAngle());
