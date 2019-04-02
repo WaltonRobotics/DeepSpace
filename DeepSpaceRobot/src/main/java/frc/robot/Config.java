@@ -120,6 +120,8 @@ public class Config {
     public static final String MOTION_HATCH_PICKUP_Y = "Motion/Hatch PickUp Y";
     public static final String MOTION_HATCH_PICKUP_ANGLE = "Motion/Hatch PickUp Angle";
 
+    public static final String IS_RIGHT_AUTON = "Is Right Auton?";
+    public static final String USE_AUTON = "Use Auton";
 
     private SmartDashboardKeys() {
     }

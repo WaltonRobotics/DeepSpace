@@ -44,6 +44,7 @@ import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_MOTOR_PERCENT_
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_ENCODER;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_JOYSTICK_Y;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT;
+import static frc.robot.Config.SmartDashboardKeys.IS_RIGHT_AUTON;
 import static frc.robot.Config.SmartDashboardKeys.MOTION_BACKUP_ANGLE;
 import static frc.robot.Config.SmartDashboardKeys.MOTION_BACKUP_X;
 import static frc.robot.Config.SmartDashboardKeys.MOTION_BACKUP_Y;
@@ -80,6 +81,7 @@ import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_X;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_Y;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_OFFSET;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_PERCENTAGE;
+import static frc.robot.Config.SmartDashboardKeys.USE_AUTON;
 import static frc.robot.RobotMap.clawRotationMotor;
 import static frc.robot.RobotMap.elevatorMotor;
 import static frc.robot.RobotMap.encoderLeft;
@@ -87,9 +89,7 @@ import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.hatchRotationMotor;
 
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -110,8 +110,6 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import frc.robot.util.RobotBuilder;
-import org.waltonrobotics.command.SimpleSpline;
-import org.waltonrobotics.metadata.Pose;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -137,6 +135,7 @@ public class Robot extends TimedRobot {
     drivetrain = new Drivetrain();
     godSubsystem = new ElevatorCargoHatchSubsystem();
   }
+
 
   public Robot() {
     super(0.04);
@@ -255,7 +254,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(MOTION_HATCH_PICKUP_Y, hatchIntakeR.getY());
     SmartDashboard.putNumber(MOTION_HATCH_PICKUP_ANGLE, hatchIntakeR.getDegrees());
 
-    SmartDashboard.putBoolean("isBackwards", false);
+    SmartDashboard.putBoolean(IS_RIGHT_AUTON, true);
+    SmartDashboard.putBoolean(USE_AUTON, false);
 
     SmartDashboard.putNumber("Distance", 2);
   }
@@ -356,13 +356,11 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 //    godSubsystem.setEnabled(false);
     godSubsystem.setEnabled(true);
-    godSubsystem.setAutonomousEnabled(true);
+    godSubsystem.setAutonomousEnabled(SmartDashboard.getBoolean(USE_AUTON, false));
 //    godSubsystem.setAutonomousEnabled(false);
     drivetrain.cancelControllerMotion();
     drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
-
-
 
 //    Pose pose = new Pose(0, 0, StrictMath.toRadians(90));
 //    drivetrain.startControllerMotion(pose);
