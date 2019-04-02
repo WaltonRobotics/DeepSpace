@@ -147,7 +147,7 @@ public class Config {
   public static final class Point {
 
     //    public static final Pose frontRocketR = new Pose(2.82, 3.3, StrictMath.toRadians(60));
-    public static final Pose frontRocketR = new Pose(2.52, 3.15, StrictMath.toRadians(60));
+    public static final Pose frontRocketR = new Pose(2.55, 3.15, StrictMath.toRadians(60));
     public static final Pose backup = new Pose(2, 2, Math.toRadians(0));
 
     public static final Pose hatchIntakeR = new Pose(2.1, -1.3462, StrictMath.toRadians(270));
