@@ -49,6 +49,7 @@ public class Drivetrain extends AbstractDrivetrain {
     super.periodic();
 
     cameraData = drivetrain.getCurrentCameraData();
+    SmartDashboard.putNumber("Dial", drivetrain.getCameraData().getCameraPose().getY());
 
     if (cameraData.getTime() == -1.0) {
       SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, false);
