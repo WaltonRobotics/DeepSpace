@@ -241,7 +241,7 @@ public class AutoHabitatToRocketHatch extends AutonState {
 
   @Override
   public void finish() {
-    Robot.godSubsystem.getHatch().setIntake(false);
+//    Robot.godSubsystem.getHatch().setIntake(false);
     getCommandGroup().cancel();
     drivetrain.clearControllerMotions();
     drivetrain.cancelControllerMotion();
