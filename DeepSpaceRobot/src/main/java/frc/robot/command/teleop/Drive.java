@@ -7,15 +7,12 @@
 
 package frc.robot.command.teleop;
 
-import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_USES_AUTOASSIST;
-import static frc.robot.Config.SmartDashboardKeys.DEBUG_ACTUAL_TARGET;
-import static frc.robot.Config.SmartDashboardKeys.DEBUG_CHOSEN_TARGET;
-import static frc.robot.Config.SmartDashboardKeys.DEBUG_JUST_BEFORE;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_JOYSTICK_Y;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_JOYSTICK_Y;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.Robot.drivetrain;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
@@ -23,9 +20,7 @@ import frc.robot.Robot;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.util.EnhancedBoolean;
 import org.waltonrobotics.controller.MotionLogger;
-import org.waltonrobotics.metadata.CameraData;
 import org.waltonrobotics.metadata.Pose;
-import org.waltonrobotics.motion.BezierCurve;
 
 public class Drive extends Command {
 
@@ -36,6 +31,9 @@ public class Drive extends Command {
   private boolean hasFound = false;
   private boolean isAlligning = false;
   private EnhancedBoolean rightTriggerPress = new EnhancedBoolean();
+  private boolean m_LimelightHasValidTarget;
+  private double m_LimelightDriveCommand;
+  private double m_LimelightSteerCommand;
 
   public Drive() {
     // Use requires() here to declare subsystem dependencies
@@ -68,6 +66,7 @@ public class Drive extends Command {
   @Override
   protected void execute() {
     if (enabled) {
+      updateLimelightTracking();
 
       double leftYJoystick = getLeftYJoystick();
       double rightYJoystick = getRightYJoystick();
@@ -81,136 +80,15 @@ public class Drive extends Command {
       leftYJoystick = transform.transform(leftYJoystick);
       rightYJoystick = transform.transform(rightYJoystick);
 
-      if (rightTriggerPress.get() && !hasFound) {
-        CameraData cameraData = drivetrain.getCameraData();
-//      CameraData cameraData = new CameraData(
-//          SmartDashboard.getNumber(CAMERA_DATA_X, 0),
-//          SmartDashboard.getNumber(CAMERA_DATA_Y, 0),
-//          SmartDashboard.getNumber(CAMERA_DATA_HEIGHT, 0),
-//          SmartDashboard.getNumber(CAMERA_DATA_ANGLE, 0),
-//          (int) SmartDashboard.getNumber(CAMERA_DATA_NUMBER_OF_TARGETS, 0),
-//          SmartDashboard.getNumber(CAMERA_DATA_TIME, 0)
-//      );
+      if (rightTriggerPress.get()) {
 
-        if (cameraData.getNumberOfTargets() == 0) {
-          hasFound = false;
-        } else {
-          drivetrain.cancelControllerMotion();
-          drivetrain.clearControllerMotions();
-
-          System.out.println("Found target");
-          SmartDashboard.putString(DEBUG_CHOSEN_TARGET, cameraData.toString());
-          SmartDashboard.putString(DEBUG_JUST_BEFORE, drivetrain.getActualPosition().toString());
-          drivetrain.setStartingPosition(cameraData.getCameraPose());
-          SmartDashboard.putString(DEBUG_ACTUAL_TARGET, drivetrain.getActualPosition().toString());
-          offset = new Pose();
-
-          hasFound = true;
-
-          double startingProportional = 0.2;
-          double endingProportional = 0.2;
-          double dx = -cameraData.getCameraPose().getX();
-          Pose startingControlPoint = cameraData.getCameraPose().offset(dx * startingProportional);
-          Pose endingControlPoint = new Pose(-dx * endingProportional, 0);
-
-          double leftVelocity = drivetrain.getCurrentRobotState().getLeftState().getVelocity();
-          double rightVelocity = drivetrain.getCurrentRobotState().getRightState().getVelocity();
-
-          double centerVelocity = (leftVelocity + rightVelocity) / 2;
-          BezierCurve allignPath = new BezierCurve(
-              currentRobot.getMaxVelocity(),
-              currentRobot.getMaxAcceleration(),
-              centerVelocity, 0,
-              false, cameraData.getCameraPose(), startingControlPoint,
-              endingControlPoint, Pose.ZERO
-              .offset(-currentRobot.getRobotLength() / 2.0)
-          );
-
-          drivetrain.addControllerMotions(allignPath);
-
+        if (m_LimelightHasValidTarget) {
+          drivetrain.setAcadeSpeeds(m_LimelightDriveCommand, m_LimelightSteerCommand);
           isAlligning = true;
-          drivetrain.startControllerMotion(cameraData.getCameraPose());
+        } else {
+          isAlligning = false;
         }
-      }
-
-//      if (rightTriggerPress.get() && hasFound) {
-//        Pose actualPathData = drivetrain.getActualPosition();
-//
-//        CameraData cameraData = drivetrain.getCurrentCameraData();
-//
-//        if (cameraData.getTime() != -1.0) {
-//          Pose camera = cameraData.getCameraPose();
-//
-//          Pose difference = new Pose(camera.getX() - actualPathData.getX(), camera.getY() - actualPathData.getY(),
-//              camera.getAngle() - actualPathData.getAngle());
-//
-//          offset = new Pose((offset.getX() * (1.0 - cameraFilter)) + (difference.getX() * cameraFilter),
-//              (offset.getY() * (1.0 - cameraFilter)) + (difference.getY() * cameraFilter),
-//              (offset.getAngle() * (1 - cameraFilter)) + (difference.getAngle() * cameraFilter));
-//        }
-//
-//        //Get cameradata and get 90 percent of it in
-//        double distance = Math
-//            .max(Math.abs(actualPathData.getX()) - 0.5, SmartDashboard.getNumber(CAMERA_DATA_PROPORTIONAL_POWER, 0.2));
-//
-//        PathData targetPathData = new PathData(new Pose(actualPathData.getX(), SmartDashboard.getNumber(
-//            CAMERA_DATA_TARGET_OFFSET, 0)));
-//
-//        Pose correctedPosition = new Pose();
-//        if (distance <= 0.5) {
-//          correctedPosition = actualPathData
-//              .offset(offset.getX(), offset.getY(), offset.getAngle()); //FIXME overload to use with Pose
-//        }
-//
-//        ErrorVector currentError = MotionController.findCurrentError(targetPathData, correctedPosition);
-//
-//        double centerPower = (leftYJoystick + rightYJoystick) / 2.0;
-//        double steerPowerXTE = Math.abs(centerPower) * currentRobot.getKS() * currentError.getXTrack();
-//
-//        double steerPowerAngle = currentRobot.getKAng() * currentError.getAngle();
-//
-//        System.out.println(distance);
-//        if (distance <= 1.5) {
-//          centerPower *= distance;
-//        }
-//
-//        double steerPower = Math.max(-1.0, Math.min(1.0, steerPowerXTE + steerPowerAngle));
-//
-//        centerPower = Math
-//            .max(-1.0 + Math.abs(steerPower),
-//                Math.min(1.0 - Math.abs(steerPower), centerPower));
-//
-//        leftYJoystick = centerPower - steerPower;
-//        rightYJoystick = centerPower + steerPower;
-//
-//        motionLogger.addMotionData(
-//            new MotionData(
-//                actualPathData,
-//                targetPathData.getCenterPose(),
-//                currentError,
-//                new RobotPair(
-//                    leftYJoystick,
-//                    rightYJoystick,
-//                    Timer.getFPGATimestamp()
-//                ),
-//                0,
-//                MotionState.MOVING));
-//
-//        SmartDashboard.putString(
-//            DEBUG_CAMERA_OFFSET, offset.toString());
-//        SmartDashboard.putString(
-//            CAMERA_DATA_ACTUAL, actualPathData.toString());
-//        SmartDashboard.putString(
-//            CAMERA_DATA_TARGET, targetPathData.getCenterPose().toString());
-//        SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, true);
-//      }
-
-      if (rightTriggerPress.isFallingEdge() && hasFound || drivetrain.isControllerFinished()) {
-        motionLogger.writeMotionDataCSV(true);
-        SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, false);
-        hasFound = false;
-        drivetrain.cancelControllerMotion();
-        drivetrain.clearControllerMotions();
+      } else if (rightTriggerPress.isFallingEdge()) {
         isAlligning = false;
       }
 
@@ -224,6 +102,47 @@ public class Drive extends Command {
         drivetrain.shiftDown();
       }
     }
+  }
+
+
+  /**
+   * This function implements a simple method of generating driving and steering commands based on the tracking data
+   * from a limelight camera.
+   */
+  public void updateLimelightTracking() {
+    // These numbers must be tuned for your Robot!  Be careful!
+    final double STEER_K = SmartDashboard.getNumber("Steer K", 0.06); // how hard to turn toward the target
+    final double DRIVE_K = SmartDashboard.getNumber("Drive K", 0.26); // how hard to drive fwd toward the target
+    final double DESIRED_TARGET_AREA = 12.0;        // Area of the target when the robot reaches the wall
+    final double MAX_DRIVE = 0.7;                   // Simple speed limit so we don't drive too fast
+
+    double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+    double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+    double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+    double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
+
+    SmartDashboard.putNumber("Area", ta);
+    if (tv < 1.0) {
+      m_LimelightHasValidTarget = false;
+      m_LimelightDriveCommand = 0.0;
+      m_LimelightSteerCommand = 0.0;
+      return;
+    }
+
+    m_LimelightHasValidTarget = true;
+
+    // Start with proportional steering
+    double steer_cmd = tx * STEER_K;
+    m_LimelightSteerCommand = steer_cmd;
+
+    // try to drive forward until the target area reaches our desired area
+    double drive_cmd = (DESIRED_TARGET_AREA - ta) * DRIVE_K;
+
+    // don't let the robot drive too fast into the goal
+    if (drive_cmd > MAX_DRIVE) {
+      drive_cmd = MAX_DRIVE;
+    }
+    m_LimelightDriveCommand = drive_cmd;
   }
 
   // Make this return true when this Command no longer needs to run execute()
