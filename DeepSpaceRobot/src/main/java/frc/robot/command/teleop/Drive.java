@@ -111,9 +111,11 @@ public class Drive extends Command {
    */
   public void updateLimelightTracking() {
     // These numbers must be tuned for your Robot!  Be careful!
-    final double STEER_K = SmartDashboard.getNumber("Steer K", 0.06); // how hard to turn toward the target
+    final double STEER_K = SmartDashboard.getNumber("Steer K", 0.1); // how hard to turn toward the target
     final double DRIVE_K = SmartDashboard.getNumber("Drive K", 0.26); // how hard to drive fwd toward the target
-    final double DESIRED_TARGET_AREA = 12.0;        // Area of the target when the robot reaches the wall
+    final double DESIRED_TARGET_AREA = 6; //12        // Area of the target when the robot reaches the wall
+    // 5.2 for hatch intake
+
     final double MAX_DRIVE = 0.7;                   // Simple speed limit so we don't drive too fast
 
     double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
@@ -137,6 +139,9 @@ public class Drive extends Command {
 
     // try to drive forward until the target area reaches our desired area
     double drive_cmd = (DESIRED_TARGET_AREA - ta) * DRIVE_K;
+    if (ta > DESIRED_TARGET_AREA) {
+      drive_cmd = .1;
+    }
 
     // don't let the robot drive too fast into the goal
     if (drive_cmd > MAX_DRIVE) {

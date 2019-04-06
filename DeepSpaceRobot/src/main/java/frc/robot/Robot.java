@@ -90,6 +90,7 @@ import static frc.robot.RobotMap.hatchRotationMotor;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -258,12 +259,15 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean(USE_AUTON, false);
 
     SmartDashboard.putNumber("Steer K", 0.1);
-    SmartDashboard.putNumber("Drive K", 0.07);
+    SmartDashboard.putNumber("Drive K", 0.26);
 
     SmartDashboard.putNumber("Distance", 2);
   }
 
   private void initCamera() {
+//    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(0);
+
 //    UsbCamera usbCamera = CameraServer.getInstance().startAutomaticCapture();
 //    usbCamera.setVideoMode(PixelFormat.kYUYV, 640, 480, 30);
 //    usbCamera.setFPS(FPS);
@@ -326,6 +330,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, String.valueOf(drivetrain.getActualPosition()));
     SmartDashboard.putString(DEBUG_CAMERA_VISION, String.valueOf(drivetrain.getCameraData()));
     // System.out.println("robot Periodic");
+//    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(0);
   }
 
   /**
