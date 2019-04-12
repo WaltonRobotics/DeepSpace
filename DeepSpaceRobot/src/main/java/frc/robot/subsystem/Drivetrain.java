@@ -68,25 +68,32 @@ public class Drivetrain extends AbstractDrivetrain {
     xSpeed = Math.copySign(xSpeed * xSpeed, xSpeed);
     zRotation = Math.copySign(zRotation * zRotation, zRotation);
 
-    double maxInput = Math.copySign(Math.max(Math.abs(xSpeed), Math.abs(zRotation)), xSpeed);
+//    double maxInput = Math.copySign(Math.max(Math.abs(xSpeed), Math.abs(zRotation)), xSpeed);
     double leftMotorOutput;
     double rightMotorOutput;
 
-    if (xSpeed >= 0.0D) {
-      if (zRotation >= 0.0D) {
-        leftMotorOutput = maxInput;
-        rightMotorOutput = xSpeed - zRotation;
-      } else {
-        leftMotorOutput = xSpeed + zRotation;
-        rightMotorOutput = maxInput;
-      }
-    } else if (zRotation >= 0.0D) {
-      leftMotorOutput = xSpeed + zRotation;
-      rightMotorOutput = maxInput;
-    } else {
-      leftMotorOutput = maxInput;
-      rightMotorOutput = xSpeed - zRotation;
-    }
+//    if (xSpeed >= 0.0D) {
+//      if (zRotation >= 0.0D) {
+//        leftMotorOutput = maxInput;
+//        rightMotorOutput = xSpeed - zRotation;
+//      } else {
+//        leftMotorOutput = xSpeed + zRotation;
+//        rightMotorOutput = maxInput;
+//      }
+//    } else if (zRotation >= 0.0D) {
+//      leftMotorOutput = xSpeed + zRotation;
+//      rightMotorOutput = maxInput;
+//    } else {
+//      leftMotorOutput = maxInput;
+//      rightMotorOutput = xSpeed - zRotation;
+//    }
+
+    xSpeed = Math
+        .max(-1.0 + Math.abs(zRotation),
+            Math.min(1.0 - Math.abs(zRotation), xSpeed));
+
+    leftMotorOutput = xSpeed + zRotation;
+    rightMotorOutput = xSpeed - zRotation;
 
     setSpeeds(leftMotorOutput, rightMotorOutput);
   }
