@@ -100,7 +100,7 @@ public class Drive extends Command {
 
       }
 
-      if (!isAlligning) {
+      if (!isAlligning || !m_LimelightHasValidTarget) {
         drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
       }
 
