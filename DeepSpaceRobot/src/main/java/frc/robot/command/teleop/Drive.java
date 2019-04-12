@@ -137,7 +137,13 @@ public class Drive extends Command {
     m_LimelightHasValidTarget = true;
 
     // Start with proportional steering
-    double steer_cmd = tx * STEER_K;
+    double distance = 0.0006083653 * ty * ty * ty + 0.0035045626 * ty * ty + 0.0310867702 * ty + 0.6929105875;
+    SmartDashboard.putNumber("Camera Distance", distance);
+
+    distance = Math.max(.5, distance);
+    distance = Math.min(2.5, distance);
+
+    double steer_cmd = tx * STEER_K / distance;
     m_LimelightSteerCommand = steer_cmd;
 
     // try to drive forward until the target area reaches our desired area
