@@ -141,7 +141,7 @@ public class Drive extends Command {
     m_LimelightSteerCommand = steer_cmd;
 
     // try to drive forward until the target area reaches our desired area
-    double drive_cmd = (DESIRED_TARGET_AREA - ta) * DRIVE_K;
+    double drive_cmd = (getLeftYJoystick() + getRightYJoystick()) / 2.0;
     m_LimelightDriveCommand = drive_cmd;
   }
 
