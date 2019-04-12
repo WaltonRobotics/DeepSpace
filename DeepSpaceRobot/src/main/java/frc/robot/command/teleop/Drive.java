@@ -66,12 +66,20 @@ public class Drive extends Command {
   @Override
   protected void execute() {
     if (enabled) {
+      rightTriggerPress.set(OI.rightJoystick.getTrigger());
+
+//      if (rightTriggerPress.isRisingEdge()) {
+//        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(2);
+//        System.out.println("Setting pipeline to processing!");
+//      } else if (rightTriggerPress.isFallingEdge()) {
+//        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(3);
+//
+//      }
+
       updateLimelightTracking();
 
       double leftYJoystick = getLeftYJoystick();
       double rightYJoystick = getRightYJoystick();
-
-      rightTriggerPress.set(OI.rightJoystick.getTrigger());
 
       SmartDashboard.putNumber(DRIVETRAIN_LEFT_JOYSTICK_Y, leftYJoystick);
       SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, rightYJoystick);
