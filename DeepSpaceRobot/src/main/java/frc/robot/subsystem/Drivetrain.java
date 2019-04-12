@@ -64,7 +64,7 @@ public class Drivetrain extends AbstractDrivetrain {
     encoderRight.reset();
   }
 
-  public void setAcadeSpeeds(double xSpeed, double zRotation) {
+  public void setArcadeSpeeds(double xSpeed, double zRotation) {
     xSpeed = Math.copySign(xSpeed * xSpeed, xSpeed);
     zRotation = Math.copySign(zRotation * zRotation, zRotation);
 

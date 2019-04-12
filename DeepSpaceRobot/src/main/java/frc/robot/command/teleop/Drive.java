@@ -81,15 +81,15 @@ public class Drive extends Command {
       rightYJoystick = transform.transform(rightYJoystick);
 
       if (rightTriggerPress.get()) {
-
         if (m_LimelightHasValidTarget) {
-          drivetrain.setAcadeSpeeds(m_LimelightDriveCommand, m_LimelightSteerCommand);
+          drivetrain.setArcadeSpeeds(m_LimelightDriveCommand, m_LimelightSteerCommand);
           isAlligning = true;
         } else {
           isAlligning = false;
         }
       } else if (rightTriggerPress.isFallingEdge()) {
         isAlligning = false;
+
       }
 
       if (!isAlligning) {
