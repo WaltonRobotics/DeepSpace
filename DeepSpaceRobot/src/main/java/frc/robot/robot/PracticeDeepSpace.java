@@ -590,7 +590,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public void defineTargets() {
-    this.addTarget(HatchPosition.DEPLOY, new Target(-752, -650));
+    this.addTarget(HatchPosition.DEPLOY, new Target(-774, -650));
     this.addTarget(HatchPosition.SAFE, new Target(-548, -517));
     this.addTarget(HatchPosition.DEFENSE, new Target(-548, -371));
     this.addTarget(HatchPosition.HATCH_START, new Target(-486, -403));
