@@ -259,7 +259,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean(IS_RIGHT_AUTON, true);
     SmartDashboard.putBoolean(USE_AUTON, false);
 
-    SmartDashboard.putNumber("Steer K", 0.055);
+    SmartDashboard.putNumber("Steer K", 0.065);
     SmartDashboard.putNumber("Drive K", 0.26);
     SmartDashboard.putNumber("Camera Distance", -1);
 
