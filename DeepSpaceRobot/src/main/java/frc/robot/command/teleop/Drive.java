@@ -152,6 +152,22 @@ public class Drive extends Command {
 
     // try to drive forward until the target area reaches our desired area
     double driveCmd = (getLeftYJoystick() + getRightYJoystick()) / 2.0;
+//    double maxSpeed = 1;
+//    double minSpeed = .3;
+//    double driveCmd;
+//
+//    double deccelDistance = 1.5;
+//    double minDistance = .5;
+//    double alpha = (distance - minDistance) / (deccelDistance - minDistance);
+//
+//    alpha = Math.max(0, Math.min(1, alpha));
+//
+//    driveCmd = alpha * maxSpeed + (1 - alpha) * minSpeed;
+//    driveCmd = Math.min(1, driveCmd);
+//
+//    SmartDashboard.putNumber("Drive Speed", driveCmd);
+//    SmartDashboard.putNumber("Alpha", alpha);
+
     limelightDriveCommand = driveCmd;
   }
 
