@@ -33,9 +33,9 @@ public class Drive extends Command {
   private boolean hasFound = false;
   private boolean isAlligning = false;
   private EnhancedBoolean rightTriggerPress = new EnhancedBoolean();
-  private boolean m_LimelightHasValidTarget;
-  private double m_LimelightDriveCommand;
-  private double m_LimelightSteerCommand;
+  private boolean limelightHasValidTarget;
+  private double limelightDriveCommand;
+  private double limelightSteerCommand;
 
   public Drive() {
     // Use requires() here to declare subsystem dependencies
@@ -90,10 +90,10 @@ public class Drive extends Command {
       rightYJoystick = transform.transform(rightYJoystick);
 
       if (rightTriggerPress.get()) {
-        if (m_LimelightHasValidTarget) {
-          drivetrain.setArcadeSpeeds(m_LimelightDriveCommand, m_LimelightSteerCommand);
+        if (limelightHasValidTarget) {
+          drivetrain.setArcadeSpeeds(limelightDriveCommand, limelightSteerCommand);
           isAlligning = true;
-          LEDController.SetLEDAutoAlignMode();
+          LEDController.setLEDAutoAlignMode();
         } else {
           isAlligning = false;
         }
@@ -102,7 +102,7 @@ public class Drive extends Command {
 
       }
 
-      if (!isAlligning || !m_LimelightHasValidTarget) {
+      if (!isAlligning || !limelightHasValidTarget) {
         drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
       }
 
@@ -130,16 +130,14 @@ public class Drive extends Command {
     double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 
     if (tv < 1.0) {
-      m_LimelightHasValidTarget = false;
-      m_LimelightDriveCommand = 0.0;
-      m_LimelightSteerCommand = 0.0;
-      LEDController.SetLEDNoTargetFoundMode();
+      limelightHasValidTarget = false;
+      limelightDriveCommand = 0.0;
+      limelightSteerCommand = 0.0;
+      LEDController.setLEDNoTargetFoundMode();
       return;
-    }
-
-    else {
-      LEDController.SetLEDFoundTargetMode();
-      m_LimelightHasValidTarget = true;
+    } else {
+      // LEDController.setLEDFoundTargetMode();
+      limelightHasValidTarget = true;
     }
 
     // Start with proportional steering
@@ -149,12 +147,12 @@ public class Drive extends Command {
     distance = Math.max(.5, distance);
     distance = Math.min(2.5, distance);
 
-    double steer_cmd = tx * STEER_K / distance;
-    m_LimelightSteerCommand = steer_cmd;
+    double steerCmd = tx * STEER_K / distance;
+    limelightSteerCommand = steerCmd;
 
     // try to drive forward until the target area reaches our desired area
-    double drive_cmd = (getLeftYJoystick() + getRightYJoystick()) / 2.0;
-    m_LimelightDriveCommand = drive_cmd;
+    double driveCmd = (getLeftYJoystick() + getRightYJoystick()) / 2.0;
+    limelightDriveCommand = driveCmd;
   }
 
   // Make this return true when this Command no longer needs to run execute()

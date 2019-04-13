@@ -9,18 +9,18 @@ public class LEDController {
 
   }
 
-  public static void SetLEDAutoAlignMode() {
+  public static void setLEDAutoAlignMode() {
     LED1.set(true);
     LED2.set(true);
   }
 
-  public static void SetLEDFoundTargetMode() {
+  public static void setLEDFoundTargetMode() {
     LED1.set(false);
     LED2.set(true);
   }
 
-  public static void SetLEDNoTargetFoundMode() {
+  public static void setLEDNoTargetFoundMode() {
     LED1.set(false);
-    LED1.set(false);
+    LED2.set(false);
   }
 }
