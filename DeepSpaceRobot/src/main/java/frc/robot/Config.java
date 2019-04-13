@@ -5,6 +5,8 @@ import org.waltonrobotics.metadata.Pose;
 public class Config {
 
   public static final class Camera {
+    public static final int DRIVER_PIPELINE = 3;
+    public static final int AUTO_ALIGN_PIPELINE = 2;
 
     public static final int WIDTH = 320; //320
     public static final int HEIGHT = 240; //240

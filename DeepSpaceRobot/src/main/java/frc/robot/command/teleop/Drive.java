@@ -15,6 +15,7 @@ import static frc.robot.Robot.drivetrain;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Config.Camera;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.command.teleop.util.Transform;
@@ -70,9 +71,10 @@ public class Drive extends Command {
       rightTriggerPress.set(OI.rightJoystick.getTrigger());
 
       if (rightTriggerPress.isRisingEdge()) {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(2);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline")
+            .setDouble(Camera.AUTO_ALIGN_PIPELINE);
       } else if (rightTriggerPress.isFallingEdge()) {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(3);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(Camera.DRIVER_PIPELINE);
       }
 
       updateLimelightTracking();

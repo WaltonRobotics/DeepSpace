@@ -95,6 +95,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Config.Camera;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
@@ -330,7 +331,7 @@ public class Robot extends TimedRobot {
       NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
       if (limelight.containsKey("pipeline")) {
-        limelight.getEntry("pipeline").setDouble(3);
+        limelight.getEntry("pipeline").setDouble(Camera.DRIVER_PIPELINE);
         hasSetPipeline = true;
       }
     }
