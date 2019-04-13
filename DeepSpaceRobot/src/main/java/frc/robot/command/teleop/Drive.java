@@ -19,6 +19,7 @@ import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.util.EnhancedBoolean;
+import frc.robot.util.LEDController;
 import org.waltonrobotics.controller.MotionLogger;
 import org.waltonrobotics.metadata.Pose;
 
@@ -90,6 +91,7 @@ public class Drive extends Command {
         if (m_LimelightHasValidTarget) {
           drivetrain.setArcadeSpeeds(m_LimelightDriveCommand, m_LimelightSteerCommand);
           isAlligning = true;
+          LEDController.SetLEDAutoAlignMode();
         } else {
           isAlligning = false;
         }
@@ -129,10 +131,14 @@ public class Drive extends Command {
       m_LimelightHasValidTarget = false;
       m_LimelightDriveCommand = 0.0;
       m_LimelightSteerCommand = 0.0;
+      LEDController.SetLEDNoTargetFoundMode();
       return;
     }
 
-    m_LimelightHasValidTarget = true;
+    else {
+      LEDController.SetLEDFoundTargetMode();
+      m_LimelightHasValidTarget = true;
+    }
 
     // Start with proportional steering
     double distance = 0.0006083653 * ty * ty * ty + 0.0035045626 * ty * ty + 0.0310867702 * ty + 0.6929105875;

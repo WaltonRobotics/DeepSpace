@@ -9,11 +9,14 @@ package frc.robot;
 
 import static frc.robot.Config.Hardware.ELEVATOR_LOWER_LIMIT_CHANNEL;
 import static frc.robot.Config.Hardware.HATCH_INTAKE_CHANNEL;
+import static frc.robot.Config.Hardware.LED_CHANNEL5;
+import static frc.robot.Config.Hardware.LED_CHANNEL6;
 import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
 import static frc.robot.Robot.currentRobot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -54,6 +57,9 @@ public final class RobotMap {
   public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
   public static final DoubleSolenoid hatchIntake = new DoubleSolenoid(HATCH_INTAKE_CHANNEL, HATCH_INTAKE_CHANNEL + 1);
   public static final DigitalInput elevatorLowerLimit = new DigitalInput(ELEVATOR_LOWER_LIMIT_CHANNEL);
+
+  public static final DigitalOutput LED1 = new DigitalOutput(LED_CHANNEL5);
+  public static final DigitalOutput LED2 = new DigitalOutput(LED_CHANNEL6);
 
   public static final Encoder encoderRight = new Encoder(
       new DigitalInput(currentRobot.getRightEncoderConfig().getChannell1()),
