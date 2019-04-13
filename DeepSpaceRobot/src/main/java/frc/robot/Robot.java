@@ -88,6 +88,8 @@ import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.hatchRotationMotor;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -134,6 +136,7 @@ public class Robot extends TimedRobot {
     godSubsystem = new ElevatorCargoHatchSubsystem();
   }
 
+  boolean hasSetPipeline = false;
 
   public Robot() {
     super(0.04);
@@ -323,6 +326,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    if (!hasSetPipeline) {
+      NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
+
+      if (limelight.containsKey("pipeline")) {
+        limelight.getEntry("pipeline").setDouble(3);
+        hasSetPipeline = true;
+      }
+    }
+
     SmartDashboard.putNumber(DRIVETRAIN_LEFT_ENCODER, encoderLeft.getDistance());
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, encoderRight.getDistance());
     SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, String.valueOf(drivetrain.getActualPosition()));
