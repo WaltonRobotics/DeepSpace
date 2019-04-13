@@ -41,6 +41,7 @@ import static frc.robot.OI.hatchIntakeButton;
 import static frc.robot.OI.hatchModeButton;
 import static frc.robot.OI.hatchStart;
 import static frc.robot.OI.intakeCargoButton;
+import static frc.robot.OI.leftJoystick;
 import static frc.robot.OI.outtakeCargoButtonFast;
 import static frc.robot.OI.outtakeCargoButtonSlow;
 import static frc.robot.Robot.currentRobot;
@@ -732,7 +733,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void collectData() {
-      intake.set(hatchIntakeButton.get());
+      intake.set(hatchIntakeButton.get() || leftJoystick.getTrigger());
       angle = hatchRotationMotor.getSelectedSensorPosition();
     }
 
