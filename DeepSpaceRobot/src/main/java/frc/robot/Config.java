@@ -33,6 +33,9 @@ public class Config {
     public static final int HATCH_INTAKE_CHANNEL = 1;
     public static final int ELEVATOR_LOWER_LIMIT_CHANNEL = 4;
 
+    public static final int LED_CHANNEL5 = 5;
+    public static final int LED_CHANNEL6 = 6;
+    
     private Hardware() {
     }
   }
