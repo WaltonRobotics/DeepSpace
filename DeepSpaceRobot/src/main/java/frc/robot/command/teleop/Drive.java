@@ -68,13 +68,11 @@ public class Drive extends Command {
     if (enabled) {
       rightTriggerPress.set(OI.rightJoystick.getTrigger());
 
-//      if (rightTriggerPress.isRisingEdge()) {
-//        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(2);
-//        System.out.println("Setting pipeline to processing!");
-//      } else if (rightTriggerPress.isFallingEdge()) {
-//        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(3);
-//
-//      }
+      if (rightTriggerPress.isRisingEdge()) {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(2);
+      } else if (rightTriggerPress.isFallingEdge()) {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(3);
+      }
 
       updateLimelightTracking();
 
