@@ -2,7 +2,6 @@ package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +17,6 @@ public class DynamicConfig {
 //    SendableChooser
   }
 
-
   @Test
   public void shuffleboardServer() throws InterruptedException {
     DynamicC dynamicC = new DynamicC();
@@ -30,8 +28,13 @@ public class DynamicConfig {
     System.out.println(dynamicC.getTestValue());
     double testValue = SmartDashboard.getNumber("testValue", 2.0);
     System.out.println(testValue);
-    Assert.fail();
+  }
 
+  @Override
+  public String toString() {
+    return "DynamicConfig{" +
+        "table=" + table +
+        '}';
   }
 }
 

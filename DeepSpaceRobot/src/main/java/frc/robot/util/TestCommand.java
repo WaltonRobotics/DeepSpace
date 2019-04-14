@@ -23,7 +23,6 @@ public abstract class TestCommand extends Command {
     }
   }
 
-
   public void addSuccess(String testFunction) {
     testResult.add(
         new TestResult(
@@ -37,7 +36,6 @@ public abstract class TestCommand extends Command {
             null
         ));
   }
-
 
   public void addFail(String testFunction, AssertionError assertionError) {
     testResult.add(
@@ -80,5 +78,12 @@ public abstract class TestCommand extends Command {
 
   public List<TestResult> getTestResult() {
     return testResult;
+  }
+
+  @Override
+  public String toString() {
+    return "TestCommand{" +
+        "testResult=" + testResult +
+        "} " + super.toString();
   }
 }

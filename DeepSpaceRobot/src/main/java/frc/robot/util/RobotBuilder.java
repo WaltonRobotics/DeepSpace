@@ -37,4 +37,11 @@ public class RobotBuilder<T extends RobotConfig> {
     return robotConfigSendableChooser;
 
   }
+
+  @Override
+  public String toString() {
+    return "RobotBuilder{" +
+        "robotConfigs=" + robotConfigs +
+        '}';
+  }
 }

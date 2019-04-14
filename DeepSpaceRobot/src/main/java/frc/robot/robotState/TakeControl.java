@@ -5,6 +5,7 @@ import static frc.robot.Robot.currentRobot;
 import frc.robot.Robot;
 import frc.robot.robotState.auto.AutoHabitatToRocketHatch;
 import frc.robot.state.State;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ActiveState;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
@@ -18,10 +19,10 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 
 public class TakeControl implements State {
 
+  private final Elevator elevator = Robot.godSubsystem.getElevator();
+  private final Cargo cargo = Robot.godSubsystem.getCargo();
+  private final Hatch hatch = Robot.godSubsystem.getHatch();
   private double timeout;
-  private Elevator elevator = Robot.godSubsystem.getElevator();
-  private Cargo cargo = Robot.godSubsystem.getCargo();
-  private Hatch hatch = Robot.godSubsystem.getHatch();
 
   @Override
   public void initialize() {
@@ -76,7 +77,7 @@ public class TakeControl implements State {
           return new AutoHabitatToRocketHatch();
         }
 
-        HatchPosition hatchPosition = Robot.godSubsystem.findHatchClosestPosition(hatch.getAngle());
+        HatchPosition hatchPosition = ElevatorCargoHatchSubsystem.findHatchClosestPosition(hatch.getAngle());
         if (hatchPosition == HatchPosition.HATCH_START) {
           return new CompStartHatch();
         } else if (hatchPosition == HatchPosition.CARGO_START) {
@@ -88,7 +89,6 @@ public class TakeControl implements State {
             case CARGO_HANDLING:
               return new CargoHandlingTransition();
             case HATCH_HANDLING:
-              return new HatchHandlingTransition();
             case ROBOT_SWITCHED_ON:
               return new HatchHandlingTransition();
           }
@@ -111,5 +111,15 @@ public class TakeControl implements State {
   public void finish() {
     Robot.godSubsystem.getElevator().enableLowerLimit();
     Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.CARGO_BASE);
+  }
+
+  @Override
+  public String toString() {
+    return "TakeControl{" +
+        "elevator=" + elevator +
+        ", cargo=" + cargo +
+        ", hatch=" + hatch +
+        ", timeout=" + timeout +
+        '}';
   }
 }

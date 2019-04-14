@@ -11,15 +11,13 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchControlMode;
 
 public class HatchHandling implements State {
 
-
-  private Elevator elevator = Robot.godSubsystem.getElevator();
-  private Hatch hatch = Robot.godSubsystem.getHatch();
+  private final Elevator elevator = Robot.godSubsystem.getElevator();
+  private final Hatch hatch = Robot.godSubsystem.getHatch();
 
   @Override
   public void initialize() {
     Robot.godSubsystem.setCurrentActiveState(ActiveState.HATCH_HANDLING);
   }
-
 
   @Override
   public State periodic() {
@@ -65,9 +63,16 @@ public class HatchHandling implements State {
     return this;
   }
 
-
   @Override
   public void finish() {
 //    Robot.godSubsystem.getHatch().setIntake(false);
+  }
+
+  @Override
+  public String toString() {
+    return "HatchHandling{" +
+        "elevator=" + elevator +
+        ", hatch=" + hatch +
+        '}';
   }
 }

@@ -105,4 +105,12 @@ public class CargoHandling implements State {
   public void finish() {
     cargo.outtakeCargoSlow(1000);
   }
+
+  @Override
+  public String toString() {
+    return "CargoHandling{" +
+        "elevator=" + elevator +
+        ", cargo=" + cargo +
+        '}';
+  }
 }

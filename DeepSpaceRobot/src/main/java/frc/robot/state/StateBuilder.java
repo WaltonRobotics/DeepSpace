@@ -36,11 +36,18 @@ public class StateBuilder {
   }
 
   public State getCurrentState() {
-    return this.current;
+    return current;
   }
 
   public void setCurrentState(State current) {
     this.current = current;
+  }
+
+  @Override
+  public String toString() {
+    return "StateBuilder{" +
+        "current=" + current +
+        '}';
   }
 
 }

@@ -27,5 +27,12 @@ public @interface Setter {
     public Class getDefiningClass() {
       return aClass;
     }
+
+    @Override
+    public String toString() {
+      return "ValueType{" +
+          "aClass=" + aClass +
+          "} " + super.toString();
+    }
   }
 }

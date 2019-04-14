@@ -49,7 +49,7 @@ public class Drivetrain extends AbstractDrivetrain {
     super.periodic();
 
     cameraData = drivetrain.getCurrentCameraData();
-    SmartDashboard.putNumber("Dial", drivetrain.getCameraData().getCameraPose().getY());
+    SmartDashboard.putNumber("Dial", cameraData.getCameraPose().getY());
 
     if (cameraData.getTime() == -1.0) {
       SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, false);
@@ -99,12 +99,12 @@ public class Drivetrain extends AbstractDrivetrain {
   }
 
   @Override
-  public void setSpeeds(double leftYJoystick, double rightYJoystick) {
+  public void setSpeeds(double leftPower, double rightPower) {
     SmartDashboard.putNumber(DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT, leftWheels.getMotorOutputPercent());
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT, rightWheels.getMotorOutputPercent());
 
-    leftWheels.set(ControlMode.PercentOutput, leftYJoystick);
-    rightWheels.set(ControlMode.PercentOutput, rightYJoystick);
+    leftWheels.set(ControlMode.PercentOutput, leftPower);
+    rightWheels.set(ControlMode.PercentOutput, rightPower);
   }
 
   @Override
@@ -150,5 +150,12 @@ public class Drivetrain extends AbstractDrivetrain {
 
   public CameraData getCameraData() {
     return cameraData;
+  }
+
+  @Override
+  public String toString() {
+    return "Drivetrain{" +
+        "cameraData=" + cameraData +
+        "} " + super.toString();
   }
 }

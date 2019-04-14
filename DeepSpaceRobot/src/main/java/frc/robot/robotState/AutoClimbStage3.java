@@ -3,7 +3,6 @@ package frc.robot.robotState;
 import static frc.robot.Robot.drivetrain;
 import static frc.robot.Robot.godSubsystem;
 
-import frc.robot.Robot;
 import frc.robot.command.teleop.Drive;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ActiveState;
@@ -18,33 +17,31 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
  **/
 public class AutoClimbStage3 implements State {
 
-
-  private Climber climber = Robot.godSubsystem.getClimber();
-
+  private final Climber climber = godSubsystem.getClimber();
   private double timeout;
 
   @Override
   public void initialize() {
     Drive.setIsEnabled(false);
-    timeout = godSubsystem.getCurrentTime() + 1000;
+    timeout = godSubsystem.getCurrentTime() + 1000L;
 
-    climber.setTimer(3000, -1);
-    drivetrain.setSpeeds(.5, .5);
+    climber.setTimer(3000, -1.0);
+    drivetrain.setSpeeds(0.5, 0.5);
 
-    Robot.godSubsystem.setCurrentActiveState(ActiveState.DEFENSE);
-    Robot.godSubsystem.getHatch().setCurrentTarget(HatchPosition.DEFENSE);
-    Robot.godSubsystem.getHatch().setLimits(HatchPosition.SAFE);
-    Robot.godSubsystem.getCargo().setCurrentTarget(CargoPosition.SAFE);
-    Robot.godSubsystem.getCargo().setLimits(CargoPosition.SAFE);
+    godSubsystem.setCurrentActiveState(ActiveState.DEFENSE);
+    godSubsystem.getHatch().setCurrentTarget(HatchPosition.DEFENSE);
+    godSubsystem.getHatch().setLimits(HatchPosition.SAFE);
+    godSubsystem.getCargo().setCurrentTarget(CargoPosition.SAFE);
+    godSubsystem.getCargo().setLimits(CargoPosition.SAFE);
 
-    Robot.godSubsystem.getElevator().setControlMode(ElevatorControlMode.AUTO);
-    Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH_BASE);
-    Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.HATCH_BASE);
+    godSubsystem.getElevator().setControlMode(ElevatorControlMode.AUTO);
+    godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH_BASE);
+    godSubsystem.getElevator().setLimits(ElevatorLevel.HATCH_BASE);
   }
 
   @Override
   public State periodic() {
-    if (!Robot.godSubsystem.isEnabled()) {
+    if (!godSubsystem.isEnabled()) {
       return new Disabled();
     }
     if (godSubsystem.isMasterOverride()) {
@@ -62,5 +59,13 @@ public class AutoClimbStage3 implements State {
   public void finish() {
     drivetrain.setSpeeds(0, 0);
     Drive.setIsEnabled(true);
+  }
+
+  @Override
+  public String toString() {
+    return "AutoClimbStage3{" +
+        "climber=" + climber +
+        ", timeout=" + timeout +
+        '}';
   }
 }

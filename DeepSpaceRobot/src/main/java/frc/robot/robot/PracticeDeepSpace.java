@@ -41,12 +41,12 @@ public class PracticeDeepSpace extends LimitedRobot {
       }
 
       @Override
-      public int getChannell1() {
+      public int getChannel1() {
         return 0;
       }
 
       @Override
-      public int getChannell2() {
+      public int getChannel2() {
         return 1;
       }
 
@@ -66,12 +66,12 @@ public class PracticeDeepSpace extends LimitedRobot {
       }
 
       @Override
-      public int getChannell1() {
+      public int getChannel1() {
         return 2;
       }
 
       @Override
-      public int getChannell2() {
+      public int getChannel2() {
         return 3;
       }
 
@@ -86,7 +86,7 @@ public class PracticeDeepSpace extends LimitedRobot {
   public TalonConfig getLeftTalonConfig() {
     return new TalonConfig() {
       @Override
-      public int getChanell() {
+      public int getChannel() {
         return 3;
       }
 
@@ -101,7 +101,7 @@ public class PracticeDeepSpace extends LimitedRobot {
   public TalonConfig getRightTalonConfig() {
     return new TalonConfig() {
       @Override
-      public int getChanell() {
+      public int getChannel() {
         return 1;
       }
 
@@ -124,7 +124,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public double getMaxAcceleration() {
-    return SmartDashboard.getNumber(CONSTANTS_MAX_ACCELERATION, 3);
+    return SmartDashboard.getNumber(CONSTANTS_MAX_ACCELERATION, 3.0);
   }
 
   @Override
@@ -159,7 +159,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public double getKL() {
-    return SmartDashboard.getNumber(CONSTANTS_KL, .5);
+    return SmartDashboard.getNumber(CONSTANTS_KL, 0.5);
   }
 
 
@@ -483,7 +483,7 @@ public class PracticeDeepSpace extends LimitedRobot {
 
       @Override
       public double getKD() {
-        return 10;
+        return 10.0;
       }
 
       @Override
@@ -532,7 +532,7 @@ public class PracticeDeepSpace extends LimitedRobot {
   public TalonConfig getLeftIntakeMotorConfig() {
     return new TalonConfig() {
       @Override
-      public int getChanell() {
+      public int getChannel() {
         return 2;
       }
 
@@ -547,7 +547,7 @@ public class PracticeDeepSpace extends LimitedRobot {
   public TalonConfig getRightIntakeMotorConfig() {
     return new TalonConfig() {
       @Override
-      public int getChanell() {
+      public int getChannel() {
         return 3;
       }
 
@@ -577,7 +577,7 @@ public class PracticeDeepSpace extends LimitedRobot {
   public TalonConfig getClimberMotorConfig() {
     return new TalonConfig() {
       @Override
-      public int getChanell() {
+      public int getChannel() {
         return 5;
       }
 

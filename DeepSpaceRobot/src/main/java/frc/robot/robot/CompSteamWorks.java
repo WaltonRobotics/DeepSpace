@@ -21,12 +21,12 @@ public class CompSteamWorks extends LimitedRobot {
       }
 
       @Override
-      public int getChannell1() {
+      public int getChannel1() {
         return 2;
       }
 
       @Override
-      public int getChannell2() {
+      public int getChannel2() {
         return 3;
       }
 
@@ -46,12 +46,12 @@ public class CompSteamWorks extends LimitedRobot {
       }
 
       @Override
-      public int getChannell1() {
+      public int getChannel1() {
         return 0;
       }
 
       @Override
-      public int getChannell2() {
+      public int getChannel2() {
         return 1;
       }
 
@@ -66,7 +66,7 @@ public class CompSteamWorks extends LimitedRobot {
   public TalonConfig getLeftTalonConfig() {
     return new TalonConfig() {
       @Override
-      public int getChanell() {
+      public int getChannel() {
         return 0;
       }
 
@@ -81,7 +81,7 @@ public class CompSteamWorks extends LimitedRobot {
   public TalonConfig getRightTalonConfig() {
     return new TalonConfig() {
       @Override
-      public int getChanell() {
+      public int getChannel() {
         return 1;
       }
 

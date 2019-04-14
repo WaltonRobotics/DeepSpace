@@ -8,9 +8,9 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Hatch;
 
 public class CompStartHatch implements State {
 
+  private final Hatch hatch = Robot.godSubsystem.getHatch();
+  private final Cargo cargo = Robot.godSubsystem.getCargo();
   private double timeout;
-  private Hatch hatch = Robot.godSubsystem.getHatch();
-  private Cargo cargo = Robot.godSubsystem.getCargo();
 
   @Override
   public void initialize() {
@@ -37,5 +37,14 @@ public class CompStartHatch implements State {
   @Override
   public void finish() {
 
+  }
+
+  @Override
+  public String toString() {
+    return "CompStartHatch{" +
+        "hatch=" + hatch +
+        ", cargo=" + cargo +
+        ", timeout=" + timeout +
+        '}';
   }
 }

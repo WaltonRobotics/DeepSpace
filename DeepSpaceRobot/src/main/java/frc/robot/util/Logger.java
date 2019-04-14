@@ -13,11 +13,8 @@ public class Logger {
   public static final int LOG_LEVEL_ERROR = 1;
   public static final int LOG_LEVEL_WARNING = 2;
   public static final int LOG_LEVEL_INFO = 3;
-
   public static final DateFormat LOG_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
   private int logLevel;
-
   private ArrayList<OutputStream> writeables;
 
   public Logger() {
@@ -63,7 +60,7 @@ public class Logger {
       }
 
       outputString += message;
-      outputString += "\n";
+      outputString += System.lineSeparator();
 
       for (OutputStream os : writeables) {
         try {
@@ -130,6 +127,14 @@ public class Logger {
 
   public void setWriteables(ArrayList<OutputStream> writeables) {
     this.writeables = writeables;
+  }
+
+  @Override
+  public String toString() {
+    return "Logger{" +
+        "logLevel=" + logLevel +
+        ", writeables=" + writeables +
+        '}';
   }
 
 }

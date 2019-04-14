@@ -45,10 +45,11 @@ public class PrepareAutoClimb implements State {
     int elevatorHeight = godSubsystem.getElevator().getElevatorHeight();
     int cargoAngle = godSubsystem.getCargo().getAngle();
 
-    return ((Robot.currentRobot.getTarget(CargoPosition.CLIMB)
+    return (((Robot.currentRobot.getTarget(CargoPosition.CLIMB)
         .isClose(cargoAngle, 50) &&
         Robot.currentRobot.getTarget(ElevatorLevel.CLIMB)
-            .isClose(elevatorHeight, 250)) && godSubsystem.autoClimbRising()) || Robot.godSubsystem.isMasterOverride() ?
+            .isClose(elevatorHeight, 250)) && godSubsystem.autoClimbRising()) || Robot.godSubsystem.isMasterOverride())
+        ?
         new AutoClimbStage1() : this;
 
   }

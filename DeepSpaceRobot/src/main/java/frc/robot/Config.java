@@ -5,6 +5,7 @@ import org.waltonrobotics.metadata.Pose;
 public class Config {
 
   public static final class Camera {
+
     public static final int DRIVER_PIPELINE = 3;
     public static final int AUTO_ALIGN_PIPELINE = 2;
 
@@ -37,7 +38,7 @@ public class Config {
 
     public static final int LED_CHANNEL5 = 5;
     public static final int LED_CHANNEL6 = 6;
-    
+
     private Hardware() {
     }
   }
@@ -144,7 +145,7 @@ public class Config {
 
     public static final double CLIMB_MAX = 1.0;
     public static final double CARGO_LIMIT = 0.3;
-    public static final double CARGO_TURBO_LIMIT = 1;
+    public static final double CARGO_TURBO_LIMIT = 1.0;
 
     private Cargo() {
 
@@ -155,10 +156,12 @@ public class Config {
 
     //    public static final Pose frontRocketR = new Pose(2.82, 3.3, StrictMath.toRadians(60));
     public static final Pose frontRocketR = new Pose(2.55, 3.15, StrictMath.toRadians(60));
-    public static final Pose backup = new Pose(2, 2, Math.toRadians(0));
+    public static final Pose backup = new Pose(2.0, 2.0, 0.0);
 
-    public static final Pose hatchIntakeR = new Pose(2.1, -1.3462, StrictMath.toRadians(270));
+    public static final Pose hatchIntakeR = new Pose(2.1, -1.3462, StrictMath.toRadians(270.0));
 
+    private Point() {
+    }
   }
 
 }

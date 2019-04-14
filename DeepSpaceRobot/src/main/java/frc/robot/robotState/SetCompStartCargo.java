@@ -16,9 +16,9 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
  **/
 public class SetCompStartCargo implements State {
 
-  private Hatch hatch = Robot.godSubsystem.getHatch();
-  private Cargo cargo = Robot.godSubsystem.getCargo();
-  private Elevator elevator = Robot.godSubsystem.getElevator();
+  private final Hatch hatch = Robot.godSubsystem.getHatch();
+  private final Cargo cargo = Robot.godSubsystem.getCargo();
+  private final Elevator elevator = Robot.godSubsystem.getElevator();
 
   @Override
   public void initialize() {
@@ -56,5 +56,14 @@ public class SetCompStartCargo implements State {
   @Override
   public void finish() {
 
+  }
+
+  @Override
+  public String toString() {
+    return "SetCompStartCargo{" +
+        "hatch=" + hatch +
+        ", cargo=" + cargo +
+        ", elevator=" + elevator +
+        '}';
   }
 }

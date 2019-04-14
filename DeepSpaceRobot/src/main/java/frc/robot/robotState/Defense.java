@@ -50,4 +50,11 @@ public class Defense implements State {
   public void finish() {
 
   }
+
+  @Override
+  public String toString() {
+    return "Defense{" +
+        "climber=" + climber +
+        '}';
+  }
 }

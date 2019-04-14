@@ -2,12 +2,11 @@ package frc.robot.util;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 public class TestRunner extends CommandGroup {
 
-  private final List<TestCommand> testCommands = new ArrayList<>();
-
+  private final Collection<TestCommand> testCommands = new ArrayList<>();
 
   public final synchronized void addSequential(TestCommand testCommand) {
     super.addSequential(testCommand);
@@ -23,7 +22,6 @@ public class TestRunner extends CommandGroup {
     super.addParallel(testCommand, timeout);
     testCommands.add(testCommand);
   }
-
 
   public final synchronized void addParallel(TestCommand testCommand) {
     super.addParallel(testCommand);
@@ -48,5 +46,12 @@ public class TestRunner extends CommandGroup {
       }
       System.out.println();
     }
+  }
+
+  @Override
+  public String toString() {
+    return "TestRunner{" +
+        "testCommands=" + testCommands +
+        "} " + super.toString();
   }
 }

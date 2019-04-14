@@ -20,29 +20,29 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
  **/
 public class AutoClimbStage1 implements State {
 
-  private int velcotiy = 400;
+  private static final int velocity = 400;
 
   @Override
   public void initialize() {
-    Robot.godSubsystem.setCurrentActiveState(ActiveState.CARGO_HANDLING);
+    godSubsystem.setCurrentActiveState(ActiveState.CARGO_HANDLING);
 
-    Robot.godSubsystem.getHatch().setCurrentTarget(HatchPosition.SAFE);
-    Robot.godSubsystem.getCargo().setCurrentTarget(CargoPosition.CLIMB);
-    Robot.godSubsystem.getCargo().setLimits(CargoPosition.CLIMB);
+    godSubsystem.getHatch().setCurrentTarget(HatchPosition.SAFE);
+    godSubsystem.getCargo().setCurrentTarget(CargoPosition.CLIMB);
+    godSubsystem.getCargo().setLimits(CargoPosition.CLIMB);
 
-    Robot.godSubsystem.getElevator().setControlMode(ElevatorControlMode.AUTO);
-    Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.HATCH_BASE);
-    Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH_BASE);
+    godSubsystem.getElevator().setControlMode(ElevatorControlMode.AUTO);
+    godSubsystem.getElevator().setLimits(ElevatorLevel.HATCH_BASE);
+    godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH_BASE);
 
-    Robot.godSubsystem.getClimber().setClimberControlMode(ClimberControlMode.MANUAL);
-    elevatorMotor.configMotionCruiseVelocity(velcotiy);
+    godSubsystem.getClimber().setClimberControlMode(ClimberControlMode.MANUAL);
+    elevatorMotor.configMotionCruiseVelocity(velocity);
 
     Drive.setIsEnabled(false);
   }
 
   @Override
   public State periodic() {
-    if (!Robot.godSubsystem.isEnabled()) {
+    if (!godSubsystem.isEnabled()) {
       return new Disabled();
     }
 
@@ -50,15 +50,16 @@ public class AutoClimbStage1 implements State {
       return new ClimbHandlingTransition();
     }
 
-    drivetrain.setSpeeds(1, 1);
+    drivetrain.setSpeeds(1.0, 1.0);
 
-    int elevatorHeight = Robot.godSubsystem.getElevator().getElevatorHeight();
-    int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
+    int elevatorHeight = godSubsystem.getElevator().getElevatorHeight();
+    int cargoAngle = godSubsystem.getCargo().getAngle();
 
-    return ((Robot.currentRobot.getTarget(CargoPosition.CLIMB)
+    return (((Robot.currentRobot.getTarget(CargoPosition.CLIMB)
         .isClose(cargoAngle, 50) &&
         Robot.currentRobot.getTarget(ElevatorLevel.HATCH_BASE)
-            .isClose(elevatorHeight, 250)) && godSubsystem.autoClimbRising()) || Robot.godSubsystem.isMasterOverride() ?
+            .isClose(elevatorHeight, 250)) && godSubsystem.autoClimbRising()) || Robot.godSubsystem.isMasterOverride())
+        ?
         new AutoClimbStage2() : this;
   }
 

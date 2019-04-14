@@ -5,7 +5,6 @@ import static frc.robot.Config.Cargo.CLIMB_MAX;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.state.State;
-import frc.robot.subsystem.Drivetrain;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Climber;
@@ -23,8 +22,6 @@ public class ClimbHandling implements State {
   private final Elevator elevator = Robot.godSubsystem.getElevator();
   private final Cargo cargo = Robot.godSubsystem.getCargo();
   private final Climber climber = Robot.godSubsystem.getClimber();
-  private final Drivetrain drivetrain = Robot.drivetrain;
-
 
   @Override
   public void initialize() {
@@ -104,5 +101,15 @@ public class ClimbHandling implements State {
     RobotMap.clawRotationMotor
         .configPeakOutputReverse(Robot.currentRobot.getCargoSubsystemLimits().getPeakOutputReverse());
     hatch.setControlMode(HatchControlMode.AUTO);
+  }
+
+  @Override
+  public String toString() {
+    return "ClimbHandling{" +
+        "hatch=" + hatch +
+        ", elevator=" + elevator +
+        ", cargo=" + cargo +
+        ", climber=" + climber +
+        '}';
   }
 }

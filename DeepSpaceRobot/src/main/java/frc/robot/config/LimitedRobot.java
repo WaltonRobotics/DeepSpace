@@ -1,15 +1,15 @@
 package frc.robot.config;
 
+import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import java.util.HashMap;
 import org.waltonrobotics.config.RobotConfig;
 import org.waltonrobotics.config.TalonConfig;
 
 public abstract class LimitedRobot extends RobotConfig {
 
-  private final HashMap<Enum, LimitPair> limits = new HashMap<>();
-  private final HashMap<Enum, Target> targets = new HashMap<>();
+  private final HashMap<Enum, LimitPair> limits = new HashMap<>(9);
+  private final HashMap<Enum, Target> targets = new HashMap<>(21);
 
   protected LimitedRobot(String robotName) {
     super(robotName);
@@ -33,15 +33,15 @@ public abstract class LimitedRobot extends RobotConfig {
 
   public abstract void initLimits();
 
-  public void setCargoLimit(TalonSRX talonSRX, Enum cargoType) {
+  public void setCargoLimit(IMotorController talonSRX, Enum cargoType) {
     getCargoSubsystemLimits().setLimits(talonSRX, limits.get(cargoType));
   }
 
-  public void setHatchLimit(TalonSRX talonSRX, Enum cargoType) {
+  public void setHatchLimit(IMotorController talonSRX, Enum cargoType) {
     getHatchSubsystemLimits().setLimits(talonSRX, limits.get(cargoType));
   }
 
-  public void setElevatorLimit(TalonSRX talonSRX, Enum cargoType) {
+  public void setElevatorLimit(IMotorController talonSRX, Enum cargoType) {
     getElevatorSubsystemLimits().setLimits(talonSRX, limits.get(cargoType));
   }
 
@@ -97,5 +97,13 @@ public abstract class LimitedRobot extends RobotConfig {
 
     /* pass false to FORCE OFF the feature.  Otherwise the enable flags above are honored */
     motorController.overrideLimitSwitchesEnable(talonSRXConfig.isOverrideLimitSwitchesEnabled());
+  }
+
+  @Override
+  public String toString() {
+    return "LimitedRobot{" +
+        "limits=" + limits +
+        ", targets=" + targets +
+        "} " + super.toString();
   }
 }

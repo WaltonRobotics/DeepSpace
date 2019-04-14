@@ -3,7 +3,7 @@ package frc.robot.util;
 import static frc.robot.RobotMap.LED1;
 import static frc.robot.RobotMap.LED2;
 
-public class LEDController {
+public final class LEDController {
 
   private LEDController() {
 

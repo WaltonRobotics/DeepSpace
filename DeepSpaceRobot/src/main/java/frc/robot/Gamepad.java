@@ -3,7 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 
 /**
- * Wrapper class for the logitech gamepad
+ * Wrapper class for the Logitech gamepad
  */
 public class Gamepad extends Joystick {
 
@@ -96,6 +96,13 @@ public class Gamepad extends Joystick {
     public boolean getPressed(Gamepad g) {
       return g.getPOV() == angle;
     }
+
+    @Override
+    public String toString() {
+      return "POV{" +
+          "angle=" + angle +
+          "} " + super.toString();
+    }
   }
 
   /**
@@ -120,6 +127,13 @@ public class Gamepad extends Joystick {
 
     public boolean getPressed(Gamepad g) {
       return g.getRawButton(index);
+    }
+
+    @Override
+    public String toString() {
+      return "Button{" +
+          "index=" + index +
+          "} " + super.toString();
     }
   }
 }

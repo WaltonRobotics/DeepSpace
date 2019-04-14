@@ -3,7 +3,6 @@ package frc.robot.robotState;
 import static frc.robot.Robot.drivetrain;
 import static frc.robot.Robot.godSubsystem;
 
-import frc.robot.Robot;
 import frc.robot.command.teleop.Drive;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
@@ -15,25 +14,24 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClimberControlMode;
  **/
 public class AutoClimbStage2 implements State {
 
-  private Climber climber = Robot.godSubsystem.getClimber();
-
-//  private long timeout;
+  private final Climber climber = godSubsystem.getClimber();
 
   @Override
   public void initialize() {
     Drive.setIsEnabled(false);
 
-    Robot.godSubsystem.getCargo().setCurrentTarget(CargoPosition.SAFE);
-    Robot.godSubsystem.getCargo().setLimits(CargoPosition.SAFE);
+    godSubsystem.getCargo().setCurrentTarget(CargoPosition.SAFE);
+    godSubsystem.getCargo().setLimits(CargoPosition.SAFE);
 
-    climber.setTimer(3000, 1);
+    climber.setTimer(3000, 1.0);
 //    timeout = godSubsystem.getCurrentTime() + 2000;
     climber.setClimberControlMode(ClimberControlMode.TIMED);
   }
+//  private long timeout;
 
   @Override
   public State periodic() {
-    if (!Robot.godSubsystem.isEnabled()) {
+    if (!godSubsystem.isEnabled()) {
       return new Disabled();
     }
 
@@ -42,14 +40,14 @@ public class AutoClimbStage2 implements State {
     }
 
     if (climber.getClimberControlMode() == ClimberControlMode.MANUAL) {
-      climber.setClimberPower(.5);
+      climber.setClimberPower(0.5);
     }
 
-    drivetrain.setSpeeds(1, 1);
+    drivetrain.setSpeeds(1.0, 1.0);
     if (
 //        godSubsystem.getCurrentTime() > timeout ||
         godSubsystem.autoClimbRising()
-            || Robot.godSubsystem.isMasterOverride()) {
+            || godSubsystem.isMasterOverride()) {
       return new AutoClimbStage3();
     }
     return this;
@@ -59,5 +57,12 @@ public class AutoClimbStage2 implements State {
   public void finish() {
     Drive.setIsEnabled(true);
     drivetrain.setSpeeds(0, 0);
+  }
+
+  @Override
+  public String toString() {
+    return "AutoClimbStage2{" +
+        "climber=" + climber +
+        '}';
   }
 }

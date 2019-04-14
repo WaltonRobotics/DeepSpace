@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DynamicConfig extends SendableBase {
 
   private static final AtomicInteger instances = new AtomicInteger();
-  private final Map<String, Variable> methods = new HashMap<>();
+  private final Map<String, Variable> methods = new HashMap<>(2);
 
   public DynamicConfig() {
     super(false);
@@ -40,33 +40,40 @@ public class DynamicConfig extends SendableBase {
   }
 
   @Override
-  public void initSendable(SendableBuilder sendableBuilder) {
+  public void initSendable(SendableBuilder builder) {
 //    SmartDashboard.putString()
-    sendableBuilder.setSmartDashboardType("RobotPreferences");
-    sendableBuilder.getEntry(".instance").setDouble(instances.getAndIncrement());
-    sendableBuilder.getEntry(".name").setString("Cheese");
+    builder.setSmartDashboardType("RobotPreferences");
+    builder.getEntry(".instance").setDouble(instances.getAndIncrement());
+    builder.getEntry(".name").setString("Cheese");
 
 //    SendableChooser
     for (Entry<String, Variable> entry : methods.entrySet()) {
       if (entry.getValue().getValueType() == Setter.ValueType.BOOLEAN) {
-        sendableBuilder.addBooleanProperty(
+        builder.addBooleanProperty(
             entry.getKey(),
             () -> (Boolean) entry.getValue().getAccessor(),
             b -> entry.getValue().getMutator(b)
         );
       } else if (entry.getValue().getValueType() == Setter.ValueType.NUMBER) {
-        sendableBuilder.addDoubleProperty(
+        builder.addDoubleProperty(
             entry.getKey(),
             () -> (Double) entry.getValue().getAccessor(),
             b -> entry.getValue().getMutator(b)
         );
       } else {
-        sendableBuilder.addStringProperty(
+        builder.addStringProperty(
             entry.getKey(),
             () -> String.valueOf(entry.getValue().getAccessor()),
             b -> entry.getValue().getMutator(String.valueOf(b))
         );
       }
     }
+  }
+
+  @Override
+  public String toString() {
+    return "DynamicConfig{" +
+        "methods=" + methods +
+        "} " + super.toString();
   }
 }

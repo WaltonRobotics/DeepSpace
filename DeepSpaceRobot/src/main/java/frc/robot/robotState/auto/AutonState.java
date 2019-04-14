@@ -3,7 +3,6 @@ package frc.robot.robotState.auto;
 import static frc.robot.Robot.godSubsystem;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.Robot;
 import frc.robot.robotState.Disabled;
 import frc.robot.robotState.HatchHandlingTransition;
 import frc.robot.state.State;
@@ -13,13 +12,13 @@ import frc.robot.state.State;
  **/
 public abstract class AutonState implements State {
 
-  private CommandGroup commandGroup = new CommandGroup();
+  private final CommandGroup commandGroup = new CommandGroup();
 
   @Override
   public final void initialize() {
     setSubsystemLimits();
     setMotionPath();
-    getCommandGroup().start();
+    commandGroup.start();
   }
 
   public abstract void setSubsystemLimits();
@@ -28,7 +27,7 @@ public abstract class AutonState implements State {
 
   @Override
   public final State periodic() {
-    if (!Robot.godSubsystem.isEnabled()) {
+    if (!godSubsystem.isEnabled()) {
       return new Disabled();
     }
 
@@ -43,5 +42,12 @@ public abstract class AutonState implements State {
 
   public CommandGroup getCommandGroup() {
     return commandGroup;
+  }
+
+  @Override
+  public String toString() {
+    return "AutonState{" +
+        "commandGroup=" + commandGroup +
+        '}';
   }
 }
