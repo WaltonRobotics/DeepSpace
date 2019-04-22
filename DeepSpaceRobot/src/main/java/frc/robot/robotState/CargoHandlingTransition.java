@@ -33,6 +33,10 @@ public class CargoHandlingTransition implements State {
       return new Disabled();
     }
 
+    if(Robot.godSubsystem.isMasterOverride()){
+      return new CargoHandling();
+    }
+
     int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
     int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
 

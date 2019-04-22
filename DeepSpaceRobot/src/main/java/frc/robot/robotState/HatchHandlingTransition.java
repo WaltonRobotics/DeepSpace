@@ -32,6 +32,11 @@ public class HatchHandlingTransition implements State {
     if (!Robot.godSubsystem.isEnabled()) {
       return new Disabled();
     }
+
+    if (Robot.godSubsystem.isMasterOverride()) {
+      return new HatchHandling();
+    }
+
     int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
     int hatchAngle = Robot.godSubsystem.getHatch().getAngle();
 

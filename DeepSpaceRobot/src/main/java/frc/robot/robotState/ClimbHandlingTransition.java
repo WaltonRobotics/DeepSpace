@@ -40,6 +40,10 @@ public class ClimbHandlingTransition implements State {
       return new Disabled();
     }
 
+    if(Robot.godSubsystem.isMasterOverride()){
+      return new ClimbHandling();
+    }
+
     int elevatorHeight = Robot.godSubsystem.getElevator().getElevatorHeight();
     int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
 
