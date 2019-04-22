@@ -6,6 +6,11 @@ public class Config {
 
   public static final class Camera {
 
+    public static final int DRIVER_PIPELINE = 3;
+    public static final int AUTO_ALIGN_PIPELINE = 2;
+    public static final int LED_OFF = 1;
+    public static final int LED_ON = 3;
+
     public static final int WIDTH = 320; //320
     public static final int HEIGHT = 240; //240
     public static final int FPS = 30;
@@ -32,6 +37,9 @@ public class Config {
     public static final int SHIFTER_CHANNEL = 0;
     public static final int HATCH_INTAKE_CHANNEL = 1;
     public static final int ELEVATOR_LOWER_LIMIT_CHANNEL = 4;
+
+    public static final int LED_CHANNEL5 = 5;
+    public static final int LED_CHANNEL6 = 6;
 
     private Hardware() {
     }
@@ -139,7 +147,7 @@ public class Config {
 
     public static final double CLIMB_MAX = 1.0;
     public static final double CARGO_LIMIT = 0.3;
-    public static final double CARGO_TURBO_LIMIT = 1;
+    public static final double CARGO_TURBO_LIMIT = 1.0;
 
     private Cargo() {
 
@@ -150,10 +158,12 @@ public class Config {
 
     //    public static final Pose frontRocketR = new Pose(2.82, 3.3, StrictMath.toRadians(60));
     public static final Pose frontRocketR = new Pose(2.55, 3.15, StrictMath.toRadians(60));
-    public static final Pose backup = new Pose(2, 2, Math.toRadians(0));
+    public static final Pose backup = new Pose(2.0, 2.0, 0.0);
 
-    public static final Pose hatchIntakeR = new Pose(2.1, -1.3462, StrictMath.toRadians(270));
+    public static final Pose hatchIntakeR = new Pose(2.1, -1.3462, StrictMath.toRadians(270.0));
 
+    private Point() {
+    }
   }
 
 }

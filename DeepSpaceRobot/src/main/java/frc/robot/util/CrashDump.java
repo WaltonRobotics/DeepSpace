@@ -3,10 +3,10 @@ package frc.robot.util;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
+import java.time.Instant;
 import java.util.UUID;
 
-public class CrashDump {
+public final class CrashDump {
 
   public static final String CRASH_DUMP_DEFAULT_FILE_PATH = "/home/lvuser/CrashDump.txt";
   private static final UUID RUN_INSTANCE_UUID = UUID.randomUUID();
@@ -61,7 +61,7 @@ public class CrashDump {
       writer.print(", ");
       writer.print(mark);
       writer.print(", ");
-      writer.print(new Date());
+      writer.print(Instant.now());
 
       if (nullableException != null) {
         writer.print(", ");

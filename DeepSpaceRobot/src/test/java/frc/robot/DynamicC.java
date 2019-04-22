@@ -17,4 +17,11 @@ public class DynamicC extends frc.robot.dynamicCondig.DynamicConfig {
   public void setTestValue(double value) {
     testValue = value;
   }
+
+  @Override
+  public String toString() {
+    return "DynamicC{" +
+        "testValue=" + testValue +
+        "} " + super.toString();
+  }
 }

@@ -34,4 +34,12 @@ public class EnhancedBoolean {
   public boolean hasChanged() {
     return value != previousValue;
   }
+
+  @Override
+  public String toString() {
+    return "EnhancedBoolean{" +
+        "value=" + value +
+        ", previousValue=" + previousValue +
+        '}';
+  }
 }

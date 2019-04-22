@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import static frc.robot.Config.Camera.LED_OFF;
 import static frc.robot.Config.Camera.WIDTH;
 import static frc.robot.Config.Point.backup;
 import static frc.robot.Config.Point.frontRocketR;
@@ -88,11 +89,14 @@ import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.hatchRotationMotor;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Config.Camera;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
@@ -134,29 +138,13 @@ public class Robot extends TimedRobot {
     godSubsystem = new ElevatorCargoHatchSubsystem();
   }
 
+  private boolean hasSetPipeline = false;
 
   public Robot() {
     super(0.04);
   }
 
-  /**
-   * This function is run when the robot is first started up and should be used for any initialization code.
-   */
-  @Override
-  public void robotInit() {
-    drivetrain.cancelControllerMotion();
-    drivetrain.reset();
-
-    drivetrain.getController().getCameraReader().startCollecting();
-
-    initShuffleBoard();
-
-    initCamera();
-
-    initHardware();
-  }
-
-  private void initHardware() {
+  private static void initHardware() {
     currentRobot.setupController(clawRotationMotor, currentRobot.getCargoSubsystemLimits(), CargoPosition.SAFE);
 //    currentRobot.setupController(clawRotationMotor, currentRobot.getCargoSubsystemLimits(), null);
     currentRobot.setupController(elevatorMotor, currentRobot.getElevatorSubsystemLimits(), ElevatorLevel.HATCH_BASE);
@@ -164,7 +152,7 @@ public class Robot extends TimedRobot {
 //    currentRobot.setupController(hatchRotationMotor, currentRobot.getHatchSubsystemLimits(), null);
   }
 
-  private void initShuffleBoard() {
+  private static void initShuffleBoard() {
 
     transformSendableChooser.setDefaultOption("Normal", new NormalSpeed());
     transformSendableChooser.addOption("Sigmoid", new Sigmoid());
@@ -210,7 +198,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber(PARKING_LINE_OFFSET, 60.0);
     SmartDashboard.putNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0);
-    SmartDashboard.putNumber(PARKING_LINE_FOCUS_Y, 240);
+    SmartDashboard.putNumber(PARKING_LINE_FOCUS_Y, 240.0);
     SmartDashboard.putNumber(PARKING_LINE_PERCENTAGE, 0.5);
 
     SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, "No position has been reported");
@@ -221,7 +209,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT, 0);
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT, 0);
 
-    SmartDashboard.putNumber(CAMERA_DATA_X, -1);
+    SmartDashboard.putNumber(CAMERA_DATA_X, -1.0);
     SmartDashboard.putNumber(CAMERA_DATA_Y, 0.1);
     SmartDashboard.putNumber(CAMERA_DATA_HEIGHT, 0);
     SmartDashboard.putNumber(CAMERA_DATA_ANGLE, 0);
@@ -255,10 +243,28 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean(IS_RIGHT_AUTON, true);
     SmartDashboard.putBoolean(USE_AUTON, false);
 
-    SmartDashboard.putNumber("Steer K", 0.1);
+    SmartDashboard.putNumber("Steer K", 0.065);
     SmartDashboard.putNumber("Drive K", 0.26);
+    SmartDashboard.putNumber("Camera Distance", -1.0);
 
-    SmartDashboard.putNumber("Distance", 2);
+    SmartDashboard.putNumber("Distance", 2.0);
+  }
+
+  /**
+   * This function is run when the robot is first started up and should be used for any initialization code.
+   */
+  @Override
+  public void robotInit() {
+    drivetrain.cancelControllerMotion();
+    drivetrain.reset();
+
+    drivetrain.getController().getCameraReader().startCollecting();
+
+    initShuffleBoard();
+
+    initCamera();
+
+    initHardware();
   }
 
   private void initCamera() {
@@ -322,6 +328,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    if (!hasSetPipeline) {
+      NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
+
+      if (limelight.containsKey("pipeline")) {
+        limelight.getEntry("pipeline").setDouble(Camera.DRIVER_PIPELINE);
+        hasSetPipeline = true;
+
+        limelight.getEntry("ledMode").setNumber(LED_OFF);
+      }
+    }
+
     SmartDashboard.putNumber(DRIVETRAIN_LEFT_ENCODER, encoderLeft.getDistance());
     SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, encoderRight.getDistance());
     SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, String.valueOf(drivetrain.getActualPosition()));
@@ -451,5 +468,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+  }
+
+  @Override
+  public String toString() {
+    return "Robot{" +
+        "hasSetPipeline=" + hasSetPipeline +
+        "} " + super.toString();
   }
 }

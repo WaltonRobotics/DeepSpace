@@ -7,7 +7,7 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 
 public class CompStartCargo implements State {
 
-  private Cargo cargo = Robot.godSubsystem.getCargo();
+  private final Cargo cargo = Robot.godSubsystem.getCargo();
   private long timeout;
 
   @Override
@@ -36,5 +36,13 @@ public class CompStartCargo implements State {
   @Override
   public void finish() {
 
+  }
+
+  @Override
+  public String toString() {
+    return "CompStartCargo{" +
+        "cargo=" + cargo +
+        ", timeout=" + timeout +
+        '}';
   }
 }

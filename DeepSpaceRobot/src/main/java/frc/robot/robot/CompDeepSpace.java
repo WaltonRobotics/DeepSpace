@@ -41,12 +41,12 @@ public class CompDeepSpace extends LimitedRobot {
       }
 
       @Override
-      public int getChannell1() {
+      public int getChannel1() {
         return 0;
       }
 
       @Override
-      public int getChannell2() {
+      public int getChannel2() {
         return 1;
       }
 
@@ -66,12 +66,12 @@ public class CompDeepSpace extends LimitedRobot {
       }
 
       @Override
-      public int getChannell1() {
+      public int getChannel1() {
         return 2;
       }
 
       @Override
-      public int getChannell2() {
+      public int getChannel2() {
         return 3;
       }
 
@@ -86,7 +86,7 @@ public class CompDeepSpace extends LimitedRobot {
   public TalonConfig getLeftTalonConfig() {
     return new TalonConfig() {
       @Override
-      public int getChanell() {
+      public int getChannel() {
         return 3;
       }
 
@@ -101,7 +101,7 @@ public class CompDeepSpace extends LimitedRobot {
   public TalonConfig getRightTalonConfig() {
     return new TalonConfig() {
       @Override
-      public int getChanell() {
+      public int getChannel() {
         return 1;
       }
 
@@ -124,7 +124,7 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public double getMaxAcceleration() {
-    return SmartDashboard.getNumber(CONSTANTS_MAX_ACCELERATION, 3);
+    return SmartDashboard.getNumber(CONSTANTS_MAX_ACCELERATION, 3.0);
   }
 
   @Override
@@ -159,7 +159,7 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public double getKL() {
-    return SmartDashboard.getNumber(CONSTANTS_KL, .5);
+    return SmartDashboard.getNumber(CONSTANTS_KL, 0.5);
   }
 
 
@@ -238,7 +238,7 @@ public class CompDeepSpace extends LimitedRobot {
 
       @Override
       public double getKP() {
-        return 10;
+        return 10.0;
       }
 
       @Override
@@ -532,7 +532,7 @@ public class CompDeepSpace extends LimitedRobot {
   public TalonConfig getLeftIntakeMotorConfig() {
     return new TalonConfig() {
       @Override
-      public int getChanell() {
+      public int getChannel() {
         return 2;
       }
 
@@ -547,7 +547,7 @@ public class CompDeepSpace extends LimitedRobot {
   public TalonConfig getRightIntakeMotorConfig() {
     return new TalonConfig() {
       @Override
-      public int getChanell() {
+      public int getChannel() {
         return 3;
       }
 
@@ -560,10 +560,15 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public void initLimits() {
-    this.addLimit(HatchPosition.CARGO_START, new LimitPair(-95, -412));
-    this.addLimit(HatchPosition.HATCH_START, new LimitPair(-275, -412));
-    this.addLimit(HatchPosition.SAFE, new LimitPair(-372, -412));
-    this.addLimit(HatchPosition.DEPLOY, new LimitPair(-372, -674));
+//    this.addLimit(HatchPosition.CARGO_START, new LimitPair(-95, -412));
+//    this.addLimit(HatchPosition.HATCH_START, new LimitPair(-275, -412));
+//    this.addLimit(HatchPosition.SAFE, new LimitPair(-372, -412));
+//    this.addLimit(HatchPosition.DEPLOY, new LimitPair(-372, -674));
+
+    this.addLimit(HatchPosition.CARGO_START, new LimitPair(4000, -4000));
+    this.addLimit(HatchPosition.HATCH_START, new LimitPair(4000, -4000));
+    this.addLimit(HatchPosition.SAFE, new LimitPair(4000, -4000));
+    this.addLimit(HatchPosition.DEPLOY, new LimitPair(4000, -4000));
 
     this.addLimit(CargoPosition.SAFE, new LimitPair(520, 500));
     this.addLimit(CargoPosition.DEPLOY, new LimitPair(520, 244));
@@ -577,7 +582,7 @@ public class CompDeepSpace extends LimitedRobot {
   public TalonConfig getClimberMotorConfig() {
     return new TalonConfig() {
       @Override
-      public int getChanell() {
+      public int getChannel() {
         return 5;
       }
 
@@ -590,21 +595,26 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public void defineTargets() {
-    this.addTarget(HatchPosition.DEPLOY, new Target(-660, -551));
-    this.addTarget(HatchPosition.SAFE, new Target(-433, -371));
-    this.addTarget(HatchPosition.DEFENSE, new Target(-372, -371));
-    this.addTarget(HatchPosition.HATCH_START, new Target(-372, -233));
-    this.addTarget(HatchPosition.CARGO_START, new Target(-143, -113));
+//    this.addTarget(HatchPosition.DEPLOY, new Target(-660, -551));
+//    this.addTarget(HatchPosition.SAFE, new Target(-433, -371));
+//    this.addTarget(HatchPosition.DEFENSE, new Target(-372, -371));
+//    this.addTarget(HatchPosition.HATCH_START, new Target(-372, -233));
+//    this.addTarget(HatchPosition.CARGO_START, new Target(-143, -113));
+    this.addTarget(HatchPosition.DEPLOY, new Target(-606, -143));
+    this.addTarget(HatchPosition.SAFE, new Target(-382, 37));
+    this.addTarget(HatchPosition.DEFENSE, new Target(-343, 37));
+    this.addTarget(HatchPosition.HATCH_START, new Target(-343, 175));
+    this.addTarget(HatchPosition.CARGO_START, new Target(-343, 295));
 
-    this.addTarget(CargoPosition.DEPLOY, new Target(275, 420));
+    this.addTarget(CargoPosition.DEPLOY, new Target(278, 420));
     this.addTarget(CargoPosition.CARGO_1, new Target(353, 520));
     this.addTarget(CargoPosition.CARGO_2, new Target(371, 520));
-    this.addTarget(CargoPosition.CARGO_3, new Target(380, 520));
+    this.addTarget(CargoPosition.CARGO_3, new Target(390, 520));
     this.addTarget(CargoPosition.SAFE, new Target(511, 520));
     this.addTarget(CargoPosition.HAB, new Target(300, 520));
     this.addTarget(CargoPosition.CLIMB, new Target(204, 520));
 
-    this.addTarget(ElevatorLevel.CARGO_BASE, new Target(2892));
+    this.addTarget(ElevatorLevel.CARGO_BASE, new Target(3365));
 
     this.addTarget(ElevatorLevel.CARGO_ROCKET, new Target(7584));
     this.addTarget(ElevatorLevel.CARGO_HAB, new Target(15195));
@@ -612,7 +622,7 @@ public class CompDeepSpace extends LimitedRobot {
     this.addTarget(ElevatorLevel.CARGO3, new Target(29842));
     this.addTarget(ElevatorLevel.CLIMB, new Target(8403));
 
-    this.addTarget(ElevatorLevel.HATCH_BASE, new Target(1458));
+    this.addTarget(ElevatorLevel.HATCH_BASE, new Target(987)); // 1458
     this.addTarget(ElevatorLevel.HATCH2, new Target(13718));
     this.addTarget(ElevatorLevel.HATCH3, new Target(26528));
 

@@ -18,7 +18,6 @@ import static frc.robot.Robot.godSubsystem;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import frc.robot.Robot;
 import frc.robot.robotState.HatchHandlingTransition;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ActiveState;
@@ -37,17 +36,17 @@ import org.waltonrobotics.metadata.Pose;
  **/
 public class AutoHabitatToRocketHatch extends AutonState {
 
+  private final EnhancedBoolean isGoBackwardsFinished = new EnhancedBoolean();
+  private final EnhancedBoolean isGoToHatchFinished = new EnhancedBoolean();
+  private final EnhancedBoolean isGoToRocketFinished = new EnhancedBoolean();
+  private final EnhancedBoolean isHatchToBackwardsFinished = new EnhancedBoolean();
+  private final EnhancedBoolean isBackwardsToRocketFinished = new EnhancedBoolean();
   private boolean hasRisen = false;
   private SimpleSpline goBackwards;
   private SimpleSpline goToHatch;
   private SimpleSpline goToRocket;
   private SimpleSpline hatchToBackwards;
   private SimpleSpline backwardsToRocket;
-  private EnhancedBoolean isGoBackwardsFinished = new EnhancedBoolean();
-  private EnhancedBoolean isGoToHatchFinished = new EnhancedBoolean();
-  private EnhancedBoolean isGoToRocketFinished = new EnhancedBoolean();
-  private EnhancedBoolean isHatchToBackwardsFinished = new EnhancedBoolean();
-  private EnhancedBoolean isBackwardsToRocketFinished = new EnhancedBoolean();
   private double timeout;
   private boolean hasRisen2;
 
@@ -62,13 +61,13 @@ public class AutoHabitatToRocketHatch extends AutonState {
     // the new angle is the original angle but x is negated
     double newAngle = StrictMath.atan2(StrictMath.sin(angle), -StrictMath.cos(angle));
     if (newAngle < 0) {
-      newAngle += 2 * Math.PI;
+      newAngle += 2.0 * Math.PI;
     }
     return new Pose(-p.getX(), p.getY(), newAngle);
   }
 
   private Pose getStartPose() {
-    return new Pose(0, 0, StrictMath.toRadians(90));
+    return new Pose(0, 0, StrictMath.toRadians(90.0));
   }
 
   private Pose getEndPose() {
@@ -84,23 +83,23 @@ public class AutoHabitatToRocketHatch extends AutonState {
   @Override
   public void setSubsystemLimits() {
     godSubsystem.getCargo().setControlMode(ClawControlMode.AUTO);
-    Robot.godSubsystem.setCurrentActiveState(ActiveState.HATCH_HANDLING);
-    Robot.godSubsystem.getCargo().setCurrentTarget(CargoPosition.SAFE);
+    godSubsystem.setCurrentActiveState(ActiveState.HATCH_HANDLING);
+    godSubsystem.getCargo().setCurrentTarget(CargoPosition.SAFE);
     godSubsystem.getHatch().setControlMode(HatchControlMode.AUTO);
-    Robot.godSubsystem.getHatch().setCurrentTarget(HatchPosition.DEPLOY);
-    Robot.godSubsystem.getHatch().setLimits(HatchPosition.DEPLOY);
+    godSubsystem.getHatch().setCurrentTarget(HatchPosition.DEPLOY);
+    godSubsystem.getHatch().setLimits(HatchPosition.DEPLOY);
 
-    Robot.godSubsystem.getElevator().setControlMode(ElevatorControlMode.AUTO);
-    Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH_BASE);
-    Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.HATCH_BASE);
+    godSubsystem.getElevator().setControlMode(ElevatorControlMode.AUTO);
+    godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH_BASE);
+    godSubsystem.getElevator().setLimits(ElevatorLevel.HATCH_BASE);
 
-    Robot.godSubsystem.getHatch().setIntake(true);
+    godSubsystem.getHatch().setIntake(true);
   }
 
   @Override
   public void setMotionPath() {
 
-    double distance = SmartDashboard.getNumber("Distance", 2);
+    double distance = SmartDashboard.getNumber("Distance", 2.0);
 
     Pose startPose = getStartPose();
     Pose offset = getStartPose().offset(distance);
@@ -117,7 +116,7 @@ public class AutoHabitatToRocketHatch extends AutonState {
         StrictMath.toRadians(
             SmartDashboard.getNumber(MOTION_HATCH_PICKUP_ANGLE, backup.getDegrees())
         ));
-    Pose endPose2 = new Pose(2.52, 3.3, StrictMath.toRadians(60));
+    Pose endPose2 = new Pose(2.52, 3.3, StrictMath.toRadians(60.0));
 
     if (!SmartDashboard.getBoolean(IS_RIGHT_AUTON, true)) {
       startPose = negateX(startPose);
@@ -135,10 +134,10 @@ public class AutoHabitatToRocketHatch extends AutonState {
     goBackwards = SimpleSpline
         .pathFromPosesWithAngleAndScale(
             currentRobot.getMaxVelocity(),
-            currentRobot.getMaxAcceleration() / 2,
+            currentRobot.getMaxAcceleration() / 2.0,
             true,
-            .2,
-            .2,
+            0.2,
+            0.2,
             endPose, backUpPosition);
 
     goToHatch = SimpleSpline.pathFromPosesWithAngle(
@@ -150,12 +149,12 @@ public class AutoHabitatToRocketHatch extends AutonState {
         currentRobot.getMaxVelocity(),
         currentRobot.getMaxAcceleration(),
         true,
-        1, 0.2,
+        1.0, 0.2,
         hatchPosition, backUpPosition);
 
     backwardsToRocket = SimpleSpline.pathFromPosesWithAngleAndScale(
         currentRobot.getMaxVelocity(),
-        currentRobot.getMaxAcceleration() / 2,
+        currentRobot.getMaxAcceleration() / 2.0,
         false, 0.2, 0.2,
         backUpPosition, endPose2);
 
@@ -168,17 +167,17 @@ public class AutoHabitatToRocketHatch extends AutonState {
     SimpleSpline finishing = SimpleSpline
         .pathFromPosesWithAngleAndScale(
             currentRobot.getMaxVelocity(),
-            currentRobot.getMaxAcceleration() / 2,
+            currentRobot.getMaxAcceleration() / 2.0,
             true,
-            .2,
-            .2,
+            0.2,
+            0.2,
             endPose2, backUpPosition);
     getCommandGroup().addSequential(finishing);
 
     drivetrain.startControllerMotion(getStartPose());
     getCommandGroup().start();
 
-    timeout = godSubsystem.getCurrentTime() + 2500;
+    timeout = godSubsystem.getCurrentTime() + 2500L;
   }
 
   private void check() {
@@ -197,32 +196,32 @@ public class AutoHabitatToRocketHatch extends AutonState {
 
     check();
 
-    if (godSubsystem.getCurrentTime() >= timeout && !hasRisen) {
-      if (!hasRisen2) {
-        Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH3);
-        hasRisen2 = true;
-      } else {
-        Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH2);
+    if ((godSubsystem.getCurrentTime() >= timeout) && !hasRisen) {
+      if (hasRisen2) {
+        godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH2);
         hasRisen2 = false;
+      } else {
+        godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH3);
+        hasRisen2 = true;
       }
 
       hasRisen = true;
     }
 
     if (isGoToRocketFinished.isRisingEdge()) {
-      Robot.godSubsystem.getHatch().setIntake(false);
+      godSubsystem.getHatch().setIntake(false);
     } else if (isGoBackwardsFinished.isRisingEdge()) {
-      Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH_BASE);
+      godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH_BASE);
     } else if (isGoToHatchFinished.isRisingEdge()) {
       godSubsystem.getHatch().setIntake(true);
       hasRisen = false;
-      timeout = godSubsystem.getCurrentTime() + 2500;
+      timeout = godSubsystem.getCurrentTime() + 2500L;
     } else if (isBackwardsToRocketFinished.isRisingEdge()) {
       godSubsystem.getHatch().setIntake(false);
     }
 
-    boolean right = Math.abs(getRightYJoystick()) > .1;
-    boolean left = Math.abs(getLeftYJoystick()) > .1;
+    boolean right = Math.abs(getRightYJoystick()) > 0.1;
+    boolean left = Math.abs(getLeftYJoystick()) > 0.1;
 
     if (right || left) {
       return new HatchHandlingTransition();
@@ -246,5 +245,24 @@ public class AutoHabitatToRocketHatch extends AutonState {
     drivetrain.clearControllerMotions();
     drivetrain.cancelControllerMotion();
     godSubsystem.setAutonomousEnabled(false);
+  }
+
+  @Override
+  public String toString() {
+    return "AutoHabitatToRocketHatch{" +
+        "isGoBackwardsFinished=" + isGoBackwardsFinished +
+        ", isGoToHatchFinished=" + isGoToHatchFinished +
+        ", isGoToRocketFinished=" + isGoToRocketFinished +
+        ", isHatchToBackwardsFinished=" + isHatchToBackwardsFinished +
+        ", isBackwardsToRocketFinished=" + isBackwardsToRocketFinished +
+        ", hasRisen=" + hasRisen +
+        ", goBackwards=" + goBackwards +
+        ", goToHatch=" + goToHatch +
+        ", goToRocket=" + goToRocket +
+        ", hatchToBackwards=" + hatchToBackwards +
+        ", backwardsToRocket=" + backwardsToRocket +
+        ", timeout=" + timeout +
+        ", hasRisen2=" + hasRisen2 +
+        "} " + super.toString();
   }
 }

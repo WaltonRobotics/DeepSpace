@@ -29,4 +29,14 @@ public class TestResult {
   public AssertionError getError() {
     return error;
   }
+
+  @Override
+  public String toString() {
+    return "TestResult{" +
+        "testName='" + testName + '\'' +
+        ", success=" + success +
+        ", time=" + time +
+        ", error=" + error +
+        '}';
+  }
 }

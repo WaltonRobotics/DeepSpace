@@ -7,15 +7,11 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 public class VictorPair {
 
   private final VictorSPX victorSPX1;
-  private final int CANId1;
   private final VictorSPX victorSPX2;
-  private final int CANId2;
 
   public VictorPair(int CANId1, int CANId2) {
     this.victorSPX1 = new VictorSPX(CANId1);
-    this.CANId1 = CANId1;
     this.victorSPX2 = new VictorSPX(CANId2);
-    this.CANId2 = CANId2;
   }
 
   public VictorSPX getVictorSPX1() {
@@ -53,5 +49,13 @@ public class VictorPair {
   public void setNeutralMode(NeutralMode neutralMode) {
     victorSPX1.setNeutralMode(neutralMode);
     victorSPX2.setNeutralMode(neutralMode);
+  }
+
+  @Override
+  public String toString() {
+    return "VictorPair{" +
+        "victorSPX1=" + victorSPX1 +
+        ", victorSPX2=" + victorSPX2 +
+        '}';
   }
 }

@@ -1,5 +1,8 @@
 package frc.robot.robotState;
 
+import static frc.robot.Config.Camera.LED_OFF;
+
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Robot;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ActiveState;
@@ -11,15 +14,13 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchControlMode;
 
 public class HatchHandling implements State {
 
-
-  private Elevator elevator = Robot.godSubsystem.getElevator();
-  private Hatch hatch = Robot.godSubsystem.getHatch();
+  private final Elevator elevator = Robot.godSubsystem.getElevator();
+  private final Hatch hatch = Robot.godSubsystem.getHatch();
 
   @Override
   public void initialize() {
     Robot.godSubsystem.setCurrentActiveState(ActiveState.HATCH_HANDLING);
   }
-
 
   @Override
   public State periodic() {
@@ -65,9 +66,17 @@ public class HatchHandling implements State {
     return this;
   }
 
-
   @Override
   public void finish() {
 //    Robot.godSubsystem.getHatch().setIntake(false);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(LED_OFF);
+  }
+
+  @Override
+  public String toString() {
+    return "HatchHandling{" +
+        "elevator=" + elevator +
+        ", hatch=" + hatch +
+        '}';
   }
 }

@@ -17,4 +17,12 @@ public class LimitPair {
   public int getReverseSoftLimitThreshold() {
     return reverseSoftLimitThreshold;
   }
+
+  @Override
+  public String toString() {
+    return "LimitPair{" +
+        "forwardsSoftLimitThreshold=" + forwardsSoftLimitThreshold +
+        ", reverseSoftLimitThreshold=" + reverseSoftLimitThreshold +
+        '}';
+  }
 }
