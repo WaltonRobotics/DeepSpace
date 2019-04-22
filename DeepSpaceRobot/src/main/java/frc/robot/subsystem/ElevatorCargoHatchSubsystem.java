@@ -810,7 +810,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     }
 
     public void setIntake(boolean setOpen) {
-      System.out.println(stateMachine.getCurrentState().getClass().getSimpleName() + '\t' + setOpen);
       intakeIsSet = setOpen;
     }
 

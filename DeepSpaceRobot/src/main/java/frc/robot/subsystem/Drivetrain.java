@@ -138,12 +138,14 @@ public class Drivetrain extends AbstractDrivetrain {
 
   public void shiftUp() {
     if (!RobotMap.shifter.get()) {
+      System.out.println("Shifted Up");
       RobotMap.shifter.set(true);
     }
   }
 
   public void shiftDown() {
     if (RobotMap.shifter.get()) {
+      System.out.println("Shifted Down");
       RobotMap.shifter.set(false);
     }
   }
