@@ -1,5 +1,7 @@
 package frc.robot.robotState;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Robot;
 import frc.robot.state.State;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ActiveState;
@@ -66,6 +68,7 @@ public class HatchHandling implements State {
   @Override
   public void finish() {
 //    Robot.godSubsystem.getHatch().setIntake(false);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
   }
 
   @Override

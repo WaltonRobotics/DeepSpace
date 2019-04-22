@@ -333,6 +333,8 @@ public class Robot extends TimedRobot {
       if (limelight.containsKey("pipeline")) {
         limelight.getEntry("pipeline").setDouble(Camera.DRIVER_PIPELINE);
         hasSetPipeline = true;
+
+        limelight.getEntry("ledMode").setNumber(1);
       }
     }
 
