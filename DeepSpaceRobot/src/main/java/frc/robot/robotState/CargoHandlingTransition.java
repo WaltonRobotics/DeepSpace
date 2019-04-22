@@ -33,7 +33,7 @@ public class CargoHandlingTransition implements State {
       return new Disabled();
     }
 
-    if(Robot.godSubsystem.isMasterOverride()){
+    if (Robot.godSubsystem.isMasterOverride()) {
       return new CargoHandling();
     }
 

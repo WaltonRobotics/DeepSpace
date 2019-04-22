@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import static frc.robot.Config.Camera.LED_OFF;
 import static frc.robot.Config.Camera.WIDTH;
 import static frc.robot.Config.Point.backup;
 import static frc.robot.Config.Point.frontRocketR;
@@ -334,7 +335,7 @@ public class Robot extends TimedRobot {
         limelight.getEntry("pipeline").setDouble(Camera.DRIVER_PIPELINE);
         hasSetPipeline = true;
 
-        limelight.getEntry("ledMode").setNumber(1);
+        limelight.getEntry("ledMode").setNumber(LED_OFF);
       }
     }
 

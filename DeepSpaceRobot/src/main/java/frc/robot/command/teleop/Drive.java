@@ -134,7 +134,7 @@ public class Drive extends Command {
     }
 
     // Start with proportional steering
-    double distance = (0.0003645262 * ty * ty * ty) + (- 0.0008723340 * ty * ty) + (0.0425549550* ty) + 0.5546679097;
+    double distance = (0.0003645262 * ty * ty * ty) + (-0.0008723340 * ty * ty) + (0.0425549550 * ty) + 0.5546679097;
     SmartDashboard.putNumber("Camera Distance", distance);
 
     distance = Math.max(0.5, distance);

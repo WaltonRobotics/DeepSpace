@@ -40,7 +40,7 @@ public class ClimbHandlingTransition implements State {
       return new Disabled();
     }
 
-    if(Robot.godSubsystem.isMasterOverride()){
+    if (Robot.godSubsystem.isMasterOverride()) {
       return new ClimbHandling();
     }
 

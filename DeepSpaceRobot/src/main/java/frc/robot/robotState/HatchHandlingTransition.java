@@ -1,5 +1,7 @@
 package frc.robot.robotState;
 
+import static frc.robot.Config.Camera.LED_ON;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Robot;
@@ -28,7 +30,7 @@ public class HatchHandlingTransition implements State {
     Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.HATCH_BASE);
 
     NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
-    limelight.getEntry("ledMode").setNumber(3);
+    limelight.getEntry("ledMode").setNumber(LED_ON);
   }
 
   @Override

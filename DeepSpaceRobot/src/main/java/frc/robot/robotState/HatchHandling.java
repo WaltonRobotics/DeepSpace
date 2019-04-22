@@ -1,6 +1,7 @@
 package frc.robot.robotState;
 
-import edu.wpi.first.networktables.NetworkTable;
+import static frc.robot.Config.Camera.LED_OFF;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Robot;
 import frc.robot.state.State;
@@ -68,7 +69,7 @@ public class HatchHandling implements State {
   @Override
   public void finish() {
 //    Robot.godSubsystem.getHatch().setIntake(false);
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(LED_OFF);
   }
 
   @Override
