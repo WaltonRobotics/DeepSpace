@@ -1,10 +1,10 @@
 package frc.robot;
 
-import frc.robot.dynamicCondig.Getter;
-import frc.robot.dynamicCondig.Setter;
-import frc.robot.dynamicCondig.Setter.ValueType;
+import frc.robot.dynamicConfig.Getter;
+import frc.robot.dynamicConfig.Setter;
+import frc.robot.dynamicConfig.Setter.ValueType;
 
-public class DynamicC extends frc.robot.dynamicCondig.DynamicConfig {
+public class DynamicC extends frc.robot.dynamicConfig.DynamicConfig {
 
   public double testValue;
 

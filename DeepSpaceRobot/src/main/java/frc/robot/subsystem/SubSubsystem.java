@@ -2,9 +2,9 @@ package frc.robot.subsystem;
 
 public interface SubSubsystem {
 
-  void collectData();
+    void collectData();
 
-  void outputData();
+    void outputData();
 
-  void initialize();
+    void initialize();
 }

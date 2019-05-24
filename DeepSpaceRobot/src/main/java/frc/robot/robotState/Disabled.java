@@ -9,24 +9,24 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchControlMode;
 
 public class Disabled implements State {
 
-  @Override
-  public void initialize() {
-    Robot.godSubsystem.getHatch().setControlMode(HatchControlMode.DISABLED);
-    Robot.godSubsystem.getCargo().setControlMode(ClawControlMode.DISABLED);
-    Robot.godSubsystem.getElevator().setControlMode(ElevatorControlMode.DISABLED);
-    Robot.godSubsystem.getClimber().setClimberControlMode(ClimberControlMode.DISABLED);
-  }
-
-  @Override
-  public State periodic() {
-    if (Robot.godSubsystem.isEnabled()) {
-      return new TakeControl();
+    @Override
+    public void initialize() {
+        Robot.godSubsystem.getHatch().setControlMode(HatchControlMode.DISABLED);
+        Robot.godSubsystem.getCargo().setControlMode(ClawControlMode.DISABLED);
+        Robot.godSubsystem.getElevator().setControlMode(ElevatorControlMode.DISABLED);
+        Robot.godSubsystem.getClimber().setClimberControlMode(ClimberControlMode.DISABLED);
     }
 
-    return this;
-  }
+    @Override
+    public State periodic() {
+        if (Robot.godSubsystem.isEnabled()) {
+            return new TakeControl();
+        }
 
-  @Override
-  public void finish() {
-  }
+        return this;
+    }
+
+    @Override
+    public void finish() {
+    }
 }

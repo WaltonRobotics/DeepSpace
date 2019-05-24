@@ -1,4 +1,4 @@
-package frc.robot.dynamicCondig;
+package frc.robot.dynamicConfig;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Getter {
 
-  String name();
+    String name();
 }

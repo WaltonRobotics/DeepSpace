@@ -2,9 +2,9 @@ package frc.robot.state;
 
 public interface State {
 
-  void initialize();
+    void initialize();
 
-  State periodic();
+    State periodic();
 
-  void finish();
+    void finish();
 }

@@ -7,54 +7,54 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Climber;
 
 public class Defense implements State {
 
-  private final Climber climber = Robot.godSubsystem.getClimber();
+    private final Climber climber = Robot.godSubsystem.getClimber();
 
-  @Override
-  public void initialize() {
-    Robot.godSubsystem.setCurrentActiveState(ActiveState.DEFENSE);
-  }
-
-  @Override
-  public State periodic() {
-
-    if (!Robot.godSubsystem.isEnabled()) {
-      return new Disabled();
-    }
-    if (Robot.godSubsystem.cargoModeRising()) {
-      return new CargoHandlingTransition();
-    }
-    if (Robot.godSubsystem.hatchModeRising()) {
-      return new HatchHandlingTransition();
+    @Override
+    public void initialize() {
+        Robot.godSubsystem.setCurrentActiveState(ActiveState.DEFENSE);
     }
 
-    if (Robot.godSubsystem.setCompStartHatchModeRising()) {
-      return new SetCompStartHatch();
+    @Override
+    public State periodic() {
+
+        if (!Robot.godSubsystem.isEnabled()) {
+            return new Disabled();
+        }
+        if (Robot.godSubsystem.cargoModeRising()) {
+            return new CargoHandlingTransition();
+        }
+        if (Robot.godSubsystem.hatchModeRising()) {
+            return new HatchHandlingTransition();
+        }
+
+        if (Robot.godSubsystem.setCompStartHatchModeRising()) {
+            return new SetCompStartHatch();
+        }
+
+        if (Robot.godSubsystem.setCompStartCargoModeRising()) {
+            return new SetCompStartCargo();
+        }
+
+        if (climber.isClimberUpPressed()) {
+            climber.setClimberPower(-0.5);
+        } else if (climber.isClimberDownPressed()) {
+            climber.setClimberPower(1.0);
+        } else {
+            climber.setClimberPower(0.0);
+        }
+
+        return this;
     }
 
-    if (Robot.godSubsystem.setCompStartCargoModeRising()) {
-      return new SetCompStartCargo();
+    @Override
+    public void finish() {
+
     }
 
-    if (climber.isClimberUpPressed()) {
-      climber.setClimberPower(-0.5);
-    } else if (climber.isClimberDownPressed()) {
-      climber.setClimberPower(1.0);
-    } else {
-      climber.setClimberPower(0.0);
+    @Override
+    public String toString() {
+        return "Defense{" +
+                "climber=" + climber +
+                '}';
     }
-
-    return this;
-  }
-
-  @Override
-  public void finish() {
-
-  }
-
-  @Override
-  public String toString() {
-    return "Defense{" +
-        "climber=" + climber +
-        '}';
-  }
 }
