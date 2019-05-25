@@ -31,7 +31,6 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import frc.robot.util.RobotBuilder;
 
 import javax.management.*;
-
 import java.lang.management.ManagementFactory;
 
 import static frc.robot.Config.Camera.LED_OFF;
@@ -249,19 +248,19 @@ public class Robot extends TimedRobot {
     }
 
     private double getRIOCPUUse() throws MalformedObjectNameException, ReflectionException, InstanceNotFoundException {
-        MBeanServer mbs    = ManagementFactory.getPlatformMBeanServer();
-        ObjectName name    = ObjectName.getInstance("java.lang:type=OperatingSystem");
-        AttributeList list = mbs.getAttributes(name, new String[]{ "ProcessCpuLoad" });
+        MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+        ObjectName name = ObjectName.getInstance("java.lang:type=OperatingSystem");
+        AttributeList list = mbs.getAttributes(name, new String[]{"ProcessCpuLoad"});
 
-        if (list.isEmpty())     return Double.NaN;
+        if (list.isEmpty()) return Double.NaN;
 
-        Attribute att = (Attribute)list.get(0);
-        Double value  = (Double)att.getValue();
+        Attribute att = (Attribute) list.get(0);
+        Double value = (Double) att.getValue();
 
         // usually takes a couple of seconds before we get real values
-        if (value == -1.0)      return Double.NaN;
+        if (value == -1.0) return Double.NaN;
         // returns a percentage value with 1 decimal point precision
-        return ((int)(value * 1000) / 10.0);
+        return ((int) (value * 1000) / 10.0);
     }
 
     private double getRIORamUse() {
@@ -297,7 +296,6 @@ public class Robot extends TimedRobot {
         waltonDashboard.getEntry(DRIVETRAIN_ACTUAL_POSITION).setString(String.valueOf(drivetrain.getActualPosition()));
         waltonDashboard.getEntry(DEBUG_CAMERA_VISION).setString(String.valueOf(drivetrain.getCameraData()));
 
-        waltonDashboard.getEntry(DRIVETRAIN_LEFT_ENCODER).setNumber(encoderLeft.getDistance());
         // System.out.println("robot Periodic");
 //    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
 //    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(0);
