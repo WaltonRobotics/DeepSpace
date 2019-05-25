@@ -41,6 +41,14 @@ public class Config {
         public static final int LED_CHANNEL5 = 5;
         public static final int LED_CHANNEL6 = 6;
 
+        // Empirical channel values for now
+        public static final int FRONT_LEFT_MOTOR_PDP_CHANNEL = 0;
+        public static final int FRONT_RIGHT_MOTOR_PDP_CHANNEL = 1;
+        public static final int BACK_LEFT_MOTOR_PDP_CHANNEL = 2;
+        public static final int BACK_RIGHT_MOTOR_PDP_CHANNEL = 3;
+        public static final int CLIMBER_MOTOR_PDP_CHANNEL = 4;
+        public static final int RIO_PDP_CHANNEL = 5;
+
         private Hardware() {
         }
     }
@@ -143,6 +151,20 @@ public class Config {
         public static final String ALIGNMENT_STEER_K = "Alignment/Steer K";
         public static final String ALIGNMENT_DRIVE_K = "Alignment/Drive K";
         public static final String ALIGNMENT_CAMERA_DISTANCE = "Alignment/Camera Distance";
+
+        public static final String DIAGNOSTICS_BATTERY_VOLTAGE = "Diagnostics/Battery Voltage";
+        public static final String DIAGNOSTICS_RIO_CPU_USE = "Diagnostics/RIO CPU Use";
+        public static final String DIAGNOSTICS_POWER_DRAW = "Diagnostics/Power Draw";
+        public static final String DIAGNOSTICS_RIO_RAM_USE = "Diagnostics/RIO RAM Use";
+
+        public static final String DIAGNOSTICS_FRONT_LEFT_MOTOR_POWER_USAGE = "Diagnostics/Front Left Motor Power Usage";
+        public static final String DIAGNOSTICS_FRONT_RIGHT_MOTOR_POWER_USAGE = "Diagnostics/Front Right Motor Power Usage";
+        public static final String DIAGNOSTICS_BACK_LEFT_MOTOR_POWER_USAGE = "Diagnostics/Back Left Motor Power Usage";
+        public static final String DIAGNOSTICS_BACK_RIGHT_MOTOR_POWER_USAGE = "Diagnostics/Back Right Motor Power Usage";
+        public static final String DIAGNOSTICS_CLIMBER_MOTOR_POWER_USAGE = "Diagnostics/Climber Motor Power Usage";
+        public static final String DIAGNOSTICS_RIO_POWER_USAGE = "Diagnostics/RIO Power Usage";
+
+        public static final String DIAGNOSTICS_GYRO_ORIENTATION = "Diagnostics/Gyro Orientation";
 
         private WaltonDashboardKeys() {
         }

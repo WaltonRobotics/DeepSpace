@@ -30,7 +30,12 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import frc.robot.util.RobotBuilder;
 
+import javax.management.*;
+
+import java.lang.management.ManagementFactory;
+
 import static frc.robot.Config.Camera.LED_OFF;
+import static frc.robot.Config.Hardware.*;
 import static frc.robot.Config.Point.*;
 import static frc.robot.Config.WaltonDashboardKeys.*;
 import static frc.robot.RobotMap.*;
@@ -243,6 +248,30 @@ public class Robot extends TimedRobot {
 //    }).start();
     }
 
+    private double getRIOCPUUse() throws MalformedObjectNameException, ReflectionException, InstanceNotFoundException {
+        MBeanServer mbs    = ManagementFactory.getPlatformMBeanServer();
+        ObjectName name    = ObjectName.getInstance("java.lang:type=OperatingSystem");
+        AttributeList list = mbs.getAttributes(name, new String[]{ "ProcessCpuLoad" });
+
+        if (list.isEmpty())     return Double.NaN;
+
+        Attribute att = (Attribute)list.get(0);
+        Double value  = (Double)att.getValue();
+
+        // usually takes a couple of seconds before we get real values
+        if (value == -1.0)      return Double.NaN;
+        // returns a percentage value with 1 decimal point precision
+        return ((int)(value * 1000) / 10.0);
+    }
+
+    private double getRIORamUse() {
+        long ramTotal = Runtime.getRuntime().totalMemory();
+        long ramFree = Runtime.getRuntime().freeMemory();
+        long ramUsed = ramTotal - ramFree;
+
+        return ((ramUsed * 1.0) / ramTotal);
+    }
+
     /**
      * This function is called every robot packet, no matter the mode. Use this for items like diagnostics that you want
      * ran during disabled, autonomous, teleoperated and test.
@@ -267,9 +296,34 @@ public class Robot extends TimedRobot {
         waltonDashboard.getEntry(DRIVETRAIN_RIGHT_ENCODER).setNumber(encoderRight.getDistance());
         waltonDashboard.getEntry(DRIVETRAIN_ACTUAL_POSITION).setString(String.valueOf(drivetrain.getActualPosition()));
         waltonDashboard.getEntry(DEBUG_CAMERA_VISION).setString(String.valueOf(drivetrain.getCameraData()));
+
+        waltonDashboard.getEntry(DRIVETRAIN_LEFT_ENCODER).setNumber(encoderLeft.getDistance());
         // System.out.println("robot Periodic");
 //    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
 //    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(0);
+
+        // Update diagnostics for dashboard
+        waltonDashboard.getEntry(DIAGNOSTICS_BATTERY_VOLTAGE).setNumber(pdp.getVoltage());
+        waltonDashboard.getEntry(DIAGNOSTICS_POWER_DRAW).setNumber(pdp.getTotalCurrent());
+
+        // Will likely need to intercept packets sent from RIO to driver station for these values
+        // Estimated RAM and CPU use for now
+        try {
+            waltonDashboard.getEntry(DIAGNOSTICS_RIO_CPU_USE).setNumber(getRIOCPUUse());
+        } catch (MalformedObjectNameException | ReflectionException | InstanceNotFoundException e) {
+            e.printStackTrace();
+        }
+        waltonDashboard.getEntry(DIAGNOSTICS_RIO_RAM_USE).setNumber(getRIORamUse());
+
+        waltonDashboard.getEntry(DIAGNOSTICS_FRONT_LEFT_MOTOR_POWER_USAGE).setNumber(pdp.getCurrent(FRONT_LEFT_MOTOR_PDP_CHANNEL));
+        waltonDashboard.getEntry(DIAGNOSTICS_FRONT_RIGHT_MOTOR_POWER_USAGE).setNumber(pdp.getCurrent(FRONT_RIGHT_MOTOR_PDP_CHANNEL));
+        waltonDashboard.getEntry(DIAGNOSTICS_BACK_LEFT_MOTOR_POWER_USAGE).setNumber(pdp.getCurrent(BACK_LEFT_MOTOR_PDP_CHANNEL));
+        waltonDashboard.getEntry(DIAGNOSTICS_BACK_RIGHT_MOTOR_POWER_USAGE).setNumber(pdp.getCurrent(BACK_RIGHT_MOTOR_PDP_CHANNEL));
+        waltonDashboard.getEntry(DIAGNOSTICS_CLIMBER_MOTOR_POWER_USAGE).setNumber(pdp.getCurrent(CLIMBER_MOTOR_PDP_CHANNEL));
+        waltonDashboard.getEntry(DIAGNOSTICS_RIO_POWER_USAGE).setNumber(pdp.getCurrent(RIO_PDP_CHANNEL));
+
+        // TODO: Need a hardware gyro attached!
+        waltonDashboard.getEntry(DIAGNOSTICS_GYRO_ORIENTATION).setNumber(0);
     }
 
     /**

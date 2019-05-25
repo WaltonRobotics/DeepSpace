@@ -59,6 +59,8 @@ public final class RobotMap {
             new DigitalInput(currentRobot.getLeftEncoderConfig().getChannel1()),
             new DigitalInput(currentRobot.getLeftEncoderConfig().getChannel2()));
 
+    public static final PowerDistributionPanel pdp = new PowerDistributionPanel();
+
 //  public static final DigitalInput hatchSensor = new DigitalInput(1); //makeshift number
 
 //  public static final Encoder cargoEncoder = new Encoder(
