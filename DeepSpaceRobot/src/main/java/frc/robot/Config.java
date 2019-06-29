@@ -166,6 +166,8 @@ public class Config {
 
         public static final String DIAGNOSTICS_GYRO_ORIENTATION = "Diagnostics/Gyro Orientation";
 
+        public static final String MATCH_TIMER = "Match Timer";
+
         private WaltonDashboardKeys() {
         }
     }

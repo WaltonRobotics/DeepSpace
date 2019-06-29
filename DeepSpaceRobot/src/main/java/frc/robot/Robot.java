@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -306,6 +307,7 @@ public class Robot extends TimedRobot {
 
         // Will likely need to intercept packets sent from RIO to driver station for these values
         // Estimated RAM and CPU use for now
+        
         try {
             waltonDashboard.getEntry(DIAGNOSTICS_RIO_CPU_USE).setNumber(getRIOCPUUse());
         } catch (MalformedObjectNameException | ReflectionException | InstanceNotFoundException e) {
@@ -320,8 +322,11 @@ public class Robot extends TimedRobot {
         waltonDashboard.getEntry(DIAGNOSTICS_CLIMBER_MOTOR_POWER_USAGE).setNumber(pdp.getCurrent(CLIMBER_MOTOR_PDP_CHANNEL));
         waltonDashboard.getEntry(DIAGNOSTICS_RIO_POWER_USAGE).setNumber(pdp.getCurrent(RIO_PDP_CHANNEL));
 
-        // TODO: Need a hardware gyro attached!
+        // TODO: Use NavX
         waltonDashboard.getEntry(DIAGNOSTICS_GYRO_ORIENTATION).setNumber(0);
+    
+        // Returns the remaining match time in seconds or a number < 0 if the DriverStation detects the robot is not in a competition from the FMS
+        waltonDashboard.getEntry(MATCH_TIMER).setDouble(DriverStation.getInstance().getMatchTime());
     }
 
     /**
