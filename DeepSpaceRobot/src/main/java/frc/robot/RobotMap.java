@@ -14,11 +14,14 @@ import static frc.robot.Config.Hardware.LED_CHANNEL6;
 import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
 import static frc.robot.Robot.currentRobot;
 
+
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
@@ -54,6 +57,7 @@ public final class RobotMap {
   public static final TalonSRX hatchRotationMotor = new TalonSRX(currentRobot.getHatchSubsystemLimits().getDeviceID());
   public static final TalonSRX elevatorMotor = new TalonSRX(currentRobot.getElevatorSubsystemLimits().getDeviceID());
 
+  public static final AHRS navx = new AHRS(Port.kMXP);
 
   public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
   public static final DoubleSolenoid hatchIntake = new DoubleSolenoid(HATCH_INTAKE_CHANNEL, HATCH_INTAKE_CHANNEL + 1);

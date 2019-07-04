@@ -143,6 +143,12 @@ public class Config {
     }
   }
 
+  public static final class PathFinder {
+
+    public static final double wheelbase = 0.5;
+
+  }
+
   public static final class Cargo {
 
     public static final double CLIMB_MAX = 1.0;
