@@ -15,6 +15,7 @@ import static frc.robot.Robot.drivetrain;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.leftWheels;
+import static frc.robot.RobotMap.navX;
 import static frc.robot.RobotMap.rightWheels;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -25,6 +26,7 @@ import frc.robot.RobotMap;
 import frc.robot.command.teleop.Drive;
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.metadata.CameraData;
+import org.waltonrobotics.metadata.Pose;
 import org.waltonrobotics.metadata.RobotPair;
 
 /**
@@ -36,7 +38,7 @@ public class Drivetrain extends AbstractDrivetrain {
   private CameraData cameraData = new CameraData();
 
   public Drivetrain() {
-    super(currentRobot);
+    super(currentRobot, ControllerType.RAMSETE);
   }
 
   @Override
@@ -152,6 +154,14 @@ public class Drivetrain extends AbstractDrivetrain {
 
   public CameraData getCameraData() {
     return cameraData;
+  }
+
+  @Override
+  protected Pose getNavXPose() {
+    double x = navX.getDisplacementX();
+    double y = navX.getDisplacementY();
+    double angle = navX.getAngle();
+    return new Pose(x, y, angle);
   }
 
   @Override

@@ -15,10 +15,12 @@ import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
 import static frc.robot.Robot.currentRobot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
@@ -69,6 +71,8 @@ public final class RobotMap {
   public static final Encoder encoderLeft = new Encoder(
       new DigitalInput(currentRobot.getLeftEncoderConfig().getChannel1()),
       new DigitalInput(currentRobot.getLeftEncoderConfig().getChannel2()));
+
+  public static final AHRS navX = new AHRS(Port.kMXP);
 
 //  public static final DigitalInput hatchSensor = new DigitalInput(1); //makeshift number
 

@@ -25,6 +25,7 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import org.waltonrobotics.config.Controls;
 import org.waltonrobotics.config.EncoderConfig;
 import org.waltonrobotics.config.TalonConfig;
+import org.waltonrobotics.metadata.MotorParameters;
 
 public class PracticeDeepSpace extends LimitedRobot {
 
@@ -176,6 +177,51 @@ public class PracticeDeepSpace extends LimitedRobot {
   @Override
   public boolean isCurrentRobot() {
     return !Robot.isCompBot;
+  }
+
+  @Override
+  public double getKBeta() {
+    return 1.7;
+  }
+
+  @Override
+  public double getKZeta() {
+    return 0.8;
+  }
+
+  @Override
+  public double effectiveWheelbaseRadius() {
+    return 0.4476; //diagonal / 2
+  }
+
+  @Override
+  public double wheelRadius() {
+    return 0.0653;
+  }
+
+  @Override
+  public double robotMass() {
+    return 56.7;
+  }
+
+  @Override
+  public double robotMOI() {
+    return 10;
+  }
+
+  @Override
+  public double robotAngularDrag() {
+    return 12;
+  }
+
+  @Override
+  public MotorParameters leftMotorParameters() {
+    return new MotorParameters(1, 0, 1.8);
+  }
+
+  @Override
+  public MotorParameters rightMotorParameters() {
+    return new MotorParameters(1, 0, 1.8);
   }
 
   @Override

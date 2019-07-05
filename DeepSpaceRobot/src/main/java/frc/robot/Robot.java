@@ -88,10 +88,14 @@ import static frc.robot.RobotMap.elevatorMotor;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 import static frc.robot.RobotMap.hatchRotationMotor;
+import static frc.robot.RobotMap.navX;
 
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -112,6 +116,11 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import frc.robot.util.RobotBuilder;
+import org.waltonrobotics.command.SimpleLine;
+import org.waltonrobotics.command.SimpleMotion;
+import org.waltonrobotics.metadata.Pose;
+import org.waltonrobotics.motion.Line;
+import org.waltonrobotics.motion.Path;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -130,8 +139,7 @@ public class Robot extends TimedRobot {
   static {
     isCompBot = new DigitalInput(9).get();
     SmartDashboard.putBoolean("identifier", isCompBot);
-    robotBuilder = new RobotBuilder<>(new CompPowerUp(), new CompSteamWorks(), new PracticeDeepSpace(),
-        new CompDeepSpace());
+    robotBuilder = new RobotBuilder<>(new PracticeDeepSpace());
     currentRobot = robotBuilder.getCurrentRobotConfig();
     System.out.println(currentRobot);
     drivetrain = new Drivetrain();
@@ -262,7 +270,7 @@ public class Robot extends TimedRobot {
 
     initShuffleBoard();
 
-    initCamera();
+//    initCamera();
 
     initHardware();
   }
@@ -377,36 +385,42 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-//    godSubsystem.setEnabled(false);
+////    godSubsystem.setEnabled(false);
     godSubsystem.setEnabled(true);
-    godSubsystem.setAutonomousEnabled(SmartDashboard.getBoolean(USE_AUTON, false));
-//    godSubsystem.setAutonomousEnabled(false);
+//    godSubsystem.setAutonomousEnabled(SmartDashboard.getBoolean(USE_AUTON, false));
+    godSubsystem.setAutonomousEnabled(false);
     drivetrain.cancelControllerMotion();
     drivetrain.clearControllerMotions();
-    drivetrain.shiftUp();
 
-//    Pose pose = new Pose(0, 0, StrictMath.toRadians(90));
-//    drivetrain.startControllerMotion(pose);
+    navX.resetDisplacement();
 
-//    SimpleSpline.pathFromPosesWithAngle(false, pose, pose.offset(2,2, 0)).start();
+    drivetrain.addControllerMotions(new Line(1, 0.1, 0, 0, false, new Pose(0, 0, 0), 2));
+    drivetrain.startControllerMotion(new Pose(0, 0, 0));
 
-//    Pose backup = new Pose(SmartDashboard.getNumber("x", 2.1), SmartDashboard.getNumber("y", 2.75),
-//        Math.toRadians(SmartDashboard.getNumber("angle", 0)));
-
-//    SimpleSpline.pathFromPosesWithAngleAndScale(true, .2 ,.2,frontRocketR,  backup).start();
-
-//    boolean isBackwards = SmartDashboard.getBoolean("isBackwards", true);
-
-//    Pose pose1 = new Pose(SmartDashboard.getNumber("x", -1), SmartDashboard.getNumber("y", -1),
-//        Math.toRadians(SmartDashboard.getNumber("angle", 90)));
+//    drivetrain.shiftUp();
 //
-//    SimpleSpline.pathFromPosesWithAngle(isBackwards, pose, pose1).start();
-
-//    double distance = SmartDashboard.getNumber("Distance", 2);
-//    SimpleSpline.pathFromPosesWithAngle(false, pose, pose.offset(distance), frontRocketR).start();
-//    drivetrain.startControllerMotion(pose);
-//    SimpleLine.lineWithDistance(SmartDashboard.getNumber("Distance", 2)).start();
-//    SimpleSpline.pathFromPosesWithAngle(false, Pose.ZERO, new Pose(1.5, 2)).start();
+////    Pose pose = new Pose(0, 0, StrictMath.toRadians(90));
+////    drivetrain.startControllerMotion(pose);
+//
+////    SimpleSpline.pathFromPosesWithAngle(false, pose, pose.offset(2,2, 0)).start();
+//
+////    Pose backup = new Pose(SmartDashboard.getNumber("x", 2.1), SmartDashboard.getNumber("y", 2.75),
+////        Math.toRadians(SmartDashboard.getNumber("angle", 0)));
+//
+////    SimpleSpline.pathFromPosesWithAngleAndScale(true, .2 ,.2,frontRocketR,  backup).start();
+//
+////    boolean isBackwards = SmartDashboard.getBoolean("isBackwards", true);
+//
+////    Pose pose1 = new Pose(SmartDashboard.getNumber("x", -1), SmartDashboard.getNumber("y", -1),
+////        Math.toRadians(SmartDashboard.getNumber("angle", 90)));
+////
+////    SimpleSpline.pathFromPosesWithAngle(isBackwards, pose, pose1).start();
+//
+////    double distance = SmartDashboard.getNumber("Distance", 2);
+////    SimpleSpline.pathFromPosesWithAngle(false, pose, pose.offset(distance), frontRocketR).start();
+////    drivetrain.startControllerMotion(pose);
+////    SimpleLine.lineWithDistance(SmartDashboard.getNumber("Distance", 2)).start();
+////    SimpleSpline.pathFromPosesWithAngle(false, Pose.ZERO, new Pose(1.5, 2)).start();
   }
 
   /**

@@ -7,7 +7,7 @@ import org.waltonrobotics.config.Controls;
 import org.waltonrobotics.config.EncoderConfig;
 import org.waltonrobotics.config.TalonConfig;
 
-public class CompPowerUp extends LimitedRobot {
+public abstract class CompPowerUp extends LimitedRobot {
 
   public CompPowerUp() {
     super("Comp PowerUp");

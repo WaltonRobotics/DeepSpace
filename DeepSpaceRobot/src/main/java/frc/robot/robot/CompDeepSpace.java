@@ -26,7 +26,7 @@ import org.waltonrobotics.config.Controls;
 import org.waltonrobotics.config.EncoderConfig;
 import org.waltonrobotics.config.TalonConfig;
 
-public class CompDeepSpace extends LimitedRobot {
+public abstract class CompDeepSpace extends LimitedRobot {
 
   public CompDeepSpace() {
     super("Comp DeepSpace");
