@@ -15,6 +15,8 @@ import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
 import static frc.robot.Robot.currentRobot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -46,6 +48,14 @@ public final class RobotMap {
       currentRobot.getRightTalonConfig().getChannel() + 1);
   public static final VictorPair leftWheels = new VictorPair(currentRobot.getLeftTalonConfig().getChannel(),
       currentRobot.getLeftTalonConfig().getChannel() + 1);
+
+
+  public static final CANSparkMax rightWheelsMaster = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public static final CANSparkMax rightWheelsSlave = new CANSparkMax(2, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+  public static final CANSparkMax leftWheelsMaster = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public static final CANSparkMax leftWheelsSlave = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
+
 
   public static final SpeedController leftIntakeMotor = new Talon(currentRobot.getLeftIntakeMotorConfig().getChannel());
   public static final SpeedController rightIntakeMotor = new Talon(

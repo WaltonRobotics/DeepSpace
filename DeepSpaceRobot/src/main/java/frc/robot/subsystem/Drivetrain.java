@@ -12,14 +12,12 @@ import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_MOTOR_PERCENT_
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.Robot.drivetrain;
-import static frc.robot.RobotMap.encoderLeft;
-import static frc.robot.RobotMap.encoderRight;
-import static frc.robot.RobotMap.leftWheels;
-import static frc.robot.RobotMap.rightWheels;
+import static frc.robot.RobotMap.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.command.teleop.Drive;
@@ -30,25 +28,26 @@ import org.waltonrobotics.metadata.RobotPair;
 /**
  * Add your docs here.
  */
-public class Drivetrain extends AbstractDrivetrain {
+public class Drivetrain extends Subsystem {
 
 
   private CameraData cameraData = new CameraData();
 
   public Drivetrain() {
-    super(currentRobot);
-  }
 
-  @Override
-  public RobotPair getWheelPositions() {
-    return new RobotPair(encoderLeft.getDistance(), encoderRight.getDistance(), Timer.getFPGATimestamp());
+    RobotMap.leftWheelsMaster.restoreFactoryDefaults();
+    RobotMap.leftWheelsSlave.restoreFactoryDefaults();
+    RobotMap.rightWheelsMaster.restoreFactoryDefaults();
+    RobotMap.rightWheelsSlave.restoreFactoryDefaults();
+
+    RobotMap.leftWheelsSlave.follow(leftWheelsMaster);
+    RobotMap.rightWheelsSlave.follow(rightWheelsMaster);
   }
 
   @Override
   public void periodic() {
     super.periodic();
 
-    cameraData = drivetrain.getCurrentCameraData();
     SmartDashboard.putNumber("Dial", cameraData.getCameraPose().getY());
 
     if (cameraData.getTime() == -1.0) {
@@ -58,7 +57,6 @@ public class Drivetrain extends AbstractDrivetrain {
     }
   }
 
-  @Override
   public void reset() {
     encoderLeft.reset();
     encoderRight.reset();
@@ -98,16 +96,11 @@ public class Drivetrain extends AbstractDrivetrain {
     setSpeeds(leftMotorOutput, rightMotorOutput);
   }
 
-  @Override
   public void setSpeeds(double leftPower, double rightPower) {
-    SmartDashboard.putNumber(DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT, leftWheels.getMotorOutputPercent());
-    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT, rightWheels.getMotorOutputPercent());
-
-    leftWheels.set(ControlMode.PercentOutput, leftPower);
-    rightWheels.set(ControlMode.PercentOutput, rightPower);
+    rightWheelsMaster.set(rightPower);
+    leftWheelsMaster.set(leftPower);
   }
 
-  @Override
   public void setEncoderDistancePerPulse() {
     leftWheels.setInverted(currentRobot.getLeftTalonConfig().isInverted());
     rightWheels.setInverted(currentRobot.getRightTalonConfig().isInverted());
