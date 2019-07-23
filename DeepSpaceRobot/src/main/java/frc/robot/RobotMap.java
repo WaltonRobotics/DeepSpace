@@ -43,11 +43,11 @@ public final class RobotMap {
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
 
-
-  public static final VictorPair rightWheels = new VictorPair(currentRobot.getRightTalonConfig().getChannel(),
-      currentRobot.getRightTalonConfig().getChannel() + 1);
-  public static final VictorPair leftWheels = new VictorPair(currentRobot.getLeftTalonConfig().getChannel(),
-      currentRobot.getLeftTalonConfig().getChannel() + 1);
+//
+//  public static final VictorPair rightWheels = new VictorPair(currentRobot.getRightTalonConfig().getChannel(),
+//      currentRobot.getRightTalonConfig().getChannel() + 1);
+//  public static final VictorPair leftWheels = new VictorPair(currentRobot.getLeftTalonConfig().getChannel(),
+//      currentRobot.getLeftTalonConfig().getChannel() + 1);
 
 
   public static final CANSparkMax rightWheelsMaster = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);

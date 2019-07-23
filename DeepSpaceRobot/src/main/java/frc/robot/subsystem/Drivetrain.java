@@ -34,14 +34,14 @@ public class Drivetrain extends Subsystem {
   private CameraData cameraData = new CameraData();
 
   public Drivetrain() {
-
-    RobotMap.leftWheelsMaster.restoreFactoryDefaults();
-    RobotMap.leftWheelsSlave.restoreFactoryDefaults();
-    RobotMap.rightWheelsMaster.restoreFactoryDefaults();
-    RobotMap.rightWheelsSlave.restoreFactoryDefaults();
-
-    RobotMap.leftWheelsSlave.follow(leftWheelsMaster);
-    RobotMap.rightWheelsSlave.follow(rightWheelsMaster);
+//
+//    RobotMap.leftWheelsMaster.restoreFactoryDefaults();
+//    RobotMap.leftWheelsSlave.restoreFactoryDefaults();
+//    RobotMap.rightWheelsMaster.restoreFactoryDefaults();
+//    RobotMap.rightWheelsSlave.restoreFactoryDefaults();
+//
+//    RobotMap.leftWheelsSlave.follow(leftWheelsMaster);
+//    RobotMap.rightWheelsSlave.follow(rightWheelsMaster);
   }
 
   @Override
@@ -98,21 +98,23 @@ public class Drivetrain extends Subsystem {
 
   public void setSpeeds(double leftPower, double rightPower) {
     rightWheelsMaster.set(rightPower);
+    rightWheelsSlave.set(rightPower);
     leftWheelsMaster.set(leftPower);
+    leftWheelsSlave.set(leftPower);
   }
 
   public void setEncoderDistancePerPulse() {
-    leftWheels.setInverted(currentRobot.getLeftTalonConfig().isInverted());
-    rightWheels.setInverted(currentRobot.getRightTalonConfig().isInverted());
-
-    leftWheels.configPeakOutputForward(1.0);
-    leftWheels.configPeakOutputReverse(-1.0);
-
-    leftWheels.setNeutralMode(NeutralMode.Brake);
-    rightWheels.setNeutralMode(NeutralMode.Brake);
-
-    rightWheels.configPeakOutputForward(1.0);
-    rightWheels.configPeakOutputReverse(-1.0);
+//    leftWheels.setInverted(currentRobot.getLeftTalonConfig().isInverted());
+//    rightWheels.setInverted(currentRobot.getRightTalonConfig().isInverted());
+//
+//    leftWheels.configPeakOutputForward(1.0);
+//    leftWheels.configPeakOutputReverse(-1.0);
+//
+//    leftWheels.setNeutralMode(NeutralMode.Brake);
+//    rightWheels.setNeutralMode(NeutralMode.Brake);
+//
+//    rightWheels.configPeakOutputForward(1.0);
+//    rightWheels.configPeakOutputReverse(-1.0);
 
     encoderLeft.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
     encoderRight.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
