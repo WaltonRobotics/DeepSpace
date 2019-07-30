@@ -62,6 +62,7 @@ public class Drive extends Command {
   @Override
   protected void execute() {
     if (enabled) {
+      /*
       rightTriggerPress.set(OI.rightJoystick.getTrigger());
 
       if (rightTriggerPress.isRisingEdge()) {
@@ -72,6 +73,7 @@ public class Drive extends Command {
       }
 
       updateLimelightTracking();
+      */
 
       double leftYJoystick = getLeftYJoystick();
       double rightYJoystick = getRightYJoystick();
@@ -83,6 +85,7 @@ public class Drive extends Command {
       leftYJoystick = transform.transform(leftYJoystick);
       rightYJoystick = transform.transform(rightYJoystick);
 
+      /*
       if (rightTriggerPress.get()) {
         if (limelightHasValidTarget) {
           drivetrain.setArcadeSpeeds(limelightDriveCommand, limelightSteerCommand);
@@ -95,10 +98,15 @@ public class Drive extends Command {
         isAligning = false;
 
       }
+      */
 
+      /*
       if (!isAligning || !limelightHasValidTarget) {
         drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
       }
+      */
+
+      drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
 
       if (OI.shiftUp.get()) {
         drivetrain.shiftUp();

@@ -56,7 +56,6 @@ public final class RobotMap {
   public static final CANSparkMax leftWheelsMaster = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
   public static final CANSparkMax leftWheelsSlave = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-
   public static final SpeedController leftIntakeMotor = new Talon(currentRobot.getLeftIntakeMotorConfig().getChannel());
   public static final SpeedController rightIntakeMotor = new Talon(
       currentRobot.getRightIntakeMotorConfig().getChannel());
@@ -94,6 +93,8 @@ public final class RobotMap {
     leftIntakeMotor.setInverted(currentRobot.getLeftIntakeMotorConfig().isInverted());
     rightIntakeMotor.setInverted(currentRobot.getRightIntakeMotorConfig().isInverted());
     climberMotor.setInverted(currentRobot.getClimberMotorConfig().isInverted());
+    // rightWheelsMaster.setInverted(true);
+    // rightWheelsSlave.setInverted(true);
   }
 
   private RobotMap() {

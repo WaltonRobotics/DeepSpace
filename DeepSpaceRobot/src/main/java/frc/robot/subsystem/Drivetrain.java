@@ -28,20 +28,21 @@ import org.waltonrobotics.metadata.RobotPair;
 /**
  * Add your docs here.
  */
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends AbstractDrivetrain {
 
 
   private CameraData cameraData = new CameraData();
 
   public Drivetrain() {
+    super(currentRobot);
 //
 //    RobotMap.leftWheelsMaster.restoreFactoryDefaults();
 //    RobotMap.leftWheelsSlave.restoreFactoryDefaults();
 //    RobotMap.rightWheelsMaster.restoreFactoryDefaults();
 //    RobotMap.rightWheelsSlave.restoreFactoryDefaults();
 //
-//    RobotMap.leftWheelsSlave.follow(leftWheelsMaster);
-//    RobotMap.rightWheelsSlave.follow(rightWheelsMaster);
+      RobotMap.leftWheelsSlave.follow(leftWheelsMaster);
+      RobotMap.rightWheelsSlave.follow(rightWheelsMaster);
   }
 
   @Override
@@ -55,6 +56,11 @@ public class Drivetrain extends Subsystem {
     } else {
       SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, true);
     }
+  }
+
+  @Override
+  public RobotPair getWheelPositions() {
+    return null;
   }
 
   public void reset() {
@@ -97,10 +103,10 @@ public class Drivetrain extends Subsystem {
   }
 
   public void setSpeeds(double leftPower, double rightPower) {
-    rightWheelsMaster.set(rightPower);
-    rightWheelsSlave.set(rightPower);
+    rightWheelsMaster.set(-rightPower);
+    // rightWheelsSlave.set(rightPower);
     leftWheelsMaster.set(leftPower);
-    leftWheelsSlave.set(leftPower);
+    // leftWheelsSlave.set(leftPower);
   }
 
   public void setEncoderDistancePerPulse() {
