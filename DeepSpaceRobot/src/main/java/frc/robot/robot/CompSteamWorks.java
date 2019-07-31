@@ -2,9 +2,7 @@ package frc.robot.robot;
 
 import frc.robot.config.BaseMotorControllerConfig;
 import frc.robot.config.LimitedRobot;
-import org.waltonrobotics.config.Controls;
-import org.waltonrobotics.config.EncoderConfig;
-import org.waltonrobotics.config.TalonConfig;
+import org.waltonrobotics.config.*;
 
 public class CompSteamWorks extends LimitedRobot {
 
@@ -62,7 +60,6 @@ public class CompSteamWorks extends LimitedRobot {
     };
   }
 
-  @Override
   public TalonConfig getLeftTalonConfig() {
     return new TalonConfig() {
       @Override
@@ -77,7 +74,6 @@ public class CompSteamWorks extends LimitedRobot {
     };
   }
 
-  @Override
   public TalonConfig getRightTalonConfig() {
     return new TalonConfig() {
       @Override
@@ -137,6 +133,11 @@ public class CompSteamWorks extends LimitedRobot {
     return 2.0;
   }
 
+  @Override
+  public boolean reverseAngleCalculation() {
+    return false;
+  }
+
 
   @Override
   public double getRobotWidth() {
@@ -151,6 +152,81 @@ public class CompSteamWorks extends LimitedRobot {
   @Override
   public boolean isCurrentRobot() {
     return false;
+  }
+
+  @Override
+  public double getKBeta() {
+    return 0;
+  }
+
+  @Override
+  public double getKZeta() {
+    return 0;
+  }
+
+  @Override
+  public double effectiveWheelbaseRadius() {
+    return 0;
+  }
+
+  @Override
+  public double wheelRadius() {
+    return 0;
+  }
+
+  @Override
+  public double robotMass() {
+    return 0;
+  }
+
+  @Override
+  public double robotMOI() {
+    return 0;
+  }
+
+  @Override
+  public double robotAngularDrag() {
+    return 0;
+  }
+
+  @Override
+  public MotorConfig leftMotorConfig() {
+    return new MotorConfig() {
+      @Override
+      public int getChannel() {
+        return 0;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return true;
+      }
+
+      @Override
+      public MotorParameters getMotorParameters() {
+        return new MotorParameters(0, 0, 0);
+      }
+    };
+  }
+
+  @Override
+  public MotorConfig rightMotorConfig() {
+    return new MotorConfig() {
+      @Override
+      public int getChannel() {
+        return 1;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return false;
+      }
+
+      @Override
+      public MotorParameters getMotorParameters() {
+        return new MotorParameters(0, 0, 0);
+      }
+    };
   }
 
 

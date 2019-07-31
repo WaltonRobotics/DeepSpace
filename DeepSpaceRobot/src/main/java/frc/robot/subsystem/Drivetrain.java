@@ -60,7 +60,7 @@ public class Drivetrain extends AbstractDrivetrain {
 
   @Override
   public RobotPair getWheelPositions() {
-    return null;
+    return new RobotPair(0, 0, 0);
   }
 
   public void reset() {
@@ -103,9 +103,9 @@ public class Drivetrain extends AbstractDrivetrain {
   }
 
   public void setSpeeds(double leftPower, double rightPower) {
-    rightWheelsMaster.set(-rightPower);
+    rightWheelsMaster.set(rightPower);
     // rightWheelsSlave.set(rightPower);
-    leftWheelsMaster.set(leftPower);
+    leftWheelsMaster.set(-leftPower);
     // leftWheelsSlave.set(leftPower);
   }
 

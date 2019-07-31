@@ -24,6 +24,7 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import org.waltonrobotics.config.Controls;
 import org.waltonrobotics.config.EncoderConfig;
+import org.waltonrobotics.config.MotorConfig;
 import org.waltonrobotics.config.TalonConfig;
 
 public class CompDeepSpace extends LimitedRobot {
@@ -57,7 +58,6 @@ public class CompDeepSpace extends LimitedRobot {
     };
   }
 
-  @Override
   public EncoderConfig getLeftEncoderConfig() {
     return new EncoderConfig() {
       @Override
@@ -82,7 +82,6 @@ public class CompDeepSpace extends LimitedRobot {
     };
   }
 
-  @Override
   public TalonConfig getLeftTalonConfig() {
     return new TalonConfig() {
       @Override
@@ -97,7 +96,6 @@ public class CompDeepSpace extends LimitedRobot {
     };
   }
 
-  @Override
   public TalonConfig getRightTalonConfig() {
     return new TalonConfig() {
       @Override
@@ -162,6 +160,11 @@ public class CompDeepSpace extends LimitedRobot {
     return SmartDashboard.getNumber(CONSTANTS_KL, 0.5);
   }
 
+  @Override
+  public boolean reverseAngleCalculation() {
+    return false;
+  }
+
 
   @Override
   public double getRobotWidth() {
@@ -176,6 +179,51 @@ public class CompDeepSpace extends LimitedRobot {
   @Override
   public boolean isCurrentRobot() {
     return Robot.isCompBot;
+  }
+
+  @Override
+  public double getKBeta() {
+    return 0;
+  }
+
+  @Override
+  public double getKZeta() {
+    return 0;
+  }
+
+  @Override
+  public double effectiveWheelbaseRadius() {
+    return 0;
+  }
+
+  @Override
+  public double wheelRadius() {
+    return 0;
+  }
+
+  @Override
+  public double robotMass() {
+    return 0;
+  }
+
+  @Override
+  public double robotMOI() {
+    return 0;
+  }
+
+  @Override
+  public double robotAngularDrag() {
+    return 0;
+  }
+
+  @Override
+  public MotorConfig leftMotorConfig() {
+    return null;
+  }
+
+  @Override
+  public MotorConfig rightMotorConfig() {
+    return null;
   }
 
   @Override
