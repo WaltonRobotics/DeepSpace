@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!DeepSpaceRobot/lib/WaltonRoboticsCodeLibrary-master.jar
 *.war
 *.nar
 *.ear
