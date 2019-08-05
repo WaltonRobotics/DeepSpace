@@ -16,6 +16,7 @@ import static frc.robot.RobotMap.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,20 +30,31 @@ import org.waltonrobotics.metadata.RobotPair;
  * Add your docs here.
  */
 public class Drivetrain extends AbstractDrivetrain {
-
-
+  
   private CameraData cameraData = new CameraData();
 
   public Drivetrain() {
     super(currentRobot);
-//
-//    RobotMap.leftWheelsMaster.restoreFactoryDefaults();
-//    RobotMap.leftWheelsSlave.restoreFactoryDefaults();
-//    RobotMap.rightWheelsMaster.restoreFactoryDefaults();
-//    RobotMap.rightWheelsSlave.restoreFactoryDefaults();
-//
-      RobotMap.leftWheelsSlave.follow(leftWheelsMaster);
-      RobotMap.rightWheelsSlave.follow(rightWheelsMaster);
+
+    leftWheelsMaster.restoreFactoryDefaults();
+    leftWheelsSlave.restoreFactoryDefaults();
+    rightWheelsMaster.restoreFactoryDefaults();
+    rightWheelsSlave.restoreFactoryDefaults();
+
+    leftWheelsSlave.follow(leftWheelsMaster);
+    rightWheelsSlave.follow(rightWheelsMaster);
+
+    leftWheelsMaster.setOpenLoopRampRate(0);
+    leftWheelsSlave.setOpenLoopRampRate(0);
+    rightWheelsMaster.setOpenLoopRampRate(0);
+    rightWheelsSlave.setOpenLoopRampRate(0);
+
+    leftWheelsSlave.setIdleMode(IdleMode.kBrake);
+    leftWheelsMaster.setIdleMode(IdleMode.kBrake);
+    rightWheelsSlave.setIdleMode(IdleMode.kBrake);
+    rightWheelsMaster.setIdleMode(IdleMode.kBrake);
+
+
   }
 
   @Override
@@ -138,16 +150,16 @@ public class Drivetrain extends AbstractDrivetrain {
 
 
   public void shiftUp() {
-    if (!RobotMap.shifter.get()) {
+    if (!shifter.get()) {
       System.out.println("Shifted Up");
-      RobotMap.shifter.set(true);
+      shifter.set(true);
     }
   }
 
   public void shiftDown() {
-    if (RobotMap.shifter.get()) {
+    if (shifter.get()) {
       System.out.println("Shifted Down");
-      RobotMap.shifter.set(false);
+      shifter.set(false);
     }
   }
 
