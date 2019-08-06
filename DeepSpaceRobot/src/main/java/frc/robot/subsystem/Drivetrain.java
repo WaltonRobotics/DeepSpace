@@ -8,19 +8,11 @@
 package frc.robot.subsystem;
 
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
-import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT;
-import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT;
 import static frc.robot.Robot.currentRobot;
-import static frc.robot.Robot.drivetrain;
 import static frc.robot.RobotMap.*;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMax.IdleMode;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotMap;
 import frc.robot.command.teleop.Drive;
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.metadata.CameraData;
@@ -30,7 +22,7 @@ import org.waltonrobotics.metadata.RobotPair;
  * Add your docs here.
  */
 public class Drivetrain extends AbstractDrivetrain {
-  
+
   private CameraData cameraData = new CameraData();
 
   public Drivetrain() {
@@ -49,11 +41,15 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsMaster.setOpenLoopRampRate(0);
     rightWheelsSlave.setOpenLoopRampRate(0);
 
+    leftWheelsMaster.setSmartCurrentLimit(40);
+    leftWheelsSlave.setSmartCurrentLimit(40);
+    rightWheelsMaster.setSmartCurrentLimit(40);
+    rightWheelsSlave.setSmartCurrentLimit(40);
+
     leftWheelsSlave.setIdleMode(IdleMode.kBrake);
     leftWheelsMaster.setIdleMode(IdleMode.kBrake);
     rightWheelsSlave.setIdleMode(IdleMode.kBrake);
     rightWheelsMaster.setIdleMode(IdleMode.kBrake);
-
 
   }
 
