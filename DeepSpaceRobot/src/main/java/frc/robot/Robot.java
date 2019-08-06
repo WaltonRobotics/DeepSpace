@@ -383,7 +383,8 @@ public class Robot extends TimedRobot {
 //    godSubsystem.setAutonomousEnabled(false);
     drivetrain.cancelControllerMotion();
     drivetrain.clearControllerMotions();
-    drivetrain.shiftUp();
+//    drivetrain.shiftUp();
+    drivetrain.shiftDown();
 
 //    Pose pose = new Pose(0, 0, StrictMath.toRadians(90));
 //    drivetrain.startControllerMotion(pose);
@@ -422,7 +423,8 @@ public class Robot extends TimedRobot {
     godSubsystem.setAutonomousEnabled(false);
     godSubsystem.setEnabled(true);
     drivetrain.cancelControllerMotion();
-    drivetrain.shiftUp();
+//    drivetrain.shiftUp();
+    drivetrain.shiftDown();
 
 //    godSubsystem.setEnabled(false);
 //    godSubsystem.getElevator().setControlMode(ElevatorControlMode.MANUAL);
@@ -476,4 +478,11 @@ public class Robot extends TimedRobot {
         "hasSetPipeline=" + hasSetPipeline +
         "} " + super.toString();
   }
+
+  @Override
+  public boolean isDisabled() {
+    //TODO - This is a fix that we will have to test.
+    return super.isDisabled() || OI.safetyButton.get() || OI.safetyButtonAlternate.get();
+  }
+  
 }

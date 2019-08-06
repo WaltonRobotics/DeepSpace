@@ -10,12 +10,11 @@ package frc.robot;
 import static frc.robot.Config.Inputs.GAMEPAD_PORT;
 import static frc.robot.Config.Inputs.LEFT_JOYSTICK_PORT;
 import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
-import static frc.robot.Config.Inputs.SHIFT_DOWN_PORT;
-import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
 import static frc.robot.Gamepad.Button.LEFT_BUMPER;
 import static frc.robot.Gamepad.Button.LEFT_STICK_BUTTON;
 import static frc.robot.Gamepad.Button.LEFT_TRIGGER;
 import static frc.robot.Gamepad.Button.RIGHT_BUMPER;
+import static frc.robot.Gamepad.Button.RIGHT_STICK_BUTTON;
 import static frc.robot.Gamepad.Button.RIGHT_TRIGGER;
 import static frc.robot.Gamepad.Button._1;
 import static frc.robot.Gamepad.Button._10;
@@ -23,16 +22,13 @@ import static frc.robot.Gamepad.Button._2;
 import static frc.robot.Gamepad.Button._3;
 import static frc.robot.Gamepad.Button._4;
 import static frc.robot.Gamepad.Button._9;
-import static frc.robot.Robot.drivetrain;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import org.waltonrobotics.metadata.Pose;
 
 /**
- * This class is the glue that binds the controls on the physical operator interface to the commands and command groups
- * that allow control of the robot.
+ * This class is the glue that binds the controls on the physical operator interface to the commands
+ * and command groups that allow control of the robot.
  */
 
 /*
@@ -59,30 +55,41 @@ public final class OI {
   public static final Joystick rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
   public static final Gamepad gamepad = new Gamepad(GAMEPAD_PORT);
 
-  public static final JoystickButton shiftUp = new JoystickButton(leftJoystick, SHIFT_UP_PORT);
-  public static final JoystickButton shiftDown = new JoystickButton(leftJoystick, SHIFT_DOWN_PORT);
+  //  public static final JoystickButton shiftUp = new JoystickButton(leftJoystick, SHIFT_UP_PORT);
+//  public static final JoystickButton shiftDown = new JoystickButton(leftJoystick, SHIFT_DOWN_PORT);
   public static final JoystickButton elevatorLevel3Button = new JoystickButton(gamepad,
       _4.index()); // All elevator joystick button ports are makeshift for now.
   public static final JoystickButton elevatorLevel2Button = new JoystickButton(gamepad, _3.index());
   public static final JoystickButton elevatorLevel1Button = new JoystickButton(gamepad, _2.index());
   public static final JoystickButton elevatorZeroButton = new JoystickButton(gamepad, _1.index());
-  public static final JoystickButton hatchIntakeButton = new JoystickButton(gamepad, RIGHT_BUMPER.index());
-  public static final JoystickButton intakeCargoButton = new JoystickButton(gamepad, RIGHT_TRIGGER.index());
-  public static final JoystickButton outtakeCargoButtonFast = new JoystickButton(gamepad, LEFT_TRIGGER.index());
-  public static final JoystickButton outtakeCargoButtonSlow = new JoystickButton(gamepad, LEFT_BUMPER.index());
+  //  public static final JoystickButton hatchIntakeButton = new JoystickButton(gamepad, RIGHT_BUMPER.index());
+  public static final JoystickButton intakeCargoButton = new JoystickButton(gamepad,
+      RIGHT_TRIGGER.index());
+  public static final JoystickButton outtakeCargoButtonFast = new JoystickButton(gamepad,
+      LEFT_TRIGGER.index());
+//  public static final JoystickButton outtakeCargoButtonSlow = new JoystickButton(gamepad, LEFT_BUMPER.index());
 
   public static final JoystickButton cargoModeButton = new JoystickButton(gamepad, _10.index());
-  public static final JoystickButton hatchModeButton = new JoystickButton(gamepad, _9.index());
+//  public static final JoystickButton hatchModeButton = new JoystickButton(gamepad, _9.index());
 
-  public static final JoystickButton hatchStart = new JoystickButton(rightJoystick, 8);
-  public static final JoystickButton cargoStart = new JoystickButton(rightJoystick, 9);
+  //  public static final JoystickButton hatchStart = new JoystickButton(rightJoystick, 8);
+//  public static final JoystickButton cargoStart = new JoystickButton(rightJoystick, 9);
+  public static final JoystickButton cargoStart = new JoystickButton(gamepad, _9.index());
 
-  public static final JoystickButton bringUp = new JoystickButton(rightJoystick, 4);
-  public static final JoystickButton bringDown = new JoystickButton(rightJoystick, 5);
+//  public static final JoystickButton bringUp = new JoystickButton(rightJoystick, 4);
+//  public static final JoystickButton bringDown = new JoystickButton(rightJoystick, 5);
 //  public static final JoystickButton defenseModeButton = new JoystickButton(gamepad, gamepad.getPO);
 
-  public static final JoystickButton masterOverride = new JoystickButton(leftJoystick, 7);
-  public static final JoystickButton cargoTurbo = new JoystickButton(gamepad, LEFT_STICK_BUTTON.index());
+  //  public static final JoystickButton masterOverride = new JoystickButton(leftJoystick, 7);
+  public static final JoystickButton masterOverride = new JoystickButton(gamepad,
+      RIGHT_STICK_BUTTON.index());
+  public static final JoystickButton cargoTurbo = new JoystickButton(gamepad,
+      LEFT_STICK_BUTTON.index());
+
+  public static final JoystickButton safetyButton = new JoystickButton(gamepad,
+      RIGHT_BUMPER.index());
+  public static final JoystickButton safetyButtonAlternate = new JoystickButton(gamepad,
+      LEFT_BUMPER.index());
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.
@@ -112,14 +119,14 @@ public final class OI {
   // button.whenReleased(new ExampleCommand());
 
   static {
-    JoystickButton resetEncoders = new JoystickButton(rightJoystick, 2);
-    resetEncoders.whenPressed(new InstantCommand() {
-      @Override
-      protected void initialize() {
-        drivetrain.reset();
-        drivetrain.setStartingPosition(Pose.ZERO);
-      }
-    });
+//    JoystickButton resetEncoders = new JoystickButton(rightJoystick, 2);
+//    resetEncoders.whenPressed(new InstantCommand() {
+//      @Override
+//      protected void initialize() {
+//        drivetrain.reset();
+//        drivetrain.setStartingPosition(Pose.ZERO);
+//      }
+//    });
 
 //    TODO uncomment this to use autoassist
 //    JoystickButton rightTrigger = new JoystickButton(rightJoystick,0);

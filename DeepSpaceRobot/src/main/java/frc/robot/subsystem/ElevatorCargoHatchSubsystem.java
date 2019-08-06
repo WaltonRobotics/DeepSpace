@@ -27,8 +27,8 @@ import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_INTAKE_OPEN;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_LOWER_LIMIT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_STATE;
-import static frc.robot.OI.bringDown;
-import static frc.robot.OI.bringUp;
+//import static frc.robot.OI.bringDown;
+//import static frc.robot.OI.bringUp;
 import static frc.robot.OI.cargoModeButton;
 import static frc.robot.OI.cargoStart;
 import static frc.robot.OI.elevatorLevel1Button;
@@ -36,13 +36,13 @@ import static frc.robot.OI.elevatorLevel2Button;
 import static frc.robot.OI.elevatorLevel3Button;
 import static frc.robot.OI.elevatorZeroButton;
 import static frc.robot.OI.gamepad;
-import static frc.robot.OI.hatchIntakeButton;
-import static frc.robot.OI.hatchModeButton;
-import static frc.robot.OI.hatchStart;
+//import static frc.robot.OI.hatchIntakeButton;
+//import static frc.robot.OI.hatchModeButton;
+//import static frc.robot.OI.hatchStart;
 import static frc.robot.OI.intakeCargoButton;
 import static frc.robot.OI.leftJoystick;
 import static frc.robot.OI.outtakeCargoButtonFast;
-import static frc.robot.OI.outtakeCargoButtonSlow;
+//import static frc.robot.OI.outtakeCargoButtonSlow;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.Robot.drivetrain;
 import static frc.robot.RobotMap.clawRotationMotor;
@@ -183,13 +183,13 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     climber.collectData();
 
     currentCargoModePressed.set(cargoModeButton.get());
-    currentHatchModePressed.set(hatchModeButton.get());
+//    currentHatchModePressed.set(hatchModeButton.get());
 //    currentDefenceModePressed = defenseModeButton.get();
-    currentDefenceModePressed.set(gamepad.getPOVButton(POV.S));
-    currentSetStartModePressed.set(hatchStart.get());
+//    currentDefenceModePressed.set(gamepad.getPOVButton(POV.S));
+//    currentSetStartModePressed.set(hatchStart.get());
     currentSetStartCargoModePressed.set(cargoStart.get());
-    climberPreset.set(gamepad.getPOVButton(POV.W));
-    autoClimbMode.set(leftJoystick.getTrigger());
+//    climberPreset.set(gamepad.getPOVButton(POV.W));
+//    autoClimbMode.set(leftJoystick.getTrigger());
     masterOverride.set(OI.masterOverride.get());
 
   }
@@ -199,11 +199,13 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   }
 
   public boolean autoClimbRising() {
-    return autoClimbMode.isRisingEdge();
+//    return autoClimbMode.isRisingEdge();
+    return false;
   }
 
   public boolean climbModeRising() {
-    return climberPreset.isRisingEdge();
+//    return climberPreset.isRisingEdge();
+    return false;
   }
 
   public boolean cargoModeRising() {
@@ -211,7 +213,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   }
 
   public boolean hatchModeRising() {
-    return currentHatchModePressed.isRisingEdge();
+//    return currentHatchModePressed.isRisingEdge();
+    return false;
   }
 
   public boolean defenceModeRising() {
@@ -219,7 +222,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
   }
 
   public boolean setCompStartHatchModeRising() {
-    return currentSetStartModePressed.isRisingEdge();
+//    return currentSetStartModePressed.isRisingEdge();
+    return false;
   }
 
   public boolean setCompStartCargoModeRising() {
@@ -559,9 +563,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     @Override
     public void collectData() {
       fastIntake.set(intakeCargoButton.get());
-      slowOutake.set(outtakeCargoButtonSlow.get());
+//      slowOutake.set(outtakeCargoButtonSlow.get());
       fastOuttake.set(outtakeCargoButtonFast.get());
-      slowIntake.set(hatchIntakeButton.get());
+//      slowIntake.set(hatchIntakeButton.get());
       cargoTurbo.set(OI.cargoTurbo.get());
 
       angle = clawRotationMotor.getSelectedSensorPosition();
@@ -755,7 +759,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void collectData() {
-      intake.set(hatchIntakeButton.get() || leftJoystick.getTrigger());
+      intake.set(/*hatchIntakeButton.get() || */leftJoystick.getTrigger());
       angle = hatchRotationMotor.getSelectedSensorPosition();
     }
 
@@ -891,8 +895,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     @Override
     public void collectData() {
-      climberUp.set(bringUp.get());
-      climberDown.set(bringDown.get());
+//      climberUp.set(bringUp.get());
+//      climberDown.set(bringDown.get());
     }
 
     @Override
