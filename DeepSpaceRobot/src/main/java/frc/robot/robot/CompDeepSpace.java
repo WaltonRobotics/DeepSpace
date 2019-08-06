@@ -25,6 +25,7 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import org.waltonrobotics.config.Controls;
 import org.waltonrobotics.config.EncoderConfig;
 import org.waltonrobotics.config.MotorConfig;
+import org.waltonrobotics.config.MotorParameters;
 import org.waltonrobotics.config.TalonConfig;
 
 public class CompDeepSpace extends LimitedRobot {
@@ -218,12 +219,42 @@ public class CompDeepSpace extends LimitedRobot {
 
   @Override
   public MotorConfig leftMotorConfig() {
-    return null;
+    return new MotorConfig() {
+      @Override
+      public int getChannel() {
+        return 3;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return true;
+      }
+
+      @Override
+      public MotorParameters getMotorParameters() {
+        return new MotorParameters(1, 0, 0);
+      }
+    };
   }
 
   @Override
   public MotorConfig rightMotorConfig() {
-    return null;
+    return new MotorConfig() {
+      @Override
+      public int getChannel() {
+        return 1;
+      }
+
+      @Override
+      public boolean isInverted() {
+        return false;
+      }
+
+      @Override
+      public MotorParameters getMotorParameters() {
+        return new MotorParameters(1, 0, 0);
+      }
+    };
   }
 
   @Override
