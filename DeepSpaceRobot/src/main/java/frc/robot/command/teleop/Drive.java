@@ -108,11 +108,11 @@ public class Drive extends Command {
 
       drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
 
-      if (OI.shiftUp.get()) {
-        drivetrain.shiftUp();
-      } else if (OI.shiftDown.get()) {
-        drivetrain.shiftDown();
-      }
+//      if (OI.shiftUp.get()) {
+//        drivetrain.shiftUp();
+//      } else if (OI.shiftDown.get()) {
+//        drivetrain.shiftDown();
+//      }
     }
   }
 
