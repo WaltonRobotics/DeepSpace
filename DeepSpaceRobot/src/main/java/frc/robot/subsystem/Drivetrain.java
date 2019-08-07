@@ -33,6 +33,8 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsMaster.restoreFactoryDefaults();
     rightWheelsSlave.restoreFactoryDefaults();
 
+    leftWheelsMaster.setInverted(true);
+
     leftWheelsSlave.follow(leftWheelsMaster);
     rightWheelsSlave.follow(rightWheelsMaster);
 
@@ -113,7 +115,7 @@ public class Drivetrain extends AbstractDrivetrain {
   public void setSpeeds(double leftPower, double rightPower) {
     rightWheelsMaster.set(rightPower);
     // rightWheelsSlave.set(rightPower);
-    leftWheelsMaster.set(-leftPower);
+    leftWheelsMaster.set(leftPower);
     // leftWheelsSlave.set(leftPower);
   }
 
