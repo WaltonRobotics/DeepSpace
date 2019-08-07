@@ -21,12 +21,18 @@ import frc.robot.Robot;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.util.EnhancedBoolean;
 import frc.robot.util.LEDController;
+import org.waltonrobotics.controller.MotionLogger;
+import org.waltonrobotics.metadata.Pose;
 
 public class Drive extends Command {
 
+  private static final double cameraFilter = 0.5;
   private static boolean enabled = true;
-  private final EnhancedBoolean rightTriggerPress = new EnhancedBoolean();
-  private boolean isAligning = false;
+  private MotionLogger motionLogger = new MotionLogger();
+  private Pose offset = new Pose(0, 0, 0);
+  private boolean hasFound = false;
+  private boolean isAlligning = false;
+  private EnhancedBoolean rightTriggerPress = new EnhancedBoolean();
   private boolean limelightHasValidTarget;
   private double limelightDriveCommand;
   private double limelightSteerCommand;
@@ -62,7 +68,6 @@ public class Drive extends Command {
   @Override
   protected void execute() {
     if (enabled) {
-      /*
       rightTriggerPress.set(OI.rightJoystick.getTrigger());
 
       if (rightTriggerPress.isRisingEdge()) {
@@ -73,7 +78,6 @@ public class Drive extends Command {
       }
 
       updateLimelightTracking();
-      */
 
       double leftYJoystick = getLeftYJoystick();
       double rightYJoystick = getRightYJoystick();
@@ -85,28 +89,22 @@ public class Drive extends Command {
       leftYJoystick = transform.transform(leftYJoystick);
       rightYJoystick = transform.transform(rightYJoystick);
 
-      /*
       if (rightTriggerPress.get()) {
         if (limelightHasValidTarget) {
           drivetrain.setArcadeSpeeds(limelightDriveCommand, limelightSteerCommand);
-          isAligning = true;
+          isAlligning = true;
           LEDController.setLEDAutoAlignMode();
         } else {
-          isAligning = false;
+          isAlligning = false;
         }
       } else if (rightTriggerPress.isFallingEdge()) {
-        isAligning = false;
+        isAlligning = false;
 
       }
-      */
 
-      /*
-      if (!isAligning || !limelightHasValidTarget) {
+      if (!isAlligning || !limelightHasValidTarget) {
         drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
       }
-      */
-
-      drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
 
       if (OI.shiftUp.get()) {
         drivetrain.shiftUp();
@@ -116,14 +114,15 @@ public class Drive extends Command {
     }
   }
 
+
   /**
    * This function implements a simple method of generating driving and steering commands based on the tracking data
    * from a limelight camera.
    */
   public void updateLimelightTracking() {
     // These numbers must be tuned for your Robot!  Be careful!
-    double STEER_K = SmartDashboard.getNumber("Steer K", 0.1); // how hard to turn toward the target
-    double DRIVE_K = SmartDashboard.getNumber("Drive K", 0.26); // how hard to drive fwd toward the target
+    final double STEER_K = SmartDashboard.getNumber("Steer K", 0.1); // how hard to turn toward the target
+    final double DRIVE_K = SmartDashboard.getNumber("Drive K", 0.26); // how hard to drive fwd toward the target
 
     double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
     double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
@@ -142,33 +141,17 @@ public class Drive extends Command {
     }
 
     // Start with proportional steering
-    double distance = (0.0003645262 * ty * ty * ty) + (-0.0008723340 * ty * ty) + (0.0425549550 * ty) + 0.5546679097;
+    double distance = 0.0006083653 * ty * ty * ty + 0.0035045626 * ty * ty + 0.0310867702 * ty + 0.6929105875;
     SmartDashboard.putNumber("Camera Distance", distance);
 
-    distance = Math.max(0.5, distance);
+    distance = Math.max(.5, distance);
     distance = Math.min(2.5, distance);
 
-    double steerCmd = (tx * STEER_K) / distance;
+    double steerCmd = tx * STEER_K / distance;
     limelightSteerCommand = steerCmd;
 
     // try to drive forward until the target area reaches our desired area
     double driveCmd = (getLeftYJoystick() + getRightYJoystick()) / 2.0;
-//    double maxSpeed = 1;
-//    double minSpeed = .3;
-//    double driveCmd;
-//
-//    double decelerationDistance = 1.5;
-//    double minDistance = .5;
-//    double alpha = (distance - minDistance) / (decelerationDistance - minDistance);
-//
-//    alpha = Math.max(0, Math.min(1, alpha));
-//
-//    driveCmd = alpha * maxSpeed + (1 - alpha) * minSpeed;
-//    driveCmd = Math.min(1, driveCmd);
-//
-//    SmartDashboard.putNumber("Drive Speed", driveCmd);
-//    SmartDashboard.putNumber("Alpha", alpha);
-
     limelightDriveCommand = driveCmd;
   }
 
@@ -188,16 +171,4 @@ public class Drive extends Command {
   @Override
   protected void interrupted() {
   }
-
-  @Override
-  public String toString() {
-    return "Drive{" +
-        "rightTriggerPress=" + rightTriggerPress +
-        ", isAligning=" + isAligning +
-        ", limelightHasValidTarget=" + limelightHasValidTarget +
-        ", limelightDriveCommand=" + limelightDriveCommand +
-        ", limelightSteerCommand=" + limelightSteerCommand +
-        "} " + super.toString();
-  }
-
 }
