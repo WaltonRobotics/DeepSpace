@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DynamicConfig {
+public class  DynamicConfig {
 
   private NetworkTableInstance table;
 
