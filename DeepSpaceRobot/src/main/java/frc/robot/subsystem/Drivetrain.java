@@ -9,21 +9,27 @@ package frc.robot.subsystem;
 
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
 import static frc.robot.Robot.currentRobot;
+import static frc.robot.Robot.drivetrain;
 import static frc.robot.RobotMap.*;
 
 import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.command.teleop.Drive;
+import lib.Geometry.Pose2d;
+import lib.Geometry.Rotation2d;
+import lib.Kinematics.DifferentialDriveKinematics;
+import lib.Kinematics.DifferentialDriveOdometry;
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.metadata.CameraData;
 import org.waltonrobotics.metadata.RobotPair;
 
-/**
- * Add your docs here.
- */
+
 public class Drivetrain extends AbstractDrivetrain {
 
   private CameraData cameraData = new CameraData();
+
+  private DifferentialDriveOdometry driveOdometry;
+  private DifferentialDriveKinematics differentialDriveKinematics;
 
   public Drivetrain() {
     super(currentRobot);
@@ -51,6 +57,8 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsSlave.setIdleMode(IdleMode.kBrake);
     rightWheelsMaster.setIdleMode(IdleMode.kBrake);
 
+    differentialDriveKinematics = new DifferentialDriveKinematics(0.07);
+    driveOdometry = new DifferentialDriveOdometry(differentialDriveKinematics);
   }
 
   @Override
@@ -70,6 +78,23 @@ public class Drivetrain extends AbstractDrivetrain {
   public RobotPair getWheelPositions() {
     return new RobotPair(0, 0, 0);
   }
+
+  public Pose2d updateRobotPose() {
+    return driveOdometry.update(encoderLeft.get(), encoderRight.get(), new Rotation2d(ahrs.getAngle()));
+  }
+
+  public Pose2d updateRobotPoseRelative(Pose2d relativePose) {
+    return driveOdometry.update(encoderLeft.get(), encoderRight.get(), new Rotation2d(ahrs.getAngle())).relativeTo(relativePose);
+  }
+
+  public DifferentialDriveOdometry getDriveOdometry() {
+    return driveOdometry;
+  }
+
+  public void resetRobotPose() {
+    driveOdometry.resetPosition(new Pose2d(0, 0, new Rotation2d(0)));
+  }
+
 
   public void reset() {
     encoderLeft.reset();
