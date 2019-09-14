@@ -4,22 +4,26 @@ package lib.Spline;
 import org.ejml.simple.SimpleMatrix;
 
 public class CubicHermiteSpline extends Spline {
-
   private static SimpleMatrix hermiteBasis;
   private final SimpleMatrix m_coefficients;
 
   /**
-   * Constructs a cubic hermite spline with the specified control vectors. Each control vector contains info about the
-   * location of the point and its first derivative.
+   * Constructs a cubic hermite spline with the specified control vectors. Each
+   * control vector contains info about the location of the point and its first
+   * derivative.
    *
-   * @param xInitialControlVector The control vector for the initial point in the x dimension.
-   * @param xFinalControlVector The control vector for the final point in the x dimension.
-   * @param yInitialControlVector The control vector for the initial point in the y dimension.
-   * @param yFinalControlVector The control vector for the final point in the y dimension.
+   * @param xInitialControlVector The control vector for the initial point in
+   *                              the x dimension.
+   * @param xFinalControlVector   The control vector for the final point in
+   *                              the x dimension.
+   * @param yInitialControlVector The control vector for the initial point in
+   *                              the y dimension.
+   * @param yFinalControlVector   The control vector for the final point in
+   *                              the y dimension.
    */
   @SuppressWarnings("ParameterName")
   public CubicHermiteSpline(double[] xInitialControlVector, double[] xFinalControlVector,
-      double[] yInitialControlVector, double[] yFinalControlVector) {
+                            double[] yInitialControlVector, double[] yFinalControlVector) {
     super(3);
 
     // Populate the coefficients for the actual spline equations.
@@ -76,10 +80,11 @@ public class CubicHermiteSpline extends Spline {
   }
 
   /**
-   * Returns the control vector for each dimension as a matrix from the user-provided arrays in the constructor.
+   * Returns the control vector for each dimension as a matrix from the
+   * user-provided arrays in the constructor.
    *
    * @param initialVector The control vector for the initial point.
-   * @param finalVector The control vector for the final point.
+   * @param finalVector   The control vector for the final point.
    * @return The control vector matrix for a dimension.
    */
   private SimpleMatrix getControlVectorFromArrays(double[] initialVector, double[] finalVector) {

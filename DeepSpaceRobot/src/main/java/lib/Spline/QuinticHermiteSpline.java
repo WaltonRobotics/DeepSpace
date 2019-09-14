@@ -22,7 +22,7 @@ public class QuinticHermiteSpline extends Spline {
    */
   @SuppressWarnings("ParameterName")
   public QuinticHermiteSpline(double[] xInitialControlVector, double[] xFinalControlVector,
-      double[] yInitialControlVector, double[] yFinalControlVector) {
+                              double[] yInitialControlVector, double[] yFinalControlVector) {
     super(5);
 
     // Populate the coefficients for the actual spline equations.

@@ -27,7 +27,7 @@ public interface TrajectoryConstraint {
    * @return The min and max acceleration bounds.
    */
   MinMax getMinMaxAccelerationMetersPerSecondSq(Pose2d poseMeters, double curvatureRadPerMeter,
-      double velocityMetersPerSecond);
+                                                double velocityMetersPerSecond);
 
   /**
    * Represents a minimum and maximum acceleration.
@@ -44,7 +44,7 @@ public interface TrajectoryConstraint {
      * @param maxAccelerationMetersPerSecondSq The maximum acceleration.
      */
     public MinMax(double minAccelerationMetersPerSecondSq,
-        double maxAccelerationMetersPerSecondSq) {
+                  double maxAccelerationMetersPerSecondSq) {
       this.minAccelerationMetersPerSecondSq = minAccelerationMetersPerSecondSq;
       this.maxAccelerationMetersPerSecondSq = maxAccelerationMetersPerSecondSq;
     }

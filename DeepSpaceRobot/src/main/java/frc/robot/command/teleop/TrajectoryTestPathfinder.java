@@ -11,9 +11,10 @@ import java.io.IOException;
 import java.util.stream.Stream;
 
 import lib.Geometry.Pose2d;
+import lib.Kinematics.ChassisSpeeds;
 import lib.Kinematics.DifferentialDriveKinematics;
 import lib.Kinematics.DifferentialDriveOdometry;
-import lib.Utils.PathFollower;
+import lib.Utils.FollowFromFile;
 import lib.Utils.VelocityPair;
 
 import static frc.robot.Robot.drivetrain;
@@ -26,7 +27,7 @@ public class TrajectoryTestPathfinder extends Command {
     private Pose2d startingPose;
     private String trajectoryPath;
 
-    private PathFollower pathFollower;
+    private FollowFromFile pathFollower;
 
     public TrajectoryTestPathfinder(Pose2d startingPose, String trajectoryPath) {
         requires(drivetrain);
@@ -49,7 +50,7 @@ public class TrajectoryTestPathfinder extends Command {
         double kBeta = 0.1;
         double kZeta = 2;
 
-        this.pathFollower = new PathFollower(trajectory, kBeta, kZeta, 0.7);
+        this.pathFollower = new FollowFromFile(trajectory, kBeta, kZeta, 0.7);
 
     }
 
@@ -58,7 +59,7 @@ public class TrajectoryTestPathfinder extends Command {
     protected void execute() {
 
         Pose2d currentPose = drivetrain.updateRobotPose();
-        VelocityPair velocityPair = pathFollower.getRobotVelocity(currentPose);
+        ChassisSpeeds chassisSpeeds = pathFollower.getRobotVelocity(currentPose);
 
     }
 

@@ -1,6 +1,7 @@
 package lib.Controller;
 
 import lib.Geometry.Pose2d;
+import lib.Kinematics.ChassisSpeeds;
 
 /**
  * Ramsete is a nonlinear time-varying feedback controller for unicycle models
@@ -13,7 +14,7 @@ import lib.Geometry.Pose2d;
  * global pose. This is due to multiple endpoints existing for the robot which
  * have the same encoder path arc lengths.
  *
- * <p>Instead of using wheel path arc lengths (which are in the robot’s local
+ * <p>Instead of using wheel path arc lengths (which are in the robot's local
  * coordinate frame), nonlinear controllers like pure pursuit and Ramsete use
  * global pose. The controller uses this extra information to guide a linear
  * reference tracker like the PID controllers back in by adjusting the
@@ -21,10 +22,10 @@ import lib.Geometry.Pose2d;
  *
  * <p>The paper "Control of Wheeled Mobile Robots: An Experimental Overview"
  * describes a nonlinear controller for a wheeled vehicle with unicycle-like
- * kinematics; a global pose consisting of x, y, and θ; and a desired pose
- * consisting of x_d, y_d, and θ_d. We call it Ramsete because that’s the
- * acronym for the title of the book it came from in Italian (“Robotica
- * Articolata e Mobile per i SErvizi e le TEcnologie”).
+ * kinematics; a global pose consisting of x, y, and theta; and a desired pose
+ * consisting of x_d, y_d, and theta_d. We call it Ramsete because that's the
+ * acronym for the title of the book it came from in Italian ("Robotica
+ * Articolata e Mobile per i SErvizi e le TEcnologie").
  *
  * <p>See <a href="https://file.tavsys.net/control/state-space-guide.pdf">
  * Controls Engineering in the FIRST Robotics Competition</a>
@@ -36,16 +37,8 @@ public class RamseteController {
   @SuppressWarnings("MemberName")
   private final double m_zeta;
 
-  @SuppressWarnings("MemberName")
-  public class Outputs {
-    public double linearVelocity;
-    public double angularVelocity;
-
-    public Outputs(double linearVelocity, double angularVelocity) {
-      this.linearVelocity = linearVelocity;
-      this.angularVelocity = angularVelocity;
-    }
-  }
+  private Pose2d m_poseError = new Pose2d();
+  private Pose2d m_poseTolerance = new Pose2d();
 
   /**
    * Construct a Ramsete unicycle controller.
@@ -62,35 +55,58 @@ public class RamseteController {
   }
 
   /**
+   * Returns true if the pose error is within tolerance of the reference.
+   */
+  public boolean atReference() {
+    final var eTranslate = m_poseError.getTranslation();
+    final var eRotate = m_poseError.getRotation();
+    final var tolTranslate = m_poseTolerance.getTranslation();
+    final var tolRotate = m_poseTolerance.getRotation();
+    return Math.abs(eTranslate.getX()) < tolTranslate.getX()
+        && Math.abs(eTranslate.getY()) < tolTranslate.getY()
+        && Math.abs(eRotate.getRadians()) < tolRotate.getRadians();
+  }
+
+  /**
+   * Sets the pose error which is considered tolerable for use with
+   * atReference().
+   *
+   * @param poseTolerance Pose error which is tolerable.
+   */
+  public void setTolerance(Pose2d poseTolerance) {
+    m_poseTolerance = poseTolerance;
+  }
+
+  /**
    * Returns the next output of the Ramsete controller.
    *
-   * <p>The desired pose, linear velocity, and angular velocity should come from a drivetrain
-   * trajectory.
+   * <p>The reference pose, linear velocity, and angular velocity should come
+   * from a drivetrain trajectory.
    *
-   * @param desiredPose            The desired pose.
-   * @param desiredLinearVelocity  The desired linear velocity.
-   * @param desiredAngularVelocity The desired angular velocity.
-   * @param currentPose            The current pose.
+   * @param currentPose              The current pose.
+   * @param poseRef                  The desired pose.
+   * @param linearVelocityRefMeters  The desired linear velocity in meters.
+   * @param angularVelocityRefMeters The desired angular velocity in meters.
    */
   @SuppressWarnings("LocalVariableName")
-  public Outputs calculate(Pose2d desiredPose,
-      double desiredLinearVelocity,
-      double desiredAngularVelocity,
-      Pose2d currentPose) {
-      var error = desiredPose.relativeTo(currentPose);
+  public ChassisSpeeds calculate(Pose2d currentPose,
+                                 Pose2d poseRef,
+                                 double linearVelocityRefMeters,
+                                 double angularVelocityRefMeters) {
+    m_poseError = poseRef.relativeTo(currentPose);
 
     // Aliases for equation readability
-    double vDesired = desiredLinearVelocity;
-    double omegaDesired = desiredAngularVelocity;
-    double eX = error.getTranslation().getX();
-    double eY = error.getTranslation().getY();
-    double eTheta = error.getRotation().getRadians();
+    double eX = m_poseError.getTranslation().getX();
+    double eY = m_poseError.getTranslation().getY();
+    double eTheta = m_poseError.getRotation().getRadians();
+    double vRef = linearVelocityRefMeters;
+    double omegaRef = angularVelocityRefMeters;
 
-    double k = 2.0 * m_zeta
-        * Math.sqrt(Math.pow(omegaDesired, 2) + m_b * Math.pow(vDesired, 2));
+    double k = 2.0 * m_zeta * Math.sqrt(Math.pow(omegaRef, 2) + m_b * Math.pow(vRef, 2));
 
-      return new Outputs(vDesired * Math.cos(eTheta) + k * eX,
-        omegaDesired + k * eTheta + m_b * vDesired * sinc(eTheta) * eY);
+    return new ChassisSpeeds(vRef * m_poseError.getRotation().getCos() + k * eX,
+        0.0,
+        omegaRef + k * eTheta + m_b * vRef * sinc(eTheta) * eY);
   }
 
   /**

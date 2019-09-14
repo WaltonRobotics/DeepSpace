@@ -187,7 +187,7 @@ public final class SplineHelper {
    */
   @SuppressWarnings({"ParameterName", "LocalVariableName"})
   private static void thomasAlgorithm(double[] a, double[] b,
-      double[] c, double[] d, double[] solutionVector) {
+                                      double[] c, double[] d, double[] solutionVector) {
     int N = d.length;
 
     double[] cStar = new double[N];

@@ -8,6 +8,11 @@ import lib.Geometry.Pose2d;
  * various States that represent the pose, curvature, time elapsed, velocity,
  * and acceleration at that point.
  */
+/**
+ * Represents a time-parameterized trajectory. The trajectory contains of
+ * various States that represent the pose, curvature, time elapsed, velocity,
+ * and acceleration at that point.
+ */
 public class Trajectory {
   private final double m_totalTimeSeconds;
   private final List<State> m_states;
@@ -156,8 +161,8 @@ public class Trajectory {
      * @param curvatureRadPerMeter          The curvature at that point of the trajectory.
      */
     public State(double timeSeconds, double velocityMetersPerSecond,
-        double accelerationMetersPerSecondSq, Pose2d poseMeters,
-        double curvatureRadPerMeter) {
+                 double accelerationMetersPerSecondSq, Pose2d poseMeters,
+                 double curvatureRadPerMeter) {
       this.timeSeconds = timeSeconds;
       this.velocityMetersPerSecond = velocityMetersPerSecond;
       this.accelerationMetersPerSecondSq = accelerationMetersPerSecondSq;

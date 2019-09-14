@@ -54,8 +54,8 @@ public class CentripetalAccelerationConstraint implements TrajectoryConstraint {
    */
   @Override
   public MinMax getMinMaxAccelerationMetersPerSecondSq(Pose2d poseMeters,
-      double curvatureRadPerMeter,
-      double velocityMetersPerSecond) {
+                                                       double curvatureRadPerMeter,
+                                                       double velocityMetersPerSecond) {
     // The acceleration of the robot has no impact on the centripetal acceleration
     // of the robot.
     return new MinMax();
