@@ -166,6 +166,14 @@ public class Config {
     }
   }
 
+  public static final class RamseteControllerConstants{
+
+    public static final double DRIVE_RADIUS = 0.7;
+    public static final double K_BETA = 2.0;
+    public static final double K_ZETA = 0.7;
+
+  }
+
   public static final class SmartMotionConstants {
 
     public static final double LEFT_P = 0;
@@ -178,5 +186,7 @@ public class Config {
     public static final double RIGHT_D = 0;
     public static final double RIGHT_FF = 0;
 
+    public static final int DRIVE_CONTROL_MODE = 0;
+    public static final int VELOCITY_CONTROL_MODE = 1;
   }
 }

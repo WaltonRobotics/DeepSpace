@@ -11,9 +11,11 @@ import lib.Kinematics.ChassisSpeeds;
 import lib.Kinematics.DifferentialDriveKinematics;
 import lib.Utils.FollowFromFile;
 
+import static frc.robot.Config.RamseteControllerConstants.K_BETA;
+import static frc.robot.Config.RamseteControllerConstants.K_ZETA;
 import static frc.robot.Robot.drivetrain;
 
-public class TrajectoryTestPathfinder extends Command {
+public class FollowTrajectory extends Command {
 
     private DifferentialDriveKinematics kinematics;
 
@@ -22,7 +24,7 @@ public class TrajectoryTestPathfinder extends Command {
 
     private FollowFromFile pathFollower;
 
-    public TrajectoryTestPathfinder(Pose2d startingPose, String trajectoryPath, double driveRadius) {
+    public FollowTrajectory(Pose2d startingPose, String trajectoryPath, double driveRadius) {
         requires(drivetrain);
         this.startingPose = startingPose;
         this.trajectoryPath = trajectoryPath;
@@ -40,10 +42,7 @@ public class TrajectoryTestPathfinder extends Command {
             e.printStackTrace();
         }
 
-        double kBeta = 2.0;
-        double kZeta = 0.7;
-
-        this.pathFollower = new FollowFromFile(trajectory, kBeta, kZeta);
+        this.pathFollower = new FollowFromFile(trajectory, K_BETA, K_ZETA);
         drivetrain.getDriveOdometry().resetPosition(startingPose);
     }
 

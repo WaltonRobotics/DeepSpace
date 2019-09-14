@@ -7,11 +7,13 @@
 
 package frc.robot;
 
+
 import static frc.robot.Config.Camera.LED_OFF;
 import static frc.robot.Config.Camera.WIDTH;
 import static frc.robot.Config.Point.backup;
 import static frc.robot.Config.Point.frontRocketR;
 import static frc.robot.Config.Point.hatchIntakeR;
+import static frc.robot.Config.RamseteControllerConstants.DRIVE_RADIUS;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ACTUAL;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_ANGLE;
 import static frc.robot.Config.SmartDashboardKeys.CAMERA_DATA_HEIGHT;
@@ -97,6 +99,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config.Camera;
+import frc.robot.command.teleop.FollowTrajectory;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
@@ -112,6 +115,8 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import frc.robot.util.RobotBuilder;
+import lib.Geometry.Pose2d;
+import lib.Geometry.Rotation2d;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -154,21 +159,6 @@ public class Robot extends TimedRobot {
 
   private static void initShuffleBoard() {
 
-    transformSendableChooser.setDefaultOption("Normal", new NormalSpeed());
-    transformSendableChooser.addOption("Sigmoid", new Sigmoid());
-    transformSendableChooser.addOption("Sqrt", new Sqrt());
-
-    SmartDashboard.putData(DRIVETEAM_TRANSFORM_SELECT, transformSendableChooser);
-
-    SmartDashboard.putNumber(CONSTANTS_KV, currentRobot.getKV());
-    SmartDashboard.putNumber(CONSTANTS_KACC, currentRobot.getKAcc());
-    SmartDashboard.putNumber(CONSTANTS_KK, currentRobot.getKK());
-    SmartDashboard.putNumber(CONSTANTS_KS, currentRobot.getKS());
-    SmartDashboard.putNumber(CONSTANTS_KANGLE, currentRobot.getKAng());
-    SmartDashboard.putNumber(CONSTANTS_MAX_VELOCITY, currentRobot.getMaxVelocity());
-    SmartDashboard.putNumber(CONSTANTS_MAX_ACCELERATION, currentRobot.getMaxAcceleration());
-    SmartDashboard.putNumber(CONSTANTS_KL, currentRobot.getKL());
-
     SmartDashboard.putNumber(MOTORS_ELEVATOR_HEIGHT, 0);
     SmartDashboard.putNumber(MOTORS_HATCH_ANGLE, 0);
     SmartDashboard.putBoolean(MOTORS_INTAKE_OPEN, false);
@@ -181,11 +171,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean(MOTORS_HATCH_ForwardSoftLimit, false);
     SmartDashboard.putBoolean(MOTORS_HATCH_ReverseSoftLimit, false);
 
-    SmartDashboard.putString(MOTORS_STATE, "No state");
-    SmartDashboard.putString(MOTORS_ELEVATOR_MODE, "No mode");
-    SmartDashboard.putString(MOTORS_CARGO_MODE, "No mode");
-    SmartDashboard.putString(MOTORS_HATCH_MODE, "No mode");
-
     SmartDashboard.putNumber(MOTORS_ELEVATOR_POWER, 0);
     SmartDashboard.putNumber(MOTORS_ELEVATOR_TARGET, 0);
     SmartDashboard.putNumber(MOTORS_HATCH_POWER, 0);
@@ -193,61 +178,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber(MOTORS_CARGO_POWER, 0);
     SmartDashboard.putNumber(MOTORS_CARGO_TARGET, 0);
 
-    SmartDashboard.putNumber(MOTORS_CLIMBER_POWER, 0);
-    SmartDashboard.putString(MOTORS_CLIMBER_MODE, "No mode");
-
-    SmartDashboard.putNumber(PARKING_LINE_OFFSET, 60.0);
-    SmartDashboard.putNumber(PARKING_LINE_FOCUS_X, WIDTH / 2.0);
-    SmartDashboard.putNumber(PARKING_LINE_FOCUS_Y, 240.0);
-    SmartDashboard.putNumber(PARKING_LINE_PERCENTAGE, 0.5);
-
-    SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, "No position has been reported");
-    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, 0);
-    SmartDashboard.putNumber(DRIVETRAIN_LEFT_ENCODER, 0);
-    SmartDashboard.putNumber(DRIVETRAIN_LEFT_JOYSTICK_Y, 0);
-    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, 0);
-    SmartDashboard.putNumber(DRIVETRAIN_LEFT_MOTOR_PERCENT_OUTPUT, 0);
-    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_MOTOR_PERCENT_OUTPUT, 0);
-
-    SmartDashboard.putNumber(CAMERA_DATA_X, -1.0);
-    SmartDashboard.putNumber(CAMERA_DATA_Y, 0.1);
-    SmartDashboard.putNumber(CAMERA_DATA_HEIGHT, 0);
-    SmartDashboard.putNumber(CAMERA_DATA_ANGLE, 0);
-    SmartDashboard.putNumber(CAMERA_DATA_NUMBER_OF_TARGETS, 1.0);
-    SmartDashboard.putNumber(CAMERA_DATA_TIME, 0);
-    SmartDashboard.putBoolean(CAMERA_DATA_USES_AUTOASSIST, false);
-    SmartDashboard.putString(CAMERA_DATA_ACTUAL, "No actual data");
-    SmartDashboard.putString(CAMERA_DATA_TARGET, "No target data");
-    SmartDashboard.putNumber(CAMERA_DATA_PROPORTIONAL_POWER, 0.2);
-    SmartDashboard.putNumber(CAMERA_DATA_TARGET_OFFSET, 0.0);
-
-    SmartDashboard.putString(DEBUG_CAMERA_OFFSET, "No camera offset");
-    SmartDashboard.putString(DEBUG_CHOSEN_TARGET, "No camera data");
-    SmartDashboard.putString(DEBUG_JUST_BEFORE, "No camera data");
-    SmartDashboard.putString(DEBUG_ACTUAL_TARGET, "No camera data");
-    SmartDashboard.putString(DEBUG_CAMERA_VISION, "No Camera Data");
-    SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, false);
-
-    SmartDashboard.putNumber(MOTION_FRONT_ROCKET_X, frontRocketR.getX());
-    SmartDashboard.putNumber(MOTION_FRONT_ROCKET_Y, frontRocketR.getY());
-    SmartDashboard.putNumber(MOTION_FRONT_ROCKET_ANGLE, frontRocketR.getDegrees());
-
-    SmartDashboard.putNumber(MOTION_BACKUP_X, backup.getX());
-    SmartDashboard.putNumber(MOTION_BACKUP_Y, backup.getY());
-    SmartDashboard.putNumber(MOTION_BACKUP_ANGLE, backup.getDegrees());
-
-    SmartDashboard.putNumber(MOTION_HATCH_PICKUP_X, hatchIntakeR.getX());
-    SmartDashboard.putNumber(MOTION_HATCH_PICKUP_Y, hatchIntakeR.getY());
-    SmartDashboard.putNumber(MOTION_HATCH_PICKUP_ANGLE, hatchIntakeR.getDegrees());
-
     SmartDashboard.putBoolean(IS_RIGHT_AUTON, true);
     SmartDashboard.putBoolean(USE_AUTON, false);
-
-    SmartDashboard.putNumber("Steer K", 0.065);
-    SmartDashboard.putNumber("Drive K", 0.26);
-    SmartDashboard.putNumber("Camera Distance", -1.0);
-
-    SmartDashboard.putNumber("Distance", 2.0);
   }
 
   /**
@@ -365,16 +297,7 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
-  /**
-   * This autonomous (along with the chooser code above) shows how to select between different autonomous modes using
-   * the dashboard. The sendable chooser code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
-   * remove all of the chooser code and uncomment the getString code to get the auto name from the text box below the
-   * Gyro
-   *
-   * <p>You can add additional auto modes by adding additional commands to the
-   * chooser code above (like the commented example) or additional comparisons to the switch structure below with
-   * additional strings & commands.
-   */
+
   @Override
   public void autonomousInit() {
 //    godSubsystem.setEnabled(false);
@@ -385,28 +308,8 @@ public class Robot extends TimedRobot {
     drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
 
-//    Pose pose = new Pose(0, 0, StrictMath.toRadians(90));
-//    drivetrain.startControllerMotion(pose);
+    new FollowTrajectory(new Pose2d(0, 0, Rotation2d.fromDegrees(0)), "e", DRIVE_RADIUS).start();
 
-//    SimpleSpline.pathFromPosesWithAngle(false, pose, pose.offset(2,2, 0)).start();
-
-//    Pose backup = new Pose(SmartDashboard.getNumber("x", 2.1), SmartDashboard.getNumber("y", 2.75),
-//        Math.toRadians(SmartDashboard.getNumber("angle", 0)));
-
-//    SimpleSpline.pathFromPosesWithAngleAndScale(true, .2 ,.2,frontRocketR,  backup).start();
-
-//    boolean isBackwards = SmartDashboard.getBoolean("isBackwards", true);
-
-//    Pose pose1 = new Pose(SmartDashboard.getNumber("x", -1), SmartDashboard.getNumber("y", -1),
-//        Math.toRadians(SmartDashboard.getNumber("angle", 90)));
-//
-//    SimpleSpline.pathFromPosesWithAngle(isBackwards, pose, pose1).start();
-
-//    double distance = SmartDashboard.getNumber("Distance", 2);
-//    SimpleSpline.pathFromPosesWithAngle(false, pose, pose.offset(distance), frontRocketR).start();
-//    drivetrain.startControllerMotion(pose);
-//    SimpleLine.lineWithDistance(SmartDashboard.getNumber("Distance", 2)).start();
-//    SimpleSpline.pathFromPosesWithAngle(false, Pose.ZERO, new Pose(1.5, 2)).start();
   }
 
   /**
@@ -424,12 +327,6 @@ public class Robot extends TimedRobot {
     drivetrain.cancelControllerMotion();
     drivetrain.shiftUp();
 
-//    godSubsystem.setEnabled(false);
-//    godSubsystem.getElevator().setControlMode(ElevatorControlMode.MANUAL);
-//    godSubsystem.getCargo().setControlMode(ClawControlMode.MANUAL);
-//    godSubsystem.getHatch().setControlMode(HatchControlMode.MANUAL);
-//
-//    elevatorMotor.setSelectedSensorPosition(0, 0, 100);
   }
 
   /**
@@ -439,28 +336,6 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-//    godSubsystem.getElevator().setElevatorPower(godSubsystem.getElevator().getElevatorJoystick());
-////    godSubsystem.getHatch().setRotationPower(godSubsystem.getCargo().getCargoJoystick());
-//    godSubsystem.getCargo().setRotationPower(godSubsystem.getCargo().getCargoJoystick());
-//
-//    if (catchHatch) {
-//      if (!hatchIntake.get()) {
-//        godSubsystem.getHatch().setIntake(true);
-//      }
-//    } else {
-//      if (hatchIntake.get()) {
-//        godSubsystem.getHatch().setIntake(false);
-//      }
-//    }
-//
-//    if (intake && !outtake) {
-//      intake = false;
-//      godSubsystem.getCargo().intakeCargoFast(700);
-//    }
-//    if (outtake && !intake) {
-//      outtake = false;
-//      godSubsystem.getCargo().outtakeCargoFast(1000);
-//    }
   }
 
   /**

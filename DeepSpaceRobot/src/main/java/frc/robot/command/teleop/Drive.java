@@ -32,8 +32,6 @@ public class Drive extends Command {
   private double limelightSteerCommand;
 
   public Drive() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
     requires(drivetrain);
   }
 
@@ -45,7 +43,6 @@ public class Drive extends Command {
     return Robot.transformSendableChooser.getSelected();
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
   }
@@ -58,11 +55,10 @@ public class Drive extends Command {
     return (currentRobot.getRightJoystickConfig().isInverted() ? -1 : 1) * OI.rightJoystick.getY();
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     if (enabled) {
-      /*
+
       rightTriggerPress.set(OI.rightJoystick.getTrigger());
 
       if (rightTriggerPress.isRisingEdge()) {
@@ -73,7 +69,7 @@ public class Drive extends Command {
       }
 
       updateLimelightTracking();
-      */
+
 
       double leftYJoystick = getLeftYJoystick();
       double rightYJoystick = getRightYJoystick();
@@ -85,7 +81,6 @@ public class Drive extends Command {
       leftYJoystick = transform.transform(leftYJoystick);
       rightYJoystick = transform.transform(rightYJoystick);
 
-      /*
       if (rightTriggerPress.get()) {
         if (limelightHasValidTarget) {
           drivetrain.setArcadeSpeeds(limelightDriveCommand, limelightSteerCommand);
@@ -98,15 +93,11 @@ public class Drive extends Command {
         isAligning = false;
 
       }
-      */
 
-      /*
+
       if (!isAligning || !limelightHasValidTarget) {
         drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
       }
-      */
-
-      drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
 
       if (OI.shiftUp.get()) {
         drivetrain.shiftUp();
