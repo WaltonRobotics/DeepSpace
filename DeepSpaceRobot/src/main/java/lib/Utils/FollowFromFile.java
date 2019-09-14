@@ -1,5 +1,7 @@
 package lib.Utils;
 
+import org.waltonrobotics.metadata.Pose;
+
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Trajectory.Segment;
 import lib.Controller.RamseteController;
@@ -13,17 +15,15 @@ public class FollowFromFile {
   private Segment currentSeg;
   private Trajectory trajectory;
 
-  private double drive_radius;
-
   private RamseteController ramseteController;
 
-  public FollowFromFile(Trajectory traj, double kBeta, double kZeta, double driveRadius) {
+  public FollowFromFile(Trajectory traj, double kBeta, double kZeta) {
       ramseteController = new RamseteController(kBeta, kZeta);
 
       trajectory = traj;
       currentSegIndex = 0;
       currentSeg = trajectory.segments[currentSegIndex];
-      drive_radius = driveRadius;
+      ramseteController.setTolerance(new Pose2d(0.03, 0.03, Rotation2d.fromDegrees(30)));
   }
 
   /**
@@ -58,7 +58,7 @@ public class FollowFromFile {
     return ramseteOutputs;
   }
 
-  private boolean isFinished() {
+  public boolean isFinished() {
     return currentSegIndex >= trajectory.length();
   }
 }

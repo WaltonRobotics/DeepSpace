@@ -8,12 +8,24 @@
 package frc.robot.subsystem;
 
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
+import static frc.robot.Config.SmartMotionConstants.LEFT_D;
+import static frc.robot.Config.SmartMotionConstants.LEFT_FF;
+import static frc.robot.Config.SmartMotionConstants.LEFT_I;
+import static frc.robot.Config.SmartMotionConstants.LEFT_P;
+import static frc.robot.Config.SmartMotionConstants.RIGHT_D;
+import static frc.robot.Config.SmartMotionConstants.RIGHT_FF;
+import static frc.robot.Config.SmartMotionConstants.RIGHT_I;
+import static frc.robot.Config.SmartMotionConstants.RIGHT_P;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.Robot.drivetrain;
 import static frc.robot.RobotMap.*;
 
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.ControlType;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Config;
 import frc.robot.command.teleop.Drive;
 import lib.Geometry.Pose2d;
 import lib.Geometry.Rotation2d;
@@ -59,6 +71,8 @@ public class Drivetrain extends AbstractDrivetrain {
 
     differentialDriveKinematics = new DifferentialDriveKinematics(0.07);
     driveOdometry = new DifferentialDriveOdometry(differentialDriveKinematics);
+
+    setVelocityControlMode();
   }
 
   @Override
@@ -90,11 +104,6 @@ public class Drivetrain extends AbstractDrivetrain {
   public DifferentialDriveOdometry getDriveOdometry() {
     return driveOdometry;
   }
-
-  public void resetRobotPose() {
-    driveOdometry.resetPosition(new Pose2d(0, 0, new Rotation2d(0)));
-  }
-
 
   public void reset() {
     encoderLeft.reset();
@@ -141,6 +150,31 @@ public class Drivetrain extends AbstractDrivetrain {
     leftWheelsMaster.set(-leftPower);
     // leftWheelsSlave.set(leftPower);
   }
+
+  public void setVelocities(double lefVelocity, double rightVelocity) {
+    rightWheelsMaster.getPIDController().setReference(rightVelocity, ControlType.kVelocity, 0);
+    leftWheelsMaster.getPIDController().setReference(lefVelocity, ControlType.kVelocity, 0);
+  }
+
+  public void setVelocityControlMode() {
+    rightWheelsMaster.getPIDController().setP(RIGHT_P);
+    rightWheelsMaster.getPIDController().setI(RIGHT_I);
+    rightWheelsMaster.getPIDController().setD(RIGHT_D);
+    rightWheelsMaster.getPIDController().setFF(RIGHT_FF);
+    rightWheelsMaster.getPIDController().setOutputRange(-1, 1);
+
+    rightWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, 0);
+
+    leftWheelsMaster.getPIDController().setP(LEFT_P);
+    leftWheelsMaster.getPIDController().setI(LEFT_I);
+    leftWheelsMaster.getPIDController().setD(LEFT_D);
+    leftWheelsMaster.getPIDController().setFF(LEFT_FF);
+    leftWheelsMaster.getPIDController().setOutputRange(-1, 1);
+
+    leftWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, 0);
+  }
+
+
 
   public void setEncoderDistancePerPulse() {
 //    leftWheels.setInverted(currentRobot.getLeftTalonConfig().isInverted());

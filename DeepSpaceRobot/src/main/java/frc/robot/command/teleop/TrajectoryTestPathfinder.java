@@ -1,39 +1,32 @@
 package frc.robot.command.teleop;
 
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
-import frc.robot.subsystem.Drivetrain;
 import jaci.pathfinder.PathfinderFRC;
 import jaci.pathfinder.Trajectory;
 
 import java.io.IOException;
-import java.util.stream.Stream;
 
 import lib.Geometry.Pose2d;
 import lib.Kinematics.ChassisSpeeds;
 import lib.Kinematics.DifferentialDriveKinematics;
-import lib.Kinematics.DifferentialDriveOdometry;
 import lib.Utils.FollowFromFile;
-import lib.Utils.VelocityPair;
 
 import static frc.robot.Robot.drivetrain;
 
-
 public class TrajectoryTestPathfinder extends Command {
 
-    private DifferentialDriveOdometry odometry;
+    private DifferentialDriveKinematics kinematics;
 
     private Pose2d startingPose;
     private String trajectoryPath;
 
     private FollowFromFile pathFollower;
 
-    public TrajectoryTestPathfinder(Pose2d startingPose, String trajectoryPath) {
+    public TrajectoryTestPathfinder(Pose2d startingPose, String trajectoryPath, double driveRadius) {
         requires(drivetrain);
         this.startingPose = startingPose;
         this.trajectoryPath = trajectoryPath;
-        this.odometry = drivetrain.getDriveOdometry();
+        kinematics = new DifferentialDriveKinematics(driveRadius);
     }
 
     @Override
@@ -47,24 +40,23 @@ public class TrajectoryTestPathfinder extends Command {
             e.printStackTrace();
         }
 
-        double kBeta = 0.1;
-        double kZeta = 2;
+        double kBeta = 2.0;
+        double kZeta = 0.7;
 
-        this.pathFollower = new FollowFromFile(trajectory, kBeta, kZeta, 0.7);
-
+        this.pathFollower = new FollowFromFile(trajectory, kBeta, kZeta);
+        drivetrain.getDriveOdometry().resetPosition(startingPose);
     }
 
 
     @Override
     protected void execute() {
-
         Pose2d currentPose = drivetrain.updateRobotPose();
         ChassisSpeeds chassisSpeeds = pathFollower.getRobotVelocity(currentPose);
-
+        drivetrain.setVelocities(kinematics.toWheelSpeeds(chassisSpeeds).left, kinematics.toWheelSpeeds(chassisSpeeds).right);
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return pathFollower.isFinished();
     }
 }

@@ -166,4 +166,17 @@ public class Config {
     }
   }
 
+  public static final class SmartMotionConstants {
+
+    public static final double LEFT_P = 0;
+    public static final double LEFT_I = 0;
+    public static final double LEFT_D = 0;
+    public static final double LEFT_FF = 0;
+
+    public static final double RIGHT_P = 0;
+    public static final double RIGHT_I = 0;
+    public static final double RIGHT_D = 0;
+    public static final double RIGHT_FF = 0;
+
+  }
 }
