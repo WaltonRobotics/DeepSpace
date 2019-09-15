@@ -238,40 +238,13 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     hatch.outputData();
     climber.outputData();
 
-    SmartDashboard.putString(MOTORS_STATE, stateMachine.getCurrentState().getClass().getSimpleName());
-    SmartDashboard.putNumber(MOTORS_ELEVATOR_HEIGHT, elevator.getElevatorHeight());
-    SmartDashboard.putNumber(MOTORS_ELEVATOR_POWER, elevator.getElevatorPower());
-    SmartDashboard.putNumber(MOTORS_ELEVATOR_TARGET, elevator.getCurrentTarget());
-    SmartDashboard.putString(MOTORS_ELEVATOR_MODE, elevator.getControlMode().name());
-
-    SmartDashboard.putNumber(MOTORS_HATCH_ANGLE, hatch.getAngle());
-    SmartDashboard.putNumber(MOTORS_HATCH_POWER, hatch.getRotationPower());
-    SmartDashboard.putNumber(MOTORS_HATCH_TARGET, hatch.getCurrentTarget());
-    SmartDashboard.putString(MOTORS_HATCH_MODE, hatch.getControlMode().name());
-    SmartDashboard.putBoolean(MOTORS_INTAKE_OPEN, hatch.getIntakeIsSet());
-
-    SmartDashboard.putNumber(MOTORS_CARGO_ANGLE, cargo.getAngle());
-    SmartDashboard.putNumber(MOTORS_CARGO_POWER, cargo.getRotationPower());
-    SmartDashboard.putNumber(MOTORS_CARGO_TARGET, cargo.getCurrentTarget());
-    SmartDashboard.putString(MOTORS_CARGO_MODE, cargo.getControlMode().name());
-
-    SmartDashboard.putNumber(MOTORS_CLIMBER_POWER, climber.getClimberPower());
-    SmartDashboard.putString(MOTORS_CLIMBER_MODE, climber.getClimberControlMode().name());
-
-    SmartDashboard.putBoolean(MOTORS_LOWER_LIMIT, elevator.isLowerLimit());
 
     Faults faults = new Faults();
     elevatorMotor.getFaults(faults);
-    SmartDashboard.putBoolean(MOTORS_ELEVATOR_ForwardSoftLimit, faults.ForwardSoftLimit);
-    SmartDashboard.putBoolean(MOTORS_ELEVATOR_ReverseSoftLimit, faults.ReverseSoftLimit);
 
     clawRotationMotor.getFaults(faults);
-    SmartDashboard.putBoolean(MOTORS_CLAW_ForwardSoftLimit, faults.ForwardSoftLimit);
-    SmartDashboard.putBoolean(MOTORS_CLAW_ReverseSoftLimit, faults.ReverseSoftLimit);
 
     hatchRotationMotor.getFaults(faults);
-    SmartDashboard.putBoolean(MOTORS_HATCH_ForwardSoftLimit, faults.ForwardSoftLimit);
-    SmartDashboard.putBoolean(MOTORS_HATCH_ReverseSoftLimit, faults.ReverseSoftLimit);
 
     if (isAutonomousEnabled.isFallingEdge()) {
       drivetrain.clearControllerMotions();

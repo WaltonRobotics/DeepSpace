@@ -188,5 +188,7 @@ public class Config {
 
     public static final int DRIVE_CONTROL_MODE = 0;
     public static final int VELOCITY_CONTROL_MODE = 1;
+
+    public static final double RPM_TO_METERS = 0.006649704450098395; // RPM TO M/S
   }
 }

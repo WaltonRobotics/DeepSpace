@@ -7,7 +7,6 @@
 
 package frc.robot.subsystem;
 
-import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
 import static frc.robot.Config.SmartMotionConstants.DRIVE_CONTROL_MODE;
 import static frc.robot.Config.SmartMotionConstants.LEFT_D;
 import static frc.robot.Config.SmartMotionConstants.LEFT_FF;
@@ -17,6 +16,7 @@ import static frc.robot.Config.SmartMotionConstants.RIGHT_D;
 import static frc.robot.Config.SmartMotionConstants.RIGHT_FF;
 import static frc.robot.Config.SmartMotionConstants.RIGHT_I;
 import static frc.robot.Config.SmartMotionConstants.RIGHT_P;
+import static frc.robot.Config.SmartMotionConstants.RPM_TO_METERS;
 import static frc.robot.Config.SmartMotionConstants.VELOCITY_CONTROL_MODE;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.*;
@@ -30,6 +30,7 @@ import lib.Geometry.Pose2d;
 import lib.Geometry.Rotation2d;
 import lib.Kinematics.DifferentialDriveKinematics;
 import lib.Kinematics.DifferentialDriveOdometry;
+
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.metadata.RobotPair;
 
@@ -122,12 +123,16 @@ public class Drivetrain extends AbstractDrivetrain {
   public void setSpeeds(double leftPower, double rightPower) {
     rightWheelsMaster.set(rightPower);
     leftWheelsMaster.set(leftPower);
-    //
   }
 
   public void setVelocities(double lefVelocity, double rightVelocity) {
-    rightWheelsMaster.getPIDController().setReference(rightVelocity, ControlType.kVelocity, VELOCITY_CONTROL_MODE);
-    leftWheelsMaster.getPIDController().setReference(lefVelocity, ControlType.kVelocity, VELOCITY_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setReference(rightVelocity / RPM_TO_METERS, ControlType.kVelocity, VELOCITY_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setReference(lefVelocity / RPM_TO_METERS, ControlType.kVelocity, VELOCITY_CONTROL_MODE);
+  }
+
+  public void setVoltags(double leftVoltage, double rightVoltage) {
+    rightWheelsMaster.getPIDController().setReference(rightVoltage, ControlType.kVoltage);
+    leftWheelsMaster.getPIDController().setReference(leftVoltage, ControlType.kVoltage);
   }
 
   public void setDriveControlMode() {
@@ -165,7 +170,6 @@ public class Drivetrain extends AbstractDrivetrain {
 
     leftWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, VELOCITY_CONTROL_MODE);
   }
-
 
 
   public void setEncoderDistancePerPulse() {
