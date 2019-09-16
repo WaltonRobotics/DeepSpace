@@ -7,6 +7,7 @@
 
 package frc.robot.subsystem;
 
+import static frc.robot.Config.RamseteControllerConstants.DRIVE_RADIUS;
 import static frc.robot.Config.SmartMotionConstants.DRIVE_CONTROL_MODE;
 import static frc.robot.Config.SmartMotionConstants.LEFT_D;
 import static frc.robot.Config.SmartMotionConstants.LEFT_FF;
@@ -25,6 +26,7 @@ import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.*;
 
 import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.ControlType;
 
@@ -44,6 +46,7 @@ public class Drivetrain extends AbstractDrivetrain {
   private DifferentialDriveOdometry driveOdometry;
   private DifferentialDriveKinematics differentialDriveKinematics;
 
+
   public Drivetrain() {
     super(currentRobot);
 
@@ -51,6 +54,8 @@ public class Drivetrain extends AbstractDrivetrain {
     leftWheelsSlave.restoreFactoryDefaults();
     rightWheelsMaster.restoreFactoryDefaults();
     rightWheelsSlave.restoreFactoryDefaults();
+
+    leftWheelsMaster.setInverted(true);
 
     leftWheelsSlave.follow(leftWheelsMaster);
     rightWheelsSlave.follow(rightWheelsMaster);
@@ -70,9 +75,7 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsSlave.setIdleMode(IdleMode.kBrake);
     rightWheelsMaster.setIdleMode(IdleMode.kBrake);
 
-    leftWheelsMaster.setInverted(true);
-
-    differentialDriveKinematics = new DifferentialDriveKinematics(0.07);
+    differentialDriveKinematics = new DifferentialDriveKinematics(DRIVE_RADIUS);
     driveOdometry = new DifferentialDriveOdometry(differentialDriveKinematics);
 
     setDriveControlMode();
@@ -136,7 +139,8 @@ public class Drivetrain extends AbstractDrivetrain {
 
   public double calculateVoltages(double velocity) {
       return kv * velocity + ks;
-  }j
+  }
+
 
   public void setVoltages(double leftVoltage, double rightVoltage) {
     rightWheelsMaster.getPIDController().setReference(rightVoltage, ControlType.kVoltage);
