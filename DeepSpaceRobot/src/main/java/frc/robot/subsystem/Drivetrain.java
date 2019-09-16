@@ -18,6 +18,9 @@ import static frc.robot.Config.SmartMotionConstants.RIGHT_I;
 import static frc.robot.Config.SmartMotionConstants.RIGHT_P;
 import static frc.robot.Config.SmartMotionConstants.RPM_TO_METERS;
 import static frc.robot.Config.SmartMotionConstants.VELOCITY_CONTROL_MODE;
+import static frc.robot.Config.SmartMotionConstants.ka;
+import static frc.robot.Config.SmartMotionConstants.ks;
+import static frc.robot.Config.SmartMotionConstants.kv;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.*;
 
@@ -25,6 +28,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.ControlType;
 
+import frc.robot.Config;
 import frc.robot.command.teleop.Drive;
 import lib.Geometry.Pose2d;
 import lib.Geometry.Rotation2d;
@@ -130,7 +134,11 @@ public class Drivetrain extends AbstractDrivetrain {
     leftWheelsMaster.getPIDController().setReference(lefVelocity / RPM_TO_METERS, ControlType.kVelocity, VELOCITY_CONTROL_MODE);
   }
 
-  public void setVoltags(double leftVoltage, double rightVoltage) {
+  public double calculateVoltages(double velocity) {
+      return kv * velocity + ks;
+  }j
+
+  public void setVoltages(double leftVoltage, double rightVoltage) {
     rightWheelsMaster.getPIDController().setReference(rightVoltage, ControlType.kVoltage);
     leftWheelsMaster.getPIDController().setReference(leftVoltage, ControlType.kVoltage);
   }
@@ -158,7 +166,7 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsMaster.getPIDController().setI(RIGHT_I, VELOCITY_CONTROL_MODE);
     rightWheelsMaster.getPIDController().setD(RIGHT_D, VELOCITY_CONTROL_MODE);
     rightWheelsMaster.getPIDController().setFF(RIGHT_FF, VELOCITY_CONTROL_MODE);
-    rightWheelsMaster.getPIDController().setOutputRange(-0.7, 0.7, VELOCITY_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setOutputRange(-1, 1, VELOCITY_CONTROL_MODE);
 
     rightWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, VELOCITY_CONTROL_MODE);
 
@@ -166,7 +174,7 @@ public class Drivetrain extends AbstractDrivetrain {
     leftWheelsMaster.getPIDController().setI(LEFT_I, VELOCITY_CONTROL_MODE);
     leftWheelsMaster.getPIDController().setD(LEFT_D, VELOCITY_CONTROL_MODE);
     leftWheelsMaster.getPIDController().setFF(LEFT_FF, VELOCITY_CONTROL_MODE);
-    leftWheelsMaster.getPIDController().setOutputRange(-0.7, 0.7, VELOCITY_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setOutputRange(-1, 1, VELOCITY_CONTROL_MODE);
 
     leftWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, VELOCITY_CONTROL_MODE);
   }

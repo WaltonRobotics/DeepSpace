@@ -186,6 +186,10 @@ public class Config {
     public static final double RIGHT_D = 0;
     public static final double RIGHT_FF = 0;
 
+    public static final double kv = 0;
+    public static final double ka = 0;
+    public static final double ks = 0;
+
     public static final int DRIVE_CONTROL_MODE = 0;
     public static final int VELOCITY_CONTROL_MODE = 1;
 
