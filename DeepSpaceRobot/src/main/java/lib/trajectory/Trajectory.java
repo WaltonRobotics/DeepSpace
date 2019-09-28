@@ -8,11 +8,6 @@ import lib.Geometry.Pose2d;
  * various States that represent the pose, curvature, time elapsed, velocity,
  * and acceleration at that point.
  */
-/**
- * Represents a time-parameterized trajectory. The trajectory contains of
- * various States that represent the pose, curvature, time elapsed, velocity,
- * and acceleration at that point.
- */
 public class Trajectory {
   private final double m_totalTimeSeconds;
   private final List<State> m_states;
