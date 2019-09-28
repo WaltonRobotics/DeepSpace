@@ -179,10 +179,12 @@ public class Config {
     public static final double R_KV = 0;
     public static final double R_KA = 0;
     public static final double R_KS = 0;
+    public static final double R_KP = 0;
 
     public static final double L_KV = 0;
     public static final double L_KA = 0;
     public static final double L_KS = 0;
+    public static final double L_KP = 0;
 
     public static final double KT = 0.04;
     public static final int KT_IN_MILLI = 40;

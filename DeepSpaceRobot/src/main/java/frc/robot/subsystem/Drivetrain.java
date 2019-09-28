@@ -19,6 +19,7 @@ import static frc.robot.Config.SmartMotionConstants.LEFT_KFF;
 import static frc.robot.Config.SmartMotionConstants.LEFT_KI;
 import static frc.robot.Config.SmartMotionConstants.LEFT_KP;
 import static frc.robot.Config.SmartMotionConstants.L_KA;
+import static frc.robot.Config.SmartMotionConstants.L_KP;
 import static frc.robot.Config.SmartMotionConstants.L_KS;
 import static frc.robot.Config.SmartMotionConstants.L_KV;
 import static frc.robot.Config.SmartMotionConstants.RIGHT_KD;
@@ -27,6 +28,7 @@ import static frc.robot.Config.SmartMotionConstants.RIGHT_KI;
 import static frc.robot.Config.SmartMotionConstants.RIGHT_KP;
 import static frc.robot.Config.SmartMotionConstants.RPM_TO_METERS;
 import static frc.robot.Config.SmartMotionConstants.R_KA;
+import static frc.robot.Config.SmartMotionConstants.R_KP;
 import static frc.robot.Config.SmartMotionConstants.R_KS;
 import static frc.robot.Config.SmartMotionConstants.R_KV;
 import static frc.robot.Config.SmartMotionConstants.VELOCITY_CONTROL_MODE;
@@ -113,7 +115,7 @@ public class Drivetrain extends AbstractDrivetrain {
   }
 
   public Pose2d updateRobotPose() {
-    return driveOdometry.update(Rotation2d.fromDegrees(ahrs.getYaw()), new DifferentialDriveWheelSpeeds(leftWheelsEncoder.getVelocity(), rightWheelsEncoder.getVelocity()));
+    return driveOdometry.update(Rotation2d.fromDegrees(ahrs.getYaw()), new DifferentialDriveWheelSpeeds(leftWheelsEncoder.getVelocity(), rightWheelsEncoder.getVelocity())); //TODO: Check angle make sure not cw positive.
   }
 
   public DifferentialDriveOdometry getDriveOdometry() {
@@ -151,13 +153,13 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsMaster.getPIDController().setReference(rightVelocity / RPM_TO_METERS, ControlType.kVelocity, VELOCITY_CONTROL_MODE);
     leftWheelsMaster.getPIDController().setReference(lefVelocity / RPM_TO_METERS, ControlType.kVelocity, VELOCITY_CONTROL_MODE);
   }
-
+  
   private double calculateLeftVoltages(double velocity, double acceleration) {
-      return L_KV * velocity + L_KA * acceleration + L_KS * Math.signum(velocity);
+    return L_KV * velocity + L_KA * acceleration + L_KS * Math.signum(velocity) + L_KP * (velocity - rightWheelsEncoder.getVelocity());
   }
 
   private double calculateRightVoltagesVoltages(double velocity, double acceleration) {
-    return R_KV * velocity + R_KA * acceleration + R_KS * Math.signum(velocity);
+    return R_KV * velocity + R_KA * acceleration + R_KS * Math.signum(velocity) + R_KP * (velocity - leftWheelsEncoder.getVelocity());
   }
 
   public void setVoltages(double leftVelocity, double leftAcceleration, double rightVelocity, double rightAcceleration) {
