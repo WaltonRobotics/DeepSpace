@@ -2,6 +2,7 @@ package lib.Controller;
 
 import lib.Geometry.Pose2d;
 import lib.Kinematics.ChassisSpeeds;
+import lib.trajectory.Trajectory;
 
 /**
  * Ramsete is a nonlinear time-varying feedback controller for unicycle models
@@ -101,6 +102,34 @@ public class RamseteController {
     double eTheta = m_poseError.getRotation().getRadians();
     double vRef = linearVelocityRefMeters;
     double omegaRef = angularVelocityRefMeters;
+
+    double k = 2.0 * m_zeta * Math.sqrt(Math.pow(omegaRef, 2) + m_b * Math.pow(vRef, 2));
+
+    return new ChassisSpeeds(vRef * m_poseError.getRotation().getCos() + k * eX,
+        0.0,
+        omegaRef + k * eTheta + m_b * vRef * sinc(eTheta) * eY);
+  }
+
+  /**
+   * Returns the next output of the Ramsete controller.
+   *
+   * <p>The reference pose, linear velocity, and angular velocity should come
+   * from a drivetrain trajectory.
+   *
+   * @param currentPose  The current pose.
+   * @param desiredState The desired pose, linear velocity, and angular velocity
+   *                     from a trajectory.
+   */
+  @SuppressWarnings("LocalVariableName")
+  public ChassisSpeeds calculate(Pose2d currentPose, Trajectory.State desiredState) {
+    m_poseError = desiredState.poseMeters.relativeTo(currentPose);
+
+    // Aliases for equation readability
+    double eX = m_poseError.getTranslation().getX();
+    double eY = m_poseError.getTranslation().getY();
+    double eTheta = m_poseError.getRotation().getRadians();
+    double vRef = desiredState.velocityMetersPerSecond;
+    double omegaRef = desiredState.velocityMetersPerSecond * desiredState.curvatureRadPerMeter;
 
     double k = 2.0 * m_zeta * Math.sqrt(Math.pow(omegaRef, 2) + m_b * Math.pow(vRef, 2));
 
