@@ -32,6 +32,7 @@ import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_INTAKE_OPEN;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_LOWER_LIMIT;
 import static frc.robot.Config.SmartDashboardKeys.USE_AUTON;
+import static frc.robot.Config.SmartMotionConstants.KT;
 import static frc.robot.RobotMap.clawRotationMotor;
 import static frc.robot.RobotMap.elevatorMotor;
 import static frc.robot.RobotMap.encoderLeft;
@@ -89,7 +90,7 @@ public class Robot extends TimedRobot {
   private boolean hasSetPipeline = false;
 
   public Robot() {
-    super(0.04);
+    super(KT);
   }
 
   private static void initHardware() {

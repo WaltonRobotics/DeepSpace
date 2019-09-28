@@ -9,8 +9,10 @@ import lib.Kinematics.DifferentialDriveKinematics;
 import lib.Utils.MotionPair;
 import lib.trajectory.Trajectory;
 
+import static edu.wpi.first.wpilibj.TimedRobot.kDefaultPeriod;
 import static frc.robot.Config.RamseteControllerConstants.K_BETA;
 import static frc.robot.Config.RamseteControllerConstants.K_ZETA;
+import static frc.robot.Config.SmartMotionConstants.KT;
 import static frc.robot.Robot.drivetrain;
 
 public class FollowTrajectory extends Command {
@@ -25,14 +27,28 @@ public class FollowTrajectory extends Command {
 
   private RamseteController ramseteController;
 
-  public FollowTrajectory(Pose2d startingPose, Trajectory trajectory, double driveRadius) {
+  private double leftVelocity;
+  private double rightVelocity;
+  private double leftAcceleration;
+  private double rightAcceleration;
+
+  private double previousLeftVelocity;
+  private double previousRightVelocity;
+
+  public FollowTrajectory(Trajectory trajectory, double driveRadius) {
     requires(drivetrain);
-    this.startingPose = startingPose;
+    this.startingPose = trajectory.getStates().get(0).poseMeters;
     this.trajectory = trajectory;
     this.kinematics = new DifferentialDriveKinematics(driveRadius);
     this.ramseteController = new RamseteController(K_BETA, K_ZETA);
     this.currentTime = 0;
-    this.dt = 0.04;
+    this.dt = KT;
+    this.leftVelocity = 0;
+    this.rightVelocity = 0;
+    this.leftAcceleration = 0;
+    this.rightAcceleration = 0;
+    this.previousLeftVelocity = 0;
+    this.previousRightVelocity = 0;
   }
 
   @Override
@@ -45,7 +61,7 @@ public class FollowTrajectory extends Command {
   @Override
   protected void execute() {
     Pose2d currentPose = drivetrain.updateRobotPose();
-    MotionPair drivetrainMotions = getRobotVelocity(currentPose);
+    MotionPair drivetrainMotions = getRobotMotions(currentPose);
     drivetrain.setVoltages(drivetrainMotions.getLeftVelocity(), drivetrainMotions.getLeftAcceleration(), drivetrainMotions.getRightVelocity(), drivetrainMotions.getRightAcceleration());
   }
 
@@ -55,18 +71,45 @@ public class FollowTrajectory extends Command {
   }
 
   /**
-   * @param pose : The current pose of the robot
+   * @param currentPose : The current pose of the robot
    * @return A chassis speed of the robot
    */
 
-  private MotionPair getRobotVelocity(Pose2d pose) {
+  private MotionPair getRobotMotions(Pose2d currentPose) {
+
+    boolean atEnd = currentTime >= trajectory.getTotalTimeSeconds();
 
     Trajectory.State desiredState = trajectory.sample(currentTime);
-    ChassisSpeeds ramseteOutputs = ramseteController.calculate(pose, desiredState);
+    ChassisSpeeds ramseteOutputs = ramseteController.calculate(currentPose, desiredState);
+
+    leftVelocity = kinematics.toWheelSpeeds(ramseteOutputs).leftMetersPerSecond;
+    rightVelocity = kinematics.toWheelSpeeds(ramseteOutputs).rightMetersPerSecond;
+
+    leftAcceleration = (leftVelocity - previousLeftVelocity) / dt;
+    rightAcceleration = (rightVelocity - previousRightVelocity) / dt;
+
+    previousLeftVelocity = leftVelocity;
+    previousRightVelocity = rightVelocity;
 
     currentTime += dt;
 
-    return new MotionPair(kinematics.toWheelSpeeds(ramseteOutputs).leftMetersPerSecond, 0, kinematics.toWheelSpeeds(ramseteOutputs).rightMetersPerSecond, 0);
+    return new MotionPair(kinematics.toWheelSpeeds(ramseteOutputs).leftMetersPerSecond, leftAcceleration, rightVelocity, rightAcceleration);
   }
 
+  public double getLeftVelocity() {
+    return leftVelocity;
+  }
+
+  public double getRightVelocity() {
+    return rightVelocity;
+  }
+
+  public double getLeftAcceleration() {
+    return leftAcceleration;
+  }
+
+  public double getRightAcceleration() {
+    return rightAcceleration;
+  }
 }
+
