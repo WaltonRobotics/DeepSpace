@@ -8,12 +8,12 @@ public class DifferentialDriveWheelSpeeds {
   /**
    * Speed of the left side of the robot.
    */
-  public double left;
+  public double leftMetersPerSecond;
 
   /**
    * Speed of the right side of the robot.
    */
-  public double right;
+  public double rightMetersPerSecond;
 
   /**
    * Constructs a DifferentialDriveWheelSpeeds with zeros for left and right speeds.
@@ -24,12 +24,12 @@ public class DifferentialDriveWheelSpeeds {
   /**
    * Constructs a DifferentialDriveWheelSpeeds.
    *
-   * @param left  The left speed.
-   * @param right The right speed.
+   * @param leftMetersPerSecond  The left speed.
+   * @param rightMetersPerSecond The right speed.
    */
-  public DifferentialDriveWheelSpeeds(double left, double right) {
-    this.left = left;
-    this.right = right;
+  public DifferentialDriveWheelSpeeds(double leftMetersPerSecond, double rightMetersPerSecond) {
+    this.leftMetersPerSecond = leftMetersPerSecond;
+    this.rightMetersPerSecond = rightMetersPerSecond;
   }
 
   /**
@@ -39,15 +39,17 @@ public class DifferentialDriveWheelSpeeds {
    * this issue, one can "normalize" all the wheel speeds to make sure that all
    * requested module speeds are below the absolute threshold, while maintaining
    * the ratio of speeds between modules.
-   *
-   * @param attainableMaxSpeed The absolute max speed that a wheel can reach.
+   *  
+   * @param attainableMaxSpeedMetersPerSecond The absolute max speed that a wheel can reach.
    */
-  public void normalize(double attainableMaxSpeed) {
-    double realMaxSpeed = Math.max(Math.abs(left), Math.abs(right));
+  public void normalize(double attainableMaxSpeedMetersPerSecond) {
+    double realMaxSpeed = Math.max(Math.abs(leftMetersPerSecond), Math.abs(rightMetersPerSecond));
 
-    if (realMaxSpeed > attainableMaxSpeed) {
-      left = left / realMaxSpeed * attainableMaxSpeed;
-      right = right / realMaxSpeed * attainableMaxSpeed;
+    if (realMaxSpeed > attainableMaxSpeedMetersPerSecond) {
+      leftMetersPerSecond = leftMetersPerSecond / realMaxSpeed
+          * attainableMaxSpeedMetersPerSecond;
+      rightMetersPerSecond = rightMetersPerSecond / realMaxSpeed
+          * attainableMaxSpeedMetersPerSecond;
     }
   }
 }

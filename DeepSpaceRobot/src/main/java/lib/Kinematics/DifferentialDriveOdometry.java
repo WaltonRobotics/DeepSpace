@@ -19,22 +19,22 @@ import lib.Geometry.Twist2d;
  */
 public class DifferentialDriveOdometry {
   private final DifferentialDriveKinematics m_kinematics;
-  private Pose2d m_pose;
+  private Pose2d m_poseMeters;
+  private double m_prevTimeSeconds = -1;
 
-  private double m_prevLeftEncoder;
-  private double m_prevRightEncoder;
-  private Rotation2d m_prevAngle;
+  private Rotation2d m_previousAngle;
 
   /**
    * Constructs a DifferentialDriveOdometry object.
    *
-   * @param kinematics  The differential drive kinematics for your drivetrain.
-   * @param initialPose The starting position of the robot on the field.
+   * @param kinematics        The differential drive kinematics for your drivetrain.
+   * @param initialPoseMeters The starting position of the robot on the field.
    */
-  public DifferentialDriveOdometry(DifferentialDriveKinematics kinematics, Pose2d initialPose) {
+  public DifferentialDriveOdometry(DifferentialDriveKinematics kinematics,
+                                   Pose2d initialPoseMeters) {
     m_kinematics = kinematics;
-    m_pose = initialPose;
-    m_prevAngle = initialPose.getRotation();
+    m_poseMeters = initialPoseMeters;
+    m_previousAngle = initialPoseMeters.getRotation();
   }
 
   /**
@@ -50,72 +50,58 @@ public class DifferentialDriveOdometry {
    * Resets the robot's position on the field. Do NOT zero your encoders if you
    * call this function at any other time except initialization.
    *
-   * @param pose The position on the field that your robot is at.
+   * @param poseMeters The position on the field that your robot is at.
    */
-  public synchronized void resetPosition(Pose2d pose) {
-    m_pose = pose;
-    m_prevAngle = pose.getRotation();
+  public void resetPosition(Pose2d poseMeters) {
+    m_poseMeters = poseMeters;
+    m_previousAngle = poseMeters.getRotation();
   }
 
   /**
    * Updates the robot's position on the field using forward kinematics and
-   * integration of the pose over time.
+   * integration of the pose over time. This method takes in the current time as
+   * a parameter to calculate period (difference between two timestamps). The
+   * period is used to calculate the change in distance from a velocity. This
+   * also takes in an angle parameter which is used instead of the
+   * angular rate that is calculated from forward kinematics.
    *
-   * @param leftEncoder  The value of the left encoder (position). The units for x and y of
-   *                     the returned pose are the same as the units you pass in here. Therefore, it
-   *                     is advised that you convert the raw encoder value into meters, feet, or
-   *                     inches.
-   * @param rightEncoder The value of the right encoder (position). The units for x and y
-   *                     of the returned pose are the same as the units you pass in here. Therefore,
-   *                     it is advised that you convert the raw encoder value into meters, feet, or
-   *                     inches.
+   * @param currentTimeSeconds The current time in seconds.
+   * @param angle              The current robot angle.
+   * @param wheelSpeeds        The current wheel speeds.
    * @return The new pose of the robot.
    */
-  public synchronized Pose2d update(double leftEncoder, double rightEncoder) {
-    final var deltaLeft = leftEncoder - m_prevLeftEncoder;
-    final var deltaRight = rightEncoder - m_prevRightEncoder;
+  public Pose2d updateWithTime(double currentTimeSeconds, Rotation2d angle,
+                               DifferentialDriveWheelSpeeds wheelSpeeds) {
+    double period = m_prevTimeSeconds >= 0 ? currentTimeSeconds - m_prevTimeSeconds : 0.0;
+    m_prevTimeSeconds = currentTimeSeconds;
 
-    final var chassisState = m_kinematics.toChassisSpeeds(
-        new DifferentialDriveWheelSpeeds(deltaLeft, deltaRight));
+    var chassisState = m_kinematics.toChassisSpeeds(wheelSpeeds);
+    var newPose = m_poseMeters.exp(
+        new Twist2d(chassisState.vxMetersPerSecond * period,
+            chassisState.vyMetersPerSecond * period,
+            angle.minus(m_previousAngle).getRadians()));
 
-    m_pose = m_pose.exp(new Twist2d(chassisState.vx, chassisState.vy, chassisState.omega));
+    m_previousAngle = angle;
 
-    m_prevLeftEncoder = leftEncoder;
-    m_prevRightEncoder = rightEncoder;
-    m_prevAngle = m_prevAngle.plus(new Rotation2d(chassisState.omega));
-
-    return m_pose;
+    m_poseMeters = new Pose2d(newPose.getTranslation(), angle);
+    return m_poseMeters;
   }
 
   /**
    * Updates the robot's position on the field using forward kinematics and
-   * integration of the pose over time. This method uses input from the
-   * gyro instead of pure forward kinematics for angular data.
+   * integration of the pose over time. This method automatically calculates the
+   * current time to calculate period (difference between two timestamps). The
+   * period is used to calculate the change in distance from a velocity. This
+   * also takes in an angle parameter which is used instead of the
+   * angular rate that is calculated from forward kinematics.
    *
-   * @param leftEncoder  The value of the left encoder (position). The units for x and y of
-   *                     the returned pose are the same as the units you pass in here. Therefore, it
-   *                     is advised that you convert the raw encoder value into meters, feet, or
-   *                     inches.
-   * @param rightEncoder The value of the right encoder (position). The units for x and y
-   *                     of the returned pose are the same as the units you pass in here. Therefore,
-   *                     it is advised that you convert the raw encoder value into meters, feet, or
-   *                     inches.
-   * @param gyro         The yaw of the robot from a gyroscope.
+   * @param angle       The angle of the robot.
+   * @param wheelSpeeds The current wheel speeds.
    * @return The new pose of the robot.
    */
-  public synchronized Pose2d update(double leftEncoder, double rightEncoder, Rotation2d gyro) {
-    final var deltaLeft = leftEncoder - m_prevLeftEncoder;
-    final var deltaRight = rightEncoder - m_prevRightEncoder;
-
-    final var dx = (deltaLeft + deltaRight) / 2;
-    final var dtheta = gyro.minus(m_prevAngle);
-
-    m_pose = m_pose.exp(new Twist2d(dx, 0, dtheta.getRadians()));
-
-    m_prevLeftEncoder = leftEncoder;
-    m_prevRightEncoder = rightEncoder;
-    m_prevAngle = gyro;
-
-    return m_pose;
+  public Pose2d update(Rotation2d angle,
+                       DifferentialDriveWheelSpeeds wheelSpeeds) {
+    return updateWithTime(System.currentTimeMillis() / 1000.0,
+        angle, wheelSpeeds);
   }
 }

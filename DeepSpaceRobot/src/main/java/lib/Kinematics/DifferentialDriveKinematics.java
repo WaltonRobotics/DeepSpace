@@ -9,18 +9,18 @@ package lib.Kinematics;
  * component velocities into a linear and angular chassis speed.
  */
 public class DifferentialDriveKinematics {
-  private final double m_driveRadius;
+  private final double m_trackWidthMeters;
 
   /**
    * Constructs a differential drive kinematics object.
    *
-   * @param driveRadius The radius of the drivetrain. Theoretically, this is
-   *                    half the distance between the left wheels and right wheels. However, the
-   *                    empirical value may be larger than the physical measured value due to
-   *                    scrubbing effects.
+   * @param trackWidthMeters The track width of the drivetrain. Theoretically, this is
+   *                         the distance between the left wheels and right wheels.
+   *                         However, the empirical value may be larger than the physical
+   *                         measured value due to scrubbing effects.
    */
-  public DifferentialDriveKinematics(double driveRadius) {
-    m_driveRadius = driveRadius;
+  public DifferentialDriveKinematics(double trackWidthMeters) {
+    m_trackWidthMeters = trackWidthMeters;
   }
 
   /**
@@ -32,8 +32,9 @@ public class DifferentialDriveKinematics {
    */
   public ChassisSpeeds toChassisSpeeds(DifferentialDriveWheelSpeeds wheelSpeeds) {
     return new ChassisSpeeds(
-        (wheelSpeeds.left + wheelSpeeds.right) / 2, 0,
-        (wheelSpeeds.right - wheelSpeeds.left) / (2 * m_driveRadius)
+        (wheelSpeeds.leftMetersPerSecond + wheelSpeeds.rightMetersPerSecond) / 2, 0,
+        (wheelSpeeds.rightMetersPerSecond - wheelSpeeds.leftMetersPerSecond)
+            / m_trackWidthMeters
     );
   }
 
@@ -47,8 +48,10 @@ public class DifferentialDriveKinematics {
    */
   public DifferentialDriveWheelSpeeds toWheelSpeeds(ChassisSpeeds chassisSpeeds) {
     return new DifferentialDriveWheelSpeeds(
-        chassisSpeeds.vx - m_driveRadius * chassisSpeeds.omega,
-        chassisSpeeds.vx + m_driveRadius * chassisSpeeds.omega
+        chassisSpeeds.vxMetersPerSecond - m_trackWidthMeters / 2
+            * chassisSpeeds.omegaRadiansPerSecond,
+        chassisSpeeds.vxMetersPerSecond + m_trackWidthMeters / 2
+            * chassisSpeeds.omegaRadiansPerSecond
     );
   }
 }

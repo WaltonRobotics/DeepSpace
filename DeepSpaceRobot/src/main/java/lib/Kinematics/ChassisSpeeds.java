@@ -14,21 +14,21 @@ import lib.Geometry.Rotation2d;
  * drivetrains such as swerve and mecanum will often have all three components.
  */
 @SuppressWarnings("MemberName")
-public class  ChassisSpeeds {
+public class ChassisSpeeds {
   /**
    * Represents forward velocity w.r.t the robot frame of reference. (Fwd is +)
    */
-  public double vx;
+  public double vxMetersPerSecond;
 
   /**
    * Represents sideways velocity w.r.t the robot frame of reference. (Left is +)
    */
-  public double vy;
+  public double vyMetersPerSecond;
 
   /**
    * Represents the angular velocity of the robot frame. (CCW is +)
    */
-  public double omega;
+  public double omegaRadiansPerSecond;
 
   /**
    * Constructs a ChassisSpeeds with zeros for dx, dy, and theta.
@@ -39,35 +39,39 @@ public class  ChassisSpeeds {
   /**
    * Constructs a ChassisSpeeds object.
    *
-   * @param vx    Forward velocity.
-   * @param vy    Sideways velocity.
-   * @param omega Angular velocity.
+   * @param vxMetersPerSecond     Forward velocity.
+   * @param vyMetersPerSecond     Sideways velocity.
+   * @param omegaRadiansPerSecond Angular velocity.
    */
-  public ChassisSpeeds(double vx, double vy, double omega) {
-    this.vx = vx;
-    this.vy = vy;
-    this.omega = omega;
+  public ChassisSpeeds(double vxMetersPerSecond, double vyMetersPerSecond,
+                       double omegaRadiansPerSecond) {
+    this.vxMetersPerSecond = vxMetersPerSecond;
+    this.vyMetersPerSecond = vyMetersPerSecond;
+    this.omegaRadiansPerSecond = omegaRadiansPerSecond;
   }
 
   /**
    * Converts a user provided field-relative set of speeds into a robot-relative
    * ChassisSpeeds object.
    *
-   * @param vx         The component of speed in the x direction relative to the field.
-   *                   Positive x is away from your alliance wall.
-   * @param vy         The component of speed in the y direction relative to the field.
-   *                   Positive y is to your left when standing behind the alliance wall.
-   * @param omega      The angular rate of the robot.
-   * @param robotAngle The angle of the robot as measured by a gyroscope.
-   *                   Remember that this should be CCW positive.
+   * @param vxMetersPerSecond     The component of speed in the x direction relative to the field.
+   *                              Positive x is away from your alliance wall.
+   * @param vyMetersPerSecond     The component of speed in the y direction relative to the field.
+   *                              Positive y is to your left when standing behind the alliance wall.
+   * @param omegaRadiansPerSecond The angular rate of the robot.
+   * @param robotAngle            The angle of the robot as measured by a gyroscope. The robot's
+   *                              angle is considered to be zero when it is facing directly away
+   *                              from your alliance station wall. Remember that this should
+   *                              be CCW positive.
    * @return ChassisSpeeds object representing the speeds in the robot's frame of reference.
    */
   public static ChassisSpeeds fromFieldRelativeSpeeds(
-      double vx, double vy, double omega, Rotation2d robotAngle) {
+      double vxMetersPerSecond, double vyMetersPerSecond,
+      double omegaRadiansPerSecond, Rotation2d robotAngle) {
     return new ChassisSpeeds(
-        vx * robotAngle.getCos() + vy * robotAngle.getSin(),
-        -vx * robotAngle.getSin() + vy * robotAngle.getCos(),
-        omega
+        vxMetersPerSecond * robotAngle.getCos() + vyMetersPerSecond * robotAngle.getSin(),
+        -vxMetersPerSecond * robotAngle.getSin() + vyMetersPerSecond * robotAngle.getCos(),
+        omegaRadiansPerSecond
     );
   }
 }
