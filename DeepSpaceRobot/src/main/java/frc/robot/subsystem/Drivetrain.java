@@ -70,6 +70,11 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsMaster.setSmartCurrentLimit(40);
     rightWheelsSlave.setSmartCurrentLimit(40);
 
+    leftWheelsMaster.enableVoltageCompensation(12);
+    leftWheelsSlave.enableVoltageCompensation(12);
+    rightWheelsMaster.enableVoltageCompensation(12);
+    rightWheelsSlave.enableVoltageCompensation(12);
+
     leftWheelsSlave.setIdleMode(IdleMode.kBrake);
     leftWheelsMaster.setIdleMode(IdleMode.kBrake);
     rightWheelsSlave.setIdleMode(IdleMode.kBrake);
