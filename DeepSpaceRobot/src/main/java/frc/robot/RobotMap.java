@@ -16,19 +16,19 @@ import static frc.robot.Robot.currentRobot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
-import frc.robot.util.VictorPair;
+
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides
@@ -59,13 +59,15 @@ public final class RobotMap {
   public static final CANSparkMax leftWheelsMaster = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
   public static final CANSparkMax leftWheelsSlave = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
 
+  public static final CANEncoder rightWheelsEncoder = rightWheelsMaster.getEncoder();
+  public static final CANEncoder leftWheelsEncoder = leftWheelsMaster.getEncoder();
+
   public static final SpeedController leftIntakeMotor = new Talon(currentRobot.getLeftIntakeMotorConfig().getChannel());
   public static final SpeedController rightIntakeMotor = new Talon(
       currentRobot.getRightIntakeMotorConfig().getChannel());
   public static final TalonSRX clawRotationMotor = new TalonSRX(currentRobot.getCargoSubsystemLimits().getDeviceID());
   public static final TalonSRX hatchRotationMotor = new TalonSRX(currentRobot.getHatchSubsystemLimits().getDeviceID());
   public static final TalonSRX elevatorMotor = new TalonSRX(currentRobot.getElevatorSubsystemLimits().getDeviceID());
-
 
   public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
   public static final DoubleSolenoid hatchIntake = new DoubleSolenoid(HATCH_INTAKE_CHANNEL, HATCH_INTAKE_CHANNEL + 1);

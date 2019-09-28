@@ -176,19 +176,23 @@ public class Config {
 
   public static final class SmartMotionConstants {
 
-    public static final double LEFT_P = 0;
-    public static final double LEFT_I = 0;
+    public static final double LEFT_P = 5e-5;
+    public static final double LEFT_I = 1e-6;
     public static final double LEFT_D = 0;
     public static final double LEFT_FF = 0;
 
-    public static final double RIGHT_P = 0;
-    public static final double RIGHT_I = 0;
+    public static final double RIGHT_P = 5e-5;
+    public static final double RIGHT_I = 1e-6;
     public static final double RIGHT_D = 0;
     public static final double RIGHT_FF = 0;
 
-    public static final double kv = 0;
-    public static final double ka = 0;
-    public static final double ks = 0;
+    public static final double R_KV = 0;
+    public static final double R_KA = 0;
+    public static final double R_KS = 0;
+
+    public static final double L_KV = 0;
+    public static final double L_KA = 0;
+    public static final double L_KS = 0;
 
     public static final int DRIVE_CONTROL_MODE = 0;
     public static final int VELOCITY_CONTROL_MODE = 1;

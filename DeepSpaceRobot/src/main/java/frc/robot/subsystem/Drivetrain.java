@@ -13,33 +13,34 @@ import static frc.robot.Config.SmartMotionConstants.LEFT_D;
 import static frc.robot.Config.SmartMotionConstants.LEFT_FF;
 import static frc.robot.Config.SmartMotionConstants.LEFT_I;
 import static frc.robot.Config.SmartMotionConstants.LEFT_P;
+import static frc.robot.Config.SmartMotionConstants.L_KA;
+import static frc.robot.Config.SmartMotionConstants.L_KS;
+import static frc.robot.Config.SmartMotionConstants.L_KV;
 import static frc.robot.Config.SmartMotionConstants.RIGHT_D;
 import static frc.robot.Config.SmartMotionConstants.RIGHT_FF;
 import static frc.robot.Config.SmartMotionConstants.RIGHT_I;
 import static frc.robot.Config.SmartMotionConstants.RIGHT_P;
 import static frc.robot.Config.SmartMotionConstants.RPM_TO_METERS;
+import static frc.robot.Config.SmartMotionConstants.R_KA;
+import static frc.robot.Config.SmartMotionConstants.R_KS;
+import static frc.robot.Config.SmartMotionConstants.R_KV;
 import static frc.robot.Config.SmartMotionConstants.VELOCITY_CONTROL_MODE;
-import static frc.robot.Config.SmartMotionConstants.ka;
-import static frc.robot.Config.SmartMotionConstants.ks;
-import static frc.robot.Config.SmartMotionConstants.kv;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.*;
 
 import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.ControlType;
 
-import frc.robot.Config;
 import frc.robot.command.teleop.Drive;
 import lib.Geometry.Pose2d;
 import lib.Geometry.Rotation2d;
 import lib.Kinematics.DifferentialDriveKinematics;
 import lib.Kinematics.DifferentialDriveOdometry;
+import lib.Kinematics.DifferentialDriveWheelSpeeds;
 
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.metadata.RobotPair;
-
 
 public class Drivetrain extends AbstractDrivetrain {
 
@@ -80,6 +81,11 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsSlave.setIdleMode(IdleMode.kBrake);
     rightWheelsMaster.setIdleMode(IdleMode.kBrake);
 
+    rightWheelsEncoder.setMeasurementPeriod(40);
+    leftWheelsEncoder.setMeasurementPeriod(40);
+
+    leftWheelsEncoder.setInverted(true);
+
     differentialDriveKinematics = new DifferentialDriveKinematics(DRIVE_RADIUS);
     driveOdometry = new DifferentialDriveOdometry(differentialDriveKinematics);
 
@@ -99,11 +105,7 @@ public class Drivetrain extends AbstractDrivetrain {
   }
 
   public Pose2d updateRobotPose() {
-    return driveOdometry.update(encoderLeft.get(), encoderRight.get(), new Rotation2d(ahrs.getAngle()));
-  }
-
-  public Pose2d updateRobotPoseRelative(Pose2d relativePose) {
-    return driveOdometry.update(encoderLeft.get(), encoderRight.get(), new Rotation2d(ahrs.getAngle())).relativeTo(relativePose);
+    return driveOdometry.update(Rotation2d.fromDegrees(ahrs.getYaw()), new DifferentialDriveWheelSpeeds(leftWheelsEncoder.getVelocity(), rightWheelsEncoder.getVelocity()));
   }
 
   public DifferentialDriveOdometry getDriveOdometry() {
@@ -142,14 +144,17 @@ public class Drivetrain extends AbstractDrivetrain {
     leftWheelsMaster.getPIDController().setReference(lefVelocity / RPM_TO_METERS, ControlType.kVelocity, VELOCITY_CONTROL_MODE);
   }
 
-  public double calculateVoltages(double velocity) {
-      return kv * velocity + ks;
+  private double calculateLeftVoltages(double velocity, double acceleration) {
+      return L_KV * velocity + L_KA * acceleration + L_KS * Math.signum(velocity);
   }
 
+  private double calculateRightVoltagesVoltages(double velocity, double acceleration) {
+    return R_KV * velocity + R_KA * acceleration + R_KS * Math.signum(velocity);
+  }
 
-  public void setVoltages(double leftVoltage, double rightVoltage) {
-    rightWheelsMaster.getPIDController().setReference(calculateVoltages(rightVoltage), ControlType.kVoltage);
-    leftWheelsMaster.getPIDController().setReference(calculateVoltages(leftVoltage), ControlType.kVoltage);
+  public void setVoltages(double leftVelocity, double leftAcceleration, double rightVelocity, double rightAcceleration) {
+    rightWheelsMaster.getPIDController().setReference(calculateRightVoltagesVoltages(rightVelocity, rightAcceleration), ControlType.kVoltage);
+    leftWheelsMaster.getPIDController().setReference(calculateLeftVoltages(leftVelocity, leftAcceleration), ControlType.kVoltage);
   }
 
   public void setDriveControlMode() {
