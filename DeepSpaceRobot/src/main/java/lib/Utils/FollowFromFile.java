@@ -1,7 +1,5 @@
 package lib.Utils;
 
-import org.waltonrobotics.metadata.Pose;
-
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Trajectory.Segment;
 import lib.Controller.RamseteController;
@@ -36,17 +34,13 @@ public class FollowFromFile {
     if (isFinished())
       return new ChassisSpeeds(0, 0, 0);
 
-    // Calculate X and Y error
-    double xError = currentSeg.x - pose.getTranslation().getX();
-    double yError = currentSeg.y - pose.getTranslation().getY();
-
     // Calculate Linear Velocity of Segment
 
     double sv = currentSeg.velocity;
 
     // Calculate Angular Velocity of Segment
 
-    double sw = isFinished() ? 0 : (trajectory.segments[currentSegIndex + 1].heading - currentSeg.heading)/currentSeg.dt;
+    double sw = (trajectory.segments[currentSegIndex + 1].heading - currentSeg.heading)/currentSeg.dt;
 
     // Calculate linear and angular velocity based on errors
 
