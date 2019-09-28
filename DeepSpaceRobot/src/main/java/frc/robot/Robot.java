@@ -9,7 +9,6 @@ package frc.robot;
 
 
 import static frc.robot.Config.Camera.LED_OFF;
-import static frc.robot.Config.RamseteControllerConstants.DRIVE_RADIUS;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_ACTUAL_POSITION;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_ENCODER;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_ENCODER;

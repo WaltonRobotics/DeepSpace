@@ -162,7 +162,6 @@ public class Drivetrain extends AbstractDrivetrain {
 
   public void setVoltages(double leftVelocity, double leftAcceleration, double rightVelocity, double rightAcceleration) {
     rightWheelsMaster.getPIDController().setReference(calculateRightVoltagesVoltages(rightVelocity, rightAcceleration), ControlType.kVoltage);
-    leftWheelsMaster.getPIDController().setReference(calculateLeftVoltages(leftVelocity, leftAcceleration), ControlType.kVoltage);
   }
 
   public void setDriveControlMode() {

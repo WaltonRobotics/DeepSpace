@@ -1,6 +1,7 @@
 package frc.robot;
 
-import org.waltonrobotics.metadata.Pose;
+import lib.Geometry.Pose2d;
+import lib.Geometry.Rotation2d;
 
 public class Config {
 
@@ -154,23 +155,12 @@ public class Config {
     }
   }
 
-  public static final class Point {
-
-    //    public static final Pose frontRocketR = new Pose(2.82, 3.3, StrictMath.toRadians(60));
-    public static final Pose frontRocketR = new Pose(2.55, 3.15, StrictMath.toRadians(60));
-    public static final Pose backup = new Pose(2.0, 2.0, 0.0);
-
-    public static final Pose hatchIntakeR = new Pose(2.1, -1.3462, StrictMath.toRadians(270.0));
-
-    private Point() {
-    }
-  }
-
   public static final class RamseteControllerConstants{
 
     public static final double DRIVE_RADIUS = 0.7;
     public static final double K_BETA = 2.0;
     public static final double K_ZETA = 0.7;
+    public static final Pose2d TOLERANCE_POSE = new Pose2d(0.05, 0.05, Rotation2d.fromDegrees(30));
 
   }
 

@@ -3,15 +3,14 @@ package frc.robot.command.auto;
 import edu.wpi.first.wpilibj.command.Command;
 import lib.Controller.RamseteController;
 import lib.Geometry.Pose2d;
-import lib.Geometry.Rotation2d;
 import lib.Kinematics.ChassisSpeeds;
 import lib.Kinematics.DifferentialDriveKinematics;
 import lib.Utils.MotionPair;
 import lib.trajectory.Trajectory;
 
-import static edu.wpi.first.wpilibj.TimedRobot.kDefaultPeriod;
 import static frc.robot.Config.RamseteControllerConstants.K_BETA;
 import static frc.robot.Config.RamseteControllerConstants.K_ZETA;
+import static frc.robot.Config.RamseteControllerConstants.TOLERANCE_POSE;
 import static frc.robot.Config.SmartMotionConstants.KT;
 import static frc.robot.Robot.drivetrain;
 
@@ -54,7 +53,7 @@ public class FollowTrajectory extends Command {
   @Override
   protected void initialize() {
     drivetrain.getDriveOdometry().resetPosition(startingPose);
-    ramseteController.setTolerance(new Pose2d(0.05, 0.05, Rotation2d.fromDegrees(30)));
+    ramseteController.setTolerance(TOLERANCE_POSE);
   }
 
 
@@ -76,8 +75,6 @@ public class FollowTrajectory extends Command {
    */
 
   private MotionPair getRobotMotions(Pose2d currentPose) {
-
-    boolean atEnd = currentTime >= trajectory.getTotalTimeSeconds();
 
     Trajectory.State desiredState = trajectory.sample(currentTime);
     ChassisSpeeds ramseteOutputs = ramseteController.calculate(currentPose, desiredState);
