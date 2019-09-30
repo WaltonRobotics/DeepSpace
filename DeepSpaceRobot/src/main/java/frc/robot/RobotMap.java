@@ -15,6 +15,7 @@ import static frc.robot.Config.Hardware.SHIFTER_CHANNEL;
 import static frc.robot.Robot.currentRobot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -71,13 +72,8 @@ public final class RobotMap {
   public static final DigitalOutput LED1 = new DigitalOutput(LED_CHANNEL5);
   public static final DigitalOutput LED2 = new DigitalOutput(LED_CHANNEL6);
 
-  public static final Encoder encoderRight = new Encoder(
-      new DigitalInput(currentRobot.getRightEncoderConfig().getChannel1()),
-      new DigitalInput(currentRobot.getRightEncoderConfig().getChannel2()));
-
-  public static final Encoder encoderLeft = new Encoder(
-      new DigitalInput(currentRobot.getLeftEncoderConfig().getChannel1()),
-      new DigitalInput(currentRobot.getLeftEncoderConfig().getChannel2()));
+  public static final CANEncoder leftWheelsEncoder = leftWheelsMaster.getEncoder();
+  public static final CANEncoder rightWheelsEncoder = rightWheelsMaster.getEncoder();
 
 //  public static final DigitalInput hatchSensor = new DigitalInput(1); //makeshift number
 

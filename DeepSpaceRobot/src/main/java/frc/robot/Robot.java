@@ -85,8 +85,8 @@ import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_PERCENTAGE;
 import static frc.robot.Config.SmartDashboardKeys.USE_AUTON;
 import static frc.robot.RobotMap.clawRotationMotor;
 import static frc.robot.RobotMap.elevatorMotor;
-import static frc.robot.RobotMap.encoderLeft;
-import static frc.robot.RobotMap.encoderRight;
+import static frc.robot.RobotMap.leftWheelsEncoder;
+import static frc.robot.RobotMap.rightWheelsEncoder;
 import static frc.robot.RobotMap.hatchRotationMotor;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -122,10 +122,10 @@ public class Robot extends TimedRobot {
 
   public static final boolean isCompBot;
   public static final LimitedRobot currentRobot;
-  public static final Drivetrain drivetrain;
   public static final ElevatorCargoHatchSubsystem godSubsystem;
   public static final SendableChooser<Transform> transformSendableChooser = new SendableChooser<>();
   private static final RobotBuilder<LimitedRobot> robotBuilder;
+  public static Drivetrain drivetrain;
 
   static {
     isCompBot = new DigitalInput(9).get();
@@ -134,7 +134,11 @@ public class Robot extends TimedRobot {
         new CompDeepSpace());
     currentRobot = robotBuilder.getCurrentRobotConfig();
     System.out.println(currentRobot);
-    drivetrain = new Drivetrain();
+    try {
+      drivetrain = new Drivetrain();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     godSubsystem = new ElevatorCargoHatchSubsystem();
   }
 
@@ -255,10 +259,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    drivetrain.cancelControllerMotion();
     drivetrain.reset();
-
-    drivetrain.getController().getCameraReader().startCollecting();
 
     initShuffleBoard();
 
@@ -339,10 +340,8 @@ public class Robot extends TimedRobot {
       }
     }
 
-    SmartDashboard.putNumber(DRIVETRAIN_LEFT_ENCODER, encoderLeft.getDistance());
-    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, encoderRight.getDistance());
-    SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, String.valueOf(drivetrain.getActualPosition()));
-    SmartDashboard.putString(DEBUG_CAMERA_VISION, String.valueOf(drivetrain.getCameraData()));
+    SmartDashboard.putNumber(DRIVETRAIN_LEFT_ENCODER, leftWheelsEncoder.getPosition());
+    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, rightWheelsEncoder.getPosition());
     // System.out.println("robot Periodic");
 //    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
 //    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(0);
@@ -356,8 +355,6 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     godSubsystem.setAutonomousEnabled(false);
     godSubsystem.setEnabled(false);
-    drivetrain.cancelControllerMotion();
-    drivetrain.getMotionLogger().writeMotionDataCSV(true);
   }
 
   @Override
@@ -381,8 +378,6 @@ public class Robot extends TimedRobot {
     godSubsystem.setEnabled(true);
     godSubsystem.setAutonomousEnabled(SmartDashboard.getBoolean(USE_AUTON, false));
 //    godSubsystem.setAutonomousEnabled(false);
-    drivetrain.cancelControllerMotion();
-    drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
 
 //    Pose pose = new Pose(0, 0, StrictMath.toRadians(90));
@@ -421,7 +416,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     godSubsystem.setAutonomousEnabled(false);
     godSubsystem.setEnabled(true);
-    drivetrain.cancelControllerMotion();
     drivetrain.shiftUp();
 
 //    godSubsystem.setEnabled(false);

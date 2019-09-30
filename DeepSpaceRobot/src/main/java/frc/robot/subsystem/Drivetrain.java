@@ -7,56 +7,81 @@
 
 package frc.robot.subsystem;
 
+import static frc.robot.Config.LQRControlConstants.*;
+import static frc.robot.Config.LQRControlConstants.MOMENT_OF_INERTIA;
+import static frc.robot.Config.LQRControlConstants.ROBOT_RADIUS;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
-import static frc.robot.Robot.currentRobot;
+import static frc.robot.Config.SmartMotionConstants.*;
 import static frc.robot.RobotMap.*;
+import static lib.system.Models.MOTOR_NEO;
 
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Config;
 import frc.robot.command.teleop.Drive;
-import org.waltonrobotics.AbstractDrivetrain;
+import lib.system.Models;
+import lib.system.StateSpace;
+import lib.system.System;
+import org.ejml.simple.SimpleMatrix;
 import org.waltonrobotics.metadata.CameraData;
-import org.waltonrobotics.metadata.RobotPair;
 
 /**
  * Add your docs here.
  */
-public class Drivetrain extends AbstractDrivetrain {
+public class Drivetrain extends System {
 
   private CameraData cameraData = new CameraData();
+  private boolean inLowGear = false;
 
-  public Drivetrain() {
-    super(currentRobot);
+  public Drivetrain() throws Exception {
+    super(new SimpleMatrix(new double[][]{{MIN_OUTPUT_VOLTAGE}, {MIN_OUTPUT_VOLTAGE}}),
+            new SimpleMatrix(new double[][]{{MAX_OUTPUT_VOLTAGE}, {MAX_OUTPUT_VOLTAGE}}),
+            Config.LQRControlConstants.dt, new SimpleMatrix(2, 1),
+            new SimpleMatrix(2, 1));
 
     leftWheelsMaster.restoreFactoryDefaults();
     leftWheelsSlave.restoreFactoryDefaults();
     rightWheelsMaster.restoreFactoryDefaults();
     rightWheelsSlave.restoreFactoryDefaults();
 
+    leftWheelsMaster.setInverted(true);
+
     leftWheelsSlave.follow(leftWheelsMaster);
     rightWheelsSlave.follow(rightWheelsMaster);
 
-    leftWheelsMaster.setOpenLoopRampRate(0);
-    leftWheelsSlave.setOpenLoopRampRate(0);
-    rightWheelsMaster.setOpenLoopRampRate(0);
-    rightWheelsSlave.setOpenLoopRampRate(0);
+    leftWheelsMaster.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    leftWheelsSlave.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    rightWheelsMaster.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    rightWheelsSlave.setOpenLoopRampRate(K_OPENLOOP_RAMP);
 
-    leftWheelsMaster.setSmartCurrentLimit(40);
-    leftWheelsSlave.setSmartCurrentLimit(40);
-    rightWheelsMaster.setSmartCurrentLimit(40);
-    rightWheelsSlave.setSmartCurrentLimit(40);
+    leftWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    leftWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    rightWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    rightWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+
+    leftWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+    leftWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+    rightWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+    rightWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
 
     leftWheelsSlave.setIdleMode(IdleMode.kBrake);
     leftWheelsMaster.setIdleMode(IdleMode.kBrake);
     rightWheelsSlave.setIdleMode(IdleMode.kBrake);
     rightWheelsMaster.setIdleMode(IdleMode.kBrake);
 
+    leftWheelsEncoder.setPositionConversionFactor(K_POSITION_CONVERSION_FACTOR);
+    leftWheelsEncoder.setVelocityConversionFactor(K_VELOCITY_CONVERSION_FACTOR);
+
+    rightWheelsEncoder.setPositionConversionFactor(K_POSITION_CONVERSION_FACTOR);
+    rightWheelsEncoder.setVelocityConversionFactor(K_VELOCITY_CONVERSION_FACTOR);
+
+    inLowGear = !shifter.get();
   }
 
   @Override
   public void periodic() {
-    super.periodic();
-
     SmartDashboard.putNumber("Dial", cameraData.getCameraPose().getY());
 
     if (cameraData.getTime() == -1.0) {
@@ -66,14 +91,9 @@ public class Drivetrain extends AbstractDrivetrain {
     }
   }
 
-  @Override
-  public RobotPair getWheelPositions() {
-    return new RobotPair(0, 0, 0);
-  }
-
   public void reset() {
-    encoderLeft.reset();
-    encoderRight.reset();
+    leftWheelsEncoder.setPosition(0.0);
+    rightWheelsEncoder.setPosition(0.0);
   }
 
   public void setArcadeSpeeds(double xSpeed, double zRotation) {
@@ -111,10 +131,13 @@ public class Drivetrain extends AbstractDrivetrain {
   }
 
   public void setSpeeds(double leftPower, double rightPower) {
-    rightWheelsMaster.set(rightPower);
-    // rightWheelsSlave.set(rightPower);
     leftWheelsMaster.set(-leftPower);
-    // leftWheelsSlave.set(leftPower);
+    rightWheelsMaster.set(rightPower);
+  }
+
+  public void setVoltages(double leftVoltage, double rightVoltage) {
+    leftWheelsMaster.getPIDController().setReference(leftVoltage, ControlType.kVoltage);
+    rightWheelsMaster.getPIDController().setReference(rightVoltage, ControlType.kVoltage);
   }
 
   public void setEncoderDistancePerPulse() {
@@ -130,12 +153,49 @@ public class Drivetrain extends AbstractDrivetrain {
 //    rightWheels.configPeakOutputForward(1.0);
 //    rightWheels.configPeakOutputReverse(-1.0);
 
-    encoderLeft.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
-    encoderRight.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
+    /*
+    leftWheelsEncoder.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
+    rightWheelsEncoder.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
 
-    encoderLeft.setReverseDirection(currentRobot.getLeftEncoderConfig().isInverted());
-    encoderRight.setReverseDirection(currentRobot.getRightEncoderConfig().isInverted());
+    leftWheelsEncoder.setReverseDirection(currentRobot.getLeftEncoderConfig().isInverted());
+    rightWheelsEncoder.setReverseDirection(currentRobot.getRightEncoderConfig().isInverted());
+    */
+  }
 
+  public void setDriveControlMode() {
+    rightWheelsMaster.getPIDController().setP(RIGHT_KP, DRIVE_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setI(RIGHT_KI, DRIVE_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setD(RIGHT_KD, DRIVE_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setFF(RIGHT_KFF, DRIVE_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setOutputRange(-1, 1, DRIVE_CONTROL_MODE);
+
+    rightWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, DRIVE_CONTROL_MODE);
+
+    leftWheelsMaster.getPIDController().setP(LEFT_KP, DRIVE_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setI(LEFT_KI, DRIVE_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setD(LEFT_KD, DRIVE_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setFF(LEFT_KFF, DRIVE_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setOutputRange(-1, 1, DRIVE_CONTROL_MODE);
+
+    leftWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, DRIVE_CONTROL_MODE);
+  }
+
+  public void setVoltageControlMode() {
+    rightWheelsMaster.getPIDController().setP(RIGHT_KP, VOLTAGE_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setI(RIGHT_KI, VOLTAGE_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setD(RIGHT_KD, VOLTAGE_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setFF(RIGHT_KFF, VOLTAGE_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setOutputRange(-1, 1, VOLTAGE_CONTROL_MODE);
+
+    rightWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, VOLTAGE_CONTROL_MODE);
+
+    leftWheelsMaster.getPIDController().setP(LEFT_KP, VOLTAGE_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setI(LEFT_KI, VOLTAGE_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setD(LEFT_KD, VOLTAGE_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setFF(LEFT_KFF, VOLTAGE_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setOutputRange(-1, 1, VOLTAGE_CONTROL_MODE);
+
+    leftWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, VOLTAGE_CONTROL_MODE);
   }
 
   @Override
@@ -146,21 +206,21 @@ public class Drivetrain extends AbstractDrivetrain {
 
 
   public void shiftUp() {
+    /*
     if (!shifter.get()) {
-      System.out.println("Shifted Up");
+      java.lang.System.out.println("Shifted Up");
       shifter.set(true);
     }
+    */
   }
 
   public void shiftDown() {
+    /*
     if (shifter.get()) {
-      System.out.println("Shifted Down");
+      java.lang.System.out.println("Shifted Down");
       shifter.set(false);
     }
-  }
-
-  public CameraData getCameraData() {
-    return cameraData;
+    */
   }
 
   @Override
@@ -168,5 +228,90 @@ public class Drivetrain extends AbstractDrivetrain {
     return "Drivetrain{" +
         "cameraData=" + cameraData +
         "} " + super.toString();
+  }
+
+  @Override
+  protected StateSpace createModel(SimpleMatrix states, SimpleMatrix inputs) throws Exception {
+    double Gl;
+    double Gr;
+
+    if (inLowGear) {
+      Gl = GEAR_RATIO_LOW;
+      Gr = GEAR_RATIO_LOW;
+    } else {
+      Gl = GEAR_RATIO_HIGH;
+      Gr = GEAR_RATIO_HIGH;
+    }
+
+    return drivetrain(MOTOR_NEO, NUM_MOTORS_PER_SIDE, ROBOT_MASS,
+            WHEEL_RADIUS, ROBOT_RADIUS, MOMENT_OF_INERTIA, Gl, Gr);
+  }
+
+  @Override
+  protected void designControllerObserver() {
+    // Have to use Matlab or Python to get LQR and Kalman gain matrix for now
+
+    SimpleMatrix lqrMatrix = new SimpleMatrix(
+            new double[][]{
+                    {7.11732344, -0.35178656},
+                    {-0.35178656, 7.11732344},
+            }
+    );
+
+    designLQR(lqrMatrix);
+
+    designTwoStateFeedforward(null, null);
+
+    double qVel = 1.0;
+    double rVel = 0.01;
+
+    SimpleMatrix kalmanGainMatrix = new SimpleMatrix(
+            new double[][]{
+                    {9.99900017e-01, -3.10515467e-10},
+                    {-3.10515467e-10, 9.99900017e-01}
+            }
+    );
+
+    designKalmanFilter(new SimpleMatrix(new double[][]{{qVel, qVel}}), new SimpleMatrix(new double[][]{{rVel, rVel}}), kalmanGainMatrix);
+  }
+
+  private StateSpace drivetrain(Models.DcBrushedMotor motor, int numMotors, double m, double r,
+                                double rb, double J, double Gl, double Gr) throws Exception {
+    Models.DcBrushedMotor gearbox = Models.gearbox(motor, numMotors);
+
+    double C1 = -Math.pow(Gl, 2) * gearbox.kT / (gearbox.kV * gearbox.R * Math.pow(r, 2));
+    double C2 = Gl * gearbox.kT / (gearbox.R * r);
+    double C3 = -Math.pow(Gr, 2) * gearbox.kT / (gearbox.kV * gearbox.R * Math.pow(r, 2));
+    double C4 = Gr * gearbox.kT / (gearbox.R * r);
+
+    SimpleMatrix A = new SimpleMatrix(
+            new double[][]{
+                    {(1 / m + Math.pow(rb, 2) / J) * C1, (1 / m - Math.pow(rb, 2) / J) * C3},
+                    {(1 / m - Math.pow(rb, 2) / J) * C1, (1 / m + Math.pow(rb, 2) / J) * C3},
+            }
+    );
+
+    SimpleMatrix B = new SimpleMatrix(
+            new double[][]{
+                    {(1 / m + Math.pow(rb, 2) / J) * C2, (1 / m - Math.pow(rb, 2) / J) * C4},
+                    {(1 / m - Math.pow(rb, 2) / J) * C2, (1 / m + Math.pow(rb, 2) / J) * C4},
+            }
+    );
+
+    SimpleMatrix C = new SimpleMatrix(
+            new double[][]{
+                    {1, 0},
+                    {0, 1}
+            }
+    );
+
+    SimpleMatrix D = new SimpleMatrix(
+            new double[][]{
+                    {0, 0},
+                    {0, 0}
+            }
+    );
+
+    return new StateSpace(A, B, C, D, null);
   }
 }

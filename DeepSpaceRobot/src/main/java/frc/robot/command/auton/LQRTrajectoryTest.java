@@ -1,0 +1,151 @@
+package frc.robot.command.auton;
+
+import edu.wpi.first.wpilibj.command.Command;
+import lib.motionControl.Pose2d;
+import lib.motionControl.RamseteController;
+import lib.motionControl.RamseteTuple;
+import org.ejml.simple.SimpleMatrix;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static frc.robot.Config.LQRControlConstants.ROBOT_RADIUS;
+import static frc.robot.Config.LQRControlConstants.dt;
+import static frc.robot.Robot.drivetrain;
+
+public class LQRTrajectoryTest extends Command {
+
+    private static final String CSV_FILE_PATH = "home/lvuser/deploy/paths/ramsete_traj.csv";
+
+    private List<Double> t = new ArrayList<>();
+    private List<Double> xprof = new ArrayList<>();
+    private List<Double> yprof = new ArrayList<>();
+    private List<Double> thetaprof = new ArrayList<>();
+    private List<Double> vprof = new ArrayList<>();
+    private List<Double> omegaprof = new ArrayList<>();
+
+    private Pose2d pose = new Pose2d(xprof.get(0) + 0.5, yprof.get(0) + 0.5, Math.PI);
+    private Pose2d desiredPose = new Pose2d();
+
+    private RamseteController controller = new RamseteController();
+
+    private double vl = Double.POSITIVE_INFINITY;
+    private double vr = Double.POSITIVE_INFINITY;
+
+    private double[] xRec = new double[t.size() - 1];
+    private double[] yRec = new double[t.size() - 1];
+    private double[] thetaRec = new double[t.size() - 1];
+    private double[] vlRec = new double[t.size() - 1];
+    private double[] vlRefRec = new double[t.size() - 1];
+    private double[] vrRec = new double[t.size() - 1];
+    private double[] vrRefRec = new double[t.size() - 1];
+    private double[] ulRec = new double[t.size() - 1];
+    private double[] urRec = new double[t.size() - 1];
+
+    private int pathIndex = 0;
+
+    public LQRTrajectoryTest() {
+        requires(drivetrain);
+    }
+
+    private double[] getDiffVels(double v, double omega, double d) {
+        return new double[]{v - omega * d / 2.0, v + omega * d / 2.0};
+    }
+
+    @Override
+    protected void initialize() {
+        System.out.println("Initialized LQR trajectory test");
+
+        BufferedReader br = null;
+        String line = "";
+        String cvsSplitBy = ",";
+
+        try {
+            br = new BufferedReader(new FileReader(CSV_FILE_PATH));
+            // skip first line
+            br.readLine();
+            while ((line = br.readLine()) != null) {
+
+                // use comma as separator
+                String[] trajectoryData = line.split(cvsSplitBy);
+
+                t.add(Double.parseDouble(trajectoryData[0]));
+                xprof.add(Double.parseDouble(trajectoryData[1]));
+                yprof.add(Double.parseDouble(trajectoryData[2]));
+                thetaprof.add(Double.parseDouble(trajectoryData[3]));
+                vprof.add(Double.parseDouble(trajectoryData[4]));
+                omegaprof.add(Double.parseDouble(trajectoryData[5]));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void execute() {
+        desiredPose.x = xprof.get(pathIndex);
+        desiredPose.y = yprof.get(pathIndex);
+        desiredPose.theta = thetaprof.get(pathIndex);
+
+        RamseteTuple tuple = controller.ramsete(desiredPose, vprof.get(pathIndex), omegaprof.get(pathIndex), pose);
+        double vref = tuple.v;
+        double omegaref = tuple.omega;
+        double[] diffVels = getDiffVels(vref, omegaref, ROBOT_RADIUS * 2.0);
+        double vlref = diffVels[0];
+        double vrref = diffVels[1];
+        SimpleMatrix nextR = new SimpleMatrix(new double[][]{{vlref}, {vrref}});
+        drivetrain.update(nextR);
+        double vc = (drivetrain.x.get(0, 0) + drivetrain.x.get(1, 0)) / 2.0;
+        double omega = (drivetrain.x.get(1, 0) - drivetrain.x.get(0, 0)) / (2.0 * ROBOT_RADIUS);
+        double[] diffVels1 = getDiffVels(vc, omega, ROBOT_RADIUS * 2.0);
+        vl = diffVels1[0];
+        vr = diffVels1[1];
+
+        pose.x += vc * Math.cos(pose.theta) * dt;
+        pose.y += vc * Math.sin(pose.theta) * dt;
+        pose.theta += omega * dt;
+
+        vlRefRec[pathIndex] = vlref;
+        vrRefRec[pathIndex] = vrref;
+        xRec[pathIndex] = pose.x;
+        yRec[pathIndex] = pose.y;
+        thetaRec[pathIndex] = pose.theta;
+        vlRec[pathIndex] = vl;
+        vrRec[pathIndex] = vr;
+        ulRec[pathIndex] = drivetrain.u.get(0, 0);
+        urRec[pathIndex] = drivetrain.u.get(1, 0);
+
+        if (pathIndex < t.size()) {
+            pathIndex += 1;
+        }
+    }
+
+    @Override
+    protected boolean isFinished() {
+        return pathIndex >= t.size();
+    }
+
+    @Override
+    protected void end() {
+        System.out.println("Ended LQR trajectory test");
+    }
+
+    @Override
+    protected void interrupted() {
+        System.out.println("LQR trajectory test interrupted");
+        end();
+    }
+
+}

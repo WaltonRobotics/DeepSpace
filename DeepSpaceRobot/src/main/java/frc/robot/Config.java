@@ -166,4 +166,45 @@ public class Config {
     }
   }
 
+  public static final class LQRControlConstants {
+    public static final double MIN_OUTPUT_VOLTAGE = -12.0;
+    public static final double MAX_OUTPUT_VOLTAGE = 12.0;
+
+    public static final double dt = 0.02;
+
+    public static final int NUM_MOTORS_PER_SIDE = 2;
+
+    public static final double ROBOT_MASS = 52;
+
+    public static final double GEAR_RATIO_LOW = 60.0 / 11.0;
+    public static final double GEAR_RATIO_HIGH = 60.0 / 11.0;
+
+    public static final double WHEEL_RADIUS = 0.08255 / 2.0;
+    public static final double ROBOT_RADIUS = 0.59055 / 2.0;
+
+    public static final double MOMENT_OF_INERTIA = 6.0;
+  }
+
+  public static final class SmartMotionConstants {
+    public static final double LEFT_KP = 5e-5;
+    public static final double LEFT_KI = 1e-6;
+    public static final double LEFT_KD = 0;
+    public static final double LEFT_KFF = 0;
+
+    public static final double RIGHT_KP = 5e-5;
+    public static final double RIGHT_KI = 1e-6;
+    public static final double RIGHT_KD = 0;
+    public static final double RIGHT_KFF = 0;
+
+    public static final int K_SMART_CURRENT_LIMIT = 40;
+    public static final int K_VOLTAGE_COMPENSATION = 12;
+    public static final int K_OPENLOOP_RAMP = 0;
+
+    public static final int K_VELOCITY_CONVERSION_FACTOR = 1;
+    public static final int K_POSITION_CONVERSION_FACTOR = 1;
+
+    public static final int DRIVE_CONTROL_MODE = 0;
+    public static final int VOLTAGE_CONTROL_MODE = 1;
+  }
+
 }
