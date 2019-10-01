@@ -9,6 +9,7 @@ import lib.Kinematics.DifferentialDriveKinematics;
 import lib.Utils.MotionPair;
 import lib.trajectory.Trajectory;
 
+import static frc.robot.Config.RamseteControllerConstants.DRIVE_RADIUS;
 import static frc.robot.Config.RamseteControllerConstants.K_BETA;
 import static frc.robot.Config.RamseteControllerConstants.K_ZETA;
 import static frc.robot.Config.RamseteControllerConstants.TOLERANCE_POSE;
@@ -37,11 +38,11 @@ public class FollowTrajectory extends Command {
   private double previousLeftVelocity;
   private double previousRightVelocity;
 
-  public FollowTrajectory(Trajectory trajectory, double driveRadius) {
+  public FollowTrajectory(Trajectory trajectory) {
     requires(drivetrain);
     this.startingPose = trajectory.getStates().get(0).poseMeters;
     this.trajectory = trajectory;
-    this.kinematics = new DifferentialDriveKinematics(driveRadius);
+    this.kinematics = new DifferentialDriveKinematics(DRIVE_RADIUS);
     this.ramseteController = new RamseteController(K_BETA, K_ZETA);
     this.currentTime = 0;
     this.dt = KT;
@@ -61,7 +62,6 @@ public class FollowTrajectory extends Command {
     timer.reset();
     timer.start();
   }
-
 
   @Override
   protected void execute() {
