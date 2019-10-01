@@ -30,6 +30,8 @@ public class FollowTrajectory extends Command {
 
   private Timer timer;
 
+  private boolean backwards;
+
   private double leftVelocity;
   private double rightVelocity;
   private double leftAcceleration;
@@ -38,7 +40,7 @@ public class FollowTrajectory extends Command {
   private double previousLeftVelocity;
   private double previousRightVelocity;
 
-  public FollowTrajectory(Trajectory trajectory) {
+  public FollowTrajectory(Trajectory trajectory, boolean isBackwards) {
     requires(drivetrain);
     this.startingPose = trajectory.getStates().get(0).poseMeters;
     this.trajectory = trajectory;
@@ -52,14 +54,14 @@ public class FollowTrajectory extends Command {
     this.rightAcceleration = 0;
     this.previousLeftVelocity = 0;
     this.previousRightVelocity = 0;
-    timer = new Timer();
+    this.backwards = isBackwards;
+    this.timer = new Timer();
   }
 
   @Override
   protected void initialize() {
     drivetrain.getDriveOdometry().resetPosition(startingPose);
     ramseteController.setTolerance(TOLERANCE_POSE);
-    timer.reset();
     timer.start();
   }
 
@@ -67,7 +69,12 @@ public class FollowTrajectory extends Command {
   protected void execute() {
     Pose2d currentPose = drivetrain.updateRobotPose();
     MotionPair drivetrainMotions = getRobotMotions(currentPose);
-    drivetrain.setVoltages(drivetrainMotions.getLeftVelocity(), drivetrainMotions.getLeftAcceleration(), drivetrainMotions.getRightVelocity(), drivetrainMotions.getRightAcceleration());
+
+    if (backwards) {
+      drivetrain.setVoltages(-drivetrainMotions.getRightVelocity(), -drivetrainMotions.getRightAcceleration(), -drivetrainMotions.getLeftVelocity(), -drivetrainMotions.getLeftAcceleration());
+    } else {
+      drivetrain.setVoltages(drivetrainMotions.getLeftVelocity(), drivetrainMotions.getLeftAcceleration(), drivetrainMotions.getRightVelocity(), drivetrainMotions.getRightAcceleration());
+    }
   }
 
   @Override
