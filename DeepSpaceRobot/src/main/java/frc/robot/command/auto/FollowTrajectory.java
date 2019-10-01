@@ -90,7 +90,7 @@ public class FollowTrajectory extends Command {
 
     currentTime += dt;
 
-    return new MotionPair(kinematics.toWheelSpeeds(ramseteOutputs).leftMetersPerSecond, leftAcceleration, rightVelocity, rightAcceleration);
+    return new MotionPair(leftVelocity, leftAcceleration, rightVelocity, rightAcceleration);
   }
 
   public double getLeftVelocity() {
