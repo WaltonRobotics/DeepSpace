@@ -1,5 +1,6 @@
 package frc.robot.command.auto;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import lib.Controller.RamseteController;
 import lib.Geometry.Pose2d;
@@ -26,6 +27,8 @@ public class FollowTrajectory extends Command {
 
   private RamseteController ramseteController;
 
+  private Timer timer;
+
   private double leftVelocity;
   private double rightVelocity;
   private double leftAcceleration;
@@ -48,12 +51,15 @@ public class FollowTrajectory extends Command {
     this.rightAcceleration = 0;
     this.previousLeftVelocity = 0;
     this.previousRightVelocity = 0;
+    timer = new Timer();
   }
 
   @Override
   protected void initialize() {
     drivetrain.getDriveOdometry().resetPosition(startingPose);
     ramseteController.setTolerance(TOLERANCE_POSE);
+    timer.reset();
+    timer.start();
   }
 
 
@@ -69,12 +75,19 @@ public class FollowTrajectory extends Command {
     return ramseteController.atReference();
   }
 
+  @Override
+  protected void end() {
+    timer.stop();
+  }
+
   /**
    * @param currentPose : The current pose of the robot
    * @return A chassis speed of the robot
    */
 
   private MotionPair getRobotMotions(Pose2d currentPose) {
+
+    currentTime = timer.get();
 
     Trajectory.State desiredState = trajectory.sample(currentTime);
     ChassisSpeeds ramseteOutputs = ramseteController.calculate(currentPose, desiredState);
@@ -87,8 +100,6 @@ public class FollowTrajectory extends Command {
 
     previousLeftVelocity = leftVelocity;
     previousRightVelocity = rightVelocity;
-
-    currentTime += dt;
 
     return new MotionPair(leftVelocity, leftAcceleration, rightVelocity, rightAcceleration);
   }
