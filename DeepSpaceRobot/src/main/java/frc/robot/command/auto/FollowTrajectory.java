@@ -1,5 +1,7 @@
 package frc.robot.command.auto;
 
+import org.ghrobotics.lib.debug.LiveDashboard;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import lib.Controller.RamseteController;
@@ -7,6 +9,7 @@ import lib.Geometry.Pose2d;
 import lib.Kinematics.ChassisSpeeds;
 import lib.Kinematics.DifferentialDriveKinematics;
 import lib.Utils.MotionPair;
+import lib.Utils.Units;
 import lib.trajectory.Trajectory;
 
 import static frc.robot.Config.RamseteControllerConstants.DRIVE_RADIUS;
@@ -63,6 +66,7 @@ public class FollowTrajectory extends Command {
     drivetrain.getDriveOdometry().resetPosition(startingPose);
     ramseteController.setTolerance(TOLERANCE_POSE);
     timer.start();
+    LiveDashboard.INSTANCE.setFollowingPath(true);
   }
 
   @Override
@@ -85,6 +89,7 @@ public class FollowTrajectory extends Command {
   @Override
   protected void end() {
     timer.stop();
+    LiveDashboard.INSTANCE.setFollowingPath(false);
   }
 
   /**
@@ -107,6 +112,12 @@ public class FollowTrajectory extends Command {
 
     previousLeftVelocity = leftVelocity;
     previousRightVelocity = rightVelocity;
+
+    Pose2d referencePose = desiredState.poseMeters;
+
+    LiveDashboard.INSTANCE.setPathX(Units.metersToFeet(referencePose.getTranslation().getX()));
+    LiveDashboard.INSTANCE.setPathY(Units.metersToFeet(referencePose.getTranslation().getY()));
+    LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadians());
 
     return new MotionPair(leftVelocity, leftAcceleration, rightVelocity, rightAcceleration);
   }
