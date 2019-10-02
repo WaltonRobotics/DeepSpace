@@ -174,7 +174,7 @@ public class AutoHabitatToRocketHatch extends AutonState {
             endPose2, backUpPosition);
     getCommandGroup().addSequential(finishing);
 
-    drivetrain.startControllerMotion(getStartPose());
+//    drivetrain.startControllerMotion(getStartPose());
     getCommandGroup().start();
 
     timeout = godSubsystem.getCurrentTime() + 2500L;
@@ -242,8 +242,8 @@ public class AutoHabitatToRocketHatch extends AutonState {
   public void finish() {
 //    Robot.godSubsystem.getHatch().setIntake(false);
     getCommandGroup().cancel();
-    drivetrain.clearControllerMotions();
-    drivetrain.cancelControllerMotion();
+//    drivetrain.clearControllerMotions();
+//    drivetrain.cancelControllerMotion();
     godSubsystem.setAutonomousEnabled(false);
   }
 

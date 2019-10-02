@@ -117,7 +117,7 @@ public final class OI {
       @Override
       protected void initialize() {
         drivetrain.reset();
-        drivetrain.setStartingPosition(Pose.ZERO);
+//        drivetrain.setStartingPosition(Pose.ZERO);
       }
     });
 

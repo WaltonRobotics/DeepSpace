@@ -97,6 +97,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config.Camera;
+import frc.robot.command.Localization;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
@@ -112,6 +113,7 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import frc.robot.util.RobotBuilder;
+import lib.motionControl.Pose2d;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -374,6 +376,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    Localization.setStartingPose(new Pose2d());
+    Localization.getInstance().start();
+
 //    godSubsystem.setEnabled(false);
     godSubsystem.setEnabled(true);
     godSubsystem.setAutonomousEnabled(SmartDashboard.getBoolean(USE_AUTON, false));

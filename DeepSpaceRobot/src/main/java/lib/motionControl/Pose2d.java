@@ -15,6 +15,10 @@ public class Pose2d {
         this(0.0, 0.0, 0.0);
     }
 
+    public Pose2d(Pose2d other) {
+        this(other.x, other.y, other.theta);
+    }
+
     public Pose2d(double x, double y, double theta) {
         this.x = x;
         this.y = y;

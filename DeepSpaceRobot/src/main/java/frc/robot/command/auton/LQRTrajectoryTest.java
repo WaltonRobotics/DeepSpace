@@ -1,6 +1,7 @@
 package frc.robot.command.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.command.Localization;
 import lib.motionControl.Pose2d;
 import lib.motionControl.RamseteController;
 import lib.motionControl.RamseteTuple;
@@ -91,6 +92,8 @@ public class LQRTrajectoryTest extends Command {
                 }
             }
         }
+
+        Localization.setStartingPose(new Pose2d(xprof.get(0) + 0.5, yprof.get(0) + 0.5, Math.PI));
     }
 
     @Override
@@ -113,9 +116,9 @@ public class LQRTrajectoryTest extends Command {
         vl = diffVels1[0];
         vr = diffVels1[1];
 
-        pose.x += vc * Math.cos(pose.theta) * dt;
-        pose.y += vc * Math.sin(pose.theta) * dt;
-        pose.theta += omega * dt;
+        drivetrain.setVoltages(drivetrain.u.get(0), drivetrain.u.get(1));
+
+        pose = new Pose2d(Localization.getCurrentPose());
 
         vlRefRec[pathIndex] = vlref;
         vrRefRec[pathIndex] = vrref;

@@ -273,10 +273,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     SmartDashboard.putBoolean(MOTORS_HATCH_ForwardSoftLimit, faults.ForwardSoftLimit);
     SmartDashboard.putBoolean(MOTORS_HATCH_ReverseSoftLimit, faults.ReverseSoftLimit);
 
-    if (isAutonomousEnabled.isFallingEdge()) {
-      drivetrain.clearControllerMotions();
-      drivetrain.cancelControllerMotion();
-    }
+//    if (isAutonomousEnabled.isFallingEdge()) {
+//      drivetrain.clearControllerMotions();
+//      drivetrain.cancelControllerMotion();
+//    }
   }
 
   @Override

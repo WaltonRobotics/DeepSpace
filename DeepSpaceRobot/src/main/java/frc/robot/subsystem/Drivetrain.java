@@ -12,6 +12,7 @@ import static frc.robot.Config.LQRControlConstants.MOMENT_OF_INERTIA;
 import static frc.robot.Config.LQRControlConstants.ROBOT_RADIUS;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
 import static frc.robot.Config.SmartMotionConstants.*;
+import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.*;
 import static lib.system.Models.MOTOR_NEO;
 
@@ -78,6 +79,10 @@ public class Drivetrain extends System {
     rightWheelsEncoder.setVelocityConversionFactor(K_VELOCITY_CONVERSION_FACTOR);
 
     inLowGear = !shifter.get();
+
+    setDriveControlMode();
+    setVelocityControlMode();
+    setEncoderDistancePerPulse();
   }
 
   @Override
@@ -94,6 +99,8 @@ public class Drivetrain extends System {
   public void reset() {
     leftWheelsEncoder.setPosition(0.0);
     rightWheelsEncoder.setPosition(0.0);
+    encoderLeft.reset();
+    encoderRight.reset();
   }
 
   public void setArcadeSpeeds(double xSpeed, double zRotation) {
@@ -141,25 +148,11 @@ public class Drivetrain extends System {
   }
 
   public void setEncoderDistancePerPulse() {
-//    leftWheels.setInverted(currentRobot.getLeftTalonConfig().isInverted());
-//    rightWheels.setInverted(currentRobot.getRightTalonConfig().isInverted());
-//
-//    leftWheels.configPeakOutputForward(1.0);
-//    leftWheels.configPeakOutputReverse(-1.0);
-//
-//    leftWheels.setNeutralMode(NeutralMode.Brake);
-//    rightWheels.setNeutralMode(NeutralMode.Brake);
-//
-//    rightWheels.configPeakOutputForward(1.0);
-//    rightWheels.configPeakOutputReverse(-1.0);
+    encoderLeft.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
+    encoderRight.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
 
-    /*
-    leftWheelsEncoder.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
-    rightWheelsEncoder.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
-
-    leftWheelsEncoder.setReverseDirection(currentRobot.getLeftEncoderConfig().isInverted());
-    rightWheelsEncoder.setReverseDirection(currentRobot.getRightEncoderConfig().isInverted());
-    */
+    encoderLeft.setReverseDirection(currentRobot.getLeftEncoderConfig().isInverted());
+    encoderRight.setReverseDirection(currentRobot.getRightEncoderConfig().isInverted());
   }
 
   public void setDriveControlMode() {
@@ -180,22 +173,22 @@ public class Drivetrain extends System {
     leftWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, DRIVE_CONTROL_MODE);
   }
 
-  public void setVoltageControlMode() {
-    rightWheelsMaster.getPIDController().setP(RIGHT_KP, VOLTAGE_CONTROL_MODE);
-    rightWheelsMaster.getPIDController().setI(RIGHT_KI, VOLTAGE_CONTROL_MODE);
-    rightWheelsMaster.getPIDController().setD(RIGHT_KD, VOLTAGE_CONTROL_MODE);
-    rightWheelsMaster.getPIDController().setFF(RIGHT_KFF, VOLTAGE_CONTROL_MODE);
-    rightWheelsMaster.getPIDController().setOutputRange(-1, 1, VOLTAGE_CONTROL_MODE);
+  public void setVelocityControlMode() {
+    rightWheelsMaster.getPIDController().setP(RIGHT_KP, VELOCITY_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setI(RIGHT_KI, VELOCITY_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setD(RIGHT_KD, VELOCITY_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setFF(RIGHT_KFF, VELOCITY_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setOutputRange(-1, 1, VELOCITY_CONTROL_MODE);
 
-    rightWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, VOLTAGE_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, VELOCITY_CONTROL_MODE);
 
-    leftWheelsMaster.getPIDController().setP(LEFT_KP, VOLTAGE_CONTROL_MODE);
-    leftWheelsMaster.getPIDController().setI(LEFT_KI, VOLTAGE_CONTROL_MODE);
-    leftWheelsMaster.getPIDController().setD(LEFT_KD, VOLTAGE_CONTROL_MODE);
-    leftWheelsMaster.getPIDController().setFF(LEFT_KFF, VOLTAGE_CONTROL_MODE);
-    leftWheelsMaster.getPIDController().setOutputRange(-1, 1, VOLTAGE_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setP(LEFT_KP, VELOCITY_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setI(LEFT_KI, VELOCITY_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setD(LEFT_KD, VELOCITY_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setFF(LEFT_KFF, VELOCITY_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setOutputRange(-1, 1, VELOCITY_CONTROL_MODE);
 
-    leftWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, VOLTAGE_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, VELOCITY_CONTROL_MODE);
   }
 
   @Override
