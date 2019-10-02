@@ -74,6 +74,10 @@ public class FollowTrajectory extends Command {
     Pose2d currentPose = drivetrain.updateRobotPose();
     MotionPair drivetrainMotions = getRobotMotions(currentPose);
 
+    LiveDashboard.INSTANCE.setRobotX(Units.metersToFeet(currentPose.getTranslation().getX()));
+    LiveDashboard.INSTANCE.setRobotY(Units.metersToFeet(currentPose.getTranslation().getY()));
+    LiveDashboard.INSTANCE.setPathHeading(Units.metersToFeet(currentPose.getRotation().getRadians()));
+
     if (backwards) {
       drivetrain.setVoltages(-drivetrainMotions.getRightVelocity(), -drivetrainMotions.getRightAcceleration(), -drivetrainMotions.getLeftVelocity(), -drivetrainMotions.getLeftAcceleration());
     } else {
