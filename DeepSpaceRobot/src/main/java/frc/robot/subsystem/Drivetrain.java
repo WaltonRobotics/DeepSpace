@@ -9,10 +9,8 @@ package frc.robot.subsystem;
 
 import static frc.robot.Config.RamseteControllerConstants.DRIVE_RADIUS;
 import static frc.robot.Config.SmartMotionConstants.DRIVE_CONTROL_MODE;
-import static frc.robot.Config.SmartMotionConstants.KT_IN_MILLI;
 import static frc.robot.Config.SmartMotionConstants.K_OPENLOOP_RAMP;
 import static frc.robot.Config.SmartMotionConstants.K_SMART_CURRENT_LIMIT;
-import static frc.robot.Config.SmartMotionConstants.K_VELOCITY_CONVERSION_FACTOR;
 import static frc.robot.Config.SmartMotionConstants.K_VOLTAGE_COMPENSATION;
 import static frc.robot.Config.SmartMotionConstants.LEFT_KD;
 import static frc.robot.Config.SmartMotionConstants.LEFT_KFF;
@@ -88,14 +86,6 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsSlave.setIdleMode(IdleMode.kBrake);
     rightWheelsMaster.setIdleMode(IdleMode.kBrake);
 
-    leftWheelsEncoder.setMeasurementPeriod(KT_IN_MILLI);
-    rightWheelsEncoder.setMeasurementPeriod(KT_IN_MILLI);
-
-    leftWheelsEncoder.setVelocityConversionFactor(K_VELOCITY_CONVERSION_FACTOR);
-    rightWheelsEncoder.setVelocityConversionFactor(K_VELOCITY_CONVERSION_FACTOR);
-
-    leftWheelsEncoder.setInverted(true);
-
     differentialDriveKinematics = new DifferentialDriveKinematics(DRIVE_RADIUS);
     driveOdometry = new DifferentialDriveOdometry(differentialDriveKinematics);
 
@@ -115,7 +105,11 @@ public class Drivetrain extends AbstractDrivetrain {
   }
 
   public Pose2d updateRobotPose() {
-    return driveOdometry.update(Rotation2d.fromDegrees(ahrs.getYaw()), new DifferentialDriveWheelSpeeds(leftWheelsEncoder.getVelocity(), rightWheelsEncoder.getVelocity())); //TODO: Check angle make sure not cw positive.
+    return driveOdometry.update(Rotation2d.fromDegrees(ahrs.getYaw()), getWheelSpeeds()); //TODO: Check angle make sure ccw positive.
+  }
+
+  private DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(encoderLeft.getRate(), encoderRight.getRate());
   }
 
   public DifferentialDriveOdometry getDriveOdometry() {
@@ -155,11 +149,11 @@ public class Drivetrain extends AbstractDrivetrain {
   }
   
   private double calculateLeftVoltages(double velocity, double acceleration) {
-    return L_KV * velocity + L_KA * acceleration + L_KS * Math.signum(velocity) + L_KP * (velocity - rightWheelsEncoder.getVelocity());
+    return L_KV * velocity + L_KA * acceleration + L_KS * Math.signum(velocity) + L_KP * (velocity - getWheelSpeeds().rightMetersPerSecond);
   }
 
   private double calculateRightVoltagesVoltages(double velocity, double acceleration) {
-    return R_KV * velocity + R_KA * acceleration + R_KS * Math.signum(velocity) + R_KP * (velocity - leftWheelsEncoder.getVelocity());
+    return R_KV * velocity + R_KA * acceleration + R_KS * Math.signum(velocity) + R_KP * (velocity - getWheelSpeeds().leftMetersPerSecond);
   }
 
   public void setVoltages(double leftVelocity, double leftAcceleration, double rightVelocity, double rightAcceleration) {
@@ -167,7 +161,7 @@ public class Drivetrain extends AbstractDrivetrain {
     leftWheelsMaster.getPIDController().setReference(calculateLeftVoltages(leftVelocity, leftAcceleration), ControlType.kVoltage);
   }
 
-  public void setDriveControlMode() {
+  private void setDriveControlMode() {
     rightWheelsMaster.getPIDController().setP(RIGHT_KP, DRIVE_CONTROL_MODE);
     rightWheelsMaster.getPIDController().setI(RIGHT_KI, DRIVE_CONTROL_MODE);
     rightWheelsMaster.getPIDController().setD(RIGHT_KD, DRIVE_CONTROL_MODE);
@@ -185,7 +179,7 @@ public class Drivetrain extends AbstractDrivetrain {
     leftWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, DRIVE_CONTROL_MODE);
   }
 
-  public void setVelocityControlMode() {
+  private void setVelocityControlMode() {
     rightWheelsMaster.getPIDController().setP(RIGHT_KP, VELOCITY_CONTROL_MODE);
     rightWheelsMaster.getPIDController().setI(RIGHT_KI, VELOCITY_CONTROL_MODE);
     rightWheelsMaster.getPIDController().setD(RIGHT_KD, VELOCITY_CONTROL_MODE);

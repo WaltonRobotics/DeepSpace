@@ -195,8 +195,6 @@ public class Config {
 
     public static final int K_OPENLOOP_RAMP = 0;
 
-    public static final int K_VELOCITY_CONVERSION_FACTOR = 0;
-
     public static final int DRIVE_CONTROL_MODE = 0;
     public static final int VELOCITY_CONTROL_MODE = 1;
 
