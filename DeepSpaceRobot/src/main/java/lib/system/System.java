@@ -43,6 +43,11 @@ public abstract class System extends Subsystem {
 
     public System(SimpleMatrix uMin, SimpleMatrix uMax, double dt,
                   SimpleMatrix states, SimpleMatrix inputs, NonlinearFunction nonlinearFunc) throws Exception {
+        resetSystem(uMin, uMax, dt, states, inputs, nonlinearFunc);
+    }
+
+    public void resetSystem(SimpleMatrix uMin, SimpleMatrix uMax, double dt,
+                                 SimpleMatrix states, SimpleMatrix inputs, NonlinearFunction nonlinearFunc) throws Exception {
         this.f = nonlinearFunc;
         this.sysc = createModel(states.copy(), inputs.copy());
         this.dt = dt;

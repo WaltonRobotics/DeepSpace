@@ -7,15 +7,6 @@
 
 package frc.robot.subsystem;
 
-import static frc.robot.Config.LQRControlConstants.*;
-import static frc.robot.Config.LQRControlConstants.MOMENT_OF_INERTIA;
-import static frc.robot.Config.LQRControlConstants.ROBOT_RADIUS;
-import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
-import static frc.robot.Config.SmartMotionConstants.*;
-import static frc.robot.Robot.currentRobot;
-import static frc.robot.RobotMap.*;
-import static lib.system.Models.MOTOR_NEO;
-
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.ControlType;
@@ -27,6 +18,14 @@ import lib.system.StateSpace;
 import lib.system.System;
 import org.ejml.simple.SimpleMatrix;
 import org.waltonrobotics.metadata.CameraData;
+
+import static frc.robot.Config.LQRControlConstants.MAX_OUTPUT_VOLTAGE;
+import static frc.robot.Config.LQRControlConstants.MIN_OUTPUT_VOLTAGE;
+import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
+import static frc.robot.Config.SmartMotionConstants.*;
+import static frc.robot.Robot.currentRobot;
+import static frc.robot.RobotMap.*;
+import static lib.system.Models.MOTOR_NEO;
 
 /**
  * Add your docs here.
@@ -78,7 +77,8 @@ public class Drivetrain extends System {
     rightWheelsEncoder.setPositionConversionFactor(K_POSITION_CONVERSION_FACTOR);
     rightWheelsEncoder.setVelocityConversionFactor(K_VELOCITY_CONVERSION_FACTOR);
 
-    inLowGear = !shifter.get();
+    shiftDown();
+    inLowGear = true;
 
     setDriveControlMode();
     setVelocityControlMode();
@@ -225,29 +225,22 @@ public class Drivetrain extends System {
 
   @Override
   protected StateSpace createModel(SimpleMatrix states, SimpleMatrix inputs) throws Exception {
-    double Gl;
-    double Gr;
-
-    if (inLowGear) {
-      Gl = GEAR_RATIO_LOW;
-      Gr = GEAR_RATIO_LOW;
-    } else {
-      Gl = GEAR_RATIO_HIGH;
-      Gr = GEAR_RATIO_HIGH;
-    }
-
-    return drivetrain(MOTOR_NEO, NUM_MOTORS_PER_SIDE, ROBOT_MASS,
-            WHEEL_RADIUS, ROBOT_RADIUS, MOMENT_OF_INERTIA, Gl, Gr);
+    return drivetrain();
   }
 
   @Override
   protected void designControllerObserver() {
     // Have to use Matlab or Python to get LQR and Kalman gain matrix for now
 
+    double[] lqrArray = SmartDashboard.getNumberArray("LQRMatrix", new double[]{
+            7.11732344, -0.35178656,
+            -0.35178656, 7.11732344,
+    });
+
     SimpleMatrix lqrMatrix = new SimpleMatrix(
             new double[][]{
-                    {7.11732344, -0.35178656},
-                    {-0.35178656, 7.11732344},
+                    {lqrArray[0], lqrArray[1]},
+                    {lqrArray[2], lqrArray[3]},
             }
     );
 
@@ -258,19 +251,31 @@ public class Drivetrain extends System {
     double qVel = 1.0;
     double rVel = 0.01;
 
+    double[] kalmanArray = SmartDashboard.getNumberArray("KalmanMatrix", new double[]{
+            9.99900017e-01, -3.10515467e-10,
+            -3.10515467e-10, 9.99900017e-01,
+    });
+
     SimpleMatrix kalmanGainMatrix = new SimpleMatrix(
             new double[][]{
-                    {9.99900017e-01, -3.10515467e-10},
-                    {-3.10515467e-10, 9.99900017e-01}
+                    {kalmanArray[0], kalmanArray[1]},
+                    {kalmanArray[2], kalmanArray[3]},
             }
     );
 
     designKalmanFilter(new SimpleMatrix(new double[][]{{qVel, qVel}}), new SimpleMatrix(new double[][]{{rVel, rVel}}), kalmanGainMatrix);
   }
 
-  private StateSpace drivetrain(Models.DcBrushedMotor motor, int numMotors, double m, double r,
-                                double rb, double J, double Gl, double Gr) throws Exception {
-    Models.DcBrushedMotor gearbox = Models.gearbox(motor, numMotors);
+  private StateSpace drivetrain() throws Exception {
+    Models.DcBrushedMotor gearbox = Models.gearbox(MOTOR_NEO, 2);
+
+    double m = SmartDashboard.getNumber("Mass", 52.0);
+    double r = SmartDashboard.getNumber("Wheel radius", 0.08255 / 2.0);
+    double rb = SmartDashboard.getNumber("Robot radius", 0.59055 / 2.0);
+    double J = SmartDashboard.getNumber("MOI", 6.0);
+
+    double Gl = SmartDashboard.getNumber("Glow", 60.0 / 11.0);
+    double Gr = SmartDashboard.getNumber("Glow", 60.0 / 11.0);
 
     double C1 = -Math.pow(Gl, 2) * gearbox.kT / (gearbox.kV * gearbox.R * Math.pow(r, 2));
     double C2 = Gl * gearbox.kT / (gearbox.R * r);

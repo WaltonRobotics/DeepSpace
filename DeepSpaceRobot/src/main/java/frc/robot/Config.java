@@ -172,17 +172,7 @@ public class Config {
 
     public static final double dt = 0.02;
 
-    public static final int NUM_MOTORS_PER_SIDE = 2;
-
-    public static final double ROBOT_MASS = 52;
-
-    public static final double GEAR_RATIO_LOW = 60.0 / 11.0;
-    public static final double GEAR_RATIO_HIGH = 60.0 / 11.0;
-
-    public static final double WHEEL_RADIUS = 0.08255 / 2.0;
     public static final double ROBOT_RADIUS = 0.59055 / 2.0;
-
-    public static final double MOMENT_OF_INERTIA = 6.0;
   }
 
   public static final class SmartMotionConstants {

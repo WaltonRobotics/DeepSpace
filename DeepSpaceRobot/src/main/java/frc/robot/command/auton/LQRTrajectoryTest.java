@@ -1,6 +1,7 @@
 package frc.robot.command.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Config;
 import frc.robot.command.Localization;
 import lib.motionControl.Pose2d;
 import lib.motionControl.RamseteController;
@@ -13,8 +14,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static frc.robot.Config.LQRControlConstants.ROBOT_RADIUS;
-import static frc.robot.Config.LQRControlConstants.dt;
+import static frc.robot.Config.LQRControlConstants.*;
+import static frc.robot.Config.LQRControlConstants.MAX_OUTPUT_VOLTAGE;
 import static frc.robot.Robot.drivetrain;
 
 public class LQRTrajectoryTest extends Command {
@@ -94,6 +95,15 @@ public class LQRTrajectoryTest extends Command {
         }
 
         Localization.setStartingPose(new Pose2d(xprof.get(0) + 0.5, yprof.get(0) + 0.5, Math.PI));
+
+        try {
+            drivetrain.resetSystem(new SimpleMatrix(new double[][]{{MIN_OUTPUT_VOLTAGE}, {MIN_OUTPUT_VOLTAGE}}),
+                    new SimpleMatrix(new double[][]{{MAX_OUTPUT_VOLTAGE}, {MAX_OUTPUT_VOLTAGE}}),
+                    Config.LQRControlConstants.dt, new SimpleMatrix(2, 1),
+                    new SimpleMatrix(2, 1), null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
