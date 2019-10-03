@@ -98,6 +98,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config.Camera;
 import frc.robot.command.Localization;
+import frc.robot.command.auton.LQRTrajectoryTest;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
@@ -407,6 +408,7 @@ public class Robot extends TimedRobot {
 //    drivetrain.startControllerMotion(pose);
 //    SimpleLine.lineWithDistance(SmartDashboard.getNumber("Distance", 2)).start();
 //    SimpleSpline.pathFromPosesWithAngle(false, Pose.ZERO, new Pose(1.5, 2)).start();
+    new LQRTrajectoryTest().start();
   }
 
   /**

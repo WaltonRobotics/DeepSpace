@@ -106,14 +106,8 @@ public class LQRTrajectoryTest extends Command {
 
         Localization.setStartingPose(new Pose2d(xprof.get(0) + 0.5, yprof.get(0) + 0.5, Math.PI));
 
-        try {
-            drivetrain.resetSystem(new SimpleMatrix(new double[][]{{MIN_OUTPUT_VOLTAGE}, {MIN_OUTPUT_VOLTAGE}}),
-                    new SimpleMatrix(new double[][]{{MAX_OUTPUT_VOLTAGE}, {MAX_OUTPUT_VOLTAGE}}),
-                    Config.LQRControlConstants.dt, new SimpleMatrix(2, 1),
-                    new SimpleMatrix(2, 1), null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Refresh SS model with SmartDashboard values
+        drivetrain.designControllerObserver();
     }
 
     @Override

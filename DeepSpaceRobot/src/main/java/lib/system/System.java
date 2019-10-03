@@ -43,11 +43,6 @@ public abstract class System extends Subsystem {
 
     public System(SimpleMatrix uMin, SimpleMatrix uMax, double dt,
                   SimpleMatrix states, SimpleMatrix inputs, NonlinearFunction nonlinearFunc) throws Exception {
-        resetSystem(uMin, uMax, dt, states, inputs, nonlinearFunc);
-    }
-
-    public void resetSystem(SimpleMatrix uMin, SimpleMatrix uMax, double dt,
-                                 SimpleMatrix states, SimpleMatrix inputs, NonlinearFunction nonlinearFunc) throws Exception {
         this.f = nonlinearFunc;
         this.sysc = createModel(states.copy(), inputs.copy());
         this.dt = dt;
@@ -141,7 +136,7 @@ public abstract class System extends Subsystem {
 
     protected abstract StateSpace createModel(SimpleMatrix states, SimpleMatrix inputs) throws Exception;
 
-    protected abstract void designControllerObserver();
+    public abstract void designControllerObserver();
 
     // TODO: Write all of the following methods properly
     protected void designLQR(SimpleMatrix lqr) {

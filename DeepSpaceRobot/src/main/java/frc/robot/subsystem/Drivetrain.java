@@ -229,7 +229,7 @@ public class Drivetrain extends System {
   }
 
   @Override
-  protected void designControllerObserver() {
+  public void designControllerObserver() {
     // Have to use Matlab or Python to get LQR and Kalman gain matrix for now
 
     double[] lqrArray = SmartDashboard.getNumberArray("LQRMatrix", new double[]{
