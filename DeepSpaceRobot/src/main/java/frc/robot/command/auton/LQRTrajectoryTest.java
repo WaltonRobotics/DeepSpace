@@ -20,7 +20,7 @@ import static frc.robot.Robot.drivetrain;
 
 public class LQRTrajectoryTest extends Command {
 
-    private static final String CSV_FILE_PATH = "home/lvuser/deploy/paths/ramsete_traj.csv";
+    private static final String CSV_FILE_PATH = "/home/lvuser/deploy/ramsete_traj.csv";
 
     private List<Double> t = new ArrayList<>();
     private List<Double> xprof = new ArrayList<>();
@@ -29,7 +29,7 @@ public class LQRTrajectoryTest extends Command {
     private List<Double> vprof = new ArrayList<>();
     private List<Double> omegaprof = new ArrayList<>();
 
-    private Pose2d pose = new Pose2d(xprof.get(0) + 0.5, yprof.get(0) + 0.5, Math.PI);
+    private Pose2d pose;
     private Pose2d desiredPose = new Pose2d();
 
     private RamseteController controller = new RamseteController();
@@ -37,15 +37,15 @@ public class LQRTrajectoryTest extends Command {
     private double vl = Double.POSITIVE_INFINITY;
     private double vr = Double.POSITIVE_INFINITY;
 
-    private double[] xRec = new double[t.size() - 1];
-    private double[] yRec = new double[t.size() - 1];
-    private double[] thetaRec = new double[t.size() - 1];
-    private double[] vlRec = new double[t.size() - 1];
-    private double[] vlRefRec = new double[t.size() - 1];
-    private double[] vrRec = new double[t.size() - 1];
-    private double[] vrRefRec = new double[t.size() - 1];
-    private double[] ulRec = new double[t.size() - 1];
-    private double[] urRec = new double[t.size() - 1];
+    private double[] xRec;
+    private double[] yRec;
+    private double[] thetaRec;
+    private double[] vlRec;
+    private double[] vlRefRec;
+    private double[] vrRec;
+    private double[] vrRefRec;
+    private double[] ulRec;
+    private double[] urRec;
 
     private int pathIndex = 0;
 
@@ -93,6 +93,16 @@ public class LQRTrajectoryTest extends Command {
                 }
             }
         }
+
+        xRec = new double[t.size() - 1];
+        yRec = new double[t.size() - 1];
+        thetaRec = new double[t.size() - 1];
+        vlRec = new double[t.size() - 1];
+        vlRefRec = new double[t.size() - 1];
+        vrRec = new double[t.size() - 1];
+        vrRefRec = new double[t.size() - 1];
+        ulRec = new double[t.size() - 1];
+        urRec = new double[t.size() - 1];
 
         Localization.setStartingPose(new Pose2d(xprof.get(0) + 0.5, yprof.get(0) + 0.5, Math.PI));
 

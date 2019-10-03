@@ -268,6 +268,9 @@ public class Robot extends TimedRobot {
     initCamera();
 
     initHardware();
+
+    Localization.setStartingPose(new Pose2d(0, 0, Math.PI / 2));
+    Localization.getInstance().start();
   }
 
   private void initCamera() {
@@ -376,9 +379,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    Localization.setStartingPose(new Pose2d());
-    Localization.getInstance().start();
-
 //    godSubsystem.setEnabled(false);
     godSubsystem.setEnabled(true);
     godSubsystem.setAutonomousEnabled(SmartDashboard.getBoolean(USE_AUTON, false));

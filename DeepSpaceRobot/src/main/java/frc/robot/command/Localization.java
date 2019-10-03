@@ -59,7 +59,7 @@ public class Localization extends Command {
 
         currentPose.x = previousPose.x + dCenter * Math.cos(previousPose.theta);
         currentPose.y = previousPose.y + dCenter * Math.sin(previousPose.theta);
-        currentPose.theta = ahrs.getYaw();
+        currentPose.theta = Math.toRadians(ahrs.getYaw());
 
         SmartDashboard.putNumber("CURRENT_POSE_X", currentPose.x);
         SmartDashboard.putNumber("CURRENT_POSE_Y", currentPose.y);
