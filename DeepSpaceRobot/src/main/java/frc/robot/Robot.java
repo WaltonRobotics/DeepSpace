@@ -45,7 +45,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Auto.Paths;
 import frc.robot.Config.Camera;
+import frc.robot.command.auto.FollowTrajectory;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.config.LimitedRobot;
 import frc.robot.robot.CompDeepSpace;
@@ -248,6 +250,7 @@ public class Robot extends TimedRobot {
     drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
 
+    new FollowTrajectory(Paths.generateTrajectory(), false).start();
 
   }
 
