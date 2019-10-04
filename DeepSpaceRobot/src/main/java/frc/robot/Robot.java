@@ -130,14 +130,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    drivetrain.cancelControllerMotion();
     drivetrain.reset();
 
-    drivetrain.getController().getCameraReader().startCollecting();
-
     initShuffleBoard();
-
-    initCamera();
 
     initHardware();
   }
@@ -220,7 +215,7 @@ public class Robot extends TimedRobot {
     // System.out.println("robot Periodic");
 //    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
 //    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(0);
-  }
+   }
 
   /**
    * This function is called once each time the robot enters Disabled mode. You can use it to reset any subsystem
@@ -230,8 +225,6 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     godSubsystem.setAutonomousEnabled(false);
     godSubsystem.setEnabled(false);
-    drivetrain.cancelControllerMotion();
-    drivetrain.getMotionLogger().writeMotionDataCSV(true);
   }
 
   @Override
@@ -246,8 +239,6 @@ public class Robot extends TimedRobot {
     godSubsystem.setEnabled(true);
     godSubsystem.setAutonomousEnabled(SmartDashboard.getBoolean(USE_AUTON, false));
 //    godSubsystem.setAutonomousEnabled(false);
-    drivetrain.cancelControllerMotion();
-    drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
 
     new FollowTrajectory(Paths.generateTrajectory(), false).start();
@@ -266,7 +257,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     godSubsystem.setAutonomousEnabled(false);
     godSubsystem.setEnabled(true);
-    drivetrain.cancelControllerMotion();
     drivetrain.shiftUp();
 
   }
