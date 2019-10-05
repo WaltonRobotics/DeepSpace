@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lib.motionControl.Pose2d;
 
-import static frc.robot.Robot.drivetrain;
 import static frc.robot.RobotMap.*;
 
 public class Localization extends Command {
@@ -18,7 +17,7 @@ public class Localization extends Command {
     private static double previousDistanceRight;
 
     public Localization() {
-        requires(drivetrain);
+
     }
 
     public static void setStartingPose(Pose2d startingPose) {

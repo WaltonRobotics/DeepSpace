@@ -63,7 +63,7 @@ public class RamseteSimulation {
         }
 
         @Override
-        protected void designControllerObserver() {
+        public void designControllerObserver() {
             // Have to use Matlab or Python to get LQR and Kalman gain matrix for now
 
             SimpleMatrix lqrMatrix = new SimpleMatrix(

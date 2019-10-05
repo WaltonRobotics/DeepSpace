@@ -61,10 +61,12 @@ public class Drivetrain extends System {
     rightWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
     rightWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
 
+    /*
     leftWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
     leftWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
     rightWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
     rightWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+    */
 
     leftWheelsSlave.setIdleMode(IdleMode.kBrake);
     leftWheelsMaster.setIdleMode(IdleMode.kBrake);

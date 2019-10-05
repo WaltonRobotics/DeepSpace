@@ -269,9 +269,6 @@ public class Robot extends TimedRobot {
     initCamera();
 
     initHardware();
-
-    Localization.setStartingPose(new Pose2d(0, 0, Math.PI / 2));
-    Localization.getInstance().start();
   }
 
   private void initCamera() {
@@ -408,6 +405,10 @@ public class Robot extends TimedRobot {
 //    drivetrain.startControllerMotion(pose);
 //    SimpleLine.lineWithDistance(SmartDashboard.getNumber("Distance", 2)).start();
 //    SimpleSpline.pathFromPosesWithAngle(false, Pose.ZERO, new Pose(1.5, 2)).start();
+
+    Localization.setStartingPose(new Pose2d(0, 0, Math.PI / 2));
+    Localization.getInstance().start();
+
     new LQRTrajectoryTest().start();
   }
 

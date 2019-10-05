@@ -121,8 +121,8 @@ class ConstantsSender(fct.System):
         r = [12.0, 12.0]
         self.design_lqr(q, r)
 
-        self.sd.putNumberArray('LQRMatrix', np.asarray(self.K))
-        self.sd.putNumberArray('KalmanMatrix', np.asarray(self.kalman_gain))
+        self.sd.putNumberArray('LQRMatrix', np.asarray(self.K).reshape(-1))
+        self.sd.putNumberArray('KalmanMatrix', np.asarray(self.kalman_gain).reshape(-1))
 
         self.design_two_state_feedforward()
         
@@ -133,6 +133,8 @@ class ConstantsSender(fct.System):
     def callback(self, *args):
         for field, entry, var in self.entries:
             try:
+                if var.get() == 0:
+                    return
                 self.sd.putNumber(field, var.get())
             except:
                 return

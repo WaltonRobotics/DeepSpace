@@ -105,6 +105,7 @@ public class LQRTrajectoryTest extends Command {
         urRec = new double[t.size() - 1];
 
         Localization.setStartingPose(new Pose2d(xprof.get(0) + 0.5, yprof.get(0) + 0.5, Math.PI));
+        pose = new Pose2d(xprof.get(0) + 0.5, yprof.get(0) + 0.5, Math.PI);
 
         // Refresh SS model with SmartDashboard values
         drivetrain.designControllerObserver();
@@ -129,6 +130,8 @@ public class LQRTrajectoryTest extends Command {
         double[] diffVels1 = getDiffVels(vc, omega, ROBOT_RADIUS * 2.0);
         vl = diffVels1[0];
         vr = diffVels1[1];
+
+        System.out.println(drivetrain.u.get(0) + ", " + drivetrain.u.get(1));
 
         drivetrain.setVoltages(drivetrain.u.get(0), drivetrain.u.get(1));
 
