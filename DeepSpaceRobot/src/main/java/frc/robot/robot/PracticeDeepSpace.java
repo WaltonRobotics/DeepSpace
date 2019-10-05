@@ -609,14 +609,14 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public void initLimits() {
-    this.addLimit(HatchPosition.CARGO_START, new LimitPair(-300, -568));
-    this.addLimit(HatchPosition.HATCH_START, new LimitPair(-466, -568));
-    this.addLimit(HatchPosition.SAFE, new LimitPair(-528, -578));
-    this.addLimit(HatchPosition.DEPLOY, new LimitPair(-528, -772));
+    this.addLimit(HatchPosition.CARGO_START, new LimitPair(-400, -550));
+    this.addLimit(HatchPosition.HATCH_START, new LimitPair(-400, -550));
+    this.addLimit(HatchPosition.SAFE, new LimitPair(-590, -630));
+    this.addLimit(HatchPosition.DEPLOY, new LimitPair(-528, -820));
 
-    this.addLimit(CargoPosition.SAFE, new LimitPair(655, 633));
-    this.addLimit(CargoPosition.DEPLOY, new LimitPair(655/* 548*/, 380));
-    this.addLimit(CargoPosition.CLIMB, new LimitPair(655, 349));
+    this.addLimit(CargoPosition.SAFE, new LimitPair(675, 653));
+    this.addLimit(CargoPosition.DEPLOY, new LimitPair(675/* 548*/, 400));
+    this.addLimit(CargoPosition.CLIMB, new LimitPair(675, 369));
 
     this.addLimit(ElevatorLevel.CARGO_BASE, new LimitPair(30592, 1230));
     this.addLimit(ElevatorLevel.HATCH_BASE, new LimitPair(26392, 0));
@@ -639,19 +639,19 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public void defineTargets() {
-    this.addTarget(HatchPosition.DEPLOY, new Target(-774, -650));
-    this.addTarget(HatchPosition.SAFE, new Target(-548, -517));
-    this.addTarget(HatchPosition.DEFENSE, new Target(-548, -371));
-    this.addTarget(HatchPosition.HATCH_START, new Target(-486, -403));
-    this.addTarget(HatchPosition.CARGO_START, new Target(-320, -300));
+    this.addTarget(HatchPosition.DEPLOY, new Target(-820, -650));
+    this.addTarget(HatchPosition.SAFE, new Target(-610, -590));
+    this.addTarget(HatchPosition.DEFENSE, new Target(-548, -477));
+    this.addTarget(HatchPosition.HATCH_START, new Target(-500, -400));
+    this.addTarget(HatchPosition.CARGO_START, new Target(-500, -450));
 
-    this.addTarget(CargoPosition.DEPLOY, new Target(458, 550));
-    this.addTarget(CargoPosition.HAB, new Target(461, 550));
-    this.addTarget(CargoPosition.CARGO_1, new Target(468, 655));
-    this.addTarget(CargoPosition.CARGO_2, new Target(486, 655));
-    this.addTarget(CargoPosition.CARGO_3, new Target(509, 655));
-    this.addTarget(CargoPosition.SAFE, new Target(635, 655));
-    this.addTarget(CargoPosition.CLIMB, new Target(349, 550));
+    this.addTarget(CargoPosition.DEPLOY, new Target(478, 570));
+    this.addTarget(CargoPosition.HAB, new Target(481, 570));
+    this.addTarget(CargoPosition.CARGO_1, new Target(488, 675));
+    this.addTarget(CargoPosition.CARGO_2, new Target(506, 675));
+    this.addTarget(CargoPosition.CARGO_3, new Target(529, 675));
+    this.addTarget(CargoPosition.SAFE, new Target(665, 685));
+    this.addTarget(CargoPosition.CLIMB, new Target(369, 570));
 
     this.addTarget(ElevatorLevel.CARGO_BASE, new Target(2629));
 
