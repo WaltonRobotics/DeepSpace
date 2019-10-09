@@ -7,13 +7,14 @@
 
 package frc.robot.subsystem;
 
+import static frc.robot.Config.RamseteControllerConstants.DRIVE_RADIUS;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
+import static frc.robot.Config.SmartMotionConstants.*;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.*;
 
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.command.teleop.Drive;

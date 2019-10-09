@@ -1,5 +1,7 @@
 package frc.robot;
 
+import lib.Geometry.Pose2d;
+import lib.Geometry.Rotation2d;
 import org.waltonrobotics.metadata.Pose;
 
 public class Config {
@@ -166,4 +168,49 @@ public class Config {
     }
   }
 
+  public static final class RamseteControllerConstants{
+
+    public static final double DRIVE_RADIUS = 0.7;
+    public static final double K_BETA = 2.0;
+    public static final double K_ZETA = 0.7;
+    public static final Pose2d TOLERANCE_POSE = new Pose2d(0.05, 0.05, Rotation2d.fromDegrees(30));
+
+  }
+
+  public static final class SmartMotionConstants {
+
+    public static final double LEFT_KP = 5e-5;
+    public static final double LEFT_KI = 1e-6;
+    public static final double LEFT_KD = 0;
+    public static final double LEFT_KFF = 0;
+
+    public static final double RIGHT_KP = 5e-5;
+    public static final double RIGHT_KI = 1e-6;
+    public static final double RIGHT_KD = 0;
+    public static final double RIGHT_KFF = 0;
+
+    public static final double R_KV = 2.91;
+    public static final double R_KA = 0.418;
+    public static final double R_KS = 0.195;
+    public static final double R_KP = 8.16;
+
+    public static final double L_KV = 2.91;
+    public static final double L_KA = 0.418;
+    public static final double L_KS = 0.195;
+    public static final double L_KP = 8.16;
+
+    public static final double KT = 0.04;
+    public static final int KT_IN_MILLI = 40;
+
+    public static final int K_SMART_CURRENT_LIMIT = 40;
+
+    public static final int K_VOLTAGE_COMPENSATION = 12;
+
+    public static final int K_OPENLOOP_RAMP = 0;
+
+    public static final int DRIVE_CONTROL_MODE = 0;
+    public static final int VELOCITY_CONTROL_MODE = 1;
+
+    public static final double RPM_TO_METERS = 0.006649704450098395; // RPM TO M/S
+  }
 }
