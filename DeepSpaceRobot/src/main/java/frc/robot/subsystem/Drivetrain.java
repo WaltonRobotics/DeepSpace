@@ -37,7 +37,6 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.ControlType;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.command.teleop.Drive;
 import lib.Geometry.Pose2d;
 import lib.Geometry.Rotation2d;
@@ -48,13 +47,14 @@ import lib.Kinematics.DifferentialDriveWheelSpeeds;
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.metadata.RobotPair;
 
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends AbstractDrivetrain {
 
   private DifferentialDriveOdometry driveOdometry;
   private DifferentialDriveKinematics differentialDriveKinematics;
 
 
   public Drivetrain() {
+    super(currentRobot);
 
     leftWheelsMaster.restoreFactoryDefaults();
     leftWheelsSlave.restoreFactoryDefaults();
@@ -99,6 +99,10 @@ public class Drivetrain extends Subsystem {
     super.periodic();
   }
 
+  @Override
+  public RobotPair getWheelPositions() {
+    return new RobotPair(0, 0, 0);
+  }
 
   public Pose2d updateRobotPose() {
     return driveOdometry.update(Rotation2d.fromDegrees(ahrs.getYaw()), getWheelSpeeds()); //TODO: Check angle make sure ccw positive.
@@ -196,8 +200,8 @@ public class Drivetrain extends Subsystem {
 
   public void setEncoderDistancePerPulse() {
 
-    encoderLeft.setDistancePerPulse();
-    encoderRight.setDistancePerPulse();
+    encoderLeft.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
+    encoderRight.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
 
     encoderLeft.setReverseDirection(currentRobot.getLeftEncoderConfig().isInverted());
     encoderRight.setReverseDirection(currentRobot.getRightEncoderConfig().isInverted());
