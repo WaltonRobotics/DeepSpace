@@ -52,6 +52,7 @@ dependencies {
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'
     compile fileTree(dir: 'lib', include: ['*.jar'])
+    compile 'org.ghrobotics:FalconLibrary:2019.6.14'
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
