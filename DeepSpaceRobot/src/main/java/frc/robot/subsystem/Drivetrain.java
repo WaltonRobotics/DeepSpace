@@ -11,9 +11,17 @@ import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.*;
 
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.command.teleop.Drive;
+import lib.Geometry.Pose2d;
+import lib.Geometry.Rotation2d;
+import lib.Kinematics.DifferentialDriveKinematics;
+import lib.Kinematics.DifferentialDriveOdometry;
+import lib.Kinematics.DifferentialDriveWheelSpeeds;
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.metadata.CameraData;
 import org.waltonrobotics.metadata.RobotPair;
@@ -24,6 +32,8 @@ import org.waltonrobotics.metadata.RobotPair;
 public class Drivetrain extends AbstractDrivetrain {
 
   private CameraData cameraData = new CameraData();
+  private DifferentialDriveOdometry driveOdometry;
+  private DifferentialDriveKinematics differentialDriveKinematics;
 
   public Drivetrain() {
     super(currentRobot);
@@ -38,20 +48,32 @@ public class Drivetrain extends AbstractDrivetrain {
     leftWheelsSlave.follow(leftWheelsMaster);
     rightWheelsSlave.follow(rightWheelsMaster);
 
-    leftWheelsMaster.setOpenLoopRampRate(0);
-    leftWheelsSlave.setOpenLoopRampRate(0);
-    rightWheelsMaster.setOpenLoopRampRate(0);
-    rightWheelsSlave.setOpenLoopRampRate(0);
+    leftWheelsMaster.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    leftWheelsSlave.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    rightWheelsMaster.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    rightWheelsSlave.setOpenLoopRampRate(K_OPENLOOP_RAMP);
 
-    leftWheelsMaster.setSmartCurrentLimit(40);
-    leftWheelsSlave.setSmartCurrentLimit(40);
-    rightWheelsMaster.setSmartCurrentLimit(40);
-    rightWheelsSlave.setSmartCurrentLimit(40);
+    leftWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    leftWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    rightWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    rightWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
 
-    leftWheelsSlave.setIdleMode(IdleMode.kBrake);
-    leftWheelsMaster.setIdleMode(IdleMode.kBrake);
-    rightWheelsSlave.setIdleMode(IdleMode.kBrake);
-    rightWheelsMaster.setIdleMode(IdleMode.kBrake);
+    leftWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+    leftWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+    rightWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+    rightWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+
+    leftWheelsSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    leftWheelsMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    rightWheelsSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    rightWheelsMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
+
+    differentialDriveKinematics = new DifferentialDriveKinematics(DRIVE_RADIUS);
+    driveOdometry = new DifferentialDriveOdometry(differentialDriveKinematics);
+
+    setDriveControlMode();
+    setVelocityControlMode();
+    setEncoderDistancePerPulse();
 
   }
 
@@ -72,6 +94,68 @@ public class Drivetrain extends AbstractDrivetrain {
   public RobotPair getWheelPositions() {
     return new RobotPair(0, 0, 0);
   }
+
+  public Pose2d updateRobotPose() {
+    return driveOdometry.update(Rotation2d.fromDegrees(ahrs.getYaw()), getWheelSpeeds()); //TODO: Check angle make sure ccw positive.
+  }
+
+  private DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(encoderLeft.getRate(), encoderRight.getRate());
+  }
+
+  public DifferentialDriveOdometry getDriveOdometry() {
+    return driveOdometry;
+  }
+
+  private double calculateLeftVoltages(double velocity, double acceleration) {
+    return L_KV * velocity + L_KA * acceleration + L_KS * Math.signum(velocity) + L_KP * (velocity - getWheelSpeeds().rightMetersPerSecond);
+  }
+
+  private double calculateRightVoltagesVoltages(double velocity, double acceleration) {
+    return R_KV * velocity + R_KA * acceleration + R_KS * Math.signum(velocity) + R_KP * (velocity - getWheelSpeeds().leftMetersPerSecond);
+  }
+
+  public void setVoltages(double leftVelocity, double leftAcceleration, double rightVelocity, double rightAcceleration) {
+    rightWheelsMaster.getPIDController().setReference(calculateRightVoltagesVoltages(rightVelocity, rightAcceleration), ControlType.kVoltage);
+    leftWheelsMaster.getPIDController().setReference(calculateLeftVoltages(leftVelocity, leftAcceleration), ControlType.kVoltage);
+  }
+
+  private void setDriveControlMode() {
+    rightWheelsMaster.getPIDController().setP(RIGHT_KP, DRIVE_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setI(RIGHT_KI, DRIVE_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setD(RIGHT_KD, DRIVE_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setFF(RIGHT_KFF, DRIVE_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setOutputRange(-1, 1, DRIVE_CONTROL_MODE);
+
+    rightWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, DRIVE_CONTROL_MODE);
+
+    leftWheelsMaster.getPIDController().setP(LEFT_KP, DRIVE_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setI(LEFT_KI, DRIVE_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setD(LEFT_KD, DRIVE_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setFF(LEFT_KFF, DRIVE_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setOutputRange(-1, 1, DRIVE_CONTROL_MODE);
+
+    leftWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, DRIVE_CONTROL_MODE);
+  }
+
+  private void setVelocityControlMode() {
+    rightWheelsMaster.getPIDController().setP(RIGHT_KP, VELOCITY_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setI(RIGHT_KI, VELOCITY_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setD(RIGHT_KD, VELOCITY_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setFF(RIGHT_KFF, VELOCITY_CONTROL_MODE);
+    rightWheelsMaster.getPIDController().setOutputRange(-1, 1, VELOCITY_CONTROL_MODE);
+
+    rightWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, VELOCITY_CONTROL_MODE);
+
+    leftWheelsMaster.getPIDController().setP(LEFT_KP, VELOCITY_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setI(LEFT_KI, VELOCITY_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setD(LEFT_KD, VELOCITY_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setFF(LEFT_KFF, VELOCITY_CONTROL_MODE);
+    leftWheelsMaster.getPIDController().setOutputRange(-1, 1, VELOCITY_CONTROL_MODE);
+
+    leftWheelsMaster.getPIDController().setSmartMotionAccelStrategy(CANPIDController.AccelStrategy.kTrapezoidal, VELOCITY_CONTROL_MODE);
+  }
+
 
   public void reset() {
     encoderLeft.reset();
