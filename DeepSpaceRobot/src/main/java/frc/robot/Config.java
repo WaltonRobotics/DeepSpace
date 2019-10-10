@@ -189,15 +189,15 @@ public class Config {
     public static final double RIGHT_KD = 0;
     public static final double RIGHT_KFF = 0;
 
-    public static final double R_KV = 2.91;
-    public static final double R_KA = 0.418;
-    public static final double R_KS = 0.195;
-    public static final double R_KP = 8.16;
+    public static final double R_KV = 3.19;
+    public static final double R_KA = 0.462;
+    public static final double R_KS = 0.178;
+    public static final double R_KP = 8.85;
 
-    public static final double L_KV = 2.91;
-    public static final double L_KA = 0.418;
-    public static final double L_KS = 0.195;
-    public static final double L_KP = 8.16;
+    public static final double L_KV = 3.19;
+    public static final double L_KA = 0.462;
+    public static final double L_KS = 0.178;
+    public static final double L_KP = 8.85;
 
     public static final double KT = 0.04;
     public static final int KT_IN_MILLI = 40;
