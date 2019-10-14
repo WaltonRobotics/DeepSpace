@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Paths {
 
-    public static Trajectory generateTrajectory(){
+    public static Trajectory generateTestTrajectory(){
         final double startVelocity = 0;
         final double endVelocity = 0;
         final double maxVelocity = Units.feetToMeters(12);
@@ -22,7 +22,7 @@ public class Paths {
 
         ArrayList<Translation2d> waypoints = new ArrayList<Translation2d>();
 
-        Trajectory testTrajectory = TrajectoryGenerator.generateTrajectory(
+        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
                 startPose,
                 waypoints,
                 endPose,
@@ -33,7 +33,7 @@ public class Paths {
                 maxAccel,
                 false
         );
-        return testTrajectory;
+        return trajectory;
     }
 }
 

@@ -16,6 +16,7 @@ import static frc.robot.RobotMap.*;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.command.teleop.Drive;
 import lib.Geometry.Pose2d;
@@ -23,6 +24,8 @@ import lib.Geometry.Rotation2d;
 import lib.Kinematics.DifferentialDriveKinematics;
 import lib.Kinematics.DifferentialDriveOdometry;
 import lib.Kinematics.DifferentialDriveWheelSpeeds;
+import lib.Utils.PIDController;
+
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.metadata.CameraData;
 import org.waltonrobotics.metadata.RobotPair;
@@ -36,42 +39,16 @@ public class Drivetrain extends AbstractDrivetrain {
   private DifferentialDriveOdometry driveOdometry;
   private DifferentialDriveKinematics differentialDriveKinematics;
 
+  private final PIDController m_leftPIDController = new PIDController(1, 0, 0);
+  private final PIDController m_rightPIDController = new PIDController(1, 0, 0);
+
   public Drivetrain() {
     super(currentRobot);
-
-    leftWheelsMaster.restoreFactoryDefaults();
-    leftWheelsSlave.restoreFactoryDefaults();
-    rightWheelsMaster.restoreFactoryDefaults();
-    rightWheelsSlave.restoreFactoryDefaults();
-
-    leftWheelsMaster.setInverted(true);
-
-    leftWheelsSlave.follow(leftWheelsMaster);
-    rightWheelsSlave.follow(rightWheelsMaster);
-
-    leftWheelsMaster.setOpenLoopRampRate(K_OPENLOOP_RAMP);
-    leftWheelsSlave.setOpenLoopRampRate(K_OPENLOOP_RAMP);
-    rightWheelsMaster.setOpenLoopRampRate(K_OPENLOOP_RAMP);
-    rightWheelsSlave.setOpenLoopRampRate(K_OPENLOOP_RAMP);
-
-    leftWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
-    leftWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
-    rightWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
-    rightWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
-
-    leftWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
-    leftWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
-    rightWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
-    rightWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
-
-    leftWheelsSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    leftWheelsMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    rightWheelsSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    rightWheelsMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
     differentialDriveKinematics = new DifferentialDriveKinematics(DRIVE_RADIUS);
     driveOdometry = new DifferentialDriveOdometry(differentialDriveKinematics);
 
+    motorSetUp();
     setDriveControlMode();
     setVelocityControlMode();
     setEncoderDistancePerPulse();
@@ -97,11 +74,15 @@ public class Drivetrain extends AbstractDrivetrain {
   }
 
   public Pose2d updateRobotPose() {
-    return driveOdometry.update(Rotation2d.fromDegrees(ahrs.getYaw()), getWheelSpeeds()); //TODO: Check angle make sure ccw positive.
+    return driveOdometry.update(getAngle(), getWheelSpeeds()); //TODO: Check angle make sure ccw positive.
   }
 
   private DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(encoderLeft.getRate(), encoderRight.getRate());
+  }
+
+  private Rotation2d getAngle() {
+    return Rotation2d.fromDegrees(-ahrs.getAngle()); //TODO: Check angles needs to be ccw positive
   }
 
   public DifferentialDriveOdometry getDriveOdometry() {
@@ -204,6 +185,15 @@ public class Drivetrain extends AbstractDrivetrain {
     // leftWheelsSlave.set(leftPower);
   }
 
+  public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
+    double leftOutput = m_leftPIDController.calculate(encoderLeft.getRate(),
+        speeds.leftMetersPerSecond);
+    double rightOutput = m_rightPIDController.calculate(encoderRight.getRate(),
+        speeds.rightMetersPerSecond);
+    leftWheelsMaster.set(leftOutput);
+    rightWheelsMaster.set(rightOutput);
+  }
+
   public void setEncoderDistancePerPulse() {
 //    leftWheels.setInverted(currentRobot.getLeftTalonConfig().isInverted());
 //    rightWheels.setInverted(currentRobot.getRightTalonConfig().isInverted());
@@ -223,6 +213,38 @@ public class Drivetrain extends AbstractDrivetrain {
     encoderLeft.setReverseDirection(currentRobot.getLeftEncoderConfig().isInverted());
     encoderRight.setReverseDirection(currentRobot.getRightEncoderConfig().isInverted());
 
+  }
+
+  public void motorSetUp() {
+    leftWheelsMaster.restoreFactoryDefaults();
+    leftWheelsSlave.restoreFactoryDefaults();
+    rightWheelsMaster.restoreFactoryDefaults();
+    rightWheelsSlave.restoreFactoryDefaults();
+
+    leftWheelsMaster.setInverted(true);
+
+    leftWheelsSlave.follow(leftWheelsMaster);
+    rightWheelsSlave.follow(rightWheelsMaster);
+
+    leftWheelsMaster.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    leftWheelsSlave.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    rightWheelsMaster.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    rightWheelsSlave.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+
+    leftWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    leftWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    rightWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    rightWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+
+    leftWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+    leftWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+    rightWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+    rightWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+
+    leftWheelsSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    leftWheelsMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    rightWheelsSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    rightWheelsMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
   }
 
   @Override
