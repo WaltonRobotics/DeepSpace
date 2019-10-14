@@ -84,6 +84,7 @@ public class Drive extends Command {
 
       SmartDashboard.putNumber(DRIVETRAIN_LEFT_JOYSTICK_Y, leftYJoystick);
       SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, rightYJoystick);
+      SmartDashboard.putNumber("Angle", drivetrain.getAngle().getDegrees());
 
       Transform transform = getTransform();
       leftYJoystick = transform.transform(leftYJoystick);
