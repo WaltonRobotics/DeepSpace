@@ -71,6 +71,7 @@ public final class OI {
   public static final JoystickButton outtakeCargoButtonFast = new JoystickButton(gamepad, LEFT_TRIGGER.index());
   public static final JoystickButton outtakeCargoButtonSlow = new JoystickButton(gamepad, LEFT_BUMPER.index());
 
+
   public static final JoystickButton cargoModeButton = new JoystickButton(gamepad, _10.index());
   public static final JoystickButton hatchModeButton = new JoystickButton(gamepad, _9.index());
 

@@ -84,6 +84,7 @@ public class Drive extends Command {
 
       SmartDashboard.putNumber(DRIVETRAIN_LEFT_JOYSTICK_Y, leftYJoystick);
       SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, rightYJoystick);
+      SmartDashboard.putNumber("Angle", drivetrain.getAngle().getDegrees());
 
       Transform transform = getTransform();
       leftYJoystick = transform.transform(leftYJoystick);
@@ -142,14 +143,7 @@ public class Drive extends Command {
 
     // Start with proportional steering
     double distance = 0.0006083653 * ty * ty * ty + 0.0035045626 * ty * ty + 0.0310867702 * ty + 0.6929105875;
-    SmartDashboard.putNumber("Camera Distance", distance);
-
-    distance = Math.max(.5, distance);
-    distance = Math.min(2.5, distance);
-
-    double steerCmd = tx * STEER_K / distance;
-    limelightSteerCommand = steerCmd;
-
+    SmartDashboard.putNumber("Camera Distance", distance);6
     // try to drive forward until the target area reaches our desired area
     double driveCmd = (getLeftYJoystick() + getRightYJoystick()) / 2.0;
     limelightDriveCommand = driveCmd;

@@ -15,6 +15,7 @@ import static frc.robot.RobotMap.*;
 
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -53,7 +54,9 @@ public class Drivetrain extends AbstractDrivetrain {
     setDriveControlMode();
     setVelocityControlMode();
     setEncoderDistancePerPulse();
-
+    ahrs.enableBoardlevelYawReset(true);
+    ahrs.reset();
+    ahrs.zeroYaw();
   }
 
   @Override
@@ -78,12 +81,17 @@ public class Drivetrain extends AbstractDrivetrain {
     return driveOdometry.update(getAngle(), getWheelSpeeds()); //TODO: Check angle make sure ccw positive.
   }
 
-  private DifferentialDriveWheelSpeeds getWheelSpeeds() {
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(encoderLeft.getRate(), encoderRight.getRate());
   }
 
+<<<<<<< HEAD
   private Rotation2d getAngle() {
     return Rotation2d.fromDegrees(Math.toDegrees(Localization.currentAngle));
+=======
+  public Rotation2d getAngle() {
+    return Rotation2d.fromDegrees(-ahrs.getYaw()); //TODO: Check angles needs to be ccw positive
+>>>>>>> 1788bf367c5ea7d1d38e97fafa38466dbd3ee2ad
   }
 
   public DifferentialDriveOdometry getDriveOdometry() {
@@ -211,6 +219,12 @@ public class Drivetrain extends AbstractDrivetrain {
     encoderLeft.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
     encoderRight.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
 
+<<<<<<< HEAD
+=======
+    encoderLeft.setReverseDirection(true);
+    encoderRight.setReverseDirection(true);
+
+>>>>>>> 1788bf367c5ea7d1d38e97fafa38466dbd3ee2ad
   }
 
   public void motorSetUp() {
@@ -220,6 +234,11 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsSlave.restoreFactoryDefaults();
 
     leftWheelsMaster.setInverted(true);
+
+    leftWheelsSlave.setIdleMode(IdleMode.kBrake);
+    leftWheelsMaster.setIdleMode(IdleMode.kBrake);
+    rightWheelsSlave.setIdleMode(IdleMode.kBrake);
+    rightWheelsMaster.setIdleMode(IdleMode.kBrake);
 
     leftWheelsSlave.follow(leftWheelsMaster);
     rightWheelsSlave.follow(rightWheelsMaster);
@@ -234,15 +253,15 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
     rightWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
 
-    leftWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
-    leftWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
-    rightWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
-    rightWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+//    leftWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+//    leftWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+//    rightWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
+//    rightWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
 
-    leftWheelsSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    leftWheelsMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    rightWheelsSlave.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    rightWheelsMaster.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    leftWheelsSlave.setIdleMode(IdleMode.kBrake);
+    leftWheelsMaster.setIdleMode(IdleMode.kBrake);
+    rightWheelsSlave.setIdleMode(IdleMode.kBrake);
+    rightWheelsMaster.setIdleMode(IdleMode.kBrake);
   }
 
   @Override

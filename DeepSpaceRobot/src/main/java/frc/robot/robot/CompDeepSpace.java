@@ -693,6 +693,8 @@ public class CompDeepSpace extends LimitedRobot {
     this.addTarget(CargoPosition.HAB, new Target(300, 520));
     this.addTarget(CargoPosition.CLIMB, new Target(204, 520));
 
+    // Elevator 1620
+    // Hatch -400
     this.addTarget(ElevatorLevel.CARGO_BASE, new Target(3365));
 
     this.addTarget(ElevatorLevel.CARGO_ROCKET, new Target(7584));
