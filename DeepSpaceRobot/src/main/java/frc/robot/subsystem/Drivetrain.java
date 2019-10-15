@@ -213,8 +213,8 @@ public class Drivetrain extends AbstractDrivetrain {
     encoderLeft.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
     encoderRight.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
 
-    encoderLeft.setReverseDirection(currentRobot.getLeftEncoderConfig().isInverted());
-    encoderRight.setReverseDirection(currentRobot.getRightEncoderConfig().isInverted());
+    encoderLeft.setReverseDirection(true);
+    encoderRight.setReverseDirection(true);
 
   }
 
