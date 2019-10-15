@@ -97,6 +97,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config.Camera;
+import frc.robot.command.Localization;
+import frc.robot.command.auto.FollowTrajectory;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
@@ -112,6 +114,8 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import frc.robot.util.RobotBuilder;
+
+import java.nio.file.Path;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -384,6 +388,10 @@ public class Robot extends TimedRobot {
     drivetrain.cancelControllerMotion();
     drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
+    Localization.getInstance().start();
+    System.out.println("Auto init");
+    FollowTrajectory followTrajectory = new FollowTrajectory(Paths.generateTestTrajectory());
+    followTrajectory.start();
 
 //    Pose pose = new Pose(0, 0, StrictMath.toRadians(90));
 //    drivetrain.startControllerMotion(pose);

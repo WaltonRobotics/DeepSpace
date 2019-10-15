@@ -68,19 +68,21 @@ public class FollowTrajectory extends Command {
     ramseteController.setTolerance(TOLERANCE_POSE);
     timer.start();
     LiveDashboard.INSTANCE.setFollowingPath(true);
+    System.out.println("INIT");
   }
 
   @Override
   protected void execute() {
+    System.out.println("EXECUTE");
     Pose2d currentPose = drivetrain.updateRobotPose();
-    MotionPair drivetrainMotions = getRobotMotions(currentPose);
+   // MotionPair drivetrainMotions = getRobotMotions(currentPose);
 
     LiveDashboard.INSTANCE.setRobotX(Units.metersToFeet(currentPose.getTranslation().getX()));
     LiveDashboard.INSTANCE.setRobotY(Units.metersToFeet(currentPose.getTranslation().getY()));
     LiveDashboard.INSTANCE.setPathHeading(Units.metersToFeet(currentPose.getRotation().getRadians()));
 
-    drivetrain.setVoltages(drivetrainMotions.getLeftVelocity(), drivetrainMotions.getLeftAcceleration(), drivetrainMotions.getRightVelocity(), drivetrainMotions.getRightAcceleration());
-    //drivetrain.setSpeeds(getRobotSpeeds(currentPose));
+    //drivetrain.setVoltages(drivetrainMotions.getLeftVelocity(), drivetrainMotions.getLeftAcceleration(), drivetrainMotions.getRightVelocity(), drivetrainMotions.getRightAcceleration());
+    drivetrain.setSpeeds(getRobotSpeeds(currentPose));
   }
 
   @Override

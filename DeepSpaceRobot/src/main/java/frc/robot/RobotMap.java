@@ -89,8 +89,8 @@ public final class RobotMap {
     leftIntakeMotor.setInverted(currentRobot.getLeftIntakeMotorConfig().isInverted());
     rightIntakeMotor.setInverted(currentRobot.getRightIntakeMotorConfig().isInverted());
     climberMotor.setInverted(currentRobot.getClimberMotorConfig().isInverted());
-    // rightWheelsMaster.setInverted(true);
-    // rightWheelsSlave.setInverted(true);
+    encoderLeft.setReverseDirection(true);
+    encoderRight.setReverseDirection(true);
   }
 
   private RobotMap() {

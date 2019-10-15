@@ -18,6 +18,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.command.Localization;
 import frc.robot.command.teleop.Drive;
 import lib.Geometry.Pose2d;
 import lib.Geometry.Rotation2d;
@@ -82,7 +83,7 @@ public class Drivetrain extends AbstractDrivetrain {
   }
 
   private Rotation2d getAngle() {
-    return Rotation2d.fromDegrees(-ahrs.getAngle()); //TODO: Check angles needs to be ccw positive
+    return Rotation2d.fromDegrees(Math.toDegrees(Localization.currentAngle));
   }
 
   public DifferentialDriveOdometry getDriveOdometry() {
@@ -209,9 +210,6 @@ public class Drivetrain extends AbstractDrivetrain {
 
     encoderLeft.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
     encoderRight.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
-
-    encoderLeft.setReverseDirection(currentRobot.getLeftEncoderConfig().isInverted());
-    encoderRight.setReverseDirection(currentRobot.getRightEncoderConfig().isInverted());
 
   }
 
