@@ -16,8 +16,8 @@ public class Paths {
   public static Trajectory generateTestTrajectory() {
     final double startVelocity = 0;
     final double endVelocity = 0;
-    final double maxVelocity = Units.feetToMeters(12);
-    final double maxAccel = Units.feetToMeters(12);
+    final double maxVelocity = Units.feetToMeters(10);
+    final double maxAccel = Units.feetToMeters(4);
 
     Pose2d startPose = new Pose2d(Units.feetToMeters(0), 0, Rotation2d.fromDegrees(0));
     Pose2d endPose = new Pose2d(Units.feetToMeters(10), 0, Rotation2d.fromDegrees(0));
