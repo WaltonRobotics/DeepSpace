@@ -100,10 +100,7 @@ public class Drivetrain extends AbstractDrivetrain {
     return R_KV * velocity + R_KA * acceleration + R_KS * Math.signum(velocity) + R_KP * (velocity - getWheelSpeeds().leftMetersPerSecond);
   }
 
-  public void setVoltages(double leftVelocity, double leftAcceleration, double rightVelocity, double rightAcceleration) {
-    rightWheelsMaster.getPIDController().setReference(calculateRightVoltagesVoltages(rightVelocity, rightAcceleration), ControlType.kVoltage);
-    leftWheelsMaster.getPIDController().setReference(calculateLeftVoltages(leftVelocity, leftAcceleration), ControlType.kVoltage);
-  }
+
 
   private void setDriveControlMode() {
     rightWheelsMaster.getPIDController().setP(RIGHT_KP, DRIVE_CONTROL_MODE);
@@ -197,6 +194,11 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsMaster.set(rightOutput);
   }
 
+  public void setVoltages(double leftVelocity, double leftAcceleration, double rightVelocity, double rightAcceleration) {
+    rightWheelsMaster.getPIDController().setReference(calculateRightVoltagesVoltages(rightVelocity, rightAcceleration), ControlType.kVoltage);
+    leftWheelsMaster.getPIDController().setReference(calculateLeftVoltages(leftVelocity, leftAcceleration), ControlType.kVoltage);
+  }
+
   public void setEncoderDistancePerPulse() {
 //    leftWheels.setInverted(currentRobot.getLeftTalonConfig().isInverted());
 //    rightWheels.setInverted(currentRobot.getRightTalonConfig().isInverted());
@@ -248,11 +250,6 @@ public class Drivetrain extends AbstractDrivetrain {
 //    leftWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
 //    rightWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
 //    rightWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
-
-    leftWheelsSlave.setIdleMode(IdleMode.kBrake);
-    leftWheelsMaster.setIdleMode(IdleMode.kBrake);
-    rightWheelsSlave.setIdleMode(IdleMode.kBrake);
-    rightWheelsMaster.setIdleMode(IdleMode.kBrake);
   }
 
   @Override
