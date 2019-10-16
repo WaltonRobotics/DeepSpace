@@ -19,7 +19,7 @@ public class Paths {
     final double maxVelocity = Units.feetToMeters(12);
     final double maxAccel = Units.feetToMeters(12);
 
-    Pose2d startPose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
+    Pose2d startPose = new Pose2d(Units.feetToMeters(0), 0, Rotation2d.fromDegrees(0));
     Pose2d endPose = new Pose2d(Units.feetToMeters(10), 0, Rotation2d.fromDegrees(0));
 
     ArrayList<Translation2d> waypoints = new ArrayList<Translation2d>();
