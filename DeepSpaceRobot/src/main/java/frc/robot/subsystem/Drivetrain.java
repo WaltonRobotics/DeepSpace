@@ -14,7 +14,6 @@ import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.*;
 
 import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.ControlType;
 
@@ -53,9 +52,7 @@ public class Drivetrain extends AbstractDrivetrain {
     setDriveControlMode();
     setVelocityControlMode();
     setEncoderDistancePerPulse();
-    ahrs.enableBoardlevelYawReset(true);
     ahrs.reset();
-    ahrs.zeroYaw();
   }
 
   @Override
@@ -99,8 +96,6 @@ public class Drivetrain extends AbstractDrivetrain {
   private double calculateRightVoltagesVoltages(double velocity, double acceleration) {
     return R_KV * velocity + R_KA * acceleration + R_KS * Math.signum(velocity) + R_KP * (velocity - getWheelSpeeds().leftMetersPerSecond);
   }
-
-
 
   private void setDriveControlMode() {
     rightWheelsMaster.getPIDController().setP(RIGHT_KP, DRIVE_CONTROL_MODE);
@@ -246,10 +241,6 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
     rightWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
 
-//    leftWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
-//    leftWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
-//    rightWheelsMaster.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
-//    rightWheelsSlave.enableVoltageCompensation(K_VOLTAGE_COMPENSATION);
   }
 
   @Override

@@ -1,6 +1,6 @@
 package frc.robot.command.auto;
 
-import org.ghrobotics.lib.debug.LiveDashboard;
+//import org.ghrobotics.lib.debug.LiveDashboard;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -10,9 +10,7 @@ import lib.Kinematics.ChassisSpeeds;
 import lib.Kinematics.DifferentialDriveKinematics;
 import lib.Kinematics.DifferentialDriveWheelSpeeds;
 import lib.Utils.MotionPair;
-import lib.Utils.Units;
 import lib.trajectory.Trajectory;
-import lib.trajectory.TrajectoryGenerator;
 
 import static frc.robot.Config.RamseteControllerConstants.DRIVE_RADIUS;
 import static frc.robot.Config.RamseteControllerConstants.K_BETA;
@@ -32,10 +30,7 @@ public class FollowTrajectory extends Command {
   private double dt;
 
   private RamseteController ramseteController;
-
   private Timer timer;
-
-  private boolean backwards;
 
   private double leftVelocity;
   private double rightVelocity;
@@ -67,20 +62,20 @@ public class FollowTrajectory extends Command {
     drivetrain.getDriveOdometry().resetPosition(startingPose);
     ramseteController.setTolerance(TOLERANCE_POSE);
     timer.start();
-    LiveDashboard.INSTANCE.setFollowingPath(true);
+//    LiveDashboard.INSTANCE.setFollowingPath(true);
   }
 
   @Override
   protected void execute() {
     Pose2d currentPose = drivetrain.updateRobotPose();
     MotionPair drivetrainMotions = getRobotMotions(currentPose);
-
-    LiveDashboard.INSTANCE.setRobotX(Units.metersToFeet(currentPose.getTranslation().getX()));
-    LiveDashboard.INSTANCE.setRobotY(Units.metersToFeet(currentPose.getTranslation().getY()));
-    LiveDashboard.INSTANCE.setPathHeading(Units.metersToFeet(currentPose.getRotation().getRadians()));
+//
+//    LiveDashboard.INSTANCE.setRobotX(Units.metersToFeet(currentPose.getTranslation().getX()));
+//    LiveDashboard.INSTANCE.setRobotY(Units.metersToFeet(currentPose.getTranslation().getY()));
+//    LiveDashboard.INSTANCE.setPathHeading(Units.metersToFeet(currentPose.getRotation().getRadians()));
 
     drivetrain.setVoltages(drivetrainMotions.getLeftVelocity(), drivetrainMotions.getLeftAcceleration(), drivetrainMotions.getRightVelocity(), drivetrainMotions.getRightAcceleration());
-    //drivetrain.setSpeeds(getRobotSpeeds(currentPose));
+    //drivetrain.setSpeeds(getRobotSpeeds(currentPose))
   }
 
   @Override
@@ -91,7 +86,7 @@ public class FollowTrajectory extends Command {
   @Override
   protected void end() {
     timer.stop();
-    LiveDashboard.INSTANCE.setFollowingPath(false);
+//    LiveDashboard.INSTANCE.setFollowingPath(false);
   }
 
   /**
@@ -117,9 +112,9 @@ public class FollowTrajectory extends Command {
 
     Pose2d referencePose = desiredState.poseMeters;
 
-    LiveDashboard.INSTANCE.setPathX(Units.metersToFeet(referencePose.getTranslation().getX()));
-    LiveDashboard.INSTANCE.setPathY(Units.metersToFeet(referencePose.getTranslation().getY()));
-    LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadians());
+//    LiveDashboard.INSTANCE.setPathX(Units.metersToFeet(referencePose.getTranslation().getX()));
+//    LiveDashboard.INSTANCE.setPathY(Units.metersToFeet(referencePose.getTranslation().getY()));
+//    LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadians());
 
     return new MotionPair(leftVelocity, leftAcceleration, rightVelocity, rightAcceleration);
   }
