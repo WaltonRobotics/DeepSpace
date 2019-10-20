@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import java.nio.file.Path;
+import java.util.function.Supplier;
+
 import static frc.robot.Config.Camera.LED_OFF;
 import static frc.robot.Config.Camera.WIDTH;
 import static frc.robot.Config.Point.backup;
@@ -83,6 +86,9 @@ import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_Y;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_OFFSET;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_PERCENTAGE;
 import static frc.robot.Config.SmartDashboardKeys.USE_AUTON;
+import static frc.robot.Config.SmartMotionConstants.KA;
+import static frc.robot.Config.SmartMotionConstants.KS;
+import static frc.robot.Config.SmartMotionConstants.KV;
 import static frc.robot.RobotMap.clawRotationMotor;
 import static frc.robot.RobotMap.elevatorMotor;
 import static frc.robot.RobotMap.encoderLeft;
@@ -112,6 +118,8 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import frc.robot.util.RobotBuilder;
+import lib.Geometry.Pose2d;
+import lib.Utils.RamseteCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -385,28 +393,17 @@ public class Robot extends TimedRobot {
     drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
 
-//    Pose pose = new Pose(0, 0, StrictMath.toRadians(90));
-//    drivetrain.startControllerMotion(pose);
-
-//    SimpleSpline.pathFromPosesWithAngle(false, pose, pose.offset(2,2, 0)).start();
-
-//    Pose backup = new Pose(SmartDashboard.getNumber("x", 2.1), SmartDashboard.getNumber("y", 2.75),
-//        Math.toRadians(SmartDashboard.getNumber("angle", 0)));
-
-//    SimpleSpline.pathFromPosesWithAngleAndScale(true, .2 ,.2,frontRocketR,  backup).start();
-
-//    boolean isBackwards = SmartDashboard.getBoolean("isBackwards", true);
-
-//    Pose pose1 = new Pose(SmartDashboard.getNumber("x", -1), SmartDashboard.getNumber("y", -1),
-//        Math.toRadians(SmartDashboard.getNumber("angle", 90)));
-//
-//    SimpleSpline.pathFromPosesWithAngle(isBackwards, pose, pose1).start();
-
-//    double distance = SmartDashboard.getNumber("Distance", 2);
-//    SimpleSpline.pathFromPosesWithAngle(false, pose, pose.offset(distance), frontRocketR).start();
-//    drivetrain.startControllerMotion(pose);
-//    SimpleLine.lineWithDistance(SmartDashboard.getNumber("Distance", 2)).start();
-//    SimpleSpline.pathFromPosesWithAngle(false, Pose.ZERO, new Pose(1.5, 2)).start();
+    new RamseteCommand(Paths.generateTestTrajectory(),
+        drivetrain::updateRobotPose,
+        drivetrain.ramseteController,
+        KS,
+        KV,
+        KA,
+        drivetrain.differentialDriveKinematics,
+        encoderLeft::getRate,
+        encoderRight::getRate,
+        drivetrain.m_leftPIDController,
+        drivetrain.m_rightPIDController).start();
   }
 
   /**
