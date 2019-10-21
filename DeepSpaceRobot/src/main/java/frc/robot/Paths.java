@@ -20,7 +20,7 @@ public class Paths {
     final double maxAccel = Units.feetToMeters(4);
 
     Pose2d startPose = new Pose2d(Units.feetToMeters(0), 0, Rotation2d.fromDegrees(0));
-    Pose2d endPose = new Pose2d(Units.feetToMeters(10), 0, Rotation2d.fromDegrees(0));
+    Pose2d endPose = new Pose2d(Units.feetToMeters(6), 0, Rotation2d.fromDegrees(0));
 
     ArrayList<Translation2d> waypoints = new ArrayList<Translation2d>();
 
@@ -61,6 +61,30 @@ public class Paths {
     maxVelocity,
     maxAccel,
     true);
+  }
+  public static Trajectory generateToRightCargo1() {
+
+    final double startVelocity = 0;
+    final double endVelocity = 0;
+    final double maxVelocity = Units.feetToMeters(6);
+    final double maxAccel = Units.feetToMeters(3);
+
+    ArrayList<Pose2d> waypoints = new ArrayList<>();
+    waypoints.add(new Pose2d(Units.feetToMeters(5.282), Units.feetToMeters(9.821), Rotation2d.fromDegrees(0)));
+    waypoints.add(new Pose2d(Units.feetToMeters(22.2), Units.feetToMeters(10.051), Rotation2d.fromDegrees(90)));
+
+    ArrayList<TrajectoryConstraint> centripetalAccelerationConstraints = new ArrayList<>();
+    centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(4)));
+
+    return TrajectoryGenerator.generateTrajectory(
+
+            waypoints,
+            centripetalAccelerationConstraints,
+            startVelocity,
+            endVelocity,
+            maxVelocity,
+            maxAccel,
+            false);
   }
 }
 
