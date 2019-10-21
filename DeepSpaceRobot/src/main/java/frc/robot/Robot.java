@@ -392,8 +392,9 @@ public class Robot extends TimedRobot {
     drivetrain.cancelControllerMotion();
     drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
+    drivetrain.reset();
 
-    new RamseteCommand(Paths.generateTestTrajectory(),
+    new RamseteCommand(Paths.generateToRightCargo1(),
         drivetrain::updateRobotPose,
         drivetrain.ramseteController,
         KS,
@@ -420,6 +421,7 @@ public class Robot extends TimedRobot {
     godSubsystem.setEnabled(true);
     drivetrain.cancelControllerMotion();
     drivetrain.shiftUp();
+    drivetrain.reset();
 
 //    godSubsystem.setEnabled(false);
 //    godSubsystem.getElevator().setControlMode(ElevatorControlMode.MANUAL);
@@ -435,6 +437,17 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    SmartDashboard.putNumber("Angle", drivetrain.getAngle().getDegrees());
+    SmartDashboard.putNumber("Left Speeds meters", drivetrain.getWheelSpeeds().leftMetersPerSecond);
+    SmartDashboard.putNumber("Right Speeds meters", drivetrain.getWheelSpeeds().rightMetersPerSecond);
+    SmartDashboard.putNumber("Left Distance meters", encoderLeft.getDistance());
+    SmartDashboard.putNumber("Right Distance meters", encoderRight.getDistance());
+
+    SmartDashboard.putNumber("Right Encoder Pulses", encoderRight.get());
+    SmartDashboard.putNumber("Left Encoder Pulses", encoderLeft.get());
+
+
 
 //    godSubsystem.getElevator().setElevatorPower(godSubsystem.getElevator().getElevatorJoystick());
 ////    godSubsystem.getHatch().setRotationPower(godSubsystem.getCargo().getCargoJoystick());
