@@ -96,6 +96,7 @@ public class Drivetrain extends AbstractDrivetrain {
   public void reset() {
     encoderLeft.reset();
     encoderRight.reset();
+    ahrs.zeroYaw();
   }
 
   public void setArcadeSpeeds(double xSpeed, double zRotation) {
@@ -127,10 +128,10 @@ public class Drivetrain extends AbstractDrivetrain {
 
   public void setEncoderDistancePerPulse() {
 
-    encoderLeft.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
-    encoderRight.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
+    encoderLeft.setDistancePerPulse(0.000578185267);
+    encoderRight.setDistancePerPulse(0.000578185267);
 
-    encoderLeft.setReverseDirection(true);
+    encoderLeft.setReverseDirection(false);
     encoderRight.setReverseDirection(true);
 
   }
