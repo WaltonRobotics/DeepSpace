@@ -22,7 +22,7 @@ public class Paths {
     Pose2d startPose = new Pose2d(Units.feetToMeters(0), 0, Rotation2d.fromDegrees(0));
     Pose2d endPose = new Pose2d(Units.feetToMeters(6), 0, Rotation2d.fromDegrees(0));
 
-    ArrayList<Translation2d> waypoints = new ArrayList<Translation2d>();
+    ArrayList<Translation2d> waypoints = new ArrayList<>();
 
     return TrajectoryGenerator.generateTrajectory(
             startPose,
@@ -41,8 +41,8 @@ public class Paths {
 
     final double startVelocity = 0;
     final double endVelocity = 0;
-    final double maxVelocity = Units.feetToMeters(12);
-    final double maxAccel = Units.feetToMeters(12);
+    final double maxVelocity = Units.feetToMeters(10);
+    final double maxAccel = Units.feetToMeters(4);
 
     ArrayList<Pose2d> waypoints = new ArrayList<>();
     waypoints.add(new Pose2d(Units.feetToMeters(5.018), Units.feetToMeters(11.337), Rotation2d.fromDegrees(179.658)));
@@ -53,7 +53,6 @@ public class Paths {
     centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(4)));
 
     return TrajectoryGenerator.generateTrajectory(
-
     waypoints,
     centripetalAccelerationConstraints,
     startVelocity,
@@ -77,7 +76,6 @@ public class Paths {
     centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(4)));
 
     return TrajectoryGenerator.generateTrajectory(
-
             waypoints,
             centripetalAccelerationConstraints,
             startVelocity,

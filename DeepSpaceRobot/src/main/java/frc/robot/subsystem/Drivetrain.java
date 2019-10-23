@@ -18,7 +18,6 @@ import static frc.robot.RobotMap.*;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.ControlType;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.command.teleop.Drive;
 import lib.Controller.RamseteController;
@@ -83,6 +82,10 @@ public class Drivetrain extends AbstractDrivetrain {
 
   public Pose2d updateRobotPose() {
     return driveOdometry.update(getAngle(), getWheelSpeeds());
+  }
+
+  public Pose2d updateRobotPoseOffset(double offset_degrees) {
+    return driveOdometry.update(getAngle().plus(Rotation2d.fromDegrees(offset_degrees)), getWheelSpeeds());
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {

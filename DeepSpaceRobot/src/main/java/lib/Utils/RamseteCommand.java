@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lib.Controller.RamseteController;
 import lib.Geometry.Pose2d;
 import lib.Kinematics.ChassisSpeeds;
@@ -211,7 +210,6 @@ public class RamseteCommand extends Command {
     LiveDashboard.INSTANCE.setPathHeading(Units.metersToFeet(m_trajectory.sample(curTime).poseMeters.getRotation().getDegrees()));
     LiveDashboard.INSTANCE.setPathX(Units.metersToFeet(m_trajectory.sample(curTime).poseMeters.getTranslation().getX()));
     LiveDashboard.INSTANCE.setPathY(Units.metersToFeet(m_trajectory.sample(curTime).poseMeters.getTranslation().getY()));
-
 
   }
 
