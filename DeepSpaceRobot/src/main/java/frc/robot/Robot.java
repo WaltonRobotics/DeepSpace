@@ -103,6 +103,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config.Camera;
+import frc.robot.command.auto.RightRocketGroup;
+import frc.robot.command.auto.VisionAlign;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
@@ -393,20 +395,10 @@ public class Robot extends TimedRobot {
     drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
     drivetrain.reset();
+    new RightRocketGroup().start();
 
-    new RamseteCommand(Paths.generateToRightCargo1(),
-        drivetrain::updateRobotPose,
-        drivetrain.ramseteController,
-        KS,
-        KV,
-        KA,
-        drivetrain.differentialDriveKinematics,
-        encoderLeft::getRate,
-        encoderRight::getRate,
-        drivetrain.m_leftPIDController,
-        drivetrain.m_rightPIDController).start();
+
   }
-
   /**
    * This function is called periodically during autonomous.
    */

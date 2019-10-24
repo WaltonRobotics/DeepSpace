@@ -41,13 +41,13 @@ public class Paths {
 
     final double startVelocity = 0;
     final double endVelocity = 0;
-    final double maxVelocity = Units.feetToMeters(10);
+    final double maxVelocity = Units.feetToMeters(5);
     final double maxAccel = Units.feetToMeters(4);
 
     ArrayList<Pose2d> waypoints = new ArrayList<>();
-    waypoints.add(new Pose2d(Units.feetToMeters(5.018), Units.feetToMeters(11.337), Rotation2d.fromDegrees(179.658)));
-    waypoints.add(new Pose2d(Units.feetToMeters(12.731), Units.feetToMeters(8.352), Rotation2d.fromDegrees(155.447)));
-    waypoints.add(new Pose2d(Units.feetToMeters(22.932), Units.feetToMeters(4.776), Rotation2d.fromDegrees(-145.804)));
+    waypoints.add(new Pose2d(Units.feetToMeters(5.238), Units.feetToMeters(10.097), Rotation2d.fromDegrees(180)));
+    waypoints.add(new Pose2d(Units.feetToMeters(17.7), Units.feetToMeters(7.883), Rotation2d.fromDegrees(165.983)));
+    waypoints.add(new Pose2d(Units.feetToMeters(22.064), Units.feetToMeters(3.168), Rotation2d.fromDegrees(213)));
 
     ArrayList<TrajectoryConstraint> centripetalAccelerationConstraints = new ArrayList<>();
     centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(4)));

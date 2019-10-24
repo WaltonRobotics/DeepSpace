@@ -154,6 +154,8 @@ public class Drive extends Command {
     // try to drive forward until the target area reaches our desired area
     double driveCmd = (getLeftYJoystick() + getRightYJoystick()) / 2.0;
     limelightDriveCommand = driveCmd;
+
+    System.out.println("Target Area " + ta);
   }
 
   // Make this return true when this Command no longer needs to run execute()

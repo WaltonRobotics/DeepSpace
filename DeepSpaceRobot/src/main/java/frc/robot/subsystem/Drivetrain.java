@@ -84,8 +84,8 @@ public class Drivetrain extends AbstractDrivetrain {
     return driveOdometry.update(getAngle(), getWheelSpeeds());
   }
 
-  public Pose2d updateRobotPoseOffset(double offset_degrees) {
-    return driveOdometry.update(getAngle().plus(Rotation2d.fromDegrees(offset_degrees)), getWheelSpeeds());
+  public Pose2d updateRobotPoseOffset() {
+    return driveOdometry.update(getAngle().plus(Rotation2d.fromDegrees(180)), getWheelSpeeds());
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
