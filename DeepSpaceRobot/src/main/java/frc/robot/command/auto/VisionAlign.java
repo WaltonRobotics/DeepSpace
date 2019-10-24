@@ -49,7 +49,7 @@ public class VisionAlign extends Command {
     @Override
     protected boolean isFinished() {
         System.out.println("Finished");
-        return timer.get() > 1.8;
+        return timer.get() > 1.5;
     }
 
     @Override

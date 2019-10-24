@@ -273,7 +273,7 @@ public class CompDeepSpace extends LimitedRobot {
       @Override
       public FeedbackDevice getFeedbackSensor() {
         return FeedbackDevice.Analog;
-      }
+        }
 
       @Override
       public boolean getSensorPhase() {

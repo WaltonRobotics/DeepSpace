@@ -13,7 +13,7 @@ public class RightRocketGroup extends CommandGroup {
 
     public RightRocketGroup() {
         addSequential(new RamseteCommand(Paths.generateToRightRocket1(),
-                drivetrain::updateRobotPoseOffset,
+                drivetrain::updateRobotPose,
                 drivetrain.ramseteController,
                 KS,
                 KV,
@@ -25,5 +25,17 @@ public class RightRocketGroup extends CommandGroup {
                 drivetrain.m_rightPIDController));
 
         addSequential(new VisionAlign());
+        addSequential(new SetHatchIntake(false));
+        addSequential(new RamseteCommand(Paths.GenerateRightBackUp(),
+                drivetrain::updateRobotPose,
+                drivetrain.ramseteController,
+                KS,
+                KV,
+                KA,
+                drivetrain.differentialDriveKinematics,
+                encoderLeft::getRate,
+                encoderRight::getRate,
+                drivetrain.m_leftPIDController,
+                drivetrain.m_rightPIDController));
     }
 }
