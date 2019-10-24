@@ -662,6 +662,7 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
           break;
         case MANUAL:
           clawRotationMotor.set(ControlMode.PercentOutput, rotationPower);
+        //  clawRotationMotor.set(ControlMode.Current, 0.2);
           currentTarget = angle;
           break;
         case DISABLED:
