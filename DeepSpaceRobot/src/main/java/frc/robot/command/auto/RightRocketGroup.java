@@ -23,7 +23,7 @@ public class RightRocketGroup extends CommandGroup {
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
 
-        addSequential(new VisionAlign());
+        addSequential(new VisionAlign(1.4));
         addSequential(new SetHatchIntake(false));
         addSequential(new RamseteCommand(rightRocketBackUpBack,
                 drivetrain::updateRobotPose,

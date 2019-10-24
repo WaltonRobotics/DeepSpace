@@ -16,12 +16,15 @@ public class VisionAlign extends Command {
     private boolean limelightHasValidTarget;
     private boolean isDone;
 
+    private double timeDesired;
+
     private Timer timer;
 
-    public VisionAlign() {
+    public VisionAlign(double time) {
         isDone = false;
         limelightHasValidTarget = true;
         timer = new Timer();
+        timeDesired = time;
     }
 
 
@@ -50,7 +53,7 @@ public class VisionAlign extends Command {
     @Override
     protected boolean isFinished() {
         System.out.println("Finished");
-        return timer.get() > 1.4;
+        return timer.get() > timeDesired;
     }
 
     @Override
