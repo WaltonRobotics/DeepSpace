@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.Config;
 
 import static frc.robot.Robot.drivetrain;
@@ -49,7 +50,7 @@ public class VisionAlign extends Command {
     @Override
     protected boolean isFinished() {
         System.out.println("Finished");
-        return timer.get() > 1.5;
+        return timer.get() > 1.4;
     }
 
     @Override

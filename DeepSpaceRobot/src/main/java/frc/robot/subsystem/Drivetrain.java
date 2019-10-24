@@ -96,6 +96,11 @@ public class Drivetrain extends AbstractDrivetrain {
     return Rotation2d.fromDegrees(-ahrs.getYaw());
   }
 
+
+  public double getAngleDegrees() {
+    return getAngle().getDegrees();
+  }
+
   public void reset() {
     encoderLeft.reset();
     encoderRight.reset();
