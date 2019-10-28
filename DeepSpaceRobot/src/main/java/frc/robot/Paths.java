@@ -285,7 +285,11 @@ public class Paths {
     }
   }
 
-  public static class right2HatchCargo {
+  /**
+   * Contains paths for 2 hatch cargo and rocket right side
+   */
+
+  public static class Right2HatchCargoRocket {
 
     public static Trajectory generateToCargo1() {
 
@@ -295,9 +299,9 @@ public class Paths {
       final double maxAccel = Units.feetToMeters(4);
 
       ArrayList<Pose2d> waypoints = new ArrayList<>();
-      waypoints.add(new Pose2d(Units.feetToMeters(5.389), Units.feetToMeters(9.868), Rotation2d.fromDegrees(180.0)));
-      waypoints.add(new Pose2d(Units.feetToMeters(17.01), Units.feetToMeters(8.719), Rotation2d.fromDegrees(180.0)));
-      waypoints.add(new Pose2d(Units.feetToMeters(21.481), Units.feetToMeters(8.128), Rotation2d.fromDegrees(90.0)));
+      waypoints.add(new Pose2d(Units.feetToMeters(5.301), Units.feetToMeters(9.738), Rotation2d.fromDegrees(0.0)));
+      waypoints.add(new Pose2d(Units.feetToMeters(10.502), Units.feetToMeters(9.74), Rotation2d.fromDegrees(0.0)));
+      waypoints.add(new Pose2d(Units.feetToMeters(21.921), Units.feetToMeters(9.092), Rotation2d.fromDegrees(90.0)));
 
       ArrayList<TrajectoryConstraint> centripetalAccelerationConstraints = new ArrayList<>();
       centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(3)));
@@ -309,7 +313,7 @@ public class Paths {
               endVelocity,
               maxVelocity,
               maxAccel,
-              true);
+              false);
     }
 
     public static Trajectory generateCargo1BackUp() {
