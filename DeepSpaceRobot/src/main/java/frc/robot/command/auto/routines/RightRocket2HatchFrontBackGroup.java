@@ -2,6 +2,7 @@ package frc.robot.command.auto.routines;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Paths;
+import frc.robot.command.auto.SetHatchIntake;
 import frc.robot.command.auto.VisionAlign;
 import lib.Utils.RamseteCommand;
 
@@ -24,6 +25,7 @@ public class RightRocket2HatchFrontBackGroup extends CommandGroup {
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
         addSequential(new VisionAlign(1.2));
+        addSequential(new SetHatchIntake(false));
         addSequential(new RamseteCommand(Paths.RightRocketBackAndFrontLv1.generateBackUpFromBackLv1(),
                 drivetrain::updateRobotPoseStartBackwards,
                 drivetrain.ramseteController,
@@ -47,6 +49,7 @@ public class RightRocket2HatchFrontBackGroup extends CommandGroup {
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
         addSequential(new VisionAlign(1.2));
+        addSequential(new SetHatchIntake(true));
         addSequential(new RamseteCommand(Paths.RightRocketBackAndFrontLv1.generateToFrontLv1FromLoading(),
                 drivetrain::updateRobotPoseStartBackwards,
                 drivetrain.ramseteController,
@@ -59,5 +62,6 @@ public class RightRocket2HatchFrontBackGroup extends CommandGroup {
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
         addSequential(new VisionAlign(1.2));
+        addSequential(new SetHatchIntake(false));
     }
 }
