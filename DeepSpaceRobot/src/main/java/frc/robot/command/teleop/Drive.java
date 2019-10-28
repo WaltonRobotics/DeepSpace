@@ -27,6 +27,7 @@ import org.waltonrobotics.metadata.Pose;
 public class Drive extends Command {
 
   private static final double cameraFilter = 0.5;
+  private static final double deadband = 0.05;
   private static boolean enabled = true;
   private MotionLogger motionLogger = new MotionLogger();
   private Pose offset = new Pose(0, 0, 0);
@@ -57,11 +58,18 @@ public class Drive extends Command {
   }
 
   private double getLeftYJoystick() {
-    return (currentRobot.getLeftJoystickConfig().isInverted() ? -1 : 1) * OI.leftJoystick.getY();
+    if (Math.abs(OI.leftJoystick.getY()) > deadband) {
+      return (currentRobot.getLeftJoystickConfig().isInverted() ? -1 : 1) * OI.leftJoystick.getY();
+    }
+    return 0;
   }
 
   private double getRightYJoystick() {
-    return (currentRobot.getRightJoystickConfig().isInverted() ? -1 : 1) * OI.rightJoystick.getY();
+    if (Math.abs(OI.rightJoystick.getY()) > deadband) {
+      return (currentRobot.getRightJoystickConfig().isInverted() ? -1 : 1) * OI.rightJoystick
+          .getY();
+    }
+    return 0;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -74,7 +82,8 @@ public class Drive extends Command {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline")
             .setDouble(Camera.AUTO_ALIGN_PIPELINE);
       } else if (rightTriggerPress.isFallingEdge()) {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(Camera.DRIVER_PIPELINE);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline")
+            .setDouble(Camera.DRIVER_PIPELINE);
       }
 
       updateLimelightTracking();
@@ -116,13 +125,15 @@ public class Drive extends Command {
 
 
   /**
-   * This function implements a simple method of generating driving and steering commands based on the tracking data
-   * from a limelight camera.
+   * This function implements a simple method of generating driving and steering commands based on
+   * the tracking data from a limelight camera.
    */
   public void updateLimelightTracking() {
     // These numbers must be tuned for your Robot!  Be careful!
-    final double STEER_K = SmartDashboard.getNumber("Steer K", 0.1); // how hard to turn toward the target
-    final double DRIVE_K = SmartDashboard.getNumber("Drive K", 0.26); // how hard to drive fwd toward the target
+    final double STEER_K = SmartDashboard
+        .getNumber("Steer K", 0.1); // how hard to turn toward the target
+    final double DRIVE_K = SmartDashboard
+        .getNumber("Drive K", 0.26); // how hard to drive fwd toward the target
 
     double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
     double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
@@ -141,7 +152,8 @@ public class Drive extends Command {
     }
 
     // Start with proportional steering
-    double distance = 0.0006083653 * ty * ty * ty + 0.0035045626 * ty * ty + 0.0310867702 * ty + 0.6929105875;
+    double distance =
+        0.0006083653 * ty * ty * ty + 0.0035045626 * ty * ty + 0.0310867702 * ty + 0.6929105875;
     SmartDashboard.putNumber("Camera Distance", distance);
 
     distance = Math.max(.5, distance);

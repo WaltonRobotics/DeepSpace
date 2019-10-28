@@ -48,9 +48,9 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsMaster.setSmartCurrentLimit(40);
     rightWheelsSlave.setSmartCurrentLimit(40);
 
-    leftWheelsSlave.setIdleMode(IdleMode.kBrake);
+    leftWheelsSlave.setIdleMode(IdleMode.kCoast);
     leftWheelsMaster.setIdleMode(IdleMode.kBrake);
-    rightWheelsSlave.setIdleMode(IdleMode.kBrake);
+    rightWheelsSlave.setIdleMode(IdleMode.kCoast);
     rightWheelsMaster.setIdleMode(IdleMode.kBrake);
 
   }
