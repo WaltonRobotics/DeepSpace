@@ -97,8 +97,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config.Camera;
-import frc.robot.command.auto.RightRocket2Group;
-import frc.robot.command.auto.RightRocketGroup;
+import frc.robot.command.auto.routines.RightRocket2HatchFrontGroup;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
@@ -114,9 +113,6 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
 import frc.robot.util.RobotBuilder;
-import lib.trajectory.Trajectory;
-
-import java.nio.file.Path;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -131,11 +127,6 @@ public class Robot extends TimedRobot {
   public static final ElevatorCargoHatchSubsystem godSubsystem;
   public static final SendableChooser<Transform> transformSendableChooser = new SendableChooser<>();
   private static final RobotBuilder<LimitedRobot> robotBuilder;
-
-  public static Trajectory rightRocketToBack;
-  public static Trajectory rightRocketBackUpBack;
-  public static Trajectory rightRocketFromBackToLoading;
-  public static Trajectory rightRocketFromLoadingToFront;
 
   static {
     isCompBot = new DigitalInput(9).get();
@@ -152,10 +143,6 @@ public class Robot extends TimedRobot {
 
   public Robot() {
     super(0.04);
-    rightRocketBackUpBack = null;
-    rightRocketToBack = null;
-    rightRocketFromBackToLoading = null;
-    rightRocketFromLoadingToFront = null;
   }
 
   private static void initHardware() {
@@ -276,11 +263,6 @@ public class Robot extends TimedRobot {
     initShuffleBoard();
     initCamera();
     initHardware();
-
-    rightRocketToBack = Paths.generateToRightRocket1();
-    rightRocketBackUpBack = Paths.generateRightBackUp();
-    rightRocketFromBackToLoading = Paths.generateFromRightBackToLoading();
-    rightRocketFromLoadingToFront = Paths.generateRightRocketLoadingBackUp();
   }
 
   private void initCamera() {
@@ -401,7 +383,7 @@ public class Robot extends TimedRobot {
     drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
     drivetrain.reset();
-    new RightRocket2Group().start();
+    new RightRocket2HatchFrontGroup().start();
 
 
   }

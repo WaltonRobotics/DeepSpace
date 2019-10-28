@@ -1,19 +1,21 @@
-package frc.robot.command.auto;
+package frc.robot.command.auto.routines;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Paths;
+import frc.robot.command.auto.SetElevatorLevel;
+import frc.robot.command.auto.SetHatchIntake;
+import frc.robot.command.auto.VisionAlign;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 import lib.Utils.RamseteCommand;
 
 import static frc.robot.Config.SmartMotionConstants.*;
 import static frc.robot.Robot.drivetrain;
-import static frc.robot.Robot.rightRocketToBack;
 import static frc.robot.RobotMap.encoderLeft;
 import static frc.robot.RobotMap.encoderRight;
 
-public class RightRocket2Group extends CommandGroup {
-    public RightRocket2Group() {
-        addSequential(new RamseteCommand(Paths.generateToFrontRightRocket(),
+public class RightRocket2HatchFrontGroup extends CommandGroup {
+    public RightRocket2HatchFrontGroup() {
+        addSequential(new RamseteCommand(Paths.RightRocketFront2.generateToFrontLv1(),
                 drivetrain::updateRobotPose,
                 drivetrain.ramseteController,
                 KS,
@@ -26,7 +28,7 @@ public class RightRocket2Group extends CommandGroup {
                 drivetrain.m_rightPIDController));
         addSequential(new VisionAlign(1.5));
         addSequential(new SetHatchIntake(false));
-        addSequential(new RamseteCommand(Paths.generateBackupFrontRightRocket(),
+        addSequential(new RamseteCommand(Paths.RightRocketFront2.generateBackUpFrontLv1(),
                 drivetrain::updateRobotPose,
                 drivetrain.ramseteController,
                 KS,
@@ -37,7 +39,7 @@ public class RightRocket2Group extends CommandGroup {
                 encoderRight::getRate,
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
-        addSequential(new RamseteCommand(Paths.generateFrontRightRocketToLoadingStation(),
+        addSequential(new RamseteCommand(Paths.RightRocketFront2.generateToLoadingStation(),
                 drivetrain::updateRobotPose,
                 drivetrain.ramseteController,
                 KS,
@@ -48,9 +50,9 @@ public class RightRocket2Group extends CommandGroup {
                 encoderRight::getRate,
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
-        addSequential(new VisionAlign(1.5));
+        addSequential(new VisionAlign(1.8));
         addSequential(new SetHatchIntake(true));
-        addSequential(new RamseteCommand(Paths.generateFrontRightRocketToSecondHatch(),
+        addSequential(new RamseteCommand(Paths.RightRocketFront2.generateToFrontLv2FromLoading(),
                 drivetrain::updateRobotPose,
                 drivetrain.ramseteController,
                 KS,
