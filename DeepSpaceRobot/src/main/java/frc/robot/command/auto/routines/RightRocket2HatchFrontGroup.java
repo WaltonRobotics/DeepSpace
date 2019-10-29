@@ -9,6 +9,8 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 import lib.Utils.RamseteCommand;
 import lib.trajectory.Trajectory;
 
+import java.nio.file.Path;
+
 import static frc.robot.Config.SmartMotionConstants.*;
 import static frc.robot.Robot.drivetrain;
 import static frc.robot.RobotMap.encoderLeft;
@@ -16,11 +18,11 @@ import static frc.robot.RobotMap.encoderRight;
 
 public class RightRocket2HatchFrontGroup extends CommandGroup {
     public RightRocket2HatchFrontGroup() {
-
         Trajectory toFrontLv1 = Paths.RightRocketFront2.generateToFrontLv1();
         Trajectory backUpFrontLv1 = Paths.RightRocketFront2.generateBackUpFrontLv1();
         Trajectory toLoadingStationfromRocket1 = Paths.RightRocketFront2.generateToLoadingStation();
         Trajectory toFrontLv2FromLoading = Paths.RightRocketFront2.generateToFrontLv2FromLoading();
+        Trajectory backUpFrontLv2 = Paths.RightRocketFront2.generateLevel2Backup();
 
         addSequential(new RamseteCommand(toFrontLv1,
                 drivetrain::updateRobotPose,
@@ -33,7 +35,7 @@ public class RightRocket2HatchFrontGroup extends CommandGroup {
                 encoderRight::getRate,
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
-        addSequential(new VisionAlign(1.5));
+        addSequential(new VisionAlign(1.2));
         addSequential(new SetHatchIntake(false));
         addSequential(new RamseteCommand(backUpFrontLv1,
                 drivetrain::updateRobotPose,
@@ -57,7 +59,7 @@ public class RightRocket2HatchFrontGroup extends CommandGroup {
                 encoderRight::getRate,
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
-        addSequential(new VisionAlign(1.8));
+        addSequential(new VisionAlign(2));
         addSequential(new SetHatchIntake(true));
         addSequential(new RamseteCommand(toFrontLv2FromLoading,
                 drivetrain::updateRobotPose,
@@ -71,6 +73,18 @@ public class RightRocket2HatchFrontGroup extends CommandGroup {
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
         addSequential(new SetElevatorLevel(ElevatorCargoHatchSubsystem.ElevatorLevel.HATCH2));
-        addSequential(new VisionAlign(2));
+        addSequential(new VisionAlign(3));
+        addSequential(new SetHatchIntake(false));
+        addSequential(new RamseteCommand(backUpFrontLv2,
+                drivetrain::updateRobotPose,
+                drivetrain.ramseteController,
+                KS,
+                KV,
+                KA,
+                drivetrain.differentialDriveKinematics,
+                encoderLeft::getRate,
+                encoderRight::getRate,
+                drivetrain.m_leftPIDController,
+                drivetrain.m_rightPIDController));
     }
 }

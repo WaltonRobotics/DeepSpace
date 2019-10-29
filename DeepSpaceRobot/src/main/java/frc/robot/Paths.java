@@ -187,17 +187,16 @@ public class Paths {
     public static Trajectory generateToFrontLv1() {
 
       final double startVelocity = 0;
-      final double endVelocity = 0;
-      final double maxVelocity = Units.feetToMeters(5);
-      final double maxAccel = Units.feetToMeters(4);
+      final double endVelocity = 0.5;
+      final double maxVelocity = Units.feetToMeters(10);
+      final double maxAccel = Units.feetToMeters(5);
 
       ArrayList<Pose2d> waypoints = new ArrayList<>();
       waypoints.add(new Pose2d(Units.feetToMeters(5.282), Units.feetToMeters(9.821), Rotation2d.fromDegrees(0)));
       waypoints.add(new Pose2d(Units.feetToMeters(14.447), Units.feetToMeters(3.577), Rotation2d.fromDegrees(-30.0)));
-      //waypoints.add(new Pose2d(Units.feetToMeters(14.182), Units.feetToMeters(2.847), Rotation2d.fromDegrees(-31.0)));
 
       ArrayList<TrajectoryConstraint> centripetalAccelerationConstraints = new ArrayList<>();
-      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(3)));
+      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(5)));
 
       return TrajectoryGenerator.generateTrajectory(
               waypoints,
@@ -213,8 +212,8 @@ public class Paths {
 
       final double startVelocity = 0;
       final double endVelocity = 0;
-      final double maxVelocity = Units.feetToMeters(5);
-      final double maxAccel = Units.feetToMeters(4);
+      final double maxVelocity = Units.feetToMeters(10);
+      final double maxAccel = Units.feetToMeters(5);
 
       ArrayList<Pose2d> waypoints = new ArrayList<>();
       waypoints.add(new Pose2d(Units.feetToMeters(16.275), Units.feetToMeters(2.474), Rotation2d.fromDegrees(-30.0)));
@@ -222,7 +221,7 @@ public class Paths {
       //waypoints.add(new Pose2d(Units.feetToMeters(14.182), Units.feetToMeters(2.847), Rotation2d.fromDegrees(-31.0)));
 
       ArrayList<TrajectoryConstraint> centripetalAccelerationConstraints = new ArrayList<>();
-      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(3)));
+      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(5)));
 
       return TrajectoryGenerator.generateTrajectory(
               waypoints,
@@ -238,16 +237,15 @@ public class Paths {
 
       final double startVelocity = 0;
       final double endVelocity = 0;
-      final double maxVelocity = Units.feetToMeters(5);
-      final double maxAccel = Units.feetToMeters(4);
+      final double maxVelocity = Units.feetToMeters(10);
+      final double maxAccel = Units.feetToMeters(5);
 
       ArrayList<Pose2d> waypoints = new ArrayList<>();
       waypoints.add(new Pose2d(Units.feetToMeters(12.688), Units.feetToMeters(6.057), Rotation2d.fromDegrees(-90.0)));
-      waypoints.add(new Pose2d(Units.feetToMeters(4.433), Units.feetToMeters(2.016), Rotation2d.fromDegrees(180)));
-      //waypoints.add(new Pose2d(Units.feetToMeters(14.182), Units.feetToMeters(2.847), Rotation2d.fromDegrees(-31.0)));
+      waypoints.add(new Pose2d(Units.feetToMeters(3.114), Units.feetToMeters(1.465), Rotation2d.fromDegrees(-170.0)));
 
       ArrayList<TrajectoryConstraint> centripetalAccelerationConstraints = new ArrayList<>();
-      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(3)));
+      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(5)));
 
       return TrajectoryGenerator.generateTrajectory(
               waypoints,
@@ -259,20 +257,44 @@ public class Paths {
               false);
     }
 
-    public static Trajectory generateToFrontLv2FromLoading() {
+    public static Trajectory  generateToFrontLv2FromLoading() {
 
       final double startVelocity = 0;
       final double endVelocity = 0;
-      final double maxVelocity = Units.feetToMeters(5);
+      final double maxVelocity = Units.feetToMeters(10);
       final double maxAccel = Units.feetToMeters(4);
 
       ArrayList<Pose2d> waypoints = new ArrayList<>();
       waypoints.add(new Pose2d(Units.feetToMeters(1.475), Units.feetToMeters(2.154), Rotation2d.fromDegrees(-180.0)));
-      waypoints.add(new Pose2d(Units.feetToMeters(8.963), Units.feetToMeters(2.107), Rotation2d.fromDegrees(-180.0)));
-      waypoints.add(new Pose2d(Units.feetToMeters(14.357), Units.feetToMeters(3.765), Rotation2d.fromDegrees(-33.0)));
+      waypoints.add(new Pose2d(Units.feetToMeters(8.963), Units.feetToMeters(2.75), Rotation2d.fromDegrees(-180.0)));
+      waypoints.add(new Pose2d(Units.feetToMeters(13.302), Units.feetToMeters(5.372), Rotation2d.fromDegrees(-33.0)));
 
       ArrayList<TrajectoryConstraint> centripetalAccelerationConstraints = new ArrayList<>();
-      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(3)));
+      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(4)));
+
+      return TrajectoryGenerator.generateTrajectory(
+              waypoints,
+              centripetalAccelerationConstraints,
+              startVelocity,
+              endVelocity,
+              maxVelocity,
+              maxAccel,
+              true);
+    }
+
+    public static Trajectory generateLevel2Backup() {
+
+      final double startVelocity = 0;
+      final double endVelocity = 0;
+      final double maxVelocity = Units.feetToMeters(2);
+      final double maxAccel = Units.feetToMeters(1);
+
+      ArrayList<Pose2d> waypoints = new ArrayList<>();
+      waypoints.add(new Pose2d(Units.feetToMeters(16.6), Units.feetToMeters(2.204), Rotation2d.fromDegrees(-31.0)));
+      waypoints.add(new Pose2d(Units.feetToMeters(14.094), Units.feetToMeters(3.714), Rotation2d.fromDegrees(-32.0)));
+
+      ArrayList<TrajectoryConstraint> centripetalAccelerationConstraints = new ArrayList<>();
+      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(4)));
 
       return TrajectoryGenerator.generateTrajectory(
               waypoints,
@@ -295,16 +317,16 @@ public class Paths {
 
       final double startVelocity = 0;
       final double endVelocity = 0;
-      final double maxVelocity = Units.feetToMeters(5);
+      final double maxVelocity = Units.feetToMeters(10);
       final double maxAccel = Units.feetToMeters(4);
 
       ArrayList<Pose2d> waypoints = new ArrayList<>();
       waypoints.add(new Pose2d(Units.feetToMeters(5.301), Units.feetToMeters(9.738), Rotation2d.fromDegrees(0.0)));
       waypoints.add(new Pose2d(Units.feetToMeters(10.502), Units.feetToMeters(9.74), Rotation2d.fromDegrees(0.0)));
-      waypoints.add(new Pose2d(Units.feetToMeters(21.921), Units.feetToMeters(9.092), Rotation2d.fromDegrees(90.0)));
+      waypoints.add(new Pose2d(Units.feetToMeters(21.701), Units.feetToMeters(8.300), Rotation2d.fromDegrees(90.0)));
 
       ArrayList<TrajectoryConstraint> centripetalAccelerationConstraints = new ArrayList<>();
-      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(3)));
+      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(5)));
 
       return TrajectoryGenerator.generateTrajectory(
               waypoints,
@@ -320,15 +342,15 @@ public class Paths {
 
       final double startVelocity = 0;
       final double endVelocity = 0;
-      final double maxVelocity = Units.feetToMeters(5);
-      final double maxAccel = Units.feetToMeters(4);
+      final double maxVelocity = Units.feetToMeters(8);
+      final double maxAccel = Units.feetToMeters(5);
 
       ArrayList<Pose2d> waypoints = new ArrayList<>();
       waypoints.add(new Pose2d(Units.feetToMeters(21.659), Units.feetToMeters(10.052), Rotation2d.fromDegrees(90.0)));
       waypoints.add(new Pose2d(Units.feetToMeters(23.254), Units.feetToMeters(6.653), Rotation2d.fromDegrees(180.0)));
 
       ArrayList<TrajectoryConstraint> centripetalAccelerationConstraints = new ArrayList<>();
-      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(3)));
+      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(5)));
 
       return TrajectoryGenerator.generateTrajectory(
               waypoints,
@@ -344,15 +366,15 @@ public class Paths {
 
       final double startVelocity = 0;
       final double endVelocity = 0;
-      final double maxVelocity = Units.feetToMeters(5);
-      final double maxAccel = Units.feetToMeters(4);
+      final double maxVelocity = Units.feetToMeters(10);
+      final double maxAccel = Units.feetToMeters(5);
 
       ArrayList<Pose2d> waypoints = new ArrayList<>();
       waypoints.add(new Pose2d(Units.feetToMeters(23.254), Units.feetToMeters(6.653), Rotation2d.fromDegrees(180.0)));
       waypoints.add(new Pose2d(Units.feetToMeters(2.85), Units.feetToMeters(2.194), Rotation2d.fromDegrees(180.0)));
 
       ArrayList<TrajectoryConstraint> centripetalAccelerationConstraints = new ArrayList<>();
-      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(3)));
+      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(5)));
 
       return TrajectoryGenerator.generateTrajectory(
               waypoints,
@@ -368,16 +390,16 @@ public class Paths {
 
       final double startVelocity = 0;
       final double endVelocity = 0;
-      final double maxVelocity = Units.feetToMeters(5);
-      final double maxAccel = Units.feetToMeters(4);
+      final double maxVelocity = Units.feetToMeters(10);
+      final double maxAccel = Units.feetToMeters(5);
 
       ArrayList<Pose2d> waypoints = new ArrayList<>();
       waypoints.add(new Pose2d(Units.feetToMeters(1.475), Units.feetToMeters(2.154), Rotation2d.fromDegrees(-180.0)));
       waypoints.add(new Pose2d(Units.feetToMeters(8.963), Units.feetToMeters(2.107), Rotation2d.fromDegrees(-180.0)));
-      waypoints.add(new Pose2d(Units.feetToMeters(14.357), Units.feetToMeters(3.765), Rotation2d.fromDegrees(-33.0)));
+      waypoints.add(new Pose2d(Units.feetToMeters(14.357), Units.feetToMeters(4.765), Rotation2d.fromDegrees(-33.0)));
 
       ArrayList<TrajectoryConstraint> centripetalAccelerationConstraints = new ArrayList<>();
-      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(3)));
+      centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(5)));
 
       return TrajectoryGenerator.generateTrajectory(
               waypoints,

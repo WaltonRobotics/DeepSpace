@@ -97,6 +97,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config.Camera;
+import frc.robot.command.auto.routines.RightCargoRocket2Hatch;
 import frc.robot.command.auto.routines.RightRocket2HatchFrontGroup;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.Sigmoid;
@@ -383,8 +384,7 @@ public class Robot extends TimedRobot {
     drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
     drivetrain.reset();
-    new RightRocket2HatchFrontGroup().start();
-
+    new RightCargoRocket2Hatch().start();
 
   }
   /**
