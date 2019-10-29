@@ -172,7 +172,7 @@ public class Drivetrain extends AbstractDrivetrain {
     leftWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
     rightWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
     rightWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
-  } 
+  }
 
   public void motorSetUpAuto() {
     leftWheelsMaster.restoreFactoryDefaults();

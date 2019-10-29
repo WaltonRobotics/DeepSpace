@@ -33,7 +33,7 @@ public class RightRocket2HatchFrontGroup extends CommandGroup {
                 encoderRight::getRate,
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
-        addSequential(new VisionAlign(1.2));
+        addSequential(new VisionAlign(1));
         addSequential(new SetHatchIntake(false));
         addSequential(new RamseteCommand(backUpFrontLv1,
                 drivetrain::updateRobotPose,
@@ -57,7 +57,7 @@ public class RightRocket2HatchFrontGroup extends CommandGroup {
                 encoderRight::getRate,
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
-        addSequential(new VisionAlign(1.5));
+        addSequential(new VisionAlign(1.1));
         addSequential(new SetHatchIntake(true));
         addSequential(new RamseteCommand(toFrontLv2FromLoading,
                 drivetrain::updateRobotPose,
@@ -71,7 +71,7 @@ public class RightRocket2HatchFrontGroup extends CommandGroup {
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
         addSequential(new SetElevatorLevel(ElevatorCargoHatchSubsystem.ElevatorLevel.HATCH2));
-        addSequential(new VisionAlign(3));
+        addSequential(new VisionAlign(2.8));
         addSequential(new SetHatchIntake(false));
         addSequential(new RamseteCommand(backUpFrontLv2,
                 drivetrain::updateRobotPose,
