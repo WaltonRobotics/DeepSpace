@@ -58,6 +58,10 @@ public class Drivetrain extends AbstractDrivetrain {
 
     ahrs.reset();
     ahrs.zeroYaw();
+    leftWheelsSlave.setIdleMode(IdleMode.kCoast);
+    leftWheelsMaster.setIdleMode(IdleMode.kBrake);
+    rightWheelsSlave.setIdleMode(IdleMode.kCoast);
+    rightWheelsMaster.setIdleMode(IdleMode.kBrake);
 
     ramseteController = new RamseteController(K_BETA, K_ZETA);
   }

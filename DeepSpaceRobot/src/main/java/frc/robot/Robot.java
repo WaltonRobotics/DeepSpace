@@ -100,6 +100,7 @@ import frc.robot.Config.Camera;
 import frc.robot.command.auto.routines.RightCargoRocket2Hatch;
 import frc.robot.command.auto.routines.RightRocket2HatchFrontGroup;
 import frc.robot.command.teleop.util.NormalSpeed;
+import frc.robot.command.teleop.util.SCurve;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
 import frc.robot.command.teleop.util.Squared;
@@ -161,6 +162,7 @@ public class Robot extends TimedRobot {
     transformSendableChooser.addOption("Sigmoid", new Sigmoid());
     transformSendableChooser.addOption("Sqrt", new Sqrt());
     transformSendableChooser.addOption("Squared", new Squared());
+    transformSendableChooser.addOption("S Curve", new SCurve());
 
     SmartDashboard.putData(DRIVETEAM_TRANSFORM_SELECT, transformSendableChooser);
 

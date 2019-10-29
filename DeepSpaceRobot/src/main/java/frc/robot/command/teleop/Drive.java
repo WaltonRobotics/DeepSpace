@@ -74,7 +74,8 @@ public class Drive extends Command {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline")
             .setDouble(Camera.AUTO_ALIGN_PIPELINE);
       } else if (rightTriggerPress.isFallingEdge()) {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(Camera.DRIVER_PIPELINE);
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline")
+            .setDouble(Camera.DRIVER_PIPELINE);
       }
 
       updateLimelightTracking();
@@ -117,12 +118,15 @@ public class Drive extends Command {
 
 
   /**
-   * This function implements a simple method of generating driving and steering commands based on the tracking data
-   * from a limelight camera.
+   * This function implements a simple method of generating driving and steering commands based on
+   * the tracking data from a limelight camera.
    */
   public void updateLimelightTracking() {
-    final double STEER_K = SmartDashboard.getNumber("Steer K", 0.1); // how hard to turn toward the target
-    final double DRIVE_K = SmartDashboard.getNumber("Drive K", 0.26); // how hard to drive fwd toward the target
+    // These numbers must be tuned for your Robot!  Be careful!
+    final double STEER_K = SmartDashboard
+        .getNumber("Steer K", 0.1); // how hard to turn toward the target
+    final double DRIVE_K = SmartDashboard
+        .getNumber("Drive K", 0.26); // how hard to drive fwd toward the target
 
     double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
     double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
@@ -141,7 +145,8 @@ public class Drive extends Command {
     }
 
     // Start with proportional steering
-    double distance = 0.0006083653 * ty * ty * ty + 0.0035045626 * ty * ty + 0.0310867702 * ty + 0.6929105875;
+    double distance =
+        0.0006083653 * ty * ty * ty + 0.0035045626 * ty * ty + 0.0310867702 * ty + 0.6929105875;
     SmartDashboard.putNumber("Camera Distance", distance);
 
     distance = Math.max(.5, distance);
