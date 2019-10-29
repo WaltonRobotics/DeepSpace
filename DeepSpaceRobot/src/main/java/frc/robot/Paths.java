@@ -323,7 +323,7 @@ public class Paths {
       ArrayList<Pose2d> waypoints = new ArrayList<>();
       waypoints.add(new Pose2d(Units.feetToMeters(5.301), Units.feetToMeters(9.738), Rotation2d.fromDegrees(0.0)));
       waypoints.add(new Pose2d(Units.feetToMeters(10.502), Units.feetToMeters(9.74), Rotation2d.fromDegrees(0.0)));
-      waypoints.add(new Pose2d(Units.feetToMeters(21.701), Units.feetToMeters(8.300), Rotation2d.fromDegrees(90.0)));
+      waypoints.add(new Pose2d(Units.feetToMeters(21.701), Units.feetToMeters(7.795), Rotation2d.fromDegrees(90.0)));
 
       ArrayList<TrajectoryConstraint> centripetalAccelerationConstraints = new ArrayList<>();
       centripetalAccelerationConstraints.add(new CentripetalAccelerationConstraint(Units.feetToMeters(5)));
