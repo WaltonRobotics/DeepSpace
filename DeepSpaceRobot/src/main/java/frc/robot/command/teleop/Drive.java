@@ -14,7 +14,6 @@ import static frc.robot.Robot.drivetrain;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config.Camera;
 import frc.robot.OI;
@@ -22,25 +21,18 @@ import frc.robot.Robot;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.util.EnhancedBoolean;
 import frc.robot.util.LEDController;
-import org.waltonrobotics.controller.MotionLogger;
-import org.waltonrobotics.metadata.Pose;
 
 public class Drive extends Command {
 
-  private static final double cameraFilter = 0.5;
   private static boolean enabled = true;
-  private MotionLogger motionLogger = new MotionLogger();
-  private Pose offset = new Pose(0, 0, 0);
-  private boolean hasFound = false;
   private boolean isAlligning = false;
   private EnhancedBoolean rightTriggerPress = new EnhancedBoolean();
   private boolean limelightHasValidTarget;
   private double limelightDriveCommand;
   private double limelightSteerCommand;
+  private double deadband = 0.05;
 
   public Drive() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
     requires(drivetrain);
   }
 
@@ -52,17 +44,24 @@ public class Drive extends Command {
     return Robot.transformSendableChooser.getSelected();
   }
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-  }
-
   private double getLeftYJoystick() {
-    return (currentRobot.getLeftJoystickConfig().isInverted() ? -1 : 1) * OI.leftJoystick.getY();
+    if (Math.abs(OI.leftJoystick.getY()) > deadband) {
+      return (currentRobot.getLeftJoystickConfig().isInverted() ? -1 : 1) * OI.leftJoystick.getY();
+    }
+    return 0;
   }
 
   private double getRightYJoystick() {
-    return (currentRobot.getRightJoystickConfig().isInverted() ? -1 : 1) * OI.rightJoystick.getY();
+    if (Math.abs(OI.rightJoystick.getY()) > deadband) {
+      return (currentRobot.getRightJoystickConfig().isInverted() ? -1 : 1) * OI.rightJoystick
+              .getY();
+    }
+    return 0;
+  }
+
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -105,7 +104,7 @@ public class Drive extends Command {
       }
 
       if (!isAlligning || !limelightHasValidTarget) {
-        drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
+        drivetrain.setSpeedsSquared(leftYJoystick, rightYJoystick); //TODO: CHECK IF NOAH LIKES
       }
 
       if (OI.shiftUp.get()) {
@@ -122,7 +121,6 @@ public class Drive extends Command {
    * from a limelight camera.
    */
   public void updateLimelightTracking() {
-    // These numbers must be tuned for your Robot!  Be careful!
     final double STEER_K = SmartDashboard.getNumber("Steer K", 0.1); // how hard to turn toward the target
     final double DRIVE_K = SmartDashboard.getNumber("Drive K", 0.26); // how hard to drive fwd toward the target
 
