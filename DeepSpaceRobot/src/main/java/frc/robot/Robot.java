@@ -384,7 +384,7 @@ public class Robot extends TimedRobot {
     drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
     drivetrain.reset();
-    new RightCargoRocket2Hatch().start();
+    new RightRocket2HatchFrontGroup().start();
 
   }
   /**
