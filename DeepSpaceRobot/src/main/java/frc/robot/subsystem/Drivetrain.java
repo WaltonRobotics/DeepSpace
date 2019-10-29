@@ -18,6 +18,7 @@ import static frc.robot.RobotMap.*;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.ControlType;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.command.teleop.Drive;
 import lib.Controller.RamseteController;
@@ -127,6 +128,14 @@ public class Drivetrain extends AbstractDrivetrain {
   public void setSpeeds(double leftPower, double rightPower) {
     rightWheelsMaster.set(rightPower);
     leftWheelsMaster.set(leftPower);
+  }
+
+  public void setSpeedsSquared(double leftPower, double rightPower) {
+   double leftSpeed = Math.copySign(leftPower * leftPower, leftPower);
+   double rightSpeed = Math.copySign(rightPower * rightPower, rightPower);
+   
+   leftWheelsMaster.set(leftSpeed);
+   rightWheelsMaster.set(rightSpeed);
   }
 
   public void setVoltages(double leftVoltage, double rightVoltage) {
