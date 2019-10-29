@@ -380,16 +380,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-//    godSubsystem.setEnabled(false);
     godSubsystem.setEnabled(true);
     godSubsystem.setAutonomousEnabled(SmartDashboard.getBoolean(USE_AUTON, false));
-//    godSubsystem.setAutonomousEnabled(false);
     drivetrain.cancelControllerMotion();
     drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
     drivetrain.reset();
+    drivetrain.motorSetUpAuto();
     new RightRocket2HatchFrontGroup().start();
-
   }
   /**
    * This function is called periodically during autonomous.
@@ -405,6 +403,7 @@ public class Robot extends TimedRobot {
     godSubsystem.setEnabled(true);
     drivetrain.cancelControllerMotion();
     drivetrain.shiftUp();
+    drivetrain.motorSetUpTeleop();
     drivetrain.reset();
 
 //    godSubsystem.setEnabled(false);

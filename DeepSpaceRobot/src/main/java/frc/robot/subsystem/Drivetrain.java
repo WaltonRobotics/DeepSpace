@@ -53,7 +53,6 @@ public class Drivetrain extends AbstractDrivetrain {
     differentialDriveKinematics = new DifferentialDriveKinematics(TRACK_WIDTH);
     driveOdometry = new DifferentialDriveOdometry(differentialDriveKinematics);
 
-    motorSetUp();
     setEncoderDistancePerPulse();
 
     ahrs.reset();
@@ -148,7 +147,34 @@ public class Drivetrain extends AbstractDrivetrain {
 
   }
 
-  public void motorSetUp() {
+  public void motorSetUpTeleop() {
+    leftWheelsMaster.restoreFactoryDefaults();
+    leftWheelsSlave.restoreFactoryDefaults();
+    rightWheelsMaster.restoreFactoryDefaults();
+    rightWheelsSlave.restoreFactoryDefaults();
+
+    leftWheelsMaster.setInverted(true);
+
+    leftWheelsSlave.setIdleMode(IdleMode.kCoast);
+    leftWheelsMaster.setIdleMode(IdleMode.kBrake);
+    rightWheelsSlave.setIdleMode(IdleMode.kCoast);
+    rightWheelsMaster.setIdleMode(IdleMode.kBrake);
+
+    leftWheelsSlave.follow(leftWheelsMaster);
+    rightWheelsSlave.follow(rightWheelsMaster);
+
+    leftWheelsMaster.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    leftWheelsSlave.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    rightWheelsMaster.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    rightWheelsSlave.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+
+    leftWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    leftWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    rightWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    rightWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+  } 
+
+  public void motorSetUpAuto() {
     leftWheelsMaster.restoreFactoryDefaults();
     leftWheelsSlave.restoreFactoryDefaults();
     rightWheelsMaster.restoreFactoryDefaults();

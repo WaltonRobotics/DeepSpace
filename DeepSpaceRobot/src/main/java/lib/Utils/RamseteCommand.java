@@ -210,7 +210,6 @@ public class RamseteCommand extends Command {
     LiveDashboard.INSTANCE.setPathHeading(Units.metersToFeet(m_trajectory.sample(curTime).poseMeters.getRotation().getDegrees()));
     LiveDashboard.INSTANCE.setPathX(Units.metersToFeet(m_trajectory.sample(curTime).poseMeters.getTranslation().getX()));
     LiveDashboard.INSTANCE.setPathY(Units.metersToFeet(m_trajectory.sample(curTime).poseMeters.getTranslation().getY()));
-
   }
 
   public void end(boolean interrupted) {

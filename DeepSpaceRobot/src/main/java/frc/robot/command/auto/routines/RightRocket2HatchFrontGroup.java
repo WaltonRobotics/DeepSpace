@@ -9,8 +9,6 @@ import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 import lib.Utils.RamseteCommand;
 import lib.trajectory.Trajectory;
 
-import java.nio.file.Path;
-
 import static frc.robot.Config.SmartMotionConstants.*;
 import static frc.robot.Robot.drivetrain;
 import static frc.robot.RobotMap.encoderLeft;
@@ -59,7 +57,7 @@ public class RightRocket2HatchFrontGroup extends CommandGroup {
                 encoderRight::getRate,
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
-        addSequential(new VisionAlign(2));
+        addSequential(new VisionAlign(1.5));
         addSequential(new SetHatchIntake(true));
         addSequential(new RamseteCommand(toFrontLv2FromLoading,
                 drivetrain::updateRobotPose,
