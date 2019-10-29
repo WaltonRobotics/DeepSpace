@@ -98,6 +98,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config.Camera;
 import frc.robot.command.teleop.util.NormalSpeed;
+import frc.robot.command.teleop.util.SCurve;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
 import frc.robot.command.teleop.util.Transform;
@@ -157,6 +158,7 @@ public class Robot extends TimedRobot {
     transformSendableChooser.setDefaultOption("Normal", new NormalSpeed());
     transformSendableChooser.addOption("Sigmoid", new Sigmoid());
     transformSendableChooser.addOption("Sqrt", new Sqrt());
+    transformSendableChooser.addOption("S Curve", new SCurve());
 
     SmartDashboard.putData(DRIVETEAM_TRANSFORM_SELECT, transformSendableChooser);
 
