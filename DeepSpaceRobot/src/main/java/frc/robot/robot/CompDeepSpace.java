@@ -273,7 +273,7 @@ public class CompDeepSpace extends LimitedRobot {
       @Override
       public FeedbackDevice getFeedbackSensor() {
         return FeedbackDevice.Analog;
-        }
+      }
 
       @Override
       public boolean getSensorPhase() {
@@ -679,9 +679,9 @@ public class CompDeepSpace extends LimitedRobot {
 //    this.addTarget(HatchPosition.DEFENSE, new Target(-372, -371));
 //    this.addTarget(HatchPosition.HATCH_START, new Target(-372, -233));
 //    this.addTarget(HatchPosition.CARGO_START, new Target(-143, -113));
-    this.addTarget(HatchPosition.DEPLOY, new Target(-606, -143));
+    this.addTarget(HatchPosition.DEPLOY, new Target(-609, -143));
     this.addTarget(HatchPosition.SAFE, new Target(-382, 37));
-    this.addTarget(HatchPosition.DEFENSE, new Target(-343, 37));
+    this.addTarget(HatchPosition.DEFENSE, new Target(-310, 37));
     this.addTarget(HatchPosition.HATCH_START, new Target(-343, 175));
     this.addTarget(HatchPosition.CARGO_START, new Target(-343, 295));
 
@@ -693,7 +693,7 @@ public class CompDeepSpace extends LimitedRobot {
     this.addTarget(CargoPosition.HAB, new Target(300, 520));
     this.addTarget(CargoPosition.CLIMB, new Target(204, 520));
 
-    this.addTarget(ElevatorLevel.CARGO_BASE, new Target(3365));
+    this.addTarget(ElevatorLevel.CARGO_BASE, new Target(2061));
 
     this.addTarget(ElevatorLevel.CARGO_ROCKET, new Target(7584));
     this.addTarget(ElevatorLevel.CARGO_HAB, new Target(15195));
