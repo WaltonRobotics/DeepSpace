@@ -104,7 +104,7 @@ public class Drive extends Command {
       }
 
       if (!isAlligning || !limelightHasValidTarget) {
-        drivetrain.setSpeedsSquared(leftYJoystick, rightYJoystick); //TODO: CHECK IF NOAH LIKES
+        drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
       }
 
       if (OI.shiftUp.get()) {

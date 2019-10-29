@@ -129,14 +129,6 @@ public class Drivetrain extends AbstractDrivetrain {
     leftWheelsMaster.set(leftPower);
   }
 
-  public void setSpeedsSquared(double leftPower, double rightPower) {
-   double leftSpeed = Math.copySign(leftPower * leftPower, leftPower);
-   double rightSpeed = Math.copySign(rightPower * rightPower, rightPower);
-   
-   leftWheelsMaster.set(leftSpeed);
-   rightWheelsMaster.set(rightSpeed);
-  }
-
   public void setVoltages(double leftVoltage, double rightVoltage) {
     leftWheelsMaster.getPIDController().setReference(leftVoltage, ControlType.kVoltage);
     rightWheelsMaster.getPIDController().setReference(rightVoltage, ControlType.kVoltage);
