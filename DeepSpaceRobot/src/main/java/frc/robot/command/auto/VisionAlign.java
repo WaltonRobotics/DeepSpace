@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Config;
+import frc.robot.util.LEDController;
 
 import static frc.robot.Robot.drivetrain;
 
@@ -37,6 +38,7 @@ public class VisionAlign extends Command {
 
         updateLimelightTracking();
         timer.start();
+        LEDController.setLEDAutoAlignMode();
     }
 
     @Override
@@ -54,6 +56,7 @@ public class VisionAlign extends Command {
 
     @Override
     protected void end() {
+        LEDController.setLEDNoTargetFoundMode();
     }
 
     public void updateLimelightTracking() {

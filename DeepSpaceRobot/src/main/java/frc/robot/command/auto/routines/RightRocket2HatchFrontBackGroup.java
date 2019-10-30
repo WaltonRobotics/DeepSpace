@@ -56,7 +56,7 @@ public class RightRocket2HatchFrontBackGroup extends CommandGroup {
                 encoderRight::getRate,
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
-        addSequential(new VisionAlign(0.9));
+        addSequential(new VisionAlign(1));
         addSequential(new SetHatchIntake(true));
         addSequential(new RamseteCommand(generateToBackLv1FromLoadingStation,
                 drivetrain::updateRobotPose,

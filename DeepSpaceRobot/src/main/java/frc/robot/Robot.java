@@ -389,7 +389,7 @@ public class Robot extends TimedRobot {
     drivetrain.shiftUp();
     drivetrain.reset();
     drivetrain.motorSetUpAuto();
-    new RightRocket2HatchFrontGroup().start();
+    new RightRocket2HatchFrontBackGroup().start();
   }
   /**
    * This function is called periodically during autonomous.
