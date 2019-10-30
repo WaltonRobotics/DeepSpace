@@ -173,7 +173,6 @@ public class Config {
     public static final double TRACK_WIDTH = 0.7;
     public static final double K_BETA = 2.0;
     public static final double K_ZETA = 0.7;
-    public static final Pose2d TOLERANCE_POSE = new Pose2d(0.05, 0.05, Rotation2d.fromDegrees(30));
 
   }
 
