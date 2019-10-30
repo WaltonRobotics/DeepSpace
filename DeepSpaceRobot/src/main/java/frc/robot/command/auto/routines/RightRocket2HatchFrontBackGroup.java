@@ -16,13 +16,13 @@ public class RightRocket2HatchFrontBackGroup extends CommandGroup {
 
     public RightRocket2HatchFrontBackGroup() {
 
-        Trajectory toBackLv1 = RightRocketBackAndFrontLv1.generateToBackLv1();
-        Trajectory backUpLv1 = RightRocketBackAndFrontLv1.generateBackUpFromBackLv1();
-        Trajectory toLoadingStationfromLv1 = RightRocketBackAndFrontLv1.generateToLoadingStationFromBackLv1();
-        Trajectory toLv1FromLoading = RightRocketBackAndFrontLv1.generateToFrontLv1FromLoading();
+        Trajectory toFrontLv1 = RightRocketBackAndFrontLv1.generateToFrontLv1();
+        Trajectory backUpLv1 = RightRocketBackAndFrontLv1.generateBackUpFrontLv1();
+        Trajectory toLoadingStationfromLv1 = RightRocketBackAndFrontLv1.generateToLoadingStation();
+        Trajectory generateToBackLv1FromLoadingStation = RightRocketBackAndFrontLv1.generateToBackLv1FromLoadingStation();
 
-        addSequential(new RamseteCommand(toBackLv1,
-                drivetrain::updateRobotPoseStartBackwards,
+        addSequential(new RamseteCommand(toFrontLv1,
+                drivetrain::updateRobotPose,
                 drivetrain.ramseteController,
                 KS,
                 KV,
@@ -32,10 +32,10 @@ public class RightRocket2HatchFrontBackGroup extends CommandGroup {
                 encoderRight::getRate,
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
-        addSequential(new VisionAlign(1.2));
+        addSequential(new VisionAlign(1));
         addSequential(new SetHatchIntake(false));
         addSequential(new RamseteCommand(backUpLv1,
-                drivetrain::updateRobotPoseStartBackwards,
+                drivetrain::updateRobotPose,
                 drivetrain.ramseteController,
                 KS,
                 KV,
@@ -46,7 +46,7 @@ public class RightRocket2HatchFrontBackGroup extends CommandGroup {
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
         addSequential(new RamseteCommand(toLoadingStationfromLv1,
-                drivetrain::updateRobotPoseStartBackwards,
+                drivetrain::updateRobotPose,
                 drivetrain.ramseteController,
                 KS,
                 KV,
@@ -56,10 +56,10 @@ public class RightRocket2HatchFrontBackGroup extends CommandGroup {
                 encoderRight::getRate,
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
-        addSequential(new VisionAlign(1.2));
+        addSequential(new VisionAlign(0.9));
         addSequential(new SetHatchIntake(true));
-        addSequential(new RamseteCommand(toLv1FromLoading,
-                drivetrain::updateRobotPoseStartBackwards,
+        addSequential(new RamseteCommand(generateToBackLv1FromLoadingStation,
+                drivetrain::updateRobotPose,
                 drivetrain.ramseteController,
                 KS,
                 KV,
@@ -69,7 +69,7 @@ public class RightRocket2HatchFrontBackGroup extends CommandGroup {
                 encoderRight::getRate,
                 drivetrain.m_leftPIDController,
                 drivetrain.m_rightPIDController));
-        addSequential(new VisionAlign(1.2));
+        addSequential(new VisionAlign(1.1));
         addSequential(new SetHatchIntake(false));
     }
 }
