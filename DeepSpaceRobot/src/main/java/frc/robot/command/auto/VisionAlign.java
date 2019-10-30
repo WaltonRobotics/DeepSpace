@@ -31,10 +31,6 @@ public class VisionAlign extends Command {
 
     @Override
     protected void initialize() {
-
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline")
-                .setDouble(Config.Camera.AUTO_ALIGN_PIPELINE);
-
         limelightDriveCommand = 0;
         limelightSteerCommand = 0;
         isDone = false;
@@ -58,7 +54,6 @@ public class VisionAlign extends Command {
 
     @Override
     protected void end() {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(Config.Camera.DRIVER_PIPELINE);
     }
 
     public void updateLimelightTracking() {

@@ -380,6 +380,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(Config.Camera.AUTO_ALIGN_PIPELINE);
     godSubsystem.setEnabled(true);
     godSubsystem.setAutonomousEnabled(SmartDashboard.getBoolean(USE_AUTON, false));
     drivetrain.cancelControllerMotion();
@@ -387,7 +388,7 @@ public class Robot extends TimedRobot {
     drivetrain.shiftUp();
     drivetrain.reset();
     drivetrain.motorSetUpAuto();
-    new RightRocket2HatchFrontGroup().start();
+    new RightCargoRocket2Hatch().start();
   }
   /**
    * This function is called periodically during autonomous.
