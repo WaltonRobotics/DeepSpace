@@ -1,17 +1,14 @@
 package frc.robot.robotState;
 
 import static frc.robot.Config.Cargo.CLIMB_MAX;
+import static frc.robot.RobotMap.climberSolenoid;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.state.State;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Cargo;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ClawControlMode;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Climber;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Elevator;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorControlMode;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem.Hatch;
-import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchControlMode;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
+import frc.robot.subsystem.ElevatorCargoHatchSubsystem.*;
 
 /**
  * @author Marius Juston
@@ -26,7 +23,7 @@ public class ClimbHandling implements State {
   @Override
   public void initialize() {
     hatch.setControlMode(HatchControlMode.DISABLED);
-
+    cargo.setControlMode(ClawControlMode.DISABLED);
   }
 
   @Override
@@ -38,58 +35,31 @@ public class ClimbHandling implements State {
     if (Robot.godSubsystem.cargoModeRising()) {
       return new CargoHandlingTransition();
     }
+
     if (Robot.godSubsystem.hatchModeRising()) {
       return new HatchHandlingTransition();
     }
+
     if (Robot.godSubsystem.defenceModeRising()) {
       return new DefenseTransition();
     }
 
-    if (Robot.godSubsystem.autoClimbRising()) {
-      return new PrepareAutoClimb();
-    }
+//    if (Robot.godSubsystem.autoClimbRising()) {
+//      return new PrepareAutoClimb();
+//    }
 
-    boolean elevatorManual = Math.abs(elevator.getElevatorJoystick()) > 0.1;
-    boolean cargoManual = Math.abs(cargo.getCargoJoystick()) > 0.1;
+     boolean elevatorManual = Math.abs(elevator.getElevatorJoystick()) > 0.1;
 
-    if (elevatorManual || cargoManual) {
-      if (elevatorManual) {
-        elevator.setControlMode(ElevatorControlMode.MANUAL);
-        elevator.setElevatorPower(elevator.getElevatorJoystick());
-      } else {
-        elevator.setControlMode(ElevatorControlMode.AUTO);
-      }
+     if (elevatorManual) {
+       climber.setClimberControlMode(ClimberControlMode.MANUAL);
+       climber.setClimberPower(elevator.getElevatorJoystick());
+     } else {
+       climber.setClimberControlMode(ClimberControlMode.DISABLED);
+     }
 
-      if (cargoManual) {
-        cargo.setControlMode(ClawControlMode.MANUAL);
-
-        double cargoJoystick = cargo.getCargoJoystick();
-
-        cargoJoystick = Math.signum(cargoJoystick) * Math.min(Math.abs(cargoJoystick), CLIMB_MAX);
-        cargo.setRotationPower(cargoJoystick);
-      } else {
-        cargo.setControlMode(ClawControlMode.AUTO);
-      }
-    } else {
-      elevator.setControlMode(ElevatorControlMode.AUTO);
-      cargo.setControlMode(ClawControlMode.AUTO);
-    }
-
-    if (climber.isClimberDeployPressed()) {
-      climber.setClimberPower(-0.5);
-    } else if (climber.isClimberDownPressed()) {
-      climber.setClimberPower(1.0);
-    } else {
-      climber.setClimberPower(0.0);
-    }
-
-    if (cargo.outSlowButtonPressed()) {
-      cargo.outtakeCargoSlow(0);
-    } else if (cargo.outFastButtonPressed()) {
-      cargo.outtakeCargoFast(0);
-    } else if (cargo.inFastButtonPressed()) {
-      cargo.intakeCargoFast(0);
-    }
+     if (climber.isClimberDeployPressed() == DoubleSolenoid.Value.kForward) {
+       climberSolenoid.set(DoubleSolenoid.Value.kForward);
+     }
 
     return this;
   }

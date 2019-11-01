@@ -35,14 +35,6 @@ public class Defense implements State {
       return new SetCompStartCargo();
     }
 
-    if (climber.isClimberDeployPressed()) {
-      climber.setClimberPower(-0.5);
-    } else if (climber.isClimberDownPressed()) {
-      climber.setClimberPower(1.0);
-    } else {
-      climber.setClimberPower(0.0);
-    }
-
     return this;
   }
 

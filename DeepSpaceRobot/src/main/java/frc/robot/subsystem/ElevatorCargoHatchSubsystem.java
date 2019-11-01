@@ -836,7 +836,6 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     public long timeout;
     private ClimberControlMode climberControlMode;
     private double climberPower;
-    private Value sendIt;
 
     public ClimberControlMode getClimberControlMode() {
       return climberControlMode;
@@ -856,11 +855,9 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
     public Value isClimberDeployPressed() {
       if(climberDeploy1.get() && climberDeploy2.get()) {
-        sendIt = kForward;
         return kForward;
       }
       else
-        sendIt = kOff;
         return kOff;
     }
 
@@ -886,11 +883,10 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 //          }
           break;
         case MANUAL:
-          climberSolenoid.set(isClimberDeployPressed());
+          climberElevatorMotor.set(climberPower);
           break;
         case DISABLED:
           climberElevatorMotor.set(0);
-//          climberMotor.disable();
           break;
       }
     }

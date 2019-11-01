@@ -19,15 +19,15 @@ public class ClimbHandlingTransition implements State {
 
   @Override
   public void initialize() {
-    Robot.godSubsystem.setCurrentActiveState(ActiveState.CARGO_HANDLING);
+    Robot.godSubsystem.setCurrentActiveState(ActiveState.DEFENSE);
 
     Robot.godSubsystem.getHatch().setCurrentTarget(HatchPosition.SAFE);
-    Robot.godSubsystem.getCargo().setCurrentTarget(CargoPosition.CLIMB);
-    Robot.godSubsystem.getCargo().setLimits(CargoPosition.CLIMB);
+    Robot.godSubsystem.getCargo().setCurrentTarget(CargoPosition.SAFE);
+    Robot.godSubsystem.getCargo().setLimits(CargoPosition.SAFE);
 
-    Robot.godSubsystem.getElevator().setControlMode(ElevatorControlMode.AUTO);
-    Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.CLIMB);
-    Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.CARGO_BASE);
+    Robot.godSubsystem.getElevator().setControlMode(ElevatorControlMode.DISABLED);
+    Robot.godSubsystem.getElevator().setElevatorLevel(ElevatorLevel.HATCH_BASE);
+    Robot.godSubsystem.getElevator().setLimits(ElevatorLevel.HATCH_BASE);
 
     RobotMap.clawRotationMotor.configPeakOutputForward(CLIMB_MAX);
     RobotMap.clawRotationMotor.configPeakOutputReverse(-CLIMB_MAX);
@@ -47,8 +47,8 @@ public class ClimbHandlingTransition implements State {
     int elevatorHeight = Robot.godSubsystem.getElevator().getElevatorHeight();
     int cargoAngle = Robot.godSubsystem.getCargo().getAngle();
 
-    return (Robot.currentRobot.getTarget(CargoPosition.CLIMB).isClose(cargoAngle, 50) && Robot.currentRobot
-        .getTarget(ElevatorLevel.CLIMB).isClose(elevatorHeight, 250)) ? new ClimbHandling() : this;
+    return (Robot.currentRobot.getTarget(CargoPosition.SAFE).isClose(cargoAngle, 50) && Robot.currentRobot
+        .getTarget(ElevatorLevel.HATCH_BASE).isClose(elevatorHeight, 250)) ? new ClimbHandling() : this;
   }
 
   @Override
