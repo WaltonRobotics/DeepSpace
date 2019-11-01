@@ -77,12 +77,13 @@ public final class OI {
   public static final JoystickButton hatchStart = new JoystickButton(rightJoystick, 8);
   public static final JoystickButton cargoStart = new JoystickButton(rightJoystick, 9);
 
-  public static final JoystickButton bringUp = new JoystickButton(rightJoystick, 4);
-  public static final JoystickButton bringDown = new JoystickButton(rightJoystick, 5);
+  public static final JoystickButton climberDeploy1 = new JoystickButton(rightJoystick, 2);
+  public static final JoystickButton climberDeploy2 = new JoystickButton(rightJoystick, 5);
 //  public static final JoystickButton defenseModeButton = new JoystickButton(gamepad, gamepad.getPO);
 
   public static final JoystickButton masterOverride = new JoystickButton(leftJoystick, 7);
   public static final JoystickButton cargoTurbo = new JoystickButton(gamepad, LEFT_STICK_BUTTON.index());
+
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.

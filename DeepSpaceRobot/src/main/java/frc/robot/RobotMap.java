@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
-import frc.robot.util.VictorPair;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides
@@ -56,6 +55,8 @@ public final class RobotMap {
   public static final CANSparkMax leftWheelsMaster = new CANSparkMax(3, CANSparkMaxLowLevel.MotorType.kBrushless);
   public static final CANSparkMax leftWheelsSlave = new CANSparkMax(4, CANSparkMaxLowLevel.MotorType.kBrushless);
 
+  public static final Talon vacuumMotor = new Talon(1); //TODO: FIX
+
   public static final SpeedController leftIntakeMotor = new Talon(currentRobot.getLeftIntakeMotorConfig().getChannel());
   public static final SpeedController rightIntakeMotor = new Talon(
       currentRobot.getRightIntakeMotorConfig().getChannel());
@@ -67,6 +68,8 @@ public final class RobotMap {
   public static final Solenoid shifter = new Solenoid(SHIFTER_CHANNEL);
   public static final DoubleSolenoid hatchIntake = new DoubleSolenoid(HATCH_INTAKE_CHANNEL, HATCH_INTAKE_CHANNEL + 1);
   public static final DigitalInput elevatorLowerLimit = new DigitalInput(ELEVATOR_LOWER_LIMIT_CHANNEL);
+
+  public static final DoubleSolenoid climberSolenoid = new DoubleSolenoid(1, 2); //TODO: FIX
 
   public static final DigitalOutput LED1 = new DigitalOutput(LED_CHANNEL5);
   public static final DigitalOutput LED2 = new DigitalOutput(LED_CHANNEL6);
@@ -86,13 +89,12 @@ public final class RobotMap {
 //      new DigitalInput(1)
 //  );
 
-  public static final SpeedController climberMotor = "Comp DeepSpace".equals(currentRobot.getRobotName()) ? new Victor(
-      currentRobot.getClimberMotorConfig().getChannel()) : new Talon(currentRobot.getClimberMotorConfig().getChannel());
+  public static final Talon climberElevatorMotor = new Talon(1); //TODO: FIX
 
   static {
     leftIntakeMotor.setInverted(currentRobot.getLeftIntakeMotorConfig().isInverted());
     rightIntakeMotor.setInverted(currentRobot.getRightIntakeMotorConfig().isInverted());
-    climberMotor.setInverted(currentRobot.getClimberMotorConfig().isInverted());
+    climberElevatorMotor.setInverted(false); //TODO: FIX
     // rightWheelsMaster.setInverted(true);
     // rightWheelsSlave.setInverted(true);
   }

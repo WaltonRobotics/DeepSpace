@@ -1,8 +1,7 @@
 package frc.robot.subsystem;
 
 
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 import static frc.robot.Config.Elevator.ZEROING;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_ANGLE;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_CARGO_MODE;
@@ -27,30 +26,10 @@ import static frc.robot.Config.SmartDashboardKeys.MOTORS_HATCH_TARGET;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_INTAKE_OPEN;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_LOWER_LIMIT;
 import static frc.robot.Config.SmartDashboardKeys.MOTORS_STATE;
-import static frc.robot.OI.bringDown;
-import static frc.robot.OI.bringUp;
-import static frc.robot.OI.cargoModeButton;
-import static frc.robot.OI.cargoStart;
-import static frc.robot.OI.elevatorLevel1Button;
-import static frc.robot.OI.elevatorLevel2Button;
-import static frc.robot.OI.elevatorLevel3Button;
-import static frc.robot.OI.elevatorZeroButton;
-import static frc.robot.OI.gamepad;
-import static frc.robot.OI.hatchIntakeButton;
-import static frc.robot.OI.hatchModeButton;
-import static frc.robot.OI.hatchStart;
-import static frc.robot.OI.intakeCargoButton;
-import static frc.robot.OI.leftJoystick;
-import static frc.robot.OI.outtakeCargoButtonFast;
-import static frc.robot.OI.outtakeCargoButtonSlow;
+import static frc.robot.OI.*;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.Robot.drivetrain;
-import static frc.robot.RobotMap.clawRotationMotor;
-import static frc.robot.RobotMap.climberMotor;
-import static frc.robot.RobotMap.elevatorLowerLimit;
-import static frc.robot.RobotMap.elevatorMotor;
-import static frc.robot.RobotMap.hatchIntake;
-import static frc.robot.RobotMap.hatchRotationMotor;
+import static frc.robot.RobotMap.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.Faults;
@@ -852,11 +831,12 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
 
   public class Climber implements SubSubsystem {
 
-    private final EnhancedBoolean climberUp = new EnhancedBoolean();
-    private final EnhancedBoolean climberDown = new EnhancedBoolean();
+    private final EnhancedBoolean climberDeploy1 = new EnhancedBoolean();
+    private final EnhancedBoolean climberDeploy2 = new EnhancedBoolean();
     public long timeout;
     private ClimberControlMode climberControlMode;
     private double climberPower;
+    private Value sendIt;
 
     public ClimberControlMode getClimberControlMode() {
       return climberControlMode;
@@ -874,44 +854,42 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
       this.climberPower = climberPower;
     }
 
-    public boolean isClimberUpRising() {
-      return climberUp.isRisingEdge();
-    }
-
-    public boolean isClimberUpPressed() {
-      return climberUp.get();
+    public Value isClimberDeployPressed() {
+      if(climberDeploy1.get() && climberDeploy2.get()) {
+        sendIt = kForward;
+        return kForward;
+      }
+      else
+        sendIt = kOff;
+        return kOff;
     }
 
     public boolean isClimberDownPressed() {
-      return climberDown.get();
-    }
-
-    public boolean isClimberDownRising() {
-      return climberDown.isRisingEdge();
+      return climberDeploy2.get();
     }
 
     @Override
     public void collectData() {
-      climberUp.set(bringUp.get());
-      climberDown.set(bringDown.get());
+      climberDeploy1.set(OI.climberDeploy1.get());
+      climberDeploy2.set(OI.climberDeploy2.get());
     }
 
     @Override
     public void outputData() {
       switch (climberControlMode) {
         case TIMED:
-          if (currentTime <= timeout) {
-            climberMotor.set(climberPower);
-          } else {
-            climberControlMode = ClimberControlMode.MANUAL;
-            climberPower = 0;
-          }
+//          if (currentTime <= timeout) {
+//            climberElevatorMotor.set(climberPower);
+//          } else {
+//            climberControlMode = ClimberControlMode.MANUAL;
+//            climberPower = 0;
+//          }
           break;
         case MANUAL:
-          climberMotor.set(climberPower);
+          climberSolenoid.set(isClimberDeployPressed());
           break;
         case DISABLED:
-          climberMotor.set(0);
+          climberElevatorMotor.set(0);
 //          climberMotor.disable();
           break;
       }
@@ -935,8 +913,8 @@ public class ElevatorCargoHatchSubsystem extends Subsystem {
     @Override
     public String toString() {
       return "Climber{" +
-          "climberUp=" + climberUp +
-          ", climberDown=" + climberDown +
+          "climberUp=" + climberDeploy1 +
+          ", climberDown=" + climberDeploy2 +
           ", timeout=" + timeout +
           ", climberControlMode=" + climberControlMode +
           ", climberPower=" + climberPower +

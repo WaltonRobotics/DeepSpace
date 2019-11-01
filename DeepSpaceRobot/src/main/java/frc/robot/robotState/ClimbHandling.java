@@ -75,7 +75,7 @@ public class ClimbHandling implements State {
       cargo.setControlMode(ClawControlMode.AUTO);
     }
 
-    if (climber.isClimberUpPressed()) {
+    if (climber.isClimberDeployPressed()) {
       climber.setClimberPower(-0.5);
     } else if (climber.isClimberDownPressed()) {
       climber.setClimberPower(1.0);

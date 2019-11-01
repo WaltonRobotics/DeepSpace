@@ -107,6 +107,7 @@ import frc.robot.robot.CompDeepSpace;
 import frc.robot.robot.CompPowerUp;
 import frc.robot.robot.CompSteamWorks;
 import frc.robot.robot.PracticeDeepSpace;
+import frc.robot.subsystem.SuctionClimb;
 import frc.robot.subsystem.Drivetrain;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
@@ -125,6 +126,7 @@ public class Robot extends TimedRobot {
   public static final LimitedRobot currentRobot;
   public static final Drivetrain drivetrain;
   public static final ElevatorCargoHatchSubsystem godSubsystem;
+  public static final SuctionClimb CLIMBER_TEST;
   public static final SendableChooser<Transform> transformSendableChooser = new SendableChooser<>();
   private static final RobotBuilder<LimitedRobot> robotBuilder;
 
@@ -137,6 +139,7 @@ public class Robot extends TimedRobot {
     System.out.println(currentRobot);
     drivetrain = new Drivetrain();
     godSubsystem = new ElevatorCargoHatchSubsystem();
+    CLIMBER_TEST = new SuctionClimb();
   }
 
   private boolean hasSetPipeline = false;

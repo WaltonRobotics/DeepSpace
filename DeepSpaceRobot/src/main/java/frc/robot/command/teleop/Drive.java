@@ -9,8 +9,7 @@ package frc.robot.command.teleop;
 
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_JOYSTICK_Y;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_JOYSTICK_Y;
-import static frc.robot.Robot.currentRobot;
-import static frc.robot.Robot.drivetrain;
+import static frc.robot.Robot.*;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
@@ -108,7 +107,6 @@ public class Drive extends Command {
         }
       } else if (rightTriggerPress.isFallingEdge()) {
         isAlligning = false;
-
       }
 
       if (!isAlligning || !limelightHasValidTarget) {
@@ -119,6 +117,10 @@ public class Drive extends Command {
         drivetrain.shiftUp();
       } else if (OI.shiftDown.get()) {
         drivetrain.shiftDown();
+      }
+
+      if(OI.engageClimber1.get() && OI.engageClimber2.get()) {
+        CLIMBER_TEST.engageKickStand();
       }
     }
   }
