@@ -131,7 +131,7 @@ public class Drive extends Command {
   public void updateLimelightTracking() {
     // These numbers must be tuned for your Robot!  Be careful!
     final double STEER_K = SmartDashboard
-        .getNumber("Steer K", 0.1); // how hard to turn toward the target
+        .getNumber("Steer K", 0.065); // how hard to turn toward the target
     final double DRIVE_K = SmartDashboard
         .getNumber("Drive K", 0.26); // how hard to drive fwd toward the target
 

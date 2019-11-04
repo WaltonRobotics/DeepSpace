@@ -53,6 +53,11 @@ public class Drivetrain extends AbstractDrivetrain {
     rightWheelsSlave.setIdleMode(IdleMode.kCoast);
     rightWheelsMaster.setIdleMode(IdleMode.kBrake);
 
+    leftWheelsMaster.burnFlash();
+    leftWheelsSlave.burnFlash();
+    rightWheelsMaster.burnFlash();
+    rightWheelsSlave.burnFlash();
+
   }
 
   @Override
