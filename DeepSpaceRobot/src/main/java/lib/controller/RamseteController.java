@@ -1,7 +1,7 @@
-package lib.Controller;
+package lib.controller;
 
-import lib.Geometry.Pose2d;
-import lib.Kinematics.ChassisSpeeds;
+import lib.geometry.Pose2d;
+import lib.kinematics.ChassisSpeeds;
 import lib.trajectory.Trajectory;
 
 /**
@@ -28,9 +28,10 @@ import lib.trajectory.Trajectory;
  * acronym for the title of the book it came from in Italian ("Robotica
  * Articolata e Mobile per i SErvizi e le TEcnologie").
  *
- * <p>See <a href="https://file.tavsys.net/control/state-space-guide.pdf">
- * Controls Engineering in the FIRST Robotics Competition</a>
- * section on Ramsete unicycle controller for a derivation and analysis.
+ * <p>See
+ * <a href="https://file.tavsys.net/control/controls-engineering-in-frc.pdf">
+ * Controls Engineering in the FIRST Robotics Competition</a> section on Ramsete
+ * unicycle controller for a derivation and analysis.
  */
 public class RamseteController {
   @SuppressWarnings("MemberName")
@@ -53,6 +54,15 @@ public class RamseteController {
   public RamseteController(double b, double zeta) {
     m_b = b;
     m_zeta = zeta;
+  }
+
+  /**
+   * Construct a Ramsete unicycle controller. The default arguments for
+   * b and zeta of 2.0 and 0.7 have been well-tested to produce desireable
+   * results.
+   */
+  public RamseteController() {
+    this(2.0, 0.7);
   }
 
   /**
@@ -84,24 +94,24 @@ public class RamseteController {
    * <p>The reference pose, linear velocity, and angular velocity should come
    * from a drivetrain trajectory.
    *
-   * @param currentPose              The current pose.
-   * @param poseRef                  The desired pose.
-   * @param linearVelocityRefMeters  The desired linear velocity in meters.
-   * @param angularVelocityRefMeters The desired angular velocity in meters.
+   * @param currentPose                        The current pose.
+   * @param poseRef                            The desired pose.
+   * @param linearVelocityRefMeters            The desired linear velocity in meters.
+   * @param angularVelocityRefRadiansPerSecond The desired angular velocity in meters.
    */
   @SuppressWarnings("LocalVariableName")
   public ChassisSpeeds calculate(Pose2d currentPose,
                                  Pose2d poseRef,
                                  double linearVelocityRefMeters,
-                                 double angularVelocityRefMeters) {
+                                 double angularVelocityRefRadiansPerSecond) {
     m_poseError = poseRef.relativeTo(currentPose);
 
     // Aliases for equation readability
-    double eX = m_poseError.getTranslation().getX();
-    double eY = m_poseError.getTranslation().getY();
-    double eTheta = m_poseError.getRotation().getRadians();
-    double vRef = linearVelocityRefMeters;
-    double omegaRef = angularVelocityRefMeters;
+    final double eX = m_poseError.getTranslation().getX();
+    final double eY = m_poseError.getTranslation().getY();
+    final double eTheta = m_poseError.getRotation().getRadians();
+    final double vRef = linearVelocityRefMeters;
+    final double omegaRef = angularVelocityRefRadiansPerSecond;
 
     double k = 2.0 * m_zeta * Math.sqrt(Math.pow(omegaRef, 2) + m_b * Math.pow(vRef, 2));
 
@@ -122,20 +132,8 @@ public class RamseteController {
    */
   @SuppressWarnings("LocalVariableName")
   public ChassisSpeeds calculate(Pose2d currentPose, Trajectory.State desiredState) {
-    m_poseError = desiredState.poseMeters.relativeTo(currentPose);
-
-    // Aliases for equation readability
-    double eX = m_poseError.getTranslation().getX();
-    double eY = m_poseError.getTranslation().getY();
-    double eTheta = m_poseError.getRotation().getRadians();
-    double vRef = desiredState.velocityMetersPerSecond;
-    double omegaRef = desiredState.velocityMetersPerSecond * desiredState.curvatureRadPerMeter;
-
-    double k = 2.0 * m_zeta * Math.sqrt(Math.pow(omegaRef, 2) + m_b * Math.pow(vRef, 2));
-
-    return new ChassisSpeeds(vRef * m_poseError.getRotation().getCos() + k * eX,
-        0.0,
-        omegaRef + k * eTheta + m_b * vRef * sinc(eTheta) * eY);
+    return calculate(currentPose, desiredState.poseMeters, desiredState.velocityMetersPerSecond,
+        desiredState.velocityMetersPerSecond * desiredState.curvatureRadPerMeter);
   }
 
   /**

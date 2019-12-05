@@ -1,7 +1,11 @@
 package lib.trajectory;
 
 import java.util.List;
-import lib.Geometry.Pose2d;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import lib.geometry.Pose2d;
+
 
 /**
  * Represents a time-parameterized trajectory. The trajectory contains of
@@ -211,5 +215,42 @@ public class Trajectory {
           lerp(curvatureRadPerMeter, endValue.curvatureRadPerMeter, interpolationFrac)
       );
     }
+
+    @Override
+    public String toString() {
+      return String.format(
+          "State(Sec: %.2f, Vel m/s: %.2f, Accel m/s/s: %.2f, Pose: %s, Curvature: %.2f)",
+          timeSeconds, velocityMetersPerSecond, accelerationMetersPerSecondSq,
+          poseMeters, curvatureRadPerMeter);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj) {
+        return true;
+      }
+      if (!(obj instanceof State)) {
+        return false;
+      }
+      State state = (State) obj;
+      return Double.compare(state.timeSeconds, timeSeconds) == 0
+          && Double.compare(state.velocityMetersPerSecond, velocityMetersPerSecond) == 0
+          && Double.compare(state.accelerationMetersPerSecondSq,
+          accelerationMetersPerSecondSq) == 0
+          && Double.compare(state.curvatureRadPerMeter, curvatureRadPerMeter) == 0
+          && Objects.equals(poseMeters, state.poseMeters);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(timeSeconds, velocityMetersPerSecond,
+          accelerationMetersPerSecondSq, poseMeters, curvatureRadPerMeter);
+    }
+  }
+
+  @Override
+  public String toString() {
+    String stateList = m_states.stream().map(State::toString).collect(Collectors.joining(", \n"));
+    return String.format("Trajectory - Seconds: %.2f, States:\n%s", m_totalTimeSeconds, stateList);
   }
 }

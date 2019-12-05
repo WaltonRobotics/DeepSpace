@@ -1,4 +1,4 @@
-package lib.Utils;
+package lib.utils;
 
 public final class MathUtils {
   private MathUtils() {

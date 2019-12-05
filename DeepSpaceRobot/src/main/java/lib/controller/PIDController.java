@@ -1,4 +1,4 @@
-package lib.Utils;
+package lib.controller;
 
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
@@ -6,6 +6,8 @@ package lib.Utils;
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
+
+import lib.utils.MathUtils;
 
 /**
  * Implements a PID control loop.

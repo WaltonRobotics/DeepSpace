@@ -1,4 +1,4 @@
-package lib.Utils;
+package lib.utils;
 
 
 import java.util.function.BiConsumer;
@@ -7,16 +7,17 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import lib.Controller.RamseteController;
-import lib.Geometry.Pose2d;
-import lib.Kinematics.ChassisSpeeds;
-import lib.Kinematics.DifferentialDriveKinematics;
-import lib.Kinematics.DifferentialDriveWheelSpeeds;
+import lib.controller.PIDController;
+import lib.controller.RamseteController;
+import lib.geometry.Pose2d;
+import lib.kinematics.ChassisSpeeds;
+import lib.kinematics.DifferentialDriveKinematics;
+import lib.kinematics.DifferentialDriveWheelSpeeds;
 import lib.trajectory.Trajectory;
 import org.ghrobotics.lib.debug.LiveDashboard;
 
 import static frc.robot.Robot.drivetrain;
-import static lib.Utils.ErrorMessages.requireNonNullParam;
+import static lib.utils.ErrorMessages.requireNonNullParam;
 
 /**
  * A command that uses a RAMSETE controller ({@link RamseteController}) to follow a trajectory

@@ -1,4 +1,4 @@
-package lib.Spline;
+package lib.spline;
 
 import java.util.ArrayList;
 import java.util.List;

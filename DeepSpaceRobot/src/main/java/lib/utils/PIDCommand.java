@@ -1,11 +1,12 @@
-package lib.Utils;
+package lib.utils;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import lib.controller.PIDController;
 
 import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
 
-import static lib.Utils.ErrorMessages.requireNonNullParam;
+import static lib.utils.ErrorMessages.requireNonNullParam;
 
 /**
  * A command that controls an output with a {@link PIDController}.  Runs forever by default - to add

@@ -1,6 +1,6 @@
-package lib.Kinematics;
+package lib.kinematics;
 
-import lib.Geometry.Rotation2d;
+import lib.geometry.Rotation2d;
 
 /**
  * Represents the speed of a robot chassis. Although this struct contains

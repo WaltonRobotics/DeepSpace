@@ -1,6 +1,6 @@
-package lib.Spline;
+package lib.spline;
 
-import lib.Geometry.Pose2d;
+import lib.geometry.Pose2d;
 
 /**
  * Represents a pair of a pose and a curvature.

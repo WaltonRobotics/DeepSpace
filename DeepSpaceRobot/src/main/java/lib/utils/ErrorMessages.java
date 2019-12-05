@@ -1,4 +1,4 @@
-package lib.Utils;
+package lib.utils;
 
 import static java.util.Objects.requireNonNull;
 

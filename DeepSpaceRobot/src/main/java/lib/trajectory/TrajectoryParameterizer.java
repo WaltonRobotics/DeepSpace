@@ -3,7 +3,7 @@ package lib.trajectory;
 import java.util.ArrayList;
 import java.util.List;
 
-import lib.Spline.PoseWithCurvature;
+import lib.spline.PoseWithCurvature;
 import lib.trajectory.constraint.TrajectoryConstraint;
 
 /**

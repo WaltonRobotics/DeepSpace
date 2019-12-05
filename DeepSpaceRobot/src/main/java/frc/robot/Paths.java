@@ -1,9 +1,9 @@
 package frc.robot;
 
-import lib.Geometry.Pose2d;
-import lib.Geometry.Rotation2d;
-import lib.Geometry.Translation2d;
-import lib.Utils.Units;
+import lib.geometry.Pose2d;
+import lib.geometry.Rotation2d;
+import lib.geometry.Translation2d;
+import lib.utils.Units;
 import lib.trajectory.Trajectory;
 import lib.trajectory.TrajectoryGenerator;
 import lib.trajectory.constraint.CentripetalAccelerationConstraint;

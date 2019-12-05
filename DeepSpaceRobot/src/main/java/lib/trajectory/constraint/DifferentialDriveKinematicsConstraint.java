@@ -1,8 +1,8 @@
 package lib.trajectory.constraint;
 
-import lib.Geometry.Pose2d;
-import lib.Kinematics.ChassisSpeeds;
-import lib.Kinematics.DifferentialDriveKinematics;
+import lib.geometry.Pose2d;
+import lib.kinematics.ChassisSpeeds;
+import lib.kinematics.DifferentialDriveKinematics;
 
 /**
  * A class that enforces constraints on the differential drive kinematics.
@@ -17,6 +17,7 @@ public class DifferentialDriveKinematicsConstraint implements TrajectoryConstrai
   /**
    * Constructs a differential drive dynamics constraint.
    *
+   * @param kinematics A kinematics component describing the drive geometry.
    * @param maxSpeedMetersPerSecond The max speed that a side of the robot can travel at.
    */
   public DifferentialDriveKinematicsConstraint(final DifferentialDriveKinematics kinematics,
