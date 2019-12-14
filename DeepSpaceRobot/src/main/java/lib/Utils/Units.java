@@ -1,4 +1,4 @@
-package lib.utils;
+package lib.Utils;
 
 /**
  * Utility class that converts between commonly used units in FRC.

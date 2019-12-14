@@ -6,7 +6,7 @@ import frc.robot.command.auto.SetElevatorLevel;
 import frc.robot.command.auto.SetHatchIntake;
 import frc.robot.command.auto.VisionAlign;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem;
-import lib.utils.RamseteCommand;
+import lib.Utils.RamseteCommand;
 import lib.trajectory.Trajectory;
 
 import static frc.robot.Config.SmartMotionConstants.*;

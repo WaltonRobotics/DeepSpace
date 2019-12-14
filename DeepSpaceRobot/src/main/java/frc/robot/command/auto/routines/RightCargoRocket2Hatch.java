@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Paths;
 import frc.robot.command.auto.SetHatchIntake;
 import frc.robot.command.auto.VisionAlign;
-import lib.utils.RamseteCommand;
+import lib.Utils.RamseteCommand;
 import lib.trajectory.Trajectory;
 
 import static frc.robot.Config.SmartMotionConstants.*;

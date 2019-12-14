@@ -1,4 +1,4 @@
-package lib.kinematics;
+package lib.Kinematics;
 
 /**
  * Helper class that converts a chassis velocity (dx and dtheta components) to
@@ -8,9 +8,8 @@ package lib.kinematics;
  * velocity components whereas forward kinematics converts left and right
  * component velocities into a linear and angular chassis speed.
  */
-@SuppressWarnings("MemberName")
 public class DifferentialDriveKinematics {
-  public final double trackWidthMeters;
+  private final double m_trackWidthMeters;
 
   /**
    * Constructs a differential drive kinematics object.
@@ -21,7 +20,7 @@ public class DifferentialDriveKinematics {
    *                         measured value due to scrubbing effects.
    */
   public DifferentialDriveKinematics(double trackWidthMeters) {
-    this.trackWidthMeters = trackWidthMeters;
+    m_trackWidthMeters = trackWidthMeters;
   }
 
   /**
@@ -35,7 +34,7 @@ public class DifferentialDriveKinematics {
     return new ChassisSpeeds(
         (wheelSpeeds.leftMetersPerSecond + wheelSpeeds.rightMetersPerSecond) / 2, 0,
         (wheelSpeeds.rightMetersPerSecond - wheelSpeeds.leftMetersPerSecond)
-            / trackWidthMeters
+            / m_trackWidthMeters
     );
   }
 
@@ -49,9 +48,9 @@ public class DifferentialDriveKinematics {
    */
   public DifferentialDriveWheelSpeeds toWheelSpeeds(ChassisSpeeds chassisSpeeds) {
     return new DifferentialDriveWheelSpeeds(
-        chassisSpeeds.vxMetersPerSecond - trackWidthMeters / 2
+        chassisSpeeds.vxMetersPerSecond - m_trackWidthMeters / 2
             * chassisSpeeds.omegaRadiansPerSecond,
-        chassisSpeeds.vxMetersPerSecond + trackWidthMeters / 2
+        chassisSpeeds.vxMetersPerSecond + m_trackWidthMeters / 2
             * chassisSpeeds.omegaRadiansPerSecond
     );
   }

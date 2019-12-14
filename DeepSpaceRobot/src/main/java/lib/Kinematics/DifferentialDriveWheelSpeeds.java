@@ -1,4 +1,4 @@
-package lib.kinematics;
+package lib.Kinematics;
 
 /**
  * Represents the wheel speeds for a differential drive drivetrain.

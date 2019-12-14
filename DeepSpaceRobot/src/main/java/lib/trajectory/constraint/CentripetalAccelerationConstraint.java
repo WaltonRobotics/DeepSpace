@@ -1,6 +1,6 @@
 package lib.trajectory.constraint;
 
-import lib.geometry.Pose2d;
+import lib.Geometry.Pose2d;
 
 /**
  * A constraint on the maximum absolute centripetal acceleration allowed when

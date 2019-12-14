@@ -1,5 +1,7 @@
 package frc.robot;
 
+import lib.Geometry.Pose2d;
+import lib.Geometry.Rotation2d;
 import org.waltonrobotics.metadata.Pose;
 
 public class Config {

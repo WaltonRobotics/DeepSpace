@@ -1,7 +1,7 @@
 package frc.robot.command.auto;
 
-import lib.utils.PIDCommand;
-import lib.controller.PIDController;
+import lib.Utils.PIDCommand;
+import lib.Utils.PIDController;
 
 import static frc.robot.Robot.drivetrain;
 

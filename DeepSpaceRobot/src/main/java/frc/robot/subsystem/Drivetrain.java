@@ -20,13 +20,13 @@ import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.command.teleop.Drive;
-import lib.controller.RamseteController;
-import lib.geometry.Pose2d;
-import lib.geometry.Rotation2d;
-import lib.kinematics.DifferentialDriveKinematics;
-import lib.kinematics.DifferentialDriveOdometry;
-import lib.kinematics.DifferentialDriveWheelSpeeds;
-import lib.controller.PIDController;
+import lib.Controller.RamseteController;
+import lib.Geometry.Pose2d;
+import lib.Geometry.Rotation2d;
+import lib.Kinematics.DifferentialDriveKinematics;
+import lib.Kinematics.DifferentialDriveOdometry;
+import lib.Kinematics.DifferentialDriveWheelSpeeds;
+import lib.Utils.PIDController;
 
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.metadata.CameraData;
