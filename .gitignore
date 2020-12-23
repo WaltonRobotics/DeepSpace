@@ -14,6 +14,7 @@
 *.jar
 !DeepSpaceRobot/lib/WaltonRoboticsCodeLibrary-master.jar
 !DeepSpaceRobot-2020/lib/WaltonRoboticsCodeLibrary-master.jar
+!DeepSpaceRobot-2021/lib/WaltonRoboticsCodeLibrary-master.jar
 *.war
 *.nar
 *.ear
@@ -66,6 +67,27 @@ DeepSpaceRobot-2020/.idea/*.iml
 DeepSpaceRobot-2020/.idea/modules
 DeepSpaceRobot-2020/.idea/uiDesigner.xml
 
+# IntelliJ #
+# User-specific stuff
+DeepSpaceRobot-2021/.idea/**/workspace.xml
+DeepSpaceRobot-2021/.idea/**/tasks.xml
+DeepSpaceRobot-2021/.idea/**/usage.statistics.xml
+DeepSpaceRobot-2021/.idea/**/dictionaries
+DeepSpaceRobot-2021/.idea/**/shelf
+
+# Gradle
+DeepSpaceRobot-2021/.idea/**/gradle.xml
+DeepSpaceRobot-2021/.idea/**/libraries
+
+# Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+DeepSpaceRobot-2021/.idea/modules.xml
+DeepSpaceRobot-2021/.idea/*.iml
+DeepSpaceRobot-2021/.idea/modules
+DeepSpaceRobot-2021/.idea/uiDesigner.xml
+
 # PyCharm #
 # User-specific stuff
 CameraCode/.idea/**/workspace.xml
@@ -76,5 +98,8 @@ CameraCode/.idea/**/shelf
 CameraCode/.idea/**/*.iml
 CameraCode/.idea/**/*.xml
 DeepSpaceRobot/.idea/misc.xml
-DeepSpaceRobot-2020/src/test/java/frc/robot/CrashDump.txt
+DeepSpaceRobot-2020/.idea/misc.xml
+DeepSpaceRobot-2021/.idea/misc.xml
 DeepSpaceRobot/src/test/java/frc/robot/CrashDump.txt
+DeepSpaceRobot-2020/src/test/java/frc/robot/CrashDump.txt
+DeepSpaceRobot-2021/src/test/java/frc/robot/CrashDump.txt
