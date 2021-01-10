@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: edu.wpi.first.ntcore:ntcore-java:2021.1.1-beta-4">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../../../Public/wpilib/2021/maven/edu/wpi/first/ntcore/ntcore-java/2021.1.1-beta-4/ntcore-java-2021.1.1-beta-4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../../../../Public/wpilib/2021/maven/edu/wpi/first/ntcore/ntcore-java/2021.1.1-beta-4/ntcore-java-2021.1.1-beta-4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
