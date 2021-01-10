@@ -2,10 +2,12 @@
   <library name="Gradle: com.ctre.phoenix:api-java:5.19.1">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../../../../../Public/wpilib/2021/maven/com/ctre/phoenix/api-java/5.19.1/api-java-5.19.1.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ctre.phoenix/api-java/5.19.1/e7ffd49c746940e7f9f9d5de59c3f0fab81ad364/api-java-5.19.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/../../../../../Public/wpilib/2021/maven/com/ctre/phoenix/api-java/5.19.1/api-java-5.19.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ctre.phoenix/api-java/5.19.1/2d3fb76e57a0891a5e414779aabbceec633de1b6/api-java-5.19.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

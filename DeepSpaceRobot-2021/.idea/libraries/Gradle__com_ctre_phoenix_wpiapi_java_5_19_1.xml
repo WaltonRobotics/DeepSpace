@@ -2,10 +2,12 @@
   <library name="Gradle: com.ctre.phoenix:wpiapi-java:5.19.1">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../../../../../Public/wpilib/2021/maven/com/ctre/phoenix/wpiapi-java/5.19.1/wpiapi-java-5.19.1.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ctre.phoenix/wpiapi-java/5.19.1/f96266b665074056b4fa4f1dfc18455e09f39617/wpiapi-java-5.19.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/../../../../../Public/wpilib/2021/maven/com/ctre/phoenix/wpiapi-java/5.19.1/wpiapi-java-5.19.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ctre.phoenix/wpiapi-java/5.19.1/1da583dee4ea5cad59c76bd0f416e1c612be0958/wpiapi-java-5.19.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

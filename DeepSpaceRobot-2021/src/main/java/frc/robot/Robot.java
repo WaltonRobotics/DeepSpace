@@ -100,12 +100,11 @@ import frc.robot.Config.Camera;
 import frc.robot.command.auto.routines.RightCargoRocket2Hatch;
 import frc.robot.command.auto.routines.RightRocket2HatchFrontBackGroup;
 import frc.robot.command.auto.routines.RightRocket2HatchFrontGroup;
-import frc.robot.command.teleop.util.NormalSpeed;
-import frc.robot.command.teleop.util.SCurve;
-import frc.robot.command.teleop.util.Sigmoid;
-import frc.robot.command.teleop.util.Sqrt;
-import frc.robot.command.teleop.util.Squared;
-import frc.robot.command.teleop.util.Transform;
+import frc.robot.command.teleop.driveMode.ArcadeDrive;
+import frc.robot.command.teleop.driveMode.CurvatureDrive;
+import frc.robot.command.teleop.driveMode.DriveMode;
+import frc.robot.command.teleop.driveMode.TankDrive;
+import frc.robot.command.teleop.responseFunction.*;
 import frc.robot.config.LimitedRobot;
 import frc.robot.robot.CompDeepSpace;
 import frc.robot.robot.CompPowerUp;
@@ -129,7 +128,8 @@ public class Robot extends TimedRobot {
   public static final LimitedRobot currentRobot;
   public static final Drivetrain drivetrain;
   public static final ElevatorCargoHatchSubsystem godSubsystem;
-  public static final SendableChooser<Transform> transformSendableChooser = new SendableChooser<>();
+  public static SendableChooser<DriveMode> driveModeChooser;
+  public static SendableChooser<ResponseFunction> responseFunctionChooser;
   private static final RobotBuilder<LimitedRobot> robotBuilder;
 
   static {
@@ -158,14 +158,18 @@ public class Robot extends TimedRobot {
   }
 
   private static void initShuffleBoard() {
+    driveModeChooser = new SendableChooser<>();
+    driveModeChooser.setDefaultOption("Curvature", new CurvatureDrive());
+    driveModeChooser.addOption("Tank", new TankDrive());
+    driveModeChooser.addOption("Arcade", new ArcadeDrive());
+    SmartDashboard.putData("Drive Mode Selector", driveModeChooser);
 
-    transformSendableChooser.setDefaultOption("Normal", new NormalSpeed());
-    transformSendableChooser.addOption("Sigmoid", new Sigmoid());
-    transformSendableChooser.addOption("Sqrt", new Sqrt());
-    transformSendableChooser.addOption("Squared", new Squared());
-    transformSendableChooser.addOption("S Curve", new SCurve());
-
-    SmartDashboard.putData(DRIVETEAM_TRANSFORM_SELECT, transformSendableChooser);
+    responseFunctionChooser = new SendableChooser<>();
+    responseFunctionChooser.setDefaultOption("Linear", new LinearResponse());
+    responseFunctionChooser.addOption("Squared", new SquaredResponse());
+    responseFunctionChooser.addOption("Cubic", new CubicResponse());
+    responseFunctionChooser.addOption("S Curve", new SCurveResponse());
+    SmartDashboard.putData("Response Function Selector", responseFunctionChooser);
 
     SmartDashboard.putNumber(CONSTANTS_KV, currentRobot.getKV());
     SmartDashboard.putNumber(CONSTANTS_KACC, currentRobot.getKAcc());

@@ -28,6 +28,7 @@ public class Config {
     public static final int GAMEPAD_PORT = 2;
     public static final int SHIFT_UP_PORT = 3;
     public static final int SHIFT_DOWN_PORT = 2;
+    public static final int QUICK_TURN_PORT = 2;
 
     private Inputs() {
     }
@@ -211,4 +212,13 @@ public class Config {
     public static final double LIVE_DASHBOARD_FIELD_HEIGHT = Units.feetToMeters(27);
 
   }
+
+  public static class DriveSettings {
+
+    public static final double DEADBAND = 0.1;
+    public static final double QUICK_STOP_THRESHOLD = 0.2;
+    public static final double QUICK_STOP_ALPHA = 0.1;
+
+  }
+
 }
