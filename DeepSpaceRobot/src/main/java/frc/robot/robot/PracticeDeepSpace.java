@@ -611,7 +611,7 @@ public class PracticeDeepSpace extends LimitedRobot {
   public void initLimits() {
     this.addLimit(HatchPosition.CARGO_START, new LimitPair(-400, -550));
     this.addLimit(HatchPosition.HATCH_START, new LimitPair(-400, -550));
-    this.addLimit(HatchPosition.SAFE, new LimitPair(-450, -630));
+    this.addLimit(HatchPosition.SAFE, new LimitPair(-590, -630));
     this.addLimit(HatchPosition.DEPLOY, new LimitPair(-528, -820));
 
     this.addLimit(CargoPosition.SAFE, new LimitPair(675, 653));
@@ -639,9 +639,9 @@ public class PracticeDeepSpace extends LimitedRobot {
 
   @Override
   public void defineTargets() {
-    this.addTarget(HatchPosition.DEPLOY, new Target(-760, -650));
-    this.addTarget(HatchPosition.SAFE, new Target(-560, -520));
-    this.addTarget(HatchPosition.DEFENSE, new Target(-498, -477));
+    this.addTarget(HatchPosition.DEPLOY, new Target(-820, -650));
+    this.addTarget(HatchPosition.SAFE, new Target(-610, -590));
+    this.addTarget(HatchPosition.DEFENSE, new Target(-548, -477));
     this.addTarget(HatchPosition.HATCH_START, new Target(-500, -400));
     this.addTarget(HatchPosition.CARGO_START, new Target(-500, -450));
 

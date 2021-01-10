@@ -7,13 +7,25 @@
 
 package frc.robot.subsystem;
 
+import static frc.robot.Config.RamseteControllerConstants.K_BETA;
+import static frc.robot.Config.RamseteControllerConstants.K_ZETA;
 import static frc.robot.Config.SmartDashboardKeys.DEBUG_HAS_VALID_CAMERA_DATA;
+import static frc.robot.Config.SmartMotionConstants.*;
 import static frc.robot.Robot.currentRobot;
 import static frc.robot.RobotMap.*;
 
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.ControlType;
+
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.command.teleop.Drive;
+
 import org.waltonrobotics.AbstractDrivetrain;
 import org.waltonrobotics.metadata.CameraData;
 import org.waltonrobotics.metadata.RobotPair;
@@ -25,39 +37,29 @@ public class Drivetrain extends AbstractDrivetrain {
 
   private CameraData cameraData = new CameraData();
 
+  private DifferentialDriveOdometry driveOdometry;
+  private DifferentialDriveKinematics differentialDriveKinematics;
+  private RamseteController ramseteController;
+
+  private Pose2d robotPose;
+
   public Drivetrain() {
     super(currentRobot);
 
-    leftWheelsMaster.restoreFactoryDefaults();
-    leftWheelsSlave.restoreFactoryDefaults();
-    rightWheelsMaster.restoreFactoryDefaults();
-    rightWheelsSlave.restoreFactoryDefaults();
+    differentialDriveKinematics = new DifferentialDriveKinematics(currentRobot.getRobotWidth());
+    driveOdometry = new DifferentialDriveOdometry(getAngle());
+    robotPose = new Pose2d();
 
-    leftWheelsMaster.setInverted(true);
+    setEncoderDistancePerPulse();
 
-    leftWheelsSlave.follow(leftWheelsMaster);
-    rightWheelsSlave.follow(rightWheelsMaster);
-
-    leftWheelsMaster.setOpenLoopRampRate(0);
-    leftWheelsSlave.setOpenLoopRampRate(0);
-    rightWheelsMaster.setOpenLoopRampRate(0);
-    rightWheelsSlave.setOpenLoopRampRate(0);
-
-    leftWheelsMaster.setSmartCurrentLimit(40);
-    leftWheelsSlave.setSmartCurrentLimit(40);
-    rightWheelsMaster.setSmartCurrentLimit(40);
-    rightWheelsSlave.setSmartCurrentLimit(40);
-
+    ahrs.reset();
+    ahrs.zeroYaw();
     leftWheelsSlave.setIdleMode(IdleMode.kCoast);
     leftWheelsMaster.setIdleMode(IdleMode.kBrake);
     rightWheelsSlave.setIdleMode(IdleMode.kCoast);
     rightWheelsMaster.setIdleMode(IdleMode.kBrake);
 
-    leftWheelsMaster.burnFlash();
-    leftWheelsSlave.burnFlash();
-    rightWheelsMaster.burnFlash();
-    rightWheelsSlave.burnFlash();
-
+    ramseteController = new RamseteController(K_BETA, K_ZETA);
   }
 
   @Override
@@ -65,6 +67,8 @@ public class Drivetrain extends AbstractDrivetrain {
     super.periodic();
 
     SmartDashboard.putNumber("Dial", cameraData.getCameraPose().getY());
+
+    updateRobotPose();
 
     if (cameraData.getTime() == -1.0) {
       SmartDashboard.putBoolean(DEBUG_HAS_VALID_CAMERA_DATA, false);
@@ -78,34 +82,48 @@ public class Drivetrain extends AbstractDrivetrain {
     return new RobotPair(0, 0, 0);
   }
 
+  public double getLeftDistanceTravelled() {
+    return leftWheelsMaster.getEncoder().getPosition();
+  }
+
+  public void updateRobotPose() {
+    robotPose = driveOdometry.update(getAngle(), encoderLeft.getDistance(), encoderRight.getDistance());
+  }
+
+  public void updateRobotPoseStartBackwards() {
+    robotPose = driveOdometry.update(getAngle().unaryMinus(), encoderLeft.getDistance(), encoderRight.getDistance());
+  }
+
+  public Pose2d getRobotPose() {
+    return robotPose;
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(encoderLeft.getRate(), encoderRight.getRate());
+  }
+
+  public Rotation2d getAngle() {
+    return Rotation2d.fromDegrees(-ahrs.getYaw());
+  }
+
+
+
+  public double getAngleDegrees() {
+    return getAngle().getDegrees();
+  }
+
   public void reset() {
     encoderLeft.reset();
     encoderRight.reset();
+    ahrs.zeroYaw();
   }
 
   public void setArcadeSpeeds(double xSpeed, double zRotation) {
     xSpeed = Math.copySign(xSpeed * xSpeed, xSpeed);
     zRotation = Math.copySign(zRotation * zRotation, zRotation);
 
-//    double maxInput = Math.copySign(Math.max(Math.abs(xSpeed), Math.abs(zRotation)), xSpeed);
     double leftMotorOutput;
     double rightMotorOutput;
-
-//    if (xSpeed >= 0.0D) {
-//      if (zRotation >= 0.0D) {
-//        leftMotorOutput = maxInput;
-//        rightMotorOutput = xSpeed - zRotation;
-//      } else {
-//        leftMotorOutput = xSpeed + zRotation;
-//        rightMotorOutput = maxInput;
-//      }
-//    } else if (zRotation >= 0.0D) {
-//      leftMotorOutput = xSpeed + zRotation;
-//      rightMotorOutput = maxInput;
-//    } else {
-//      leftMotorOutput = maxInput;
-//      rightMotorOutput = xSpeed - zRotation;
-//    }
 
     xSpeed = Math
         .max(-1.0 + Math.abs(zRotation),
@@ -119,30 +137,81 @@ public class Drivetrain extends AbstractDrivetrain {
 
   public void setSpeeds(double leftPower, double rightPower) {
     rightWheelsMaster.set(rightPower);
-    // rightWheelsSlave.set(rightPower);
     leftWheelsMaster.set(leftPower);
-    // leftWheelsSlave.set(leftPower);
+  }
+
+  public void setVoltages(double leftVoltage, double rightVoltage) {
+    leftWheelsMaster.getPIDController().setReference(leftVoltage, ControlType.kVoltage);
+    rightWheelsMaster.getPIDController().setReference(rightVoltage, ControlType.kVoltage);
+  }
+
+  public void setVelocities(double leftVelocity, double leftFeedForward, double rightVelocity, double rightFeedForward) {
+    leftWheelsMaster.getPIDController().setReference(leftVelocity, ControlType.kVelocity, VELOCITY_CONTROL_MODE, leftFeedForward);
+    rightWheelsMaster.getPIDController().setReference(rightVelocity, ControlType.kVelocity, VELOCITY_CONTROL_MODE, rightFeedForward);
   }
 
   public void setEncoderDistancePerPulse() {
-//    leftWheels.setInverted(currentRobot.getLeftTalonConfig().isInverted());
-//    rightWheels.setInverted(currentRobot.getRightTalonConfig().isInverted());
-//
-//    leftWheels.configPeakOutputForward(1.0);
-//    leftWheels.configPeakOutputReverse(-1.0);
-//
-//    leftWheels.setNeutralMode(NeutralMode.Brake);
-//    rightWheels.setNeutralMode(NeutralMode.Brake);
-//
-//    rightWheels.configPeakOutputForward(1.0);
-//    rightWheels.configPeakOutputReverse(-1.0);
 
-    encoderLeft.setDistancePerPulse(currentRobot.getLeftEncoderConfig().getDistancePerPulse());
-    encoderRight.setDistancePerPulse(currentRobot.getRightEncoderConfig().getDistancePerPulse());
+    encoderLeft.setDistancePerPulse(0.000578185267);
+    encoderRight.setDistancePerPulse(0.000578185267);
 
-    encoderLeft.setReverseDirection(currentRobot.getLeftEncoderConfig().isInverted());
-    encoderRight.setReverseDirection(currentRobot.getRightEncoderConfig().isInverted());
+    encoderLeft.setReverseDirection(false);
+    encoderRight.setReverseDirection(true);
 
+  }
+
+  public void motorSetUpTeleop() {
+    leftWheelsMaster.restoreFactoryDefaults();
+    leftWheelsSlave.restoreFactoryDefaults();
+    rightWheelsMaster.restoreFactoryDefaults();
+    rightWheelsSlave.restoreFactoryDefaults();
+
+    leftWheelsMaster.setInverted(true);
+
+    leftWheelsSlave.setIdleMode(IdleMode.kCoast);
+    leftWheelsMaster.setIdleMode(IdleMode.kBrake);
+    rightWheelsSlave.setIdleMode(IdleMode.kCoast);
+    rightWheelsMaster.setIdleMode(IdleMode.kBrake);
+
+    leftWheelsSlave.follow(leftWheelsMaster);
+    rightWheelsSlave.follow(rightWheelsMaster);
+
+    leftWheelsMaster.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    leftWheelsSlave.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    rightWheelsMaster.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    rightWheelsSlave.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+
+    leftWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    leftWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    rightWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    rightWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+  }
+
+  public void motorSetUpAuto() {
+    leftWheelsMaster.restoreFactoryDefaults();
+    leftWheelsSlave.restoreFactoryDefaults();
+    rightWheelsMaster.restoreFactoryDefaults();
+    rightWheelsSlave.restoreFactoryDefaults();
+
+    leftWheelsMaster.setInverted(true);
+
+    leftWheelsSlave.setIdleMode(IdleMode.kBrake);
+    leftWheelsMaster.setIdleMode(IdleMode.kBrake);
+    rightWheelsSlave.setIdleMode(IdleMode.kBrake);
+    rightWheelsMaster.setIdleMode(IdleMode.kBrake);
+
+    leftWheelsSlave.follow(leftWheelsMaster);
+    rightWheelsSlave.follow(rightWheelsMaster);
+
+    leftWheelsMaster.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    leftWheelsSlave.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    rightWheelsMaster.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+    rightWheelsSlave.setOpenLoopRampRate(K_OPENLOOP_RAMP);
+
+    leftWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    leftWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    rightWheelsMaster.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
+    rightWheelsSlave.setSmartCurrentLimit(K_SMART_CURRENT_LIMIT);
   }
 
   @Override
@@ -168,6 +237,18 @@ public class Drivetrain extends AbstractDrivetrain {
 
   public CameraData getCameraData() {
     return cameraData;
+  }
+
+  public DifferentialDriveOdometry getDriveOdometry() {
+    return driveOdometry;
+  }
+
+  public DifferentialDriveKinematics getDriveKinematics() {
+    return differentialDriveKinematics;
+  }
+
+  public RamseteController getRamseteController() {
+    return ramseteController;
   }
 
   @Override

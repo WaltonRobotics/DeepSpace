@@ -3,6 +3,10 @@ package frc.robot.config;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import java.util.HashMap;
+
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import org.waltonrobotics.config.RobotConfig;
 import org.waltonrobotics.config.TalonConfig;
 
@@ -30,6 +34,16 @@ public abstract class LimitedRobot extends RobotConfig {
   public abstract TalonConfig getLeftIntakeMotorConfig();
 
   public abstract TalonConfig getRightIntakeMotorConfig();
+
+  public abstract ProfiledPIDController getTurnPIDController();
+
+  public abstract SimpleMotorFeedforward getDrivetrainFeedforward();
+
+  public abstract PIDController getLeftVoltagePIDController();
+  public abstract PIDController getRightVoltagePIDController();
+
+  public abstract PIDController getLeftVelocityPIDController();
+  public abstract PIDController getRightVelocityPIDController();
 
   public abstract void initLimits();
 
@@ -61,7 +75,7 @@ public abstract class LimitedRobot extends RobotConfig {
       Enum limitType) {
     motorController.setNeutralMode(talonSRXConfig.getNeutralMode());
     motorController.configSelectedFeedbackSensor(talonSRXConfig.getFeedbackSensor(), talonSRXConfig.getPIDIdx(),
-        talonSRXConfig.getTimeout());
+            talonSRXConfig.getTimeout());
     motorController.setSensorPhase(talonSRXConfig.getSensorPhase()); // true for comp bot; false for practice
     motorController.setInverted(talonSRXConfig.isInverted());
 
@@ -82,14 +96,14 @@ public abstract class LimitedRobot extends RobotConfig {
     motorController.configMotionCruiseVelocity(talonSRXConfig.getMotionCruiseVelocity(), talonSRXConfig.getTimeout());
     motorController.configMotionAcceleration(talonSRXConfig.getMotionAcceleration(), talonSRXConfig.getTimeout());
     motorController
-        .configClosedLoopPeakOutput(talonSRXConfig.getProfileSlot(), talonSRXConfig.getClosedLoopPeakOutput());
+            .configClosedLoopPeakOutput(talonSRXConfig.getProfileSlot(), talonSRXConfig.getClosedLoopPeakOutput());
 
     if (limitType != null) {
       LimitPair limitPair = limits.get(limitType);
       motorController
-          .configForwardSoftLimitThreshold(limitPair.getForwardsSoftLimitThreshold(), talonSRXConfig.getTimeout());
+              .configForwardSoftLimitThreshold(limitPair.getForwardsSoftLimitThreshold(), talonSRXConfig.getTimeout());
       motorController
-          .configReverseSoftLimitThreshold(limitPair.getReverseSoftLimitThreshold(), talonSRXConfig.getTimeout());
+              .configReverseSoftLimitThreshold(limitPair.getReverseSoftLimitThreshold(), talonSRXConfig.getTimeout());
     }
 
     motorController.configForwardSoftLimitEnable(talonSRXConfig.isForwardsSoftLimitEnabled(), 10);

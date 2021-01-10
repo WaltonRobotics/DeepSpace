@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: edu.wpi.first.wpilibOldCommands:wpilibOldCommands-java:2020.3.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibOldCommands/wpilibOldCommands-java/2020.3.2/5dbbd2bf3ed66c8a09037fe5e47838605835578c/wpilibOldCommands-java-2020.3.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibOldCommands/wpilibOldCommands-java/2020.3.2/aa92ac85382a33bcd53745f7c7119dc02173e095/wpilibOldCommands-java-2020.3.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

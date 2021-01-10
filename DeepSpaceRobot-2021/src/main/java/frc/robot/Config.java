@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.util.Units;
 import org.waltonrobotics.metadata.Pose;
 
 public class Config {
@@ -166,4 +167,48 @@ public class Config {
     }
   }
 
+  public static final class RamseteControllerConstants {
+
+    public static final double K_BETA = 2.0;
+    public static final double K_ZETA = 0.7;
+
+  }
+
+  public static final class SmartMotionConstants {
+
+    public static final double LEFT_KP = 5e-5;
+    public static final double LEFT_KI = 1e-6;
+    public static final double LEFT_KD = 0;
+    public static final double LEFT_KFF = 0;
+
+    public static final double RIGHT_KP = 5e-5;
+    public static final double RIGHT_KI = 1e-6;
+    public static final double RIGHT_KD = 0;
+    public static final double RIGHT_KFF = 0;
+
+    public static final double KV = 3.19;
+    public static final double KA = 0.462;
+    public static final double KS = 0.178;
+
+    public static final double KT = 0.04;
+    public static final int KT_IN_MILLI = 40;
+
+    public static final int K_SMART_CURRENT_LIMIT = 40;
+
+    public static final int K_VOLTAGE_COMPENSATION = 12;
+
+    public static final int K_OPENLOOP_RAMP = 0;
+
+    public static final int VOLTAGE_CONTROL_MODE = 0;
+    public static final int VELOCITY_CONTROL_MODE = 1;
+
+    public static final double RPM_TO_METERS = 0.006649704450098395; // RPM TO M/S
+  }
+
+  public static class FieldConfiguration {
+
+    public static final double DISTANCE_TO_REFLECTION_LINE = Units.feetToMeters(54) / 2;
+    public static final double LIVE_DASHBOARD_FIELD_HEIGHT = Units.feetToMeters(27);
+
+  }
 }

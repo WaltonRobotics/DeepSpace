@@ -97,10 +97,14 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config.Camera;
+import frc.robot.command.auto.routines.RightCargoRocket2Hatch;
+import frc.robot.command.auto.routines.RightRocket2HatchFrontBackGroup;
+import frc.robot.command.auto.routines.RightRocket2HatchFrontGroup;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.SCurve;
 import frc.robot.command.teleop.util.Sigmoid;
 import frc.robot.command.teleop.util.Sqrt;
+import frc.robot.command.teleop.util.Squared;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.config.LimitedRobot;
 import frc.robot.robot.CompDeepSpace;
@@ -158,6 +162,7 @@ public class Robot extends TimedRobot {
     transformSendableChooser.setDefaultOption("Normal", new NormalSpeed());
     transformSendableChooser.addOption("Sigmoid", new Sigmoid());
     transformSendableChooser.addOption("Sqrt", new Sqrt());
+    transformSendableChooser.addOption("Squared", new Squared());
     transformSendableChooser.addOption("S Curve", new SCurve());
 
     SmartDashboard.putData(DRIVETEAM_TRANSFORM_SELECT, transformSendableChooser);
@@ -259,13 +264,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     drivetrain.cancelControllerMotion();
     drivetrain.reset();
-
     drivetrain.getController().getCameraReader().startCollecting();
 
     initShuffleBoard();
-
     initCamera();
-
     initHardware();
   }
 
@@ -379,38 +381,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-//    godSubsystem.setEnabled(false);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(Config.Camera.AUTO_ALIGN_PIPELINE);
     godSubsystem.setEnabled(true);
     godSubsystem.setAutonomousEnabled(SmartDashboard.getBoolean(USE_AUTON, false));
-//    godSubsystem.setAutonomousEnabled(false);
     drivetrain.cancelControllerMotion();
     drivetrain.clearControllerMotions();
     drivetrain.shiftUp();
-
-//    Pose pose = new Pose(0, 0, StrictMath.toRadians(90));
-//    drivetrain.startControllerMotion(pose);
-
-//    SimpleSpline.pathFromPosesWithAngle(false, pose, pose.offset(2,2, 0)).start();
-
-//    Pose backup = new Pose(SmartDashboard.getNumber("x", 2.1), SmartDashboard.getNumber("y", 2.75),
-//        Math.toRadians(SmartDashboard.getNumber("angle", 0)));
-
-//    SimpleSpline.pathFromPosesWithAngleAndScale(true, .2 ,.2,frontRocketR,  backup).start();
-
-//    boolean isBackwards = SmartDashboard.getBoolean("isBackwards", true);
-
-//    Pose pose1 = new Pose(SmartDashboard.getNumber("x", -1), SmartDashboard.getNumber("y", -1),
-//        Math.toRadians(SmartDashboard.getNumber("angle", 90)));
-//
-//    SimpleSpline.pathFromPosesWithAngle(isBackwards, pose, pose1).start();
-
-//    double distance = SmartDashboard.getNumber("Distance", 2);
-//    SimpleSpline.pathFromPosesWithAngle(false, pose, pose.offset(distance), frontRocketR).start();
-//    drivetrain.startControllerMotion(pose);
-//    SimpleLine.lineWithDistance(SmartDashboard.getNumber("Distance", 2)).start();
-//    SimpleSpline.pathFromPosesWithAngle(false, Pose.ZERO, new Pose(1.5, 2)).start();
+    drivetrain.reset();
+    drivetrain.motorSetUpAuto();
+    new RightRocket2HatchFrontBackGroup().start();
   }
-
   /**
    * This function is called periodically during autonomous.
    */
@@ -425,6 +405,8 @@ public class Robot extends TimedRobot {
     godSubsystem.setEnabled(true);
     drivetrain.cancelControllerMotion();
     drivetrain.shiftUp();
+    drivetrain.motorSetUpTeleop();
+    drivetrain.reset();
 
 //    godSubsystem.setEnabled(false);
 //    godSubsystem.getElevator().setControlMode(ElevatorControlMode.MANUAL);
@@ -440,6 +422,17 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
+    SmartDashboard.putNumber("Angle", drivetrain.getAngle().getDegrees());
+    SmartDashboard.putNumber("Left Speeds meters", drivetrain.getWheelSpeeds().leftMetersPerSecond);
+    SmartDashboard.putNumber("Right Speeds meters", drivetrain.getWheelSpeeds().rightMetersPerSecond);
+    SmartDashboard.putNumber("Left Distance meters", encoderLeft.getDistance());
+    SmartDashboard.putNumber("Right Distance meters", encoderRight.getDistance());
+
+    SmartDashboard.putNumber("Right Encoder Pulses", encoderRight.get());
+    SmartDashboard.putNumber("Left Encoder Pulses", encoderLeft.get());
+
+
 
 //    godSubsystem.getElevator().setElevatorPower(godSubsystem.getElevator().getElevatorJoystick());
 ////    godSubsystem.getHatch().setRotationPower(godSubsystem.getCargo().getCargoJoystick());

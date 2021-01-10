@@ -21,26 +21,18 @@ import frc.robot.Robot;
 import frc.robot.command.teleop.util.Transform;
 import frc.robot.util.EnhancedBoolean;
 import frc.robot.util.LEDController;
-import org.waltonrobotics.controller.MotionLogger;
-import org.waltonrobotics.metadata.Pose;
 
 public class Drive extends Command {
 
-  private static final double cameraFilter = 0.5;
-  private static final double deadband = 0.05;
   private static boolean enabled = true;
-  private MotionLogger motionLogger = new MotionLogger();
-  private Pose offset = new Pose(0, 0, 0);
-  private boolean hasFound = false;
   private boolean isAlligning = false;
   private EnhancedBoolean rightTriggerPress = new EnhancedBoolean();
   private boolean limelightHasValidTarget;
   private double limelightDriveCommand;
   private double limelightSteerCommand;
+  private double deadband = 0.05;
 
   public Drive() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
     requires(drivetrain);
   }
 
@@ -50,11 +42,6 @@ public class Drive extends Command {
 
   private Transform getTransform() {
     return Robot.transformSendableChooser.getSelected();
-  }
-
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
   }
 
   private double getLeftYJoystick() {
@@ -67,9 +54,14 @@ public class Drive extends Command {
   private double getRightYJoystick() {
     if (Math.abs(OI.rightJoystick.getY()) > deadband) {
       return (currentRobot.getRightJoystickConfig().isInverted() ? -1 : 1) * OI.rightJoystick
-          .getY();
+              .getY();
     }
     return 0;
+  }
+
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -93,6 +85,7 @@ public class Drive extends Command {
 
       SmartDashboard.putNumber(DRIVETRAIN_LEFT_JOYSTICK_Y, leftYJoystick);
       SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, rightYJoystick);
+      SmartDashboard.putNumber("Angle", drivetrain.getAngle().getDegrees());
 
       Transform transform = getTransform();
       leftYJoystick = transform.transform(leftYJoystick);
@@ -131,7 +124,7 @@ public class Drive extends Command {
   public void updateLimelightTracking() {
     // These numbers must be tuned for your Robot!  Be careful!
     final double STEER_K = SmartDashboard
-        .getNumber("Steer K", 0.065); // how hard to turn toward the target
+        .getNumber("Steer K", 0.1); // how hard to turn toward the target
     final double DRIVE_K = SmartDashboard
         .getNumber("Drive K", 0.26); // how hard to drive fwd toward the target
 
@@ -165,6 +158,7 @@ public class Drive extends Command {
     // try to drive forward until the target area reaches our desired area
     double driveCmd = (getLeftYJoystick() + getRightYJoystick()) / 2.0;
     limelightDriveCommand = driveCmd;
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
