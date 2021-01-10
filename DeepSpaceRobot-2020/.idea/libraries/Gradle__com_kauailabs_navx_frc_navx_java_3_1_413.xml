@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.kauailabs.navx.frc:navx-java:3.1.413">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.kauailabs.navx.frc/navx-java/3.1.413/26937992e7c7f05ce87e408a5e18d062942612fa/navx-java-3.1.413.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.kauailabs.navx.frc/navx-java/3.1.413/d2a7a214c1e66cc8fb8917add09a5b5f87c5839f/navx-java-3.1.413-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
