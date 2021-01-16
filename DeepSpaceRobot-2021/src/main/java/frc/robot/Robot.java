@@ -83,6 +83,7 @@ import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_Y;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_OFFSET;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_PERCENTAGE;
 import static frc.robot.Config.SmartDashboardKeys.USE_AUTON;
+import static frc.robot.Paths.GameChangersTrajectories.generateGalacticSearchRedB;
 import static frc.robot.RobotMap.clawRotationMotor;
 import static frc.robot.RobotMap.elevatorMotor;
 import static frc.robot.RobotMap.encoderLeft;
@@ -97,6 +98,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Config.Camera;
+import frc.robot.command.auto.RamseteTrackingCommand;
 import frc.robot.command.auto.routines.RightCargoRocket2Hatch;
 import frc.robot.command.auto.routines.RightRocket2HatchFrontBackGroup;
 import frc.robot.command.auto.routines.RightRocket2HatchFrontGroup;
@@ -411,6 +413,8 @@ public class Robot extends TimedRobot {
     drivetrain.shiftUp();
     drivetrain.motorSetUpTeleop();
     drivetrain.reset();
+
+    new RamseteTrackingCommand(generateGalacticSearchRedB(), false);
 
 //    godSubsystem.setEnabled(false);
 //    godSubsystem.getElevator().setControlMode(ElevatorControlMode.MANUAL);

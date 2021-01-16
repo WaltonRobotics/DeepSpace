@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstr
 import edu.wpi.first.wpilibj.util.Units;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static frc.robot.Robot.drivetrain;
 
@@ -298,5 +299,60 @@ public class Paths {
                     waypoints,
                     config);
         }
+    }
+
+    public static class GameChangersTrajectories {
+
+        public static Trajectory generateGalacticSearchRedA() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    Units.feetToMeters(13.0), Units.feetToMeters(7.0));
+
+            config.setKinematics(drivetrain.getDriveKinematics());
+            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(6.0)));
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(new Pose2d(Units.feetToMeters(3.85), Units.feetToMeters(7.46), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(7.581), Units.feetToMeters(9.982), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(12.643), Units.feetToMeters(4.96), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(17.281), Units.feetToMeters(9.96), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(27.605), Units.feetToMeters(10.04), Rotation2d.fromDegrees(0))),
+                    config
+            );
+        }
+
+        public static Trajectory generateGalacticSearchBlueA() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    Units.feetToMeters(13.0), Units.feetToMeters(7.0));
+
+            config.setKinematics(drivetrain.getDriveKinematics());
+            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(6.0)));
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(new Pose2d(Units.feetToMeters(3.85), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(15.015), Units.feetToMeters(2.492), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(17.471), Units.feetToMeters(9.96), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(22.395), Units.feetToMeters(7.49), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(28.479), Units.feetToMeters(7.209), Rotation2d.fromDegrees(0))),
+                    config
+            );
+        }
+
+        public static Trajectory generateGalacticSearchRedB() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    Units.feetToMeters(13.0), Units.feetToMeters(7.0));
+
+            config.setKinematics(drivetrain.getDriveKinematics());
+            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(6.0)));
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(new Pose2d(Units.feetToMeters(3.85), Units.feetToMeters(7.46), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(7.581), Units.feetToMeters(9.982), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(12.643), Units.feetToMeters(4.96), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(17.281), Units.feetToMeters(9.96), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(27.605), Units.feetToMeters(10.04), Rotation2d.fromDegrees(0))),
+                    config
+            );
+        }
+
     }
 }
