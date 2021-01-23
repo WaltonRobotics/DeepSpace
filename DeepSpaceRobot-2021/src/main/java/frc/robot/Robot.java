@@ -83,12 +83,8 @@ import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_FOCUS_Y;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_OFFSET;
 import static frc.robot.Config.SmartDashboardKeys.PARKING_LINE_PERCENTAGE;
 import static frc.robot.Config.SmartDashboardKeys.USE_AUTON;
-import static frc.robot.Paths.GameChangersTrajectories.generateGalacticSearchRedB;
-import static frc.robot.RobotMap.clawRotationMotor;
-import static frc.robot.RobotMap.elevatorMotor;
-import static frc.robot.RobotMap.encoderLeft;
-import static frc.robot.RobotMap.encoderRight;
-import static frc.robot.RobotMap.hatchRotationMotor;
+import static frc.robot.Paths.GameChangersTrajectories.*;
+import static frc.robot.RobotMap.*;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -97,6 +93,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Config.Camera;
 import frc.robot.command.auto.RamseteTrackingCommand;
 import frc.robot.command.auto.routines.RightCargoRocket2Hatch;
@@ -138,7 +135,7 @@ public class Robot extends TimedRobot {
     isCompBot = new DigitalInput(9).get();
     SmartDashboard.putBoolean("identifier", isCompBot);
     robotBuilder = new RobotBuilder<>(new CompPowerUp(), new CompSteamWorks(), new PracticeDeepSpace(),
-        new CompDeepSpace());
+            new CompDeepSpace());
     currentRobot = robotBuilder.getCurrentRobotConfig();
     System.out.println(currentRobot);
     drivetrain = new Drivetrain();
@@ -349,8 +346,8 @@ public class Robot extends TimedRobot {
       }
     }
 
-    SmartDashboard.putNumber(DRIVETRAIN_LEFT_ENCODER, encoderLeft.getDistance());
-    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, encoderRight.getDistance());
+    SmartDashboard.putNumber(DRIVETRAIN_LEFT_ENCODER, leftWheelsMaster.getEncoder().getPosition());
+    SmartDashboard.putNumber(DRIVETRAIN_RIGHT_ENCODER, rightWheelsMaster.getEncoder().getPosition());
     SmartDashboard.putString(DRIVETRAIN_ACTUAL_POSITION, String.valueOf(drivetrain.getActualPosition()));
     SmartDashboard.putString(DEBUG_CAMERA_VISION, String.valueOf(drivetrain.getCameraData()));
     // System.out.println("robot Periodic");
@@ -395,7 +392,8 @@ public class Robot extends TimedRobot {
     drivetrain.shiftUp();
     drivetrain.reset();
     drivetrain.motorSetUpAuto();
-    new RightRocket2HatchFrontBackGroup().start();
+    new RamseteTrackingCommand(generateGalacticSearchRedA(), false).start();
+
   }
   /**
    * This function is called periodically during autonomous.
@@ -414,7 +412,7 @@ public class Robot extends TimedRobot {
     drivetrain.motorSetUpTeleop();
     drivetrain.reset();
 
-    new RamseteTrackingCommand(generateGalacticSearchRedB(), false);
+
 
 //    godSubsystem.setEnabled(false);
 //    godSubsystem.getElevator().setControlMode(ElevatorControlMode.MANUAL);
@@ -434,11 +432,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Angle", drivetrain.getAngle().getDegrees());
     SmartDashboard.putNumber("Left Speeds meters", drivetrain.getWheelSpeeds().leftMetersPerSecond);
     SmartDashboard.putNumber("Right Speeds meters", drivetrain.getWheelSpeeds().rightMetersPerSecond);
-    SmartDashboard.putNumber("Left Distance meters", encoderLeft.getDistance());
-    SmartDashboard.putNumber("Right Distance meters", encoderRight.getDistance());
+    SmartDashboard.putNumber("Left Distance meters", leftWheelsMaster.getEncoder().getPosition());
+    SmartDashboard.putNumber("Right Distance meters", rightWheelsMaster.getEncoder().getPosition());
 
-    SmartDashboard.putNumber("Right Encoder Pulses", encoderRight.get());
-    SmartDashboard.putNumber("Left Encoder Pulses", encoderLeft.get());
+    SmartDashboard.putNumber("Right Encoder Pulses", rightWheelsMaster.getEncoder().getPosition());
+    SmartDashboard.putNumber("Left Encoder Pulses", leftWheelsMaster.getEncoder().getPosition());
 
 
 
@@ -476,7 +474,7 @@ public class Robot extends TimedRobot {
   @Override
   public String toString() {
     return "Robot{" +
-        "hasSetPipeline=" + hasSetPipeline +
-        "} " + super.toString();
+            "hasSetPipeline=" + hasSetPipeline +
+            "} " + super.toString();
   }
 }

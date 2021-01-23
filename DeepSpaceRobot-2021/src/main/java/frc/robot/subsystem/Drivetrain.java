@@ -87,11 +87,11 @@ public class Drivetrain extends AbstractDrivetrain {
   }
 
   public void updateRobotPose() {
-    robotPose = driveOdometry.update(getAngle(), encoderLeft.getDistance(), encoderRight.getDistance());
+    robotPose = driveOdometry.update(getAngle(), leftWheelsMaster.getEncoder().getPosition(), rightWheelsMaster.getEncoder().getPosition());
   }
 
   public void updateRobotPoseStartBackwards() {
-    robotPose = driveOdometry.update(getAngle().unaryMinus(), encoderLeft.getDistance(), encoderRight.getDistance());
+    robotPose = driveOdometry.update(getAngle().unaryMinus(), leftWheelsMaster.getEncoder().getPosition(), rightWheelsMaster.getEncoder().getPosition());
   }
 
   public Pose2d getRobotPose() {
@@ -99,7 +99,7 @@ public class Drivetrain extends AbstractDrivetrain {
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(encoderLeft.getRate(), encoderRight.getRate());
+    return new DifferentialDriveWheelSpeeds(leftWheelsMaster.getEncoder().getVelocity(), rightWheelsMaster.getEncoder().getVelocity());
   }
 
   public Rotation2d getAngle() {
@@ -113,8 +113,8 @@ public class Drivetrain extends AbstractDrivetrain {
   }
 
   public void reset() {
-    encoderLeft.reset();
-    encoderRight.reset();
+    leftWheelsMaster.getEncoder().setPosition(0);
+    rightWheelsMaster.getEncoder().setPosition(0);
     ahrs.zeroYaw();
   }
 
@@ -126,8 +126,8 @@ public class Drivetrain extends AbstractDrivetrain {
     double rightMotorOutput;
 
     xSpeed = Math
-        .max(-1.0 + Math.abs(zRotation),
-            Math.min(1.0 - Math.abs(zRotation), xSpeed));
+            .max(-1.0 + Math.abs(zRotation),
+                    Math.min(1.0 - Math.abs(zRotation), xSpeed));
 
     leftMotorOutput = xSpeed + zRotation;
     rightMotorOutput = xSpeed - zRotation;
@@ -152,11 +152,15 @@ public class Drivetrain extends AbstractDrivetrain {
 
   public void setEncoderDistancePerPulse() {
 
-    encoderLeft.setDistancePerPulse(0.000578185267);
-    encoderRight.setDistancePerPulse(0.000578185267);
+    double encoderConstant = 1/38.025; // (1 / 42) * WHEEL_DIAMETER * Math.PI;
 
-    encoderLeft.setReverseDirection(false);
-    encoderRight.setReverseDirection(true);
+    //Encoder leftEncoder = new Encoder(0, 1);
+    //leftEncoder.setDistancePerPulse(encoderConstant);
+    leftWheelsMaster.getEncoder().setPositionConversionFactor(encoderConstant);
+    leftWheelsMaster.getEncoder().setVelocityConversionFactor(encoderConstant / 60.);
+
+    rightWheelsMaster.getEncoder().setPositionConversionFactor(encoderConstant);
+    rightWheelsMaster.getEncoder().setVelocityConversionFactor(encoderConstant / 60.);
 
   }
 
@@ -254,7 +258,7 @@ public class Drivetrain extends AbstractDrivetrain {
   @Override
   public String toString() {
     return "Drivetrain{" +
-        "cameraData=" + cameraData +
-        "} " + super.toString();
+            "cameraData=" + cameraData +
+            "} " + super.toString();
   }
 }

@@ -51,7 +51,7 @@ public final class RobotMap {
 
   public static final SpeedController leftIntakeMotor = new Talon(currentRobot.getLeftIntakeMotorConfig().getChannel());
   public static final SpeedController rightIntakeMotor = new Talon(
-      currentRobot.getRightIntakeMotorConfig().getChannel());
+          currentRobot.getRightIntakeMotorConfig().getChannel());
   public static final TalonSRX clawRotationMotor = new TalonSRX(currentRobot.getCargoSubsystemLimits().getDeviceID());
   public static final TalonSRX hatchRotationMotor = new TalonSRX(currentRobot.getHatchSubsystemLimits().getDeviceID());
   public static final TalonSRX elevatorMotor = new TalonSRX(currentRobot.getElevatorSubsystemLimits().getDeviceID());
@@ -64,13 +64,13 @@ public final class RobotMap {
   public static final DigitalOutput LED1 = new DigitalOutput(LED_CHANNEL5);
   public static final DigitalOutput LED2 = new DigitalOutput(LED_CHANNEL6);
 
-  public static final Encoder encoderRight = new Encoder(
-      new DigitalInput(currentRobot.getRightEncoderConfig().getChannel1()),
-      new DigitalInput(currentRobot.getRightEncoderConfig().getChannel2()));
-
-  public static final Encoder encoderLeft = new Encoder(
-      new DigitalInput(currentRobot.getLeftEncoderConfig().getChannel1()),
-      new DigitalInput(currentRobot.getLeftEncoderConfig().getChannel2()));
+//  public static final Encoder encoderRight = new Encoder(
+//      new DigitalInput(currentRobot.getRightEncoderConfig().getChannel1()),
+//      new DigitalInput(currentRobot.getRightEncoderConfig().getChannel2()));
+//
+//  public static final Encoder encoderLeft = new Encoder(
+//      new DigitalInput(currentRobot.getLeftEncoderConfig().getChannel1()),
+//      new DigitalInput(currentRobot.getLeftEncoderConfig().getChannel2()));
 
   public static final AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
@@ -82,7 +82,7 @@ public final class RobotMap {
 //  );
 
   public static final SpeedController climberMotor = "Comp DeepSpace".equals(currentRobot.getRobotName()) ? new Victor(
-      currentRobot.getClimberMotorConfig().getChannel()) : new Talon(currentRobot.getClimberMotorConfig().getChannel());
+          currentRobot.getClimberMotorConfig().getChannel()) : new Talon(currentRobot.getClimberMotorConfig().getChannel());
 
   static {
     leftIntakeMotor.setInverted(currentRobot.getLeftIntakeMotorConfig().isInverted());

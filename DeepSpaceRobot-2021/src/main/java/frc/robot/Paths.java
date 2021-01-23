@@ -308,7 +308,7 @@ public class Paths {
                     Units.feetToMeters(13.0), Units.feetToMeters(7.0));
 
             config.setKinematics(drivetrain.getDriveKinematics());
-            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(6.0)));
+            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(3.0)));
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(new Pose2d(Units.feetToMeters(3.85), Units.feetToMeters(7.46), Rotation2d.fromDegrees(0)),
@@ -325,7 +325,7 @@ public class Paths {
                     Units.feetToMeters(13.0), Units.feetToMeters(7.0));
 
             config.setKinematics(drivetrain.getDriveKinematics());
-            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(6.0)));
+            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(3.0)));
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(new Pose2d(Units.feetToMeters(3.85), Units.feetToMeters(7.5), Rotation2d.fromDegrees(0)),
@@ -339,10 +339,10 @@ public class Paths {
 
         public static Trajectory generateGalacticSearchRedB() {
             TrajectoryConfig config = new TrajectoryConfig(
-                    Units.feetToMeters(13.0), Units.feetToMeters(7.0));
+                    Units.feetToMeters(7.0), Units.feetToMeters(3.0));
 
             config.setKinematics(drivetrain.getDriveKinematics());
-            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(6.0)));
+            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(3.0)));
 
             return TrajectoryGenerator.generateTrajectory(
                     Arrays.asList(new Pose2d(Units.feetToMeters(3.85), Units.feetToMeters(7.46), Rotation2d.fromDegrees(0)),
@@ -353,6 +353,21 @@ public class Paths {
                     config
             );
         }
+        public static Trajectory generateGalacticSearchBlueB() {
+            TrajectoryConfig config = new TrajectoryConfig(
+                    Units.feetToMeters(10.0), Units.feetToMeters(4.0));
 
+            config.setKinematics(drivetrain.getDriveKinematics());
+            config.addConstraint(new CentripetalAccelerationConstraint(Units.feetToMeters(4.0)));
+
+            return TrajectoryGenerator.generateTrajectory(
+                    Arrays.asList(new Pose2d(Units.feetToMeters(2.56), Units.feetToMeters(5.004), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(14.998), Units.feetToMeters(5.004), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(19.974), Units.feetToMeters(9.962), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(24.972), Units.feetToMeters(4.991), Rotation2d.fromDegrees(0)),
+                            new Pose2d(Units.feetToMeters(27.511), Units.feetToMeters(5.012), Rotation2d.fromDegrees(0))),
+                    config
+            );
+        }
     }
 }
