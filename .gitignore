@@ -13,6 +13,7 @@
 # Package Files #
 *.jar
 !DeepSpaceRobot/lib/WaltonRoboticsCodeLibrary-master.jar
+!DeepSpaceRobot-2021/lib/WaltonRoboticsCodeLibrary-master.jar
 *.war
 *.nar
 *.ear

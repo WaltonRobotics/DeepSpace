@@ -49,6 +49,7 @@
 
 # Package Files #
 *.jar
+!lib/WaltonRoboticsCodeLibrary-master.jar
 *.war
 *.nar
 *.ear
