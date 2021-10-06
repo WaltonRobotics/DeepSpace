@@ -211,4 +211,12 @@ public class Config {
     public static final double LIVE_DASHBOARD_FIELD_HEIGHT = Units.feetToMeters(27);
 
   }
+
+  public static class DriveSettings {
+
+    public static final double DEADBAND = 0.1;
+    public static final double QUICK_STOP_THRESHOLD = 0.2;
+    public static final double QUICK_STOP_ALPHA = 0.1;
+
+  }
 }

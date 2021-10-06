@@ -9,8 +9,7 @@ package frc.robot.command.teleop;
 
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_LEFT_JOYSTICK_Y;
 import static frc.robot.Config.SmartDashboardKeys.DRIVETRAIN_RIGHT_JOYSTICK_Y;
-import static frc.robot.Robot.currentRobot;
-import static frc.robot.Robot.drivetrain;
+import static frc.robot.Robot.*;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
@@ -38,10 +37,6 @@ public class Drive extends Command {
 
   public static void setIsEnabled(boolean b) {
     enabled = b;
-  }
-
-  private Transform getTransform() {
-    return Robot.transformSendableChooser.getSelected();
   }
 
   private double getLeftYJoystick() {
@@ -87,10 +82,6 @@ public class Drive extends Command {
       SmartDashboard.putNumber(DRIVETRAIN_RIGHT_JOYSTICK_Y, rightYJoystick);
       SmartDashboard.putNumber("Angle", drivetrain.getAngle().getDegrees());
 
-      Transform transform = getTransform();
-      leftYJoystick = transform.transform(leftYJoystick);
-      rightYJoystick = transform.transform(rightYJoystick);
-
       if (rightTriggerPress.get()) {
         if (limelightHasValidTarget) {
           drivetrain.setArcadeSpeeds(limelightDriveCommand, limelightSteerCommand);
@@ -105,7 +96,7 @@ public class Drive extends Command {
       }
 
       if (!isAlligning || !limelightHasValidTarget) {
-        drivetrain.setSpeeds(leftYJoystick, rightYJoystick);
+        driveModeChooser.getSelected().feed();
       }
 
       if (OI.shiftUp.get()) {

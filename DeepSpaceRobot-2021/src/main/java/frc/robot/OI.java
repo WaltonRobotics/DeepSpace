@@ -83,6 +83,9 @@ public final class OI {
 
   public static final JoystickButton masterOverride = new JoystickButton(leftJoystick, 7);
   public static final JoystickButton cargoTurbo = new JoystickButton(gamepad, LEFT_STICK_BUTTON.index());
+
+  public static final JoystickButton quickTurnButton = new JoystickButton(rightJoystick, 2);
+
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.

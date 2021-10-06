@@ -100,6 +100,10 @@ import frc.robot.Config.Camera;
 import frc.robot.command.auto.routines.RightCargoRocket2Hatch;
 import frc.robot.command.auto.routines.RightRocket2HatchFrontBackGroup;
 import frc.robot.command.auto.routines.RightRocket2HatchFrontGroup;
+import frc.robot.command.teleop.driveMode.ArcadeDrive;
+import frc.robot.command.teleop.driveMode.CurvatureDrive;
+import frc.robot.command.teleop.driveMode.DriveMode;
+import frc.robot.command.teleop.driveMode.TankDrive;
 import frc.robot.command.teleop.util.NormalSpeed;
 import frc.robot.command.teleop.util.SCurve;
 import frc.robot.command.teleop.util.Sigmoid;
@@ -129,8 +133,8 @@ public class Robot extends TimedRobot {
   public static final LimitedRobot currentRobot;
   public static final Drivetrain drivetrain;
   public static final ElevatorCargoHatchSubsystem godSubsystem;
-  public static final SendableChooser<Transform> transformSendableChooser = new SendableChooser<>();
   private static final RobotBuilder<LimitedRobot> robotBuilder;
+  public static SendableChooser<DriveMode> driveModeChooser;
 
   static {
     isCompBot = new DigitalInput(9).get();
@@ -141,6 +145,11 @@ public class Robot extends TimedRobot {
     System.out.println(currentRobot);
     drivetrain = new Drivetrain();
     godSubsystem = new ElevatorCargoHatchSubsystem();
+
+    driveModeChooser = new SendableChooser<>();
+    driveModeChooser.setDefaultOption("Tank", new TankDrive());
+    driveModeChooser.addOption("Curvature", new CurvatureDrive());
+    SmartDashboard.putData("Drive Mode Selector", driveModeChooser);
   }
 
   private boolean hasSetPipeline = false;
@@ -158,15 +167,6 @@ public class Robot extends TimedRobot {
   }
 
   private static void initShuffleBoard() {
-
-    transformSendableChooser.setDefaultOption("Normal", new NormalSpeed());
-    transformSendableChooser.addOption("Sigmoid", new Sigmoid());
-    transformSendableChooser.addOption("Sqrt", new Sqrt());
-    transformSendableChooser.addOption("Squared", new Squared());
-    transformSendableChooser.addOption("S Curve", new SCurve());
-
-    SmartDashboard.putData(DRIVETEAM_TRANSFORM_SELECT, transformSendableChooser);
-
     SmartDashboard.putNumber(CONSTANTS_KV, currentRobot.getKV());
     SmartDashboard.putNumber(CONSTANTS_KACC, currentRobot.getKAcc());
     SmartDashboard.putNumber(CONSTANTS_KK, currentRobot.getKK());
