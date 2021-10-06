@@ -2,10 +2,12 @@
   <library name="Gradle: com.revrobotics.frc:SparkMax-java:1.5.2">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../../../../../Public/wpilib/2021/maven/com/revrobotics/frc/SparkMax-java/1.5.2/SparkMax-java-1.5.2.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.revrobotics.frc/SparkMax-java/1.5.2/84045120e77508ee44067f66b28e181d273dd1f5/SparkMax-java-1.5.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/../../../../../Public/wpilib/2021/maven/com/revrobotics/frc/SparkMax-java/1.5.2/SparkMax-java-1.5.2-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.revrobotics.frc/SparkMax-java/1.5.2/22734eead5e6a342d367bc3c69042f08dd5cc154/SparkMax-java-1.5.2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

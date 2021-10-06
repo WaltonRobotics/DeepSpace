@@ -67,6 +67,7 @@ public class Drivetrain extends AbstractDrivetrain {
     super.periodic();
 
     SmartDashboard.putNumber("Dial", cameraData.getCameraPose().getY());
+    SmartDashboard.putBoolean("Is Shifted Up", isShiftedUp());
 
     updateRobotPose();
 
@@ -233,6 +234,10 @@ public class Drivetrain extends AbstractDrivetrain {
       System.out.println("Shifted Down");
       shifter.set(false);
     }
+  }
+
+  public boolean isShiftedUp() {
+    return shifter.get();
   }
 
   public CameraData getCameraData() {
