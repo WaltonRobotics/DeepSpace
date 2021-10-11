@@ -2,8 +2,8 @@ package frc.robot.command.teleop.driveMode;
 
 import edu.wpi.first.wpilibj.GenericHID;
 
-import static frc.robot.OI.leftJoystick;
-import static frc.robot.OI.rightJoystick;
+import static frc.robot.OI.*;
+import static frc.robot.Robot.driveInputDeviceChooser;
 
 public abstract class DriveMode {
 
@@ -17,11 +17,19 @@ public abstract class DriveMode {
     }
 
     double getLeftJoystickY() {
-        return -leftJoystick.getY();
+        if (driveInputDeviceChooser.getSelected().equals("Joysticks")) {
+            return -leftJoystick.getY();
+        }
+
+        return -gamepad.getLeftY();
     }
 
     double getRightJoystickY() {
-        return -rightJoystick.getY();
+        if (driveInputDeviceChooser.getSelected().equals("Joysticks")) {
+            return -rightJoystick.getY();
+        }
+
+        return -gamepad.getRawAxis(3);
     }
 
     /* The following methods are for drive modes with separated turn and throttle commands (i.e. Curvature/Arcade). */
@@ -30,14 +38,22 @@ public abstract class DriveMode {
      * The left joystick is used for throttle.
      */
     double getThrottle() {
-        return getLeftJoystickY();
+        if (driveInputDeviceChooser.getSelected().equals("Joysticks")) {
+            return -leftJoystick.getY();
+        }
+
+        return -gamepad.getLeftY();
     }
 
     /**
      * The right joystick is used for turning.
      */
     double getTurn() {
-        return rightJoystick.getX();
+        if (driveInputDeviceChooser.getSelected().equals("Joysticks")) {
+            return rightJoystick.getX();
+        }
+
+        return gamepad.getRightX();
     }
 
 }

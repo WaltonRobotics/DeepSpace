@@ -135,6 +135,7 @@ public class Robot extends TimedRobot {
   public static final ElevatorCargoHatchSubsystem godSubsystem;
   private static final RobotBuilder<LimitedRobot> robotBuilder;
   public static SendableChooser<DriveMode> driveModeChooser;
+  public static SendableChooser<String> driveInputDeviceChooser;
 
   static {
     isCompBot = new DigitalInput(9).get();
@@ -150,6 +151,12 @@ public class Robot extends TimedRobot {
     driveModeChooser.setDefaultOption("Tank", new TankDrive());
     driveModeChooser.addOption("Curvature", new CurvatureDrive());
     SmartDashboard.putData("Drive Mode Selector", driveModeChooser);
+
+    driveInputDeviceChooser = new SendableChooser<>();
+    driveInputDeviceChooser.setDefaultOption("Joysticks", "Joysticks");
+    driveInputDeviceChooser.setDefaultOption("Gamepad", "Gamepad");
+    driveInputDeviceChooser.setDefaultOption("Xbox", "Xbox");
+    SmartDashboard.putData("Drive Input Device Chooser", driveInputDeviceChooser);
   }
 
   private boolean hasSetPipeline = false;
