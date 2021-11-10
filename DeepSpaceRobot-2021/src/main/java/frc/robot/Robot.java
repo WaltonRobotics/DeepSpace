@@ -151,12 +151,6 @@ public class Robot extends TimedRobot {
     driveModeChooser.setDefaultOption("Tank", new TankDrive());
     driveModeChooser.addOption("Curvature", new CurvatureDrive());
     SmartDashboard.putData("Drive Mode Selector", driveModeChooser);
-
-    driveInputDeviceChooser = new SendableChooser<>();
-    driveInputDeviceChooser.setDefaultOption("Joysticks", "Joysticks");
-    driveInputDeviceChooser.setDefaultOption("Gamepad", "Gamepad");
-    driveInputDeviceChooser.setDefaultOption("Xbox", "Xbox");
-    SmartDashboard.putData("Drive Input Device Chooser", driveInputDeviceChooser);
   }
 
   private boolean hasSetPipeline = false;
@@ -357,6 +351,8 @@ public class Robot extends TimedRobot {
     // System.out.println("robot Periodic");
 //    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
 //    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(0);
+
+//    SmartDashboard.putNumber("New Hatch angle", hatchRotationMotor.getSelectedSensorPosition());
   }
 
   /**

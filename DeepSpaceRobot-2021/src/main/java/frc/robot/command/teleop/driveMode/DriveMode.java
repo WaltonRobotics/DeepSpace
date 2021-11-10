@@ -17,19 +17,11 @@ public abstract class DriveMode {
     }
 
     double getLeftJoystickY() {
-        if (driveInputDeviceChooser.getSelected().equals("Joysticks")) {
-            return -leftJoystick.getY();
-        }
-
-        return -gamepad.getLeftY();
+        return -leftJoystick.getY();
     }
 
     double getRightJoystickY() {
-        if (driveInputDeviceChooser.getSelected().equals("Joysticks")) {
-            return -rightJoystick.getY();
-        }
-
-        return -gamepad.getRawAxis(3);
+        return -rightJoystick.getY();
     }
 
     /* The following methods are for drive modes with separated turn and throttle commands (i.e. Curvature/Arcade). */
@@ -38,22 +30,14 @@ public abstract class DriveMode {
      * The left joystick is used for throttle.
      */
     double getThrottle() {
-        if (driveInputDeviceChooser.getSelected().equals("Joysticks")) {
-            return -leftJoystick.getY();
-        }
-
-        return -gamepad.getLeftY();
+        return -leftJoystick.getY();
     }
 
     /**
      * The right joystick is used for turning.
      */
     double getTurn() {
-        if (driveInputDeviceChooser.getSelected().equals("Joysticks")) {
-            return rightJoystick.getX();
-        }
-
-        return gamepad.getRightX();
+        return rightJoystick.getX();
     }
 
 }
