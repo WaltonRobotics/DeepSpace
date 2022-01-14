@@ -1,4 +1,4 @@
-package frc.robot.waltonrobotics.metadata;
+package frc.robot.lib.metadata;
 
 /**
  * @author Russell Newton

@@ -17,7 +17,7 @@ import frc.robot.config.Target;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.CargoPosition;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.ElevatorLevel;
 import frc.robot.subsystem.ElevatorCargoHatchSubsystem.HatchPosition;
-import frc.robot.waltonrobotics.config.*;
+import frc.robot.lib.config.*;
 
 import static frc.robot.Config.SmartDashboardKeys.*;
 

@@ -7,7 +7,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.config.BaseMotorControllerConfig;
 import frc.robot.config.LimitedRobot;
-import frc.robot.waltonrobotics.config.*;
+import frc.robot.lib.config.*;
 
 public class CompPowerUp extends LimitedRobot {
 

@@ -1,4 +1,4 @@
-package frc.robot.waltonrobotics.config;
+package frc.robot.lib.config;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import java.util.ArrayList;

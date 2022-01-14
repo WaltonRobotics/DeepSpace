@@ -26,11 +26,10 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.command.teleop.Drive;
-import frc.robot.waltonrobotics.metadata.CameraData;
-import frc.robot.waltonrobotics.metadata.RobotPair;
+import frc.robot.lib.metadata.CameraData;
+import frc.robot.lib.metadata.RobotPair;
 
 
 /**

@@ -1,7 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.util.Units;
-import frc.robot.waltonrobotics.metadata.Pose;
+import frc.robot.lib.metadata.Pose;
 
 public class Config {
 

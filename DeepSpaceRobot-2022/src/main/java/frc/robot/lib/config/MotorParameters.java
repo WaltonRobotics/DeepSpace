@@ -1,4 +1,4 @@
-package frc.robot.waltonrobotics.config;
+package frc.robot.lib.config;
 
 /**
  * This class is based off of Team 254's DCMotorTransmission class.

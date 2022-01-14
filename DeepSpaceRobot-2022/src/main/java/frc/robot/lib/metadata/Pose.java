@@ -1,4 +1,4 @@
-package frc.robot.waltonrobotics.metadata;
+package frc.robot.lib.metadata;
 
 /**
  * This holds the x, y, and angle of the robot.

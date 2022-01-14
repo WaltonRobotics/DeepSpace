@@ -1,4 +1,4 @@
-package frc.robot.waltonrobotics.metadata;
+package frc.robot.lib.metadata;
 
 /**
  * Holds information about the left and right sides of the robot at a specific time

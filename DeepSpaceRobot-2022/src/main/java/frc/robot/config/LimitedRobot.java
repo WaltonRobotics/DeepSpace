@@ -7,8 +7,8 @@ import java.util.HashMap;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import frc.robot.waltonrobotics.config.RobotConfig;
-import frc.robot.waltonrobotics.config.TalonConfig;
+import frc.robot.lib.config.RobotConfig;
+import frc.robot.lib.config.TalonConfig;
 
 public abstract class LimitedRobot extends RobotConfig {
 

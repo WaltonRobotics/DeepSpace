@@ -1,6 +1,6 @@
-package frc.robot.waltonrobotics.config;
+package frc.robot.lib.config;
 
-import frc.robot.waltonrobotics.metadata.RobotPair;
+import frc.robot.lib.metadata.RobotPair;
 
 public interface SetSpeeds {
 

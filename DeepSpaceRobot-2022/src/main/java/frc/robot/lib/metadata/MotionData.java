@@ -1,4 +1,4 @@
-package frc.robot.waltonrobotics.metadata;
+package frc.robot.lib.metadata;
 
 /**
  * Contains information about the robot's org.waltonrobotics.motion at a specific time
