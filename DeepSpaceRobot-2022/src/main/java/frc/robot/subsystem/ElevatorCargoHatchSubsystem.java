@@ -35,7 +35,7 @@ import static frc.robot.OI.elevatorLevel1Button;
 import static frc.robot.OI.elevatorLevel2Button;
 import static frc.robot.OI.elevatorLevel3Button;
 import static frc.robot.OI.elevatorZeroButton;
-import static frc.robot.OI.gamepad;
+import static frc.robot.OI.manipulationGamepad;
 import static frc.robot.OI.hatchIntakeButton;
 import static frc.robot.OI.hatchModeButton;
 import static frc.robot.OI.hatchStart;
@@ -44,7 +44,6 @@ import static frc.robot.OI.leftJoystick;
 import static frc.robot.OI.outtakeCargoButtonFast;
 import static frc.robot.OI.outtakeCargoButtonSlow;
 import static frc.robot.Robot.currentRobot;
-import static frc.robot.Robot.drivetrain;
 import static frc.robot.RobotMap.clawRotationMotor;
 import static frc.robot.RobotMap.climberMotor;
 import static frc.robot.RobotMap.elevatorLowerLimit;
@@ -55,7 +54,6 @@ import static frc.robot.RobotMap.hatchRotationMotor;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.Faults;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Gamepad.POV;
@@ -186,10 +184,10 @@ public class ElevatorCargoHatchSubsystem extends SubsystemBase {
     currentCargoModePressed.set(cargoModeButton.get());
     currentHatchModePressed.set(hatchModeButton.get());
 //    currentDefenceModePressed = defenseModeButton.get();
-    currentDefenceModePressed.set(gamepad.getPOVButton(POV.S));
+    currentDefenceModePressed.set(manipulationGamepad.getPOVButton(POV.S));
     currentSetStartModePressed.set(hatchStart.get());
     currentSetStartCargoModePressed.set(cargoStart.get());
-    climberPreset.set(gamepad.getPOVButton(POV.W));
+    climberPreset.set(manipulationGamepad.getPOVButton(POV.W));
     autoClimbMode.set(leftJoystick.getTrigger());
     masterOverride.set(OI.masterOverride.get());
 
@@ -368,14 +366,14 @@ public class ElevatorCargoHatchSubsystem extends SubsystemBase {
       level2Button.set(elevatorLevel2Button.get());
       level1Button.set(elevatorLevel1Button.get());
 
-      elevatorJoystick = -gamepad.getRightY();
+      elevatorJoystick = -manipulationGamepad.getRightY();
 
       lastEncoderPosition = currentEncoderPosition;
       currentEncoderPosition = (int) elevatorMotor.getSelectedSensorPosition(0);
 
       lowerLimit = !elevatorLowerLimit.get();
       baseIsPressed = elevatorZeroButton.get();
-      cargoShipPressed = gamepad.getPOVButton(POV.N);
+      cargoShipPressed = manipulationGamepad.getPOVButton(POV.N);
     }
 
     @Override
@@ -562,7 +560,7 @@ public class ElevatorCargoHatchSubsystem extends SubsystemBase {
       cargoTurbo.set(OI.cargoTurbo.get());
 
       angle = (int) clawRotationMotor.getSelectedSensorPosition();
-      cargoJoystick = -gamepad.getLeftY();
+      cargoJoystick = -manipulationGamepad.getLeftY();
     }
 
     public boolean cargoTurbo() {

@@ -7,11 +7,7 @@
 
 package frc.robot;
 
-import static frc.robot.Config.Inputs.GAMEPAD_PORT;
-import static frc.robot.Config.Inputs.LEFT_JOYSTICK_PORT;
-import static frc.robot.Config.Inputs.RIGHT_JOYSTICK_PORT;
-import static frc.robot.Config.Inputs.SHIFT_DOWN_PORT;
-import static frc.robot.Config.Inputs.SHIFT_UP_PORT;
+import static frc.robot.Config.Inputs.*;
 import static frc.robot.Gamepad.Button.LEFT_BUMPER;
 import static frc.robot.Gamepad.Button.LEFT_STICK_BUTTON;
 import static frc.robot.Gamepad.Button.LEFT_TRIGGER;
@@ -58,22 +54,23 @@ public final class OI {
 
   public static final Joystick leftJoystick = new Joystick(LEFT_JOYSTICK_PORT);
   public static final Joystick rightJoystick = new Joystick(RIGHT_JOYSTICK_PORT);
-  public static final Gamepad gamepad = new Gamepad(GAMEPAD_PORT);
+  public static final Gamepad driverGamepad = new Gamepad(DRIVER_GAMEPAD_PORT);
+  public static final Gamepad manipulationGamepad = new Gamepad(MANIPULATION_GAMEPAD_PORT);
 
   public static final JoystickButton shiftUp = new JoystickButton(leftJoystick, SHIFT_UP_PORT);
   public static final JoystickButton shiftDown = new JoystickButton(leftJoystick, SHIFT_DOWN_PORT);
-  public static final JoystickButton elevatorLevel3Button = new JoystickButton(gamepad,
+  public static final JoystickButton elevatorLevel3Button = new JoystickButton(manipulationGamepad,
       _4.index()); // All elevator joystick button ports are makeshift for now.
-  public static final JoystickButton elevatorLevel2Button = new JoystickButton(gamepad, _3.index());
-  public static final JoystickButton elevatorLevel1Button = new JoystickButton(gamepad, _2.index());
-  public static final JoystickButton elevatorZeroButton = new JoystickButton(gamepad, _1.index());
-  public static final JoystickButton hatchIntakeButton = new JoystickButton(gamepad, RIGHT_BUMPER.index());
-  public static final JoystickButton intakeCargoButton = new JoystickButton(gamepad, RIGHT_TRIGGER.index());
-  public static final JoystickButton outtakeCargoButtonFast = new JoystickButton(gamepad, LEFT_TRIGGER.index());
-  public static final JoystickButton outtakeCargoButtonSlow = new JoystickButton(gamepad, LEFT_BUMPER.index());
+  public static final JoystickButton elevatorLevel2Button = new JoystickButton(manipulationGamepad, _3.index());
+  public static final JoystickButton elevatorLevel1Button = new JoystickButton(manipulationGamepad, _2.index());
+  public static final JoystickButton elevatorZeroButton = new JoystickButton(manipulationGamepad, _1.index());
+  public static final JoystickButton hatchIntakeButton = new JoystickButton(manipulationGamepad, RIGHT_BUMPER.index());
+  public static final JoystickButton intakeCargoButton = new JoystickButton(manipulationGamepad, RIGHT_TRIGGER.index());
+  public static final JoystickButton outtakeCargoButtonFast = new JoystickButton(manipulationGamepad, LEFT_TRIGGER.index());
+  public static final JoystickButton outtakeCargoButtonSlow = new JoystickButton(manipulationGamepad, LEFT_BUMPER.index());
 
-  public static final JoystickButton cargoModeButton = new JoystickButton(gamepad, _10.index());
-  public static final JoystickButton hatchModeButton = new JoystickButton(gamepad, _9.index());
+  public static final JoystickButton cargoModeButton = new JoystickButton(manipulationGamepad, _10.index());
+  public static final JoystickButton hatchModeButton = new JoystickButton(manipulationGamepad, _9.index());
 
   public static final JoystickButton hatchStart = new JoystickButton(rightJoystick, 8);
   public static final JoystickButton cargoStart = new JoystickButton(rightJoystick, 9);
@@ -83,7 +80,7 @@ public final class OI {
 //  public static final JoystickButton defenseModeButton = new JoystickButton(gamepad, gamepad.getPO);
 
   public static final JoystickButton masterOverride = new JoystickButton(leftJoystick, 7);
-  public static final JoystickButton cargoTurbo = new JoystickButton(gamepad, LEFT_STICK_BUTTON.index());
+  public static final JoystickButton cargoTurbo = new JoystickButton(manipulationGamepad, LEFT_STICK_BUTTON.index());
 
   public static final JoystickButton quickTurnButton = new JoystickButton(rightJoystick, 2);
 

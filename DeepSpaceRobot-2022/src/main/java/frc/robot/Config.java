@@ -25,7 +25,8 @@ public class Config {
 
     public static final int LEFT_JOYSTICK_PORT = 0;
     public static final int RIGHT_JOYSTICK_PORT = 1;
-    public static final int GAMEPAD_PORT = 2;
+    public static final int DRIVER_GAMEPAD_PORT = 2;
+    public static final int MANIPULATION_GAMEPAD_PORT = 3;
     public static final int SHIFT_UP_PORT = 3;
     public static final int SHIFT_DOWN_PORT = 2;
 

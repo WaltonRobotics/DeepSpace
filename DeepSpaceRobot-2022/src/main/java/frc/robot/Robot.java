@@ -143,6 +143,11 @@ public class Robot extends TimedRobot {
     driveModeChooser.setDefaultOption("Tank", new TankDrive());
     driveModeChooser.addOption("Curvature", new CurvatureDrive());
     SmartDashboard.putData("Drive Mode Selector", driveModeChooser);
+
+    driveInputDeviceChooser = new SendableChooser<>();
+    driveInputDeviceChooser.addOption("Joysticks", "Joysticks");
+    driveInputDeviceChooser.setDefaultOption("Gamepad", "Gamepad");
+    SmartDashboard.putData("Drive Input Device Chooser", driveInputDeviceChooser);
   }
 
   private boolean hasSetPipeline = false;
@@ -242,27 +247,21 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putBoolean(IS_RIGHT_AUTON, true);
     SmartDashboard.putBoolean(USE_AUTON, false);
+                  }
 
-    SmartDashboard.putNumber("Steer K", 0.065);
-    SmartDashboard.putNumber("Drive K", 0.26);
-    SmartDashboard.putNumber("Camera Distance", -1.0);
+                  /**
+                   * This function is run when the robot is first started up and should be used for any initialization code.
+                   */
+                  @Override
+                  public void robotInit() {
+                    //drivetrain.cancelControllerMotion();
+                    drivetrain.reset();
+                    //drivetrain.getController().getCameraReader().startCollecting();
 
-    SmartDashboard.putNumber("Distance", 2.0);
-  }
-
-  /**
-   * This function is run when the robot is first started up and should be used for any initialization code.
-   */
-  @Override
-  public void robotInit() {
-    //drivetrain.cancelControllerMotion();
-    drivetrain.reset();
-    //drivetrain.getController().getCameraReader().startCollecting();
-
-    initShuffleBoard();
-    initCamera();
-    initHardware();
-    CommandScheduler.getInstance().setDefaultCommand(drivetrain, new Drive());
+                    initShuffleBoard();
+                    initCamera();
+                    initHardware();
+                    CommandScheduler.getInstance().setDefaultCommand(drivetrain, new Drive());
     CommandScheduler.getInstance().registerSubsystem(godSubsystem);
   }
 
